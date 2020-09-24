@@ -1,32 +1,43 @@
 namespace ca.mcgill.ecse.flexibooksystem;
-class Person
+class FlexiBook
+{
+  1<@>-* User users; 
+  1<@>-*Account accounts;
+  
+  
+  1<@>-0..* Business businesses;
+}
+class User
 {
   name;
   email;
   phoneNumber;
+ 1 -> * Account accounts;
 }
 
 class CustomerAccount
 {
  Boolean isDeleted;
 isA Account;
+  1<@>-* Appointment appointments;
 }
 
 class OwnerAccount
 {
     isA Account;
-* -- * Service;
-  * -- * ServiceCombo;
+  1 -> 0..* ServiceCombo makecombo;
+  1 -- 1..* Business businesses;
+  1--* Service ServicesProvided;
 }
 
-class Appointnement
+class Appointment
 {
-  beginTime;
-endTime;
-date;
-* -- * CustomerAccount;
-  * -- * Service;
-  * -- * OwnerAccount;
+  String beginTime;
+String endTime;
+Date date;
+  Boolean isCancelled;
+  1-> 0..* ServiceCombo choosecombo;
+  1 -- * Service services;
 }
 
 class Service
@@ -36,50 +47,53 @@ Float price;
 Integer downTimeStart;
 Integer downTimeEnd;
 String type;
-* -- * ServiceCombo;
-  }
+ }
 
-class FlexiBook
-{
-    * -- * Person;
-}
+
 
 class MainService
 {
-       
+  
+  Integer numberofServices; 
+1--* Service;
 
      
-  * -- * ServiceCombo;
+  
 }
 
 class SubService
 {
-   
-   
+
+  Integer numberofServices; 
+   1--* Service;  
 }
 
 class ServiceCombo
 {
-      * -- * SubService;
+  1<@>-1 MainService main;
+  1<@>-0..1 SubService sub;
+  
+  Boolean hasSubServices;
 }
 
-class BusinessInfo
+class Business
 {
+  1<@>-0..* ServiceCombo combo;
+  1<@>-* Service services;
  String  contactInfo;
 Integer businessHours;
 Date holidays;
 String nameBusiness;
 String address;
-* -- * OwnerAccount;
 }
 
-class Account
+ class Account
 {
-     
+   abstract; 
 unique String username;
 String  password;
 Boolean isLoggedIn;
-* -- * Person;
-  * -- * FlexiBook;
+
+  
 }
 

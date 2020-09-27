@@ -3,8 +3,9 @@
 
 package ca.mcgill.ecse.flexibooksystem;
 import java.util.*;
+import java.sql.Date;
 
-// line 42 "../../../../flexibook.ump"
+// line 2 "../../../../flexibook.ump"
 public class FlexiBook
 {
 
@@ -13,8 +14,9 @@ public class FlexiBook
   //------------------------
 
   //FlexiBook Associations
-  private List<Person> persons;
+  private List<User> users;
   private List<Account> accounts;
+  private List<Business> businesses;
 
   //------------------------
   // CONSTRUCTOR
@@ -22,41 +24,42 @@ public class FlexiBook
 
   public FlexiBook()
   {
-    persons = new ArrayList<Person>();
+    users = new ArrayList<User>();
     accounts = new ArrayList<Account>();
+    businesses = new ArrayList<Business>();
   }
 
   //------------------------
   // INTERFACE
   //------------------------
   /* Code from template association_GetMany */
-  public Person getPerson(int index)
+  public User getUser(int index)
   {
-    Person aPerson = persons.get(index);
-    return aPerson;
+    User aUser = users.get(index);
+    return aUser;
   }
 
-  public List<Person> getPersons()
+  public List<User> getUsers()
   {
-    List<Person> newPersons = Collections.unmodifiableList(persons);
-    return newPersons;
+    List<User> newUsers = Collections.unmodifiableList(users);
+    return newUsers;
   }
 
-  public int numberOfPersons()
+  public int numberOfUsers()
   {
-    int number = persons.size();
+    int number = users.size();
     return number;
   }
 
-  public boolean hasPersons()
+  public boolean hasUsers()
   {
-    boolean has = persons.size() > 0;
+    boolean has = users.size() > 0;
     return has;
   }
 
-  public int indexOfPerson(Person aPerson)
+  public int indexOfUser(User aUser)
   {
-    int index = persons.indexOf(aPerson);
+    int index = users.indexOf(aUser);
     return index;
   }
   /* Code from template association_GetMany */
@@ -89,85 +92,105 @@ public class FlexiBook
     int index = accounts.indexOf(aAccount);
     return index;
   }
+  /* Code from template association_GetMany */
+  public Business getBusiness(int index)
+  {
+    Business aBusiness = businesses.get(index);
+    return aBusiness;
+  }
+
+  public List<Business> getBusinesses()
+  {
+    List<Business> newBusinesses = Collections.unmodifiableList(businesses);
+    return newBusinesses;
+  }
+
+  public int numberOfBusinesses()
+  {
+    int number = businesses.size();
+    return number;
+  }
+
+  public boolean hasBusinesses()
+  {
+    boolean has = businesses.size() > 0;
+    return has;
+  }
+
+  public int indexOfBusiness(Business aBusiness)
+  {
+    int index = businesses.indexOf(aBusiness);
+    return index;
+  }
   /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfPersons()
+  public static int minimumNumberOfUsers()
   {
     return 0;
   }
-  /* Code from template association_AddManyToManyMethod */
-  public boolean addPerson(Person aPerson)
+  /* Code from template association_AddManyToOne */
+  public User addUser(String aName, String aEmail, String aPhoneNumber)
+  {
+    return new User(aName, aEmail, aPhoneNumber, this);
+  }
+
+  public boolean addUser(User aUser)
   {
     boolean wasAdded = false;
-    if (persons.contains(aPerson)) { return false; }
-    persons.add(aPerson);
-    if (aPerson.indexOfFlexiBook(this) != -1)
+    if (users.contains(aUser)) { return false; }
+    FlexiBook existingFlexiBook = aUser.getFlexiBook();
+    boolean isNewFlexiBook = existingFlexiBook != null && !this.equals(existingFlexiBook);
+    if (isNewFlexiBook)
     {
-      wasAdded = true;
+      aUser.setFlexiBook(this);
     }
     else
     {
-      wasAdded = aPerson.addFlexiBook(this);
-      if (!wasAdded)
-      {
-        persons.remove(aPerson);
-      }
+      users.add(aUser);
     }
+    wasAdded = true;
     return wasAdded;
   }
-  /* Code from template association_RemoveMany */
-  public boolean removePerson(Person aPerson)
+
+  public boolean removeUser(User aUser)
   {
     boolean wasRemoved = false;
-    if (!persons.contains(aPerson))
+    //Unable to remove aUser, as it must always have a flexiBook
+    if (!this.equals(aUser.getFlexiBook()))
     {
-      return wasRemoved;
-    }
-
-    int oldIndex = persons.indexOf(aPerson);
-    persons.remove(oldIndex);
-    if (aPerson.indexOfFlexiBook(this) == -1)
-    {
+      users.remove(aUser);
       wasRemoved = true;
-    }
-    else
-    {
-      wasRemoved = aPerson.removeFlexiBook(this);
-      if (!wasRemoved)
-      {
-        persons.add(oldIndex,aPerson);
-      }
     }
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
-  public boolean addPersonAt(Person aPerson, int index)
+  public boolean addUserAt(User aUser, int index)
   {  
     boolean wasAdded = false;
-    if(addPerson(aPerson))
+    if(addUser(aUser))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfPersons()) { index = numberOfPersons() - 1; }
-      persons.remove(aPerson);
-      persons.add(index, aPerson);
+      if(index > numberOfUsers()) { index = numberOfUsers() - 1; }
+      users.remove(aUser);
+      users.add(index, aUser);
       wasAdded = true;
     }
     return wasAdded;
   }
 
-  public boolean addOrMovePersonAt(Person aPerson, int index)
+  public boolean addOrMoveUserAt(User aUser, int index)
   {
     boolean wasAdded = false;
-    if(persons.contains(aPerson))
+    if(users.contains(aUser))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfPersons()) { index = numberOfPersons() - 1; }
-      persons.remove(aPerson);
-      persons.add(index, aPerson);
+      if(index > numberOfUsers()) { index = numberOfUsers() - 1; }
+      users.remove(aUser);
+      users.add(index, aUser);
       wasAdded = true;
     } 
     else 
     {
-      wasAdded = addPersonAt(aPerson, index);
+      wasAdded = addUserAt(aUser, index);
     }
     return wasAdded;
   }
@@ -176,48 +199,35 @@ public class FlexiBook
   {
     return 0;
   }
-  /* Code from template association_AddManyToManyMethod */
+  /* Code from template association_AddManyToOne */
+
+
   public boolean addAccount(Account aAccount)
   {
     boolean wasAdded = false;
     if (accounts.contains(aAccount)) { return false; }
-    accounts.add(aAccount);
-    if (aAccount.indexOfFlexiBook(this) != -1)
+    FlexiBook existingFlexiBook = aAccount.getFlexiBook();
+    boolean isNewFlexiBook = existingFlexiBook != null && !this.equals(existingFlexiBook);
+    if (isNewFlexiBook)
     {
-      wasAdded = true;
+      aAccount.setFlexiBook(this);
     }
     else
     {
-      wasAdded = aAccount.addFlexiBook(this);
-      if (!wasAdded)
-      {
-        accounts.remove(aAccount);
-      }
+      accounts.add(aAccount);
     }
+    wasAdded = true;
     return wasAdded;
   }
-  /* Code from template association_RemoveMany */
+
   public boolean removeAccount(Account aAccount)
   {
     boolean wasRemoved = false;
-    if (!accounts.contains(aAccount))
+    //Unable to remove aAccount, as it must always have a flexiBook
+    if (!this.equals(aAccount.getFlexiBook()))
     {
-      return wasRemoved;
-    }
-
-    int oldIndex = accounts.indexOf(aAccount);
-    accounts.remove(oldIndex);
-    if (aAccount.indexOfFlexiBook(this) == -1)
-    {
+      accounts.remove(aAccount);
       wasRemoved = true;
-    }
-    else
-    {
-      wasRemoved = aAccount.removeFlexiBook(this);
-      if (!wasRemoved)
-      {
-        accounts.add(oldIndex,aAccount);
-      }
     }
     return wasRemoved;
   }
@@ -253,21 +263,102 @@ public class FlexiBook
     }
     return wasAdded;
   }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfBusinesses()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public Business addBusiness(String aContactInfo, int aBusinessHours, Date aHolidays, String aNameBusiness, String aAddress, OwnerAccount aOwnerAccount)
+  {
+    return new Business(aContactInfo, aBusinessHours, aHolidays, aNameBusiness, aAddress, this, aOwnerAccount);
+  }
+
+  public boolean addBusiness(Business aBusiness)
+  {
+    boolean wasAdded = false;
+    if (businesses.contains(aBusiness)) { return false; }
+    FlexiBook existingFlexiBook = aBusiness.getFlexiBook();
+    boolean isNewFlexiBook = existingFlexiBook != null && !this.equals(existingFlexiBook);
+    if (isNewFlexiBook)
+    {
+      aBusiness.setFlexiBook(this);
+    }
+    else
+    {
+      businesses.add(aBusiness);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeBusiness(Business aBusiness)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aBusiness, as it must always have a flexiBook
+    if (!this.equals(aBusiness.getFlexiBook()))
+    {
+      businesses.remove(aBusiness);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addBusinessAt(Business aBusiness, int index)
+  {  
+    boolean wasAdded = false;
+    if(addBusiness(aBusiness))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfBusinesses()) { index = numberOfBusinesses() - 1; }
+      businesses.remove(aBusiness);
+      businesses.add(index, aBusiness);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveBusinessAt(Business aBusiness, int index)
+  {
+    boolean wasAdded = false;
+    if(businesses.contains(aBusiness))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfBusinesses()) { index = numberOfBusinesses() - 1; }
+      businesses.remove(aBusiness);
+      businesses.add(index, aBusiness);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addBusinessAt(aBusiness, index);
+    }
+    return wasAdded;
+  }
 
   public void delete()
   {
-    ArrayList<Person> copyOfPersons = new ArrayList<Person>(persons);
-    persons.clear();
-    for(Person aPerson : copyOfPersons)
+    while (users.size() > 0)
     {
-      aPerson.removeFlexiBook(this);
+      User aUser = users.get(users.size() - 1);
+      aUser.delete();
+      users.remove(aUser);
     }
-    ArrayList<Account> copyOfAccounts = new ArrayList<Account>(accounts);
-    accounts.clear();
-    for(Account aAccount : copyOfAccounts)
+    
+    while (accounts.size() > 0)
     {
-      aAccount.removeFlexiBook(this);
+      Account aAccount = accounts.get(accounts.size() - 1);
+      aAccount.delete();
+      accounts.remove(aAccount);
     }
+    
+    while (businesses.size() > 0)
+    {
+      Business aBusiness = businesses.get(businesses.size() - 1);
+      aBusiness.delete();
+      businesses.remove(aBusiness);
+    }
+    
   }
 
 }

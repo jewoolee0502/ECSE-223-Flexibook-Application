@@ -3,8 +3,9 @@
 
 package ca.mcgill.ecse.flexibooksystem;
 import java.util.*;
+import java.sql.Date;
 
-// line 9 "../../../../flexibook.ump"
+// line 18 "../../../../flexibook.ump"
 public class CustomerAccount extends Account
 {
 
@@ -16,17 +17,17 @@ public class CustomerAccount extends Account
   private boolean isDeleted;
 
   //CustomerAccount Associations
-  private List<Appointnement> appointnements;
+  private List<Appointment> appointments;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public CustomerAccount(String aUsername, String aPassword, boolean aIsLoggedIn, boolean aIsDeleted)
+  public CustomerAccount(String aUsername, String aPassword, boolean aIsLoggedIn, FlexiBook aFlexiBook, User aUser, boolean aIsDeleted)
   {
-    super(aUsername, aPassword, aIsLoggedIn);
+    super(aUsername, aPassword, aIsLoggedIn, aFlexiBook, aUser);
     isDeleted = aIsDeleted;
-    appointnements = new ArrayList<Appointnement>();
+    appointments = new ArrayList<Appointment>();
   }
 
   //------------------------
@@ -51,126 +52,117 @@ public class CustomerAccount extends Account
     return isDeleted;
   }
   /* Code from template association_GetMany */
-  public Appointnement getAppointnement(int index)
+  public Appointment getAppointment(int index)
   {
-    Appointnement aAppointnement = appointnements.get(index);
-    return aAppointnement;
+    Appointment aAppointment = appointments.get(index);
+    return aAppointment;
   }
 
-  public List<Appointnement> getAppointnements()
+  public List<Appointment> getAppointments()
   {
-    List<Appointnement> newAppointnements = Collections.unmodifiableList(appointnements);
-    return newAppointnements;
+    List<Appointment> newAppointments = Collections.unmodifiableList(appointments);
+    return newAppointments;
   }
 
-  public int numberOfAppointnements()
+  public int numberOfAppointments()
   {
-    int number = appointnements.size();
+    int number = appointments.size();
     return number;
   }
 
-  public boolean hasAppointnements()
+  public boolean hasAppointments()
   {
-    boolean has = appointnements.size() > 0;
+    boolean has = appointments.size() > 0;
     return has;
   }
 
-  public int indexOfAppointnement(Appointnement aAppointnement)
+  public int indexOfAppointment(Appointment aAppointment)
   {
-    int index = appointnements.indexOf(aAppointnement);
+    int index = appointments.indexOf(aAppointment);
     return index;
   }
   /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfAppointnements()
+  public static int minimumNumberOfAppointments()
   {
     return 0;
   }
-  /* Code from template association_AddManyToManyMethod */
-  public boolean addAppointnement(Appointnement aAppointnement)
+  /* Code from template association_AddManyToOne */
+  public Appointment addAppointment(String aBeginTime, String aEndTime, Date aDate, boolean aIsCancelled)
+  {
+    return new Appointment(aBeginTime, aEndTime, aDate, aIsCancelled, this);
+  }
+
+  public boolean addAppointment(Appointment aAppointment)
   {
     boolean wasAdded = false;
-    if (appointnements.contains(aAppointnement)) { return false; }
-    appointnements.add(aAppointnement);
-    if (aAppointnement.indexOfCustomerAccount(this) != -1)
+    if (appointments.contains(aAppointment)) { return false; }
+    CustomerAccount existingCustomerAccount = aAppointment.getCustomerAccount();
+    boolean isNewCustomerAccount = existingCustomerAccount != null && !this.equals(existingCustomerAccount);
+    if (isNewCustomerAccount)
     {
-      wasAdded = true;
+      aAppointment.setCustomerAccount(this);
     }
     else
     {
-      wasAdded = aAppointnement.addCustomerAccount(this);
-      if (!wasAdded)
-      {
-        appointnements.remove(aAppointnement);
-      }
+      appointments.add(aAppointment);
     }
+    wasAdded = true;
     return wasAdded;
   }
-  /* Code from template association_RemoveMany */
-  public boolean removeAppointnement(Appointnement aAppointnement)
+
+  public boolean removeAppointment(Appointment aAppointment)
   {
     boolean wasRemoved = false;
-    if (!appointnements.contains(aAppointnement))
+    //Unable to remove aAppointment, as it must always have a customerAccount
+    if (!this.equals(aAppointment.getCustomerAccount()))
     {
-      return wasRemoved;
-    }
-
-    int oldIndex = appointnements.indexOf(aAppointnement);
-    appointnements.remove(oldIndex);
-    if (aAppointnement.indexOfCustomerAccount(this) == -1)
-    {
+      appointments.remove(aAppointment);
       wasRemoved = true;
-    }
-    else
-    {
-      wasRemoved = aAppointnement.removeCustomerAccount(this);
-      if (!wasRemoved)
-      {
-        appointnements.add(oldIndex,aAppointnement);
-      }
     }
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
-  public boolean addAppointnementAt(Appointnement aAppointnement, int index)
+  public boolean addAppointmentAt(Appointment aAppointment, int index)
   {  
     boolean wasAdded = false;
-    if(addAppointnement(aAppointnement))
+    if(addAppointment(aAppointment))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfAppointnements()) { index = numberOfAppointnements() - 1; }
-      appointnements.remove(aAppointnement);
-      appointnements.add(index, aAppointnement);
+      if(index > numberOfAppointments()) { index = numberOfAppointments() - 1; }
+      appointments.remove(aAppointment);
+      appointments.add(index, aAppointment);
       wasAdded = true;
     }
     return wasAdded;
   }
 
-  public boolean addOrMoveAppointnementAt(Appointnement aAppointnement, int index)
+  public boolean addOrMoveAppointmentAt(Appointment aAppointment, int index)
   {
     boolean wasAdded = false;
-    if(appointnements.contains(aAppointnement))
+    if(appointments.contains(aAppointment))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfAppointnements()) { index = numberOfAppointnements() - 1; }
-      appointnements.remove(aAppointnement);
-      appointnements.add(index, aAppointnement);
+      if(index > numberOfAppointments()) { index = numberOfAppointments() - 1; }
+      appointments.remove(aAppointment);
+      appointments.add(index, aAppointment);
       wasAdded = true;
     } 
     else 
     {
-      wasAdded = addAppointnementAt(aAppointnement, index);
+      wasAdded = addAppointmentAt(aAppointment, index);
     }
     return wasAdded;
   }
 
   public void delete()
   {
-    ArrayList<Appointnement> copyOfAppointnements = new ArrayList<Appointnement>(appointnements);
-    appointnements.clear();
-    for(Appointnement aAppointnement : copyOfAppointnements)
+    while (appointments.size() > 0)
     {
-      aAppointnement.removeCustomerAccount(this);
+      Appointment aAppointment = appointments.get(appointments.size() - 1);
+      aAppointment.delete();
+      appointments.remove(aAppointment);
     }
+    
     super.delete();
   }
 

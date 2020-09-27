@@ -2,9 +2,8 @@
 /*This code was generated using the UMPLE 1.30.1.5099.60569f335 modeling language!*/
 
 package ca.mcgill.ecse.flexibooksystem;
-import java.util.*;
 
-// line 32 "../../../../flexibook.ump"
+// line 43 "../../../../flexibook.ump"
 public class Service
 {
 
@@ -20,24 +19,48 @@ public class Service
   private String type;
 
   //Service Associations
-  private List<ServiceCombo> serviceCombos;
-  private List<OwnerAccount> ownerAccounts;
-  private List<Appointnement> appointnements;
+  private OwnerAccount ownerAccount;
+  private Appointment appointment;
+  private MainService mainService;
+  private SubService subService;
+  private Business business;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Service(String aName, float aPrice, int aDownTimeStart, int aDownTimeEnd, String aType)
+  public Service(String aName, float aPrice, int aDownTimeStart, int aDownTimeEnd, String aType, OwnerAccount aOwnerAccount, Appointment aAppointment, MainService aMainService, SubService aSubService, Business aBusiness)
   {
     name = aName;
     price = aPrice;
     downTimeStart = aDownTimeStart;
     downTimeEnd = aDownTimeEnd;
     type = aType;
-    serviceCombos = new ArrayList<ServiceCombo>();
-    ownerAccounts = new ArrayList<OwnerAccount>();
-    appointnements = new ArrayList<Appointnement>();
+    boolean didAddOwnerAccount = setOwnerAccount(aOwnerAccount);
+    if (!didAddOwnerAccount)
+    {
+      throw new RuntimeException("Unable to create ServicesProvided due to ownerAccount. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
+    boolean didAddAppointment = setAppointment(aAppointment);
+    if (!didAddAppointment)
+    {
+      throw new RuntimeException("Unable to create service due to appointment. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
+    boolean didAddMainService = setMainService(aMainService);
+    if (!didAddMainService)
+    {
+      throw new RuntimeException("Unable to create service due to mainService. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
+    boolean didAddSubService = setSubService(aSubService);
+    if (!didAddSubService)
+    {
+      throw new RuntimeException("Unable to create service due to subService. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
+    boolean didAddBusiness = setBusiness(aBusiness);
+    if (!didAddBusiness)
+    {
+      throw new RuntimeException("Unable to create service due to business. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
   }
 
   //------------------------
@@ -108,362 +131,158 @@ public class Service
   {
     return type;
   }
-  /* Code from template association_GetMany */
-  public ServiceCombo getServiceCombo(int index)
+  /* Code from template association_GetOne */
+  public OwnerAccount getOwnerAccount()
   {
-    ServiceCombo aServiceCombo = serviceCombos.get(index);
-    return aServiceCombo;
+    return ownerAccount;
   }
-
-  public List<ServiceCombo> getServiceCombos()
+  /* Code from template association_GetOne */
+  public Appointment getAppointment()
   {
-    List<ServiceCombo> newServiceCombos = Collections.unmodifiableList(serviceCombos);
-    return newServiceCombos;
+    return appointment;
   }
-
-  public int numberOfServiceCombos()
+  /* Code from template association_GetOne */
+  public MainService getMainService()
   {
-    int number = serviceCombos.size();
-    return number;
+    return mainService;
   }
-
-  public boolean hasServiceCombos()
+  /* Code from template association_GetOne */
+  public SubService getSubService()
   {
-    boolean has = serviceCombos.size() > 0;
-    return has;
+    return subService;
   }
-
-  public int indexOfServiceCombo(ServiceCombo aServiceCombo)
+  /* Code from template association_GetOne */
+  public Business getBusiness()
   {
-    int index = serviceCombos.indexOf(aServiceCombo);
-    return index;
+    return business;
   }
-  /* Code from template association_GetMany */
-  public OwnerAccount getOwnerAccount(int index)
+  /* Code from template association_SetOneToMany */
+  public boolean setOwnerAccount(OwnerAccount aOwnerAccount)
   {
-    OwnerAccount aOwnerAccount = ownerAccounts.get(index);
-    return aOwnerAccount;
-  }
-
-  public List<OwnerAccount> getOwnerAccounts()
-  {
-    List<OwnerAccount> newOwnerAccounts = Collections.unmodifiableList(ownerAccounts);
-    return newOwnerAccounts;
-  }
-
-  public int numberOfOwnerAccounts()
-  {
-    int number = ownerAccounts.size();
-    return number;
-  }
-
-  public boolean hasOwnerAccounts()
-  {
-    boolean has = ownerAccounts.size() > 0;
-    return has;
-  }
-
-  public int indexOfOwnerAccount(OwnerAccount aOwnerAccount)
-  {
-    int index = ownerAccounts.indexOf(aOwnerAccount);
-    return index;
-  }
-  /* Code from template association_GetMany */
-  public Appointnement getAppointnement(int index)
-  {
-    Appointnement aAppointnement = appointnements.get(index);
-    return aAppointnement;
-  }
-
-  public List<Appointnement> getAppointnements()
-  {
-    List<Appointnement> newAppointnements = Collections.unmodifiableList(appointnements);
-    return newAppointnements;
-  }
-
-  public int numberOfAppointnements()
-  {
-    int number = appointnements.size();
-    return number;
-  }
-
-  public boolean hasAppointnements()
-  {
-    boolean has = appointnements.size() > 0;
-    return has;
-  }
-
-  public int indexOfAppointnement(Appointnement aAppointnement)
-  {
-    int index = appointnements.indexOf(aAppointnement);
-    return index;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfServiceCombos()
-  {
-    return 0;
-  }
-  /* Code from template association_AddManyToManyMethod */
-  public boolean addServiceCombo(ServiceCombo aServiceCombo)
-  {
-    boolean wasAdded = false;
-    if (serviceCombos.contains(aServiceCombo)) { return false; }
-    serviceCombos.add(aServiceCombo);
-    if (aServiceCombo.indexOfService(this) != -1)
+    boolean wasSet = false;
+    if (aOwnerAccount == null)
     {
-      wasAdded = true;
-    }
-    else
-    {
-      wasAdded = aServiceCombo.addService(this);
-      if (!wasAdded)
-      {
-        serviceCombos.remove(aServiceCombo);
-      }
-    }
-    return wasAdded;
-  }
-  /* Code from template association_RemoveMany */
-  public boolean removeServiceCombo(ServiceCombo aServiceCombo)
-  {
-    boolean wasRemoved = false;
-    if (!serviceCombos.contains(aServiceCombo))
-    {
-      return wasRemoved;
+      return wasSet;
     }
 
-    int oldIndex = serviceCombos.indexOf(aServiceCombo);
-    serviceCombos.remove(oldIndex);
-    if (aServiceCombo.indexOfService(this) == -1)
+    OwnerAccount existingOwnerAccount = ownerAccount;
+    ownerAccount = aOwnerAccount;
+    if (existingOwnerAccount != null && !existingOwnerAccount.equals(aOwnerAccount))
     {
-      wasRemoved = true;
+      existingOwnerAccount.removeServicesProvided(this);
     }
-    else
-    {
-      wasRemoved = aServiceCombo.removeService(this);
-      if (!wasRemoved)
-      {
-        serviceCombos.add(oldIndex,aServiceCombo);
-      }
-    }
-    return wasRemoved;
+    ownerAccount.addServicesProvided(this);
+    wasSet = true;
+    return wasSet;
   }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addServiceComboAt(ServiceCombo aServiceCombo, int index)
-  {  
-    boolean wasAdded = false;
-    if(addServiceCombo(aServiceCombo))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfServiceCombos()) { index = numberOfServiceCombos() - 1; }
-      serviceCombos.remove(aServiceCombo);
-      serviceCombos.add(index, aServiceCombo);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveServiceComboAt(ServiceCombo aServiceCombo, int index)
+  /* Code from template association_SetOneToMany */
+  public boolean setAppointment(Appointment aAppointment)
   {
-    boolean wasAdded = false;
-    if(serviceCombos.contains(aServiceCombo))
+    boolean wasSet = false;
+    if (aAppointment == null)
     {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfServiceCombos()) { index = numberOfServiceCombos() - 1; }
-      serviceCombos.remove(aServiceCombo);
-      serviceCombos.add(index, aServiceCombo);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addServiceComboAt(aServiceCombo, index);
-    }
-    return wasAdded;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfOwnerAccounts()
-  {
-    return 0;
-  }
-  /* Code from template association_AddManyToManyMethod */
-  public boolean addOwnerAccount(OwnerAccount aOwnerAccount)
-  {
-    boolean wasAdded = false;
-    if (ownerAccounts.contains(aOwnerAccount)) { return false; }
-    ownerAccounts.add(aOwnerAccount);
-    if (aOwnerAccount.indexOfService(this) != -1)
-    {
-      wasAdded = true;
-    }
-    else
-    {
-      wasAdded = aOwnerAccount.addService(this);
-      if (!wasAdded)
-      {
-        ownerAccounts.remove(aOwnerAccount);
-      }
-    }
-    return wasAdded;
-  }
-  /* Code from template association_RemoveMany */
-  public boolean removeOwnerAccount(OwnerAccount aOwnerAccount)
-  {
-    boolean wasRemoved = false;
-    if (!ownerAccounts.contains(aOwnerAccount))
-    {
-      return wasRemoved;
+      return wasSet;
     }
 
-    int oldIndex = ownerAccounts.indexOf(aOwnerAccount);
-    ownerAccounts.remove(oldIndex);
-    if (aOwnerAccount.indexOfService(this) == -1)
+    Appointment existingAppointment = appointment;
+    appointment = aAppointment;
+    if (existingAppointment != null && !existingAppointment.equals(aAppointment))
     {
-      wasRemoved = true;
+      existingAppointment.removeService(this);
     }
-    else
-    {
-      wasRemoved = aOwnerAccount.removeService(this);
-      if (!wasRemoved)
-      {
-        ownerAccounts.add(oldIndex,aOwnerAccount);
-      }
-    }
-    return wasRemoved;
+    appointment.addService(this);
+    wasSet = true;
+    return wasSet;
   }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addOwnerAccountAt(OwnerAccount aOwnerAccount, int index)
-  {  
-    boolean wasAdded = false;
-    if(addOwnerAccount(aOwnerAccount))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfOwnerAccounts()) { index = numberOfOwnerAccounts() - 1; }
-      ownerAccounts.remove(aOwnerAccount);
-      ownerAccounts.add(index, aOwnerAccount);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveOwnerAccountAt(OwnerAccount aOwnerAccount, int index)
+  /* Code from template association_SetOneToMany */
+  public boolean setMainService(MainService aMainService)
   {
-    boolean wasAdded = false;
-    if(ownerAccounts.contains(aOwnerAccount))
+    boolean wasSet = false;
+    if (aMainService == null)
     {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfOwnerAccounts()) { index = numberOfOwnerAccounts() - 1; }
-      ownerAccounts.remove(aOwnerAccount);
-      ownerAccounts.add(index, aOwnerAccount);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addOwnerAccountAt(aOwnerAccount, index);
-    }
-    return wasAdded;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfAppointnements()
-  {
-    return 0;
-  }
-  /* Code from template association_AddManyToManyMethod */
-  public boolean addAppointnement(Appointnement aAppointnement)
-  {
-    boolean wasAdded = false;
-    if (appointnements.contains(aAppointnement)) { return false; }
-    appointnements.add(aAppointnement);
-    if (aAppointnement.indexOfService(this) != -1)
-    {
-      wasAdded = true;
-    }
-    else
-    {
-      wasAdded = aAppointnement.addService(this);
-      if (!wasAdded)
-      {
-        appointnements.remove(aAppointnement);
-      }
-    }
-    return wasAdded;
-  }
-  /* Code from template association_RemoveMany */
-  public boolean removeAppointnement(Appointnement aAppointnement)
-  {
-    boolean wasRemoved = false;
-    if (!appointnements.contains(aAppointnement))
-    {
-      return wasRemoved;
+      return wasSet;
     }
 
-    int oldIndex = appointnements.indexOf(aAppointnement);
-    appointnements.remove(oldIndex);
-    if (aAppointnement.indexOfService(this) == -1)
+    MainService existingMainService = mainService;
+    mainService = aMainService;
+    if (existingMainService != null && !existingMainService.equals(aMainService))
     {
-      wasRemoved = true;
+      existingMainService.removeService(this);
     }
-    else
-    {
-      wasRemoved = aAppointnement.removeService(this);
-      if (!wasRemoved)
-      {
-        appointnements.add(oldIndex,aAppointnement);
-      }
-    }
-    return wasRemoved;
+    mainService.addService(this);
+    wasSet = true;
+    return wasSet;
   }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addAppointnementAt(Appointnement aAppointnement, int index)
-  {  
-    boolean wasAdded = false;
-    if(addAppointnement(aAppointnement))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfAppointnements()) { index = numberOfAppointnements() - 1; }
-      appointnements.remove(aAppointnement);
-      appointnements.add(index, aAppointnement);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveAppointnementAt(Appointnement aAppointnement, int index)
+  /* Code from template association_SetOneToMany */
+  public boolean setSubService(SubService aSubService)
   {
-    boolean wasAdded = false;
-    if(appointnements.contains(aAppointnement))
+    boolean wasSet = false;
+    if (aSubService == null)
     {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfAppointnements()) { index = numberOfAppointnements() - 1; }
-      appointnements.remove(aAppointnement);
-      appointnements.add(index, aAppointnement);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addAppointnementAt(aAppointnement, index);
+      return wasSet;
     }
-    return wasAdded;
+
+    SubService existingSubService = subService;
+    subService = aSubService;
+    if (existingSubService != null && !existingSubService.equals(aSubService))
+    {
+      existingSubService.removeService(this);
+    }
+    subService.addService(this);
+    wasSet = true;
+    return wasSet;
+  }
+  /* Code from template association_SetOneToMany */
+  public boolean setBusiness(Business aBusiness)
+  {
+    boolean wasSet = false;
+    if (aBusiness == null)
+    {
+      return wasSet;
+    }
+
+    Business existingBusiness = business;
+    business = aBusiness;
+    if (existingBusiness != null && !existingBusiness.equals(aBusiness))
+    {
+      existingBusiness.removeService(this);
+    }
+    business.addService(this);
+    wasSet = true;
+    return wasSet;
   }
 
   public void delete()
   {
-    ArrayList<ServiceCombo> copyOfServiceCombos = new ArrayList<ServiceCombo>(serviceCombos);
-    serviceCombos.clear();
-    for(ServiceCombo aServiceCombo : copyOfServiceCombos)
+    OwnerAccount placeholderOwnerAccount = ownerAccount;
+    this.ownerAccount = null;
+    if(placeholderOwnerAccount != null)
     {
-      aServiceCombo.removeService(this);
+      placeholderOwnerAccount.removeServicesProvided(this);
     }
-    ArrayList<OwnerAccount> copyOfOwnerAccounts = new ArrayList<OwnerAccount>(ownerAccounts);
-    ownerAccounts.clear();
-    for(OwnerAccount aOwnerAccount : copyOfOwnerAccounts)
+    Appointment placeholderAppointment = appointment;
+    this.appointment = null;
+    if(placeholderAppointment != null)
     {
-      aOwnerAccount.removeService(this);
+      placeholderAppointment.removeService(this);
     }
-    ArrayList<Appointnement> copyOfAppointnements = new ArrayList<Appointnement>(appointnements);
-    appointnements.clear();
-    for(Appointnement aAppointnement : copyOfAppointnements)
+    MainService placeholderMainService = mainService;
+    this.mainService = null;
+    if(placeholderMainService != null)
     {
-      aAppointnement.removeService(this);
+      placeholderMainService.removeService(this);
+    }
+    SubService placeholderSubService = subService;
+    this.subService = null;
+    if(placeholderSubService != null)
+    {
+      placeholderSubService.removeService(this);
+    }
+    Business placeholderBusiness = business;
+    this.business = null;
+    if(placeholderBusiness != null)
+    {
+      placeholderBusiness.removeService(this);
     }
   }
 
@@ -475,6 +294,11 @@ public class Service
             "price" + ":" + getPrice()+ "," +
             "downTimeStart" + ":" + getDownTimeStart()+ "," +
             "downTimeEnd" + ":" + getDownTimeEnd()+ "," +
-            "type" + ":" + getType()+ "]";
+            "type" + ":" + getType()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "ownerAccount = "+(getOwnerAccount()!=null?Integer.toHexString(System.identityHashCode(getOwnerAccount())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "appointment = "+(getAppointment()!=null?Integer.toHexString(System.identityHashCode(getAppointment())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "mainService = "+(getMainService()!=null?Integer.toHexString(System.identityHashCode(getMainService())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "subService = "+(getSubService()!=null?Integer.toHexString(System.identityHashCode(getSubService())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "business = "+(getBusiness()!=null?Integer.toHexString(System.identityHashCode(getBusiness())):"null");
   }
 }

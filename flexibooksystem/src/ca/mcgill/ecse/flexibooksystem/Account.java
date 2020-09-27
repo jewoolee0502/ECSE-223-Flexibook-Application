@@ -4,8 +4,8 @@
 package ca.mcgill.ecse.flexibooksystem;
 import java.util.*;
 
-// line 76 "../../../../flexibook.ump"
-public class Account
+// line 90 "../../../../flexibook.ump"
+public abstract class Account
 {
 
   //------------------------
@@ -24,14 +24,14 @@ public class Account
   private boolean isLoggedIn;
 
   //Account Associations
-  private List<Person> persons;
-  private List<FlexiBook> flexiBooks;
+  private FlexiBook flexiBook;
+  private User user;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Account(String aUsername, String aPassword, boolean aIsLoggedIn)
+  public Account(String aUsername, String aPassword, boolean aIsLoggedIn, FlexiBook aFlexiBook, User aUser)
   {
     password = aPassword;
     isLoggedIn = aIsLoggedIn;
@@ -39,8 +39,16 @@ public class Account
     {
       throw new RuntimeException("Cannot create due to duplicate username. See http://manual.umple.org?RE003ViolationofUniqueness.html");
     }
-    persons = new ArrayList<Person>();
-    flexiBooks = new ArrayList<FlexiBook>();
+    boolean didAddFlexiBook = setFlexiBook(aFlexiBook);
+    if (!didAddFlexiBook)
+    {
+      throw new RuntimeException("Unable to create account due to flexiBook. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
+    boolean didAddUser = setUser(aUser);
+    if (!didAddUser)
+    {
+      throw new RuntimeException("Unable to create account due to user. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
   }
 
   //------------------------
@@ -111,245 +119,69 @@ public class Account
   {
     return isLoggedIn;
   }
-  /* Code from template association_GetMany */
-  public Person getPerson(int index)
+  /* Code from template association_GetOne */
+  public FlexiBook getFlexiBook()
   {
-    Person aPerson = persons.get(index);
-    return aPerson;
+    return flexiBook;
   }
-
-  public List<Person> getPersons()
+  /* Code from template association_GetOne */
+  public User getUser()
   {
-    List<Person> newPersons = Collections.unmodifiableList(persons);
-    return newPersons;
+    return user;
   }
-
-  public int numberOfPersons()
+  /* Code from template association_SetOneToMany */
+  public boolean setFlexiBook(FlexiBook aFlexiBook)
   {
-    int number = persons.size();
-    return number;
-  }
-
-  public boolean hasPersons()
-  {
-    boolean has = persons.size() > 0;
-    return has;
-  }
-
-  public int indexOfPerson(Person aPerson)
-  {
-    int index = persons.indexOf(aPerson);
-    return index;
-  }
-  /* Code from template association_GetMany */
-  public FlexiBook getFlexiBook(int index)
-  {
-    FlexiBook aFlexiBook = flexiBooks.get(index);
-    return aFlexiBook;
-  }
-
-  public List<FlexiBook> getFlexiBooks()
-  {
-    List<FlexiBook> newFlexiBooks = Collections.unmodifiableList(flexiBooks);
-    return newFlexiBooks;
-  }
-
-  public int numberOfFlexiBooks()
-  {
-    int number = flexiBooks.size();
-    return number;
-  }
-
-  public boolean hasFlexiBooks()
-  {
-    boolean has = flexiBooks.size() > 0;
-    return has;
-  }
-
-  public int indexOfFlexiBook(FlexiBook aFlexiBook)
-  {
-    int index = flexiBooks.indexOf(aFlexiBook);
-    return index;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfPersons()
-  {
-    return 0;
-  }
-  /* Code from template association_AddManyToManyMethod */
-  public boolean addPerson(Person aPerson)
-  {
-    boolean wasAdded = false;
-    if (persons.contains(aPerson)) { return false; }
-    persons.add(aPerson);
-    if (aPerson.indexOfAccount(this) != -1)
+    boolean wasSet = false;
+    if (aFlexiBook == null)
     {
-      wasAdded = true;
-    }
-    else
-    {
-      wasAdded = aPerson.addAccount(this);
-      if (!wasAdded)
-      {
-        persons.remove(aPerson);
-      }
-    }
-    return wasAdded;
-  }
-  /* Code from template association_RemoveMany */
-  public boolean removePerson(Person aPerson)
-  {
-    boolean wasRemoved = false;
-    if (!persons.contains(aPerson))
-    {
-      return wasRemoved;
+      return wasSet;
     }
 
-    int oldIndex = persons.indexOf(aPerson);
-    persons.remove(oldIndex);
-    if (aPerson.indexOfAccount(this) == -1)
+    FlexiBook existingFlexiBook = flexiBook;
+    flexiBook = aFlexiBook;
+    if (existingFlexiBook != null && !existingFlexiBook.equals(aFlexiBook))
     {
-      wasRemoved = true;
+      existingFlexiBook.removeAccount(this);
     }
-    else
-    {
-      wasRemoved = aPerson.removeAccount(this);
-      if (!wasRemoved)
-      {
-        persons.add(oldIndex,aPerson);
-      }
-    }
-    return wasRemoved;
+    flexiBook.addAccount(this);
+    wasSet = true;
+    return wasSet;
   }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addPersonAt(Person aPerson, int index)
-  {  
-    boolean wasAdded = false;
-    if(addPerson(aPerson))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfPersons()) { index = numberOfPersons() - 1; }
-      persons.remove(aPerson);
-      persons.add(index, aPerson);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMovePersonAt(Person aPerson, int index)
+  /* Code from template association_SetOneToMany */
+  public boolean setUser(User aUser)
   {
-    boolean wasAdded = false;
-    if(persons.contains(aPerson))
+    boolean wasSet = false;
+    if (aUser == null)
     {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfPersons()) { index = numberOfPersons() - 1; }
-      persons.remove(aPerson);
-      persons.add(index, aPerson);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addPersonAt(aPerson, index);
-    }
-    return wasAdded;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfFlexiBooks()
-  {
-    return 0;
-  }
-  /* Code from template association_AddManyToManyMethod */
-  public boolean addFlexiBook(FlexiBook aFlexiBook)
-  {
-    boolean wasAdded = false;
-    if (flexiBooks.contains(aFlexiBook)) { return false; }
-    flexiBooks.add(aFlexiBook);
-    if (aFlexiBook.indexOfAccount(this) != -1)
-    {
-      wasAdded = true;
-    }
-    else
-    {
-      wasAdded = aFlexiBook.addAccount(this);
-      if (!wasAdded)
-      {
-        flexiBooks.remove(aFlexiBook);
-      }
-    }
-    return wasAdded;
-  }
-  /* Code from template association_RemoveMany */
-  public boolean removeFlexiBook(FlexiBook aFlexiBook)
-  {
-    boolean wasRemoved = false;
-    if (!flexiBooks.contains(aFlexiBook))
-    {
-      return wasRemoved;
+      return wasSet;
     }
 
-    int oldIndex = flexiBooks.indexOf(aFlexiBook);
-    flexiBooks.remove(oldIndex);
-    if (aFlexiBook.indexOfAccount(this) == -1)
+    User existingUser = user;
+    user = aUser;
+    if (existingUser != null && !existingUser.equals(aUser))
     {
-      wasRemoved = true;
+      existingUser.removeAccount(this);
     }
-    else
-    {
-      wasRemoved = aFlexiBook.removeAccount(this);
-      if (!wasRemoved)
-      {
-        flexiBooks.add(oldIndex,aFlexiBook);
-      }
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addFlexiBookAt(FlexiBook aFlexiBook, int index)
-  {  
-    boolean wasAdded = false;
-    if(addFlexiBook(aFlexiBook))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfFlexiBooks()) { index = numberOfFlexiBooks() - 1; }
-      flexiBooks.remove(aFlexiBook);
-      flexiBooks.add(index, aFlexiBook);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveFlexiBookAt(FlexiBook aFlexiBook, int index)
-  {
-    boolean wasAdded = false;
-    if(flexiBooks.contains(aFlexiBook))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfFlexiBooks()) { index = numberOfFlexiBooks() - 1; }
-      flexiBooks.remove(aFlexiBook);
-      flexiBooks.add(index, aFlexiBook);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addFlexiBookAt(aFlexiBook, index);
-    }
-    return wasAdded;
+    user.addAccount(this);
+    wasSet = true;
+    return wasSet;
   }
 
   public void delete()
   {
     accountsByUsername.remove(getUsername());
-    ArrayList<Person> copyOfPersons = new ArrayList<Person>(persons);
-    persons.clear();
-    for(Person aPerson : copyOfPersons)
+    FlexiBook placeholderFlexiBook = flexiBook;
+    this.flexiBook = null;
+    if(placeholderFlexiBook != null)
     {
-      aPerson.removeAccount(this);
+      placeholderFlexiBook.removeAccount(this);
     }
-    ArrayList<FlexiBook> copyOfFlexiBooks = new ArrayList<FlexiBook>(flexiBooks);
-    flexiBooks.clear();
-    for(FlexiBook aFlexiBook : copyOfFlexiBooks)
+    User placeholderUser = user;
+    this.user = null;
+    if(placeholderUser != null)
     {
-      aFlexiBook.removeAccount(this);
+      placeholderUser.removeAccount(this);
     }
   }
 
@@ -359,6 +191,8 @@ public class Account
     return super.toString() + "["+
             "username" + ":" + getUsername()+ "," +
             "password" + ":" + getPassword()+ "," +
-            "isLoggedIn" + ":" + getIsLoggedIn()+ "]";
+            "isLoggedIn" + ":" + getIsLoggedIn()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "flexiBook = "+(getFlexiBook()!=null?Integer.toHexString(System.identityHashCode(getFlexiBook())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "user = "+(getUser()!=null?Integer.toHexString(System.identityHashCode(getUser())):"null");
   }
 }

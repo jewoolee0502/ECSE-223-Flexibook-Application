@@ -4,6 +4,7 @@
 package ca.mcgill.ecse.flexibooksystem;
 import java.util.*;
 import java.sql.Date;
+import java.sql.Time;
 
 // line 25 "../../../../flexibook.ump"
 public class OwnerAccount extends Account
@@ -293,7 +294,7 @@ public class OwnerAccount extends Account
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Service addServicesProvided(String aName, float aPrice, int aDownTimeStart, int aDownTimeEnd, String aType, Appointment aAppointment, MainService aMainService, SubService aSubService, Business aBusiness)
+  public Service addServicesProvided(String aName, float aPrice, Time aDownTimeStart, Time aDownTimeEnd, String aType, Appointment aAppointment, MainService aMainService, SubService aSubService, Business aBusiness)
   {
     return new Service(aName, aPrice, aDownTimeStart, aDownTimeEnd, aType, this, aAppointment, aMainService, aSubService, aBusiness);
   }

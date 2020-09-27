@@ -2,6 +2,7 @@
 /*This code was generated using the UMPLE 1.30.1.5099.60569f335 modeling language!*/
 
 package ca.mcgill.ecse.flexibooksystem;
+import java.sql.Time;
 import java.sql.Date;
 import java.util.*;
 
@@ -14,9 +15,10 @@ public class Appointment
   //------------------------
 
   //Appointment Attributes
-  private String beginTime;
-  private String endTime;
+  private Time begintime;
+  private Time endtime;
   private Date date;
+  private Date cancellationdate;
   private boolean isCancelled;
 
   //Appointment Associations
@@ -28,11 +30,12 @@ public class Appointment
   // CONSTRUCTOR
   //------------------------
 
-  public Appointment(String aBeginTime, String aEndTime, Date aDate, boolean aIsCancelled, CustomerAccount aCustomerAccount)
+  public Appointment(Time aBegintime, Time aEndtime, Date aDate, Date aCancellationdate, boolean aIsCancelled, CustomerAccount aCustomerAccount)
   {
-    beginTime = aBeginTime;
-    endTime = aEndTime;
+    begintime = aBegintime;
+    endtime = aEndtime;
     date = aDate;
+    cancellationdate = aCancellationdate;
     isCancelled = aIsCancelled;
     choosecombo = new ArrayList<ServiceCombo>();
     services = new ArrayList<Service>();
@@ -47,18 +50,18 @@ public class Appointment
   // INTERFACE
   //------------------------
 
-  public boolean setBeginTime(String aBeginTime)
+  public boolean setBegintime(Time aBegintime)
   {
     boolean wasSet = false;
-    beginTime = aBeginTime;
+    begintime = aBegintime;
     wasSet = true;
     return wasSet;
   }
 
-  public boolean setEndTime(String aEndTime)
+  public boolean setEndtime(Time aEndtime)
   {
     boolean wasSet = false;
-    endTime = aEndTime;
+    endtime = aEndtime;
     wasSet = true;
     return wasSet;
   }
@@ -71,6 +74,14 @@ public class Appointment
     return wasSet;
   }
 
+  public boolean setCancellationdate(Date aCancellationdate)
+  {
+    boolean wasSet = false;
+    cancellationdate = aCancellationdate;
+    wasSet = true;
+    return wasSet;
+  }
+
   public boolean setIsCancelled(boolean aIsCancelled)
   {
     boolean wasSet = false;
@@ -79,19 +90,24 @@ public class Appointment
     return wasSet;
   }
 
-  public String getBeginTime()
+  public Time getBegintime()
   {
-    return beginTime;
+    return begintime;
   }
 
-  public String getEndTime()
+  public Time getEndtime()
   {
-    return endTime;
+    return endtime;
   }
 
   public Date getDate()
   {
     return date;
+  }
+
+  public Date getCancellationdate()
+  {
+    return cancellationdate;
   }
 
   public boolean getIsCancelled()
@@ -246,7 +262,7 @@ public class Appointment
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Service addService(String aName, float aPrice, int aDownTimeStart, int aDownTimeEnd, String aType, OwnerAccount aOwnerAccount, MainService aMainService, SubService aSubService, Business aBusiness)
+  public Service addService(String aName, float aPrice, Time aDownTimeStart, Time aDownTimeEnd, String aType, OwnerAccount aOwnerAccount, MainService aMainService, SubService aSubService, Business aBusiness)
   {
     return new Service(aName, aPrice, aDownTimeStart, aDownTimeEnd, aType, aOwnerAccount, this, aMainService, aSubService, aBusiness);
   }
@@ -356,10 +372,11 @@ public class Appointment
   public String toString()
   {
     return super.toString() + "["+
-            "beginTime" + ":" + getBeginTime()+ "," +
-            "endTime" + ":" + getEndTime()+ "," +
             "isCancelled" + ":" + getIsCancelled()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "begintime" + "=" + (getBegintime() != null ? !getBegintime().equals(this)  ? getBegintime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "endtime" + "=" + (getEndtime() != null ? !getEndtime().equals(this)  ? getEndtime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "date" + "=" + (getDate() != null ? !getDate().equals(this)  ? getDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "cancellationdate" + "=" + (getCancellationdate() != null ? !getCancellationdate().equals(this)  ? getCancellationdate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "customerAccount = "+(getCustomerAccount()!=null?Integer.toHexString(System.identityHashCode(getCustomerAccount())):"null");
   }
 }

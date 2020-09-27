@@ -3,7 +3,7 @@
 
 package ca.mcgill.ecse.flexibooksystem;
 
-// line 71 "../../../../flexibook.ump"
+// line 72 "../../../../flexibook.ump"
 public class ServiceCombo
 {
 

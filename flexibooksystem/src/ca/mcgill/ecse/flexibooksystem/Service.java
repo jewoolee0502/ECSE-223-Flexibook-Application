@@ -2,8 +2,9 @@
 /*This code was generated using the UMPLE 1.30.1.5099.60569f335 modeling language!*/
 
 package ca.mcgill.ecse.flexibooksystem;
+import java.sql.Time;
 
-// line 43 "../../../../flexibook.ump"
+// line 44 "../../../../flexibook.ump"
 public class Service
 {
 
@@ -14,8 +15,8 @@ public class Service
   //Service Attributes
   private String name;
   private float price;
-  private int downTimeStart;
-  private int downTimeEnd;
+  private Time downTimeStart;
+  private Time downTimeEnd;
   private String type;
 
   //Service Associations
@@ -29,7 +30,7 @@ public class Service
   // CONSTRUCTOR
   //------------------------
 
-  public Service(String aName, float aPrice, int aDownTimeStart, int aDownTimeEnd, String aType, OwnerAccount aOwnerAccount, Appointment aAppointment, MainService aMainService, SubService aSubService, Business aBusiness)
+  public Service(String aName, float aPrice, Time aDownTimeStart, Time aDownTimeEnd, String aType, OwnerAccount aOwnerAccount, Appointment aAppointment, MainService aMainService, SubService aSubService, Business aBusiness)
   {
     name = aName;
     price = aPrice;
@@ -83,7 +84,7 @@ public class Service
     return wasSet;
   }
 
-  public boolean setDownTimeStart(int aDownTimeStart)
+  public boolean setDownTimeStart(Time aDownTimeStart)
   {
     boolean wasSet = false;
     downTimeStart = aDownTimeStart;
@@ -91,7 +92,7 @@ public class Service
     return wasSet;
   }
 
-  public boolean setDownTimeEnd(int aDownTimeEnd)
+  public boolean setDownTimeEnd(Time aDownTimeEnd)
   {
     boolean wasSet = false;
     downTimeEnd = aDownTimeEnd;
@@ -117,12 +118,12 @@ public class Service
     return price;
   }
 
-  public int getDownTimeStart()
+  public Time getDownTimeStart()
   {
     return downTimeStart;
   }
 
-  public int getDownTimeEnd()
+  public Time getDownTimeEnd()
   {
     return downTimeEnd;
   }
@@ -292,9 +293,9 @@ public class Service
     return super.toString() + "["+
             "name" + ":" + getName()+ "," +
             "price" + ":" + getPrice()+ "," +
-            "downTimeStart" + ":" + getDownTimeStart()+ "," +
-            "downTimeEnd" + ":" + getDownTimeEnd()+ "," +
             "type" + ":" + getType()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "downTimeStart" + "=" + (getDownTimeStart() != null ? !getDownTimeStart().equals(this)  ? getDownTimeStart().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "downTimeEnd" + "=" + (getDownTimeEnd() != null ? !getDownTimeEnd().equals(this)  ? getDownTimeEnd().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "ownerAccount = "+(getOwnerAccount()!=null?Integer.toHexString(System.identityHashCode(getOwnerAccount())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "appointment = "+(getAppointment()!=null?Integer.toHexString(System.identityHashCode(getAppointment())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "mainService = "+(getMainService()!=null?Integer.toHexString(System.identityHashCode(getMainService())):"null") + System.getProperties().getProperty("line.separator") +

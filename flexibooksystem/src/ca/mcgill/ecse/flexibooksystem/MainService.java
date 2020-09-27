@@ -3,8 +3,9 @@
 
 package ca.mcgill.ecse.flexibooksystem;
 import java.util.*;
+import java.sql.Time;
 
-// line 54 "../../../../flexibook.ump"
+// line 55 "../../../../flexibook.ump"
 public class MainService
 {
 
@@ -98,7 +99,7 @@ public class MainService
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Service addService(String aName, float aPrice, int aDownTimeStart, int aDownTimeEnd, String aType, OwnerAccount aOwnerAccount, Appointment aAppointment, SubService aSubService, Business aBusiness)
+  public Service addService(String aName, float aPrice, Time aDownTimeStart, Time aDownTimeEnd, String aType, OwnerAccount aOwnerAccount, Appointment aAppointment, SubService aSubService, Business aBusiness)
   {
     return new Service(aName, aPrice, aDownTimeStart, aDownTimeEnd, aType, aOwnerAccount, aAppointment, this, aSubService, aBusiness);
   }

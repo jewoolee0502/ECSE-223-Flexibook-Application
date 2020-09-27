@@ -24,7 +24,7 @@ isA Account;
 
 class OwnerAccount
 {
-    isA Account;
+   isA Account;
   1 -- 0..* ServiceCombo makecombo;
   1 -- 1..* Business businesses;
   1--* Service ServicesProvided;
@@ -32,9 +32,10 @@ class OwnerAccount
 
 class Appointment
 {
-  String beginTime;
-String endTime;
+Time begintime;
+Time endtime;
 Date date;
+Date cancellationdate;
   Boolean isCancelled;
   1-- 0..* ServiceCombo choosecombo;
   1 -- * Service services;
@@ -44,8 +45,8 @@ class Service
 {
  String   name;
 Float price;
-Integer downTimeStart;
-Integer downTimeEnd;
+Time downTimeStart;
+Time downTimeEnd;
 String type;
  }
 
@@ -54,7 +55,7 @@ String type;
 class MainService
 {
   
-  Integer numberofServices; 
+ Integer numberofServices; 
 1--* Service;
 
      
@@ -78,6 +79,7 @@ class ServiceCombo
 
 class Business
 {
+  
   1<@>-0..* ServiceCombo combo;
   1<@>-* Service services;
  String  contactInfo;

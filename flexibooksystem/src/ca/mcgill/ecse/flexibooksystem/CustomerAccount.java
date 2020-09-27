@@ -3,6 +3,7 @@
 
 package ca.mcgill.ecse.flexibooksystem;
 import java.util.*;
+import java.sql.Time;
 import java.sql.Date;
 
 // line 18 "../../../../flexibook.ump"
@@ -87,9 +88,9 @@ public class CustomerAccount extends Account
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Appointment addAppointment(String aBeginTime, String aEndTime, Date aDate, boolean aIsCancelled)
+  public Appointment addAppointment(Time aBegintime, Time aEndtime, Date aDate, Date aCancellationdate, boolean aIsCancelled)
   {
-    return new Appointment(aBeginTime, aEndTime, aDate, aIsCancelled, this);
+    return new Appointment(aBegintime, aEndtime, aDate, aCancellationdate, aIsCancelled, this);
   }
 
   public boolean addAppointment(Appointment aAppointment)

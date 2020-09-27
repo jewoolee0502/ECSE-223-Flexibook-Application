@@ -9,9 +9,9 @@ class FlexiBook
 }
 class User
 {
-  name;
-  email;
-  phoneNumber;
+  unique String name;
+  String email;
+  String phoneNumber;
  1 -- * Account accounts;
 }
 

@@ -9,6 +9,12 @@ public class User
 {
 
   //------------------------
+  // STATIC VARIABLES
+  //------------------------
+
+  private static Map<String, User> usersByName = new HashMap<String, User>();
+
+  //------------------------
   // MEMBER VARIABLES
   //------------------------
 
@@ -27,9 +33,12 @@ public class User
 
   public User(String aName, String aEmail, String aPhoneNumber, FlexiBook aFlexiBook)
   {
-    name = aName;
     email = aEmail;
     phoneNumber = aPhoneNumber;
+    if (!setName(aName))
+    {
+      throw new RuntimeException("Cannot create due to duplicate name. See http://manual.umple.org?RE003ViolationofUniqueness.html");
+    }
     accounts = new ArrayList<Account>();
     boolean didAddFlexiBook = setFlexiBook(aFlexiBook);
     if (!didAddFlexiBook)
@@ -45,8 +54,19 @@ public class User
   public boolean setName(String aName)
   {
     boolean wasSet = false;
+    String anOldName = getName();
+    if (anOldName != null && anOldName.equals(aName)) {
+      return true;
+    }
+    if (hasWithName(aName)) {
+      return wasSet;
+    }
     name = aName;
     wasSet = true;
+    if (anOldName != null) {
+      usersByName.remove(anOldName);
+    }
+    usersByName.put(aName, this);
     return wasSet;
   }
 
@@ -69,6 +89,16 @@ public class User
   public String getName()
   {
     return name;
+  }
+  /* Code from template attribute_GetUnique */
+  public static User getWithName(String aName)
+  {
+    return usersByName.get(aName);
+  }
+  /* Code from template attribute_HasUnique */
+  public static boolean hasWithName(String aName)
+  {
+    return getWithName(aName) != null;
   }
 
   public String getEmail()
@@ -206,6 +236,7 @@ public class User
 
   public void delete()
   {
+    usersByName.remove(getName());
     for(int i=accounts.size(); i > 0; i--)
     {
       Account aAccount = accounts.get(i - 1);

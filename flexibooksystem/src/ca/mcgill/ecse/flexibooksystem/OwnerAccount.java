@@ -129,9 +129,9 @@ public class OwnerAccount extends Account
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public ServiceCombo addMakecombo(boolean aHasSubServices, MainService aMain, Appointment aAppointment, Business aBusiness)
+  public ServiceCombo addMakecombo(int aMaxnumberOfServices, boolean aHasSubServices, MainService aMain, Appointment aAppointment, Business aBusiness)
   {
-    return new ServiceCombo(aHasSubServices, aMain, this, aAppointment, aBusiness);
+    return new ServiceCombo(aMaxnumberOfServices, aHasSubServices, aMain, this, aAppointment, aBusiness);
   }
 
   public boolean addMakecombo(ServiceCombo aMakecombo)

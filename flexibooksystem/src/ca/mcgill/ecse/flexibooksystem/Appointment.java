@@ -174,9 +174,9 @@ public class Appointment
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public ServiceCombo addChoosecombo(boolean aHasSubServices, MainService aMain, OwnerAccount aOwnerAccount, Business aBusiness)
+  public ServiceCombo addChoosecombo(int aMaxnumberOfServices, boolean aHasSubServices, MainService aMain, OwnerAccount aOwnerAccount, Business aBusiness)
   {
-    return new ServiceCombo(aHasSubServices, aMain, aOwnerAccount, this, aBusiness);
+    return new ServiceCombo(aMaxnumberOfServices, aHasSubServices, aMain, aOwnerAccount, this, aBusiness);
   }
 
   public boolean addChoosecombo(ServiceCombo aChoosecombo)

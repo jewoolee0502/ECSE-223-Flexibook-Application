@@ -195,9 +195,9 @@ public class Business
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public ServiceCombo addCombo(boolean aHasSubServices, MainService aMain, OwnerAccount aOwnerAccount, Appointment aAppointment)
+  public ServiceCombo addCombo(int aMaxnumberOfServices, boolean aHasSubServices, MainService aMain, OwnerAccount aOwnerAccount, Appointment aAppointment)
   {
-    return new ServiceCombo(aHasSubServices, aMain, aOwnerAccount, aAppointment, this);
+    return new ServiceCombo(aMaxnumberOfServices, aHasSubServices, aMain, aOwnerAccount, aAppointment, this);
   }
 
   public boolean addCombo(ServiceCombo aCombo)

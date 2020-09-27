@@ -12,6 +12,7 @@ public class ServiceCombo
   //------------------------
 
   //ServiceCombo Attributes
+  private int maxnumberOfServices;
   private boolean hasSubServices;
 
   //ServiceCombo Associations
@@ -25,8 +26,9 @@ public class ServiceCombo
   // CONSTRUCTOR
   //------------------------
 
-  public ServiceCombo(boolean aHasSubServices, MainService aMain, OwnerAccount aOwnerAccount, Appointment aAppointment, Business aBusiness)
+  public ServiceCombo(int aMaxnumberOfServices, boolean aHasSubServices, MainService aMain, OwnerAccount aOwnerAccount, Appointment aAppointment, Business aBusiness)
   {
+    maxnumberOfServices = aMaxnumberOfServices;
     hasSubServices = aHasSubServices;
     if (aMain == null || aMain.getServiceCombo() != null)
     {
@@ -50,8 +52,9 @@ public class ServiceCombo
     }
   }
 
-  public ServiceCombo(boolean aHasSubServices, int aNumberofServicesForMain, OwnerAccount aOwnerAccount, Appointment aAppointment, Business aBusiness)
+  public ServiceCombo(int aMaxnumberOfServices, boolean aHasSubServices, int aNumberofServicesForMain, OwnerAccount aOwnerAccount, Appointment aAppointment, Business aBusiness)
   {
+    maxnumberOfServices = aMaxnumberOfServices;
     hasSubServices = aHasSubServices;
     main = new MainService(aNumberofServicesForMain, this);
     boolean didAddOwnerAccount = setOwnerAccount(aOwnerAccount);
@@ -75,12 +78,25 @@ public class ServiceCombo
   // INTERFACE
   //------------------------
 
+  public boolean setMaxnumberOfServices(int aMaxnumberOfServices)
+  {
+    boolean wasSet = false;
+    maxnumberOfServices = aMaxnumberOfServices;
+    wasSet = true;
+    return wasSet;
+  }
+
   public boolean setHasSubServices(boolean aHasSubServices)
   {
     boolean wasSet = false;
     hasSubServices = aHasSubServices;
     wasSet = true;
     return wasSet;
+  }
+
+  public int getMaxnumberOfServices()
+  {
+    return maxnumberOfServices;
   }
 
   public boolean getHasSubServices()
@@ -247,6 +263,7 @@ public class ServiceCombo
   public String toString()
   {
     return super.toString() + "["+
+            "maxnumberOfServices" + ":" + getMaxnumberOfServices()+ "," +
             "hasSubServices" + ":" + getHasSubServices()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "main = "+(getMain()!=null?Integer.toHexString(System.identityHashCode(getMain())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "sub = "+(getSub()!=null?Integer.toHexString(System.identityHashCode(getSub())):"null") + System.getProperties().getProperty("line.separator") +

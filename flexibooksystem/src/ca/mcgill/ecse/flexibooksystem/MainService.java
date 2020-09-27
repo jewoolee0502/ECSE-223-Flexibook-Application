@@ -34,11 +34,11 @@ public class MainService
     serviceCombo = aServiceCombo;
   }
 
-  public MainService(int aNumberofServices, boolean aHasSubServicesForServiceCombo, OwnerAccount aOwnerAccountForServiceCombo, Appointment aAppointmentForServiceCombo, Business aBusinessForServiceCombo)
+  public MainService(int aNumberofServices, int aMaxnumberOfServicesForServiceCombo, boolean aHasSubServicesForServiceCombo, OwnerAccount aOwnerAccountForServiceCombo, Appointment aAppointmentForServiceCombo, Business aBusinessForServiceCombo)
   {
     numberofServices = aNumberofServices;
     services = new ArrayList<Service>();
-    serviceCombo = new ServiceCombo(aHasSubServicesForServiceCombo, this, aOwnerAccountForServiceCombo, aAppointmentForServiceCombo, aBusinessForServiceCombo);
+    serviceCombo = new ServiceCombo(aMaxnumberOfServicesForServiceCombo, aHasSubServicesForServiceCombo, this, aOwnerAccountForServiceCombo, aAppointmentForServiceCombo, aBusinessForServiceCombo);
   }
 
   //------------------------

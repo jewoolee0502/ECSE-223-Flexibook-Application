@@ -36,14 +36,14 @@ Time begintime;
 Time endtime;
 Date date;
 Date cancellationdate;
-  Boolean isCancelled;
-  1-- 0..* ServiceCombo choosecombo;
-  1 -- * Service services;
+Boolean isCancelled;
+1-- 0..* ServiceCombo choosecombo;
+1 -- * Service services;
 }
 
 class Service
 {
- String   name;
+String   name;
 Float price;
 Time downTimeStart;
 Time downTimeEnd;
@@ -91,7 +91,7 @@ String address;
 
  class Account
 {
-   abstract; 
+ abstract; 
 unique String username;
 String  password;
 Boolean isLoggedIn;

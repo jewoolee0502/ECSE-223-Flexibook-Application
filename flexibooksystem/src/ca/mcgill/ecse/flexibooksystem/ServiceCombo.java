@@ -13,6 +13,7 @@ public class ServiceCombo
   //------------------------
 
   //ServiceCombo Attributes
+  private String name;
   private int numberOfMainServices;
   private int numberOfSubServices;
   private boolean hasSubServices;
@@ -27,8 +28,9 @@ public class ServiceCombo
   // CONSTRUCTOR
   //------------------------
 
-  public ServiceCombo(int aNumberOfMainServices, int aNumberOfSubServices, boolean aHasSubServices, Appointment aAppointment, Business aBusiness, Service[] allMain, Service[] allServices)
+  public ServiceCombo(String aName, int aNumberOfMainServices, int aNumberOfSubServices, boolean aHasSubServices, Appointment aAppointment, Business aBusiness, Service[] allMain, Service[] allServices)
   {
+    name = aName;
     numberOfMainServices = aNumberOfMainServices;
     numberOfSubServices = aNumberOfSubServices;
     hasSubServices = aHasSubServices;
@@ -60,6 +62,14 @@ public class ServiceCombo
   // INTERFACE
   //------------------------
 
+  public boolean setName(String aName)
+  {
+    boolean wasSet = false;
+    name = aName;
+    wasSet = true;
+    return wasSet;
+  }
+
   public boolean setNumberOfMainServices(int aNumberOfMainServices)
   {
     boolean wasSet = false;
@@ -82,6 +92,11 @@ public class ServiceCombo
     hasSubServices = aHasSubServices;
     wasSet = true;
     return wasSet;
+  }
+
+  public String getName()
+  {
+    return name;
   }
 
   public int getNumberOfMainServices()
@@ -512,6 +527,7 @@ public class ServiceCombo
   public String toString()
   {
     return super.toString() + "["+
+            "name" + ":" + getName()+ "," +
             "numberOfMainServices" + ":" + getNumberOfMainServices()+ "," +
             "numberOfSubServices" + ":" + getNumberOfSubServices()+ "," +
             "hasSubServices" + ":" + getHasSubServices()+ "]" + System.getProperties().getProperty("line.separator") +

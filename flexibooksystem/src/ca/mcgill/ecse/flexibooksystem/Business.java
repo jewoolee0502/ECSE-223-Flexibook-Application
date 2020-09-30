@@ -211,9 +211,9 @@ public class Business
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public ServiceCombo addCombo(int aNumberOfMainServices, int aNumberOfSubServices, boolean aHasSubServices, Appointment aAppointment, Service[] allMain, Service[] allServices)
+  public ServiceCombo addCombo(String aName, int aNumberOfMainServices, int aNumberOfSubServices, boolean aHasSubServices, Appointment aAppointment, Service[] allMain, Service[] allServices)
   {
-    return new ServiceCombo(aNumberOfMainServices, aNumberOfSubServices, aHasSubServices, aAppointment, this, allMain, allServices);
+    return new ServiceCombo(aName, aNumberOfMainServices, aNumberOfSubServices, aHasSubServices, aAppointment, this, allMain, allServices);
   }
 
   public boolean addCombo(ServiceCombo aCombo)

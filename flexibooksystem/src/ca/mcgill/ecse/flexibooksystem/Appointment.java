@@ -190,9 +190,9 @@ public class Appointment
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public ServiceCombo addChoosecombo(int aNumberOfMainServices, int aNumberOfSubServices, boolean aHasSubServices, Business aBusiness, Service[] allMain, Service[] allServices)
+  public ServiceCombo addChoosecombo(String aName, int aNumberOfMainServices, int aNumberOfSubServices, boolean aHasSubServices, Business aBusiness, Service[] allMain, Service[] allServices)
   {
-    return new ServiceCombo(aNumberOfMainServices, aNumberOfSubServices, aHasSubServices, this, aBusiness, allMain, allServices);
+    return new ServiceCombo(aName, aNumberOfMainServices, aNumberOfSubServices, aHasSubServices, this, aBusiness, allMain, allServices);
   }
 
   public boolean addChoosecombo(ServiceCombo aChoosecombo)

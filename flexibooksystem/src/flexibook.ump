@@ -52,7 +52,7 @@ String type;
 
 class ServiceCombo
 {
- 
+  String name;
   Integer numberOfMainServices;
   Integer numberOfSubServices;
   Boolean hasSubServices;

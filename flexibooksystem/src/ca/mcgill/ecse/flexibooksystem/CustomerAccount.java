@@ -6,7 +6,7 @@ import java.util.*;
 import java.sql.Time;
 import java.sql.Date;
 
-// line 18 "../../../../flexibook.ump"
+// line 17 "../../../../flexibook.ump"
 public class CustomerAccount extends Account
 {
 
@@ -24,9 +24,9 @@ public class CustomerAccount extends Account
   // CONSTRUCTOR
   //------------------------
 
-  public CustomerAccount(String aUsername, String aPassword, boolean aIsLoggedIn, FlexiBook aFlexiBook, User aUser, boolean aIsDeleted)
+  public CustomerAccount(String aUsername, String aPassword, boolean aIsLoggedIn, FlexiBook aFlexiBook, boolean aIsDeleted)
   {
-    super(aUsername, aPassword, aIsLoggedIn, aFlexiBook, aUser);
+    super(aUsername, aPassword, aIsLoggedIn, aFlexiBook);
     isDeleted = aIsDeleted;
     appointments = new ArrayList<Appointment>();
   }

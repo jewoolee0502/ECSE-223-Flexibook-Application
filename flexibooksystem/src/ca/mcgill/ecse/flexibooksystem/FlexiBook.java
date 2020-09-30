@@ -3,6 +3,7 @@
 
 package ca.mcgill.ecse.flexibooksystem;
 import java.util.*;
+import java.sql.Time;
 import java.sql.Date;
 
 // line 2 "../../../../flexibook.ump"
@@ -269,9 +270,9 @@ public class FlexiBook
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Business addBusiness(String aContactInfo, int aBusinessHours, Date aHolidays, String aNameBusiness, String aAddress, OwnerAccount aOwnerAccount)
+  public Business addBusiness(String aContactInfo, Time aBusinesshourstart, Time aBusinesshourend, Date aHolidays, String aNameBusiness, String aAddress, OwnerAccount aOwnerAccount)
   {
-    return new Business(aContactInfo, aBusinessHours, aHolidays, aNameBusiness, aAddress, this, aOwnerAccount);
+    return new Business(aContactInfo, aBusinesshourstart, aBusinesshourend, aHolidays, aNameBusiness, aAddress, this, aOwnerAccount);
   }
 
   public boolean addBusiness(Business aBusiness)

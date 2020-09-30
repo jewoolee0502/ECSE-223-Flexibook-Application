@@ -4,7 +4,7 @@
 package ca.mcgill.ecse.flexibooksystem;
 import java.util.*;
 
-// line 92 "../../../../flexibook.ump"
+// line 75 "../../../../flexibook.ump"
 public abstract class Account
 {
 
@@ -25,13 +25,12 @@ public abstract class Account
 
   //Account Associations
   private FlexiBook flexiBook;
-  private User user;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Account(String aUsername, String aPassword, boolean aIsLoggedIn, FlexiBook aFlexiBook, User aUser)
+  public Account(String aUsername, String aPassword, boolean aIsLoggedIn, FlexiBook aFlexiBook)
   {
     password = aPassword;
     isLoggedIn = aIsLoggedIn;
@@ -43,11 +42,6 @@ public abstract class Account
     if (!didAddFlexiBook)
     {
       throw new RuntimeException("Unable to create account due to flexiBook. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    boolean didAddUser = setUser(aUser);
-    if (!didAddUser)
-    {
-      throw new RuntimeException("Unable to create account due to user. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 
@@ -124,11 +118,6 @@ public abstract class Account
   {
     return flexiBook;
   }
-  /* Code from template association_GetOne */
-  public User getUser()
-  {
-    return user;
-  }
   /* Code from template association_SetOneToMany */
   public boolean setFlexiBook(FlexiBook aFlexiBook)
   {
@@ -148,25 +137,6 @@ public abstract class Account
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_SetOneToMany */
-  public boolean setUser(User aUser)
-  {
-    boolean wasSet = false;
-    if (aUser == null)
-    {
-      return wasSet;
-    }
-
-    User existingUser = user;
-    user = aUser;
-    if (existingUser != null && !existingUser.equals(aUser))
-    {
-      existingUser.removeAccount(this);
-    }
-    user.addAccount(this);
-    wasSet = true;
-    return wasSet;
-  }
 
   public void delete()
   {
@@ -177,12 +147,6 @@ public abstract class Account
     {
       placeholderFlexiBook.removeAccount(this);
     }
-    User placeholderUser = user;
-    this.user = null;
-    if(placeholderUser != null)
-    {
-      placeholderUser.removeAccount(this);
-    }
   }
 
 
@@ -192,7 +156,6 @@ public abstract class Account
             "username" + ":" + getUsername()+ "," +
             "password" + ":" + getPassword()+ "," +
             "isLoggedIn" + ":" + getIsLoggedIn()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "flexiBook = "+(getFlexiBook()!=null?Integer.toHexString(System.identityHashCode(getFlexiBook())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "user = "+(getUser()!=null?Integer.toHexString(System.identityHashCode(getUser())):"null");
+            "  " + "flexiBook = "+(getFlexiBook()!=null?Integer.toHexString(System.identityHashCode(getFlexiBook())):"null");
   }
 }

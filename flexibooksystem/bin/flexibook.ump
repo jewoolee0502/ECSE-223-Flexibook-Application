@@ -12,22 +12,20 @@ class User
   unique String name;
   String email;
   String phoneNumber;
- 1 -- * Account accounts;
 }
 
 class CustomerAccount
 {
  Boolean isDeleted;
-isA Account;
+ isA  Account;
+ 
   1<@>-* Appointment appointments;
 }
 
 class OwnerAccount
 {
-   isA Account;
-  1 -- 0..* ServiceCombo makecombo;
+  isA Account;
   1 -- 1..* Business businesses;
-  1--* Service ServicesProvided;
 }
 
 class Appointment
@@ -38,7 +36,7 @@ Date date;
 Date cancellationdate;
 Boolean isCancelled;
 1-- 0..* ServiceCombo choosecombo;
-1 -- * Service services;
+* -- * Service services;
 }
 
 class Service
@@ -47,34 +45,18 @@ String   name;
 Float price;
 Time downTimeStart;
 Time downTimeEnd;
-String type;
+  String duration;
+String type; 
+  2..*--* ServiceCombo combo;
  }
-
-
-
-class MainService
-{
-  
- Integer numberofServices; 
-1--* Service;
-
-     
-  
-}
-
-class SubService
-{
-
-  Integer numberofServices; 
-   1--* Service;  
-}
 
 class ServiceCombo
 {
-  1<@>-1 MainService main;
-  1<@>-0..1 SubService sub;
-  Integer maxnumberOfServices;
+ 
+  Integer numberOfMainServices;
+  Integer numberOfSubServices;
   Boolean hasSubServices;
+  *-- 1..* Service Main; 
 }
 
 class Business
@@ -83,7 +65,8 @@ class Business
   1<@>-0..* ServiceCombo combo;
   1<@>-* Service services;
  String  contactInfo;
-Integer businessHours;
+Time businesshourstart;
+ Time businesshourend;
 Date holidays;
 String nameBusiness;
 String address;
@@ -98,4 +81,3 @@ Boolean isLoggedIn;
 
   
 }
-

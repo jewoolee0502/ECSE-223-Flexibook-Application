@@ -6,7 +6,7 @@ import java.sql.Time;
 import java.sql.Date;
 import java.util.*;
 
-// line 33 "../../../../flexibook.ump"
+// line 31 "../../../../flexibook.ump"
 public class Appointment
 {
 
@@ -190,9 +190,9 @@ public class Appointment
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public ServiceCombo addChoosecombo(int aMaxnumberOfServices, boolean aHasSubServices, MainService aMain, OwnerAccount aOwnerAccount, Business aBusiness)
+  public ServiceCombo addChoosecombo(int aNumberOfMainServices, int aNumberOfSubServices, boolean aHasSubServices, Business aBusiness, Service[] allMain, Service[] allServices)
   {
-    return new ServiceCombo(aMaxnumberOfServices, aHasSubServices, aMain, aOwnerAccount, this, aBusiness);
+    return new ServiceCombo(aNumberOfMainServices, aNumberOfSubServices, aHasSubServices, this, aBusiness, allMain, allServices);
   }
 
   public boolean addChoosecombo(ServiceCombo aChoosecombo)
@@ -261,38 +261,48 @@ public class Appointment
   {
     return 0;
   }
-  /* Code from template association_AddManyToOne */
-  public Service addService(String aName, float aPrice, Time aDownTimeStart, Time aDownTimeEnd, String aType, OwnerAccount aOwnerAccount, MainService aMainService, SubService aSubService, Business aBusiness)
-  {
-    return new Service(aName, aPrice, aDownTimeStart, aDownTimeEnd, aType, aOwnerAccount, this, aMainService, aSubService, aBusiness);
-  }
-
+  /* Code from template association_AddManyToManyMethod */
   public boolean addService(Service aService)
   {
     boolean wasAdded = false;
     if (services.contains(aService)) { return false; }
-    Appointment existingAppointment = aService.getAppointment();
-    boolean isNewAppointment = existingAppointment != null && !this.equals(existingAppointment);
-    if (isNewAppointment)
+    services.add(aService);
+    if (aService.indexOfAppointment(this) != -1)
     {
-      aService.setAppointment(this);
+      wasAdded = true;
     }
     else
     {
-      services.add(aService);
+      wasAdded = aService.addAppointment(this);
+      if (!wasAdded)
+      {
+        services.remove(aService);
+      }
     }
-    wasAdded = true;
     return wasAdded;
   }
-
+  /* Code from template association_RemoveMany */
   public boolean removeService(Service aService)
   {
     boolean wasRemoved = false;
-    //Unable to remove aService, as it must always have a appointment
-    if (!this.equals(aService.getAppointment()))
+    if (!services.contains(aService))
     {
-      services.remove(aService);
+      return wasRemoved;
+    }
+
+    int oldIndex = services.indexOf(aService);
+    services.remove(oldIndex);
+    if (aService.indexOfAppointment(this) == -1)
+    {
       wasRemoved = true;
+    }
+    else
+    {
+      wasRemoved = aService.removeAppointment(this);
+      if (!wasRemoved)
+      {
+        services.add(oldIndex,aService);
+      }
     }
     return wasRemoved;
   }
@@ -355,10 +365,11 @@ public class Appointment
       ServiceCombo aChoosecombo = choosecombo.get(i - 1);
       aChoosecombo.delete();
     }
-    for(int i=services.size(); i > 0; i--)
+    ArrayList<Service> copyOfServices = new ArrayList<Service>(services);
+    services.clear();
+    for(Service aService : copyOfServices)
     {
-      Service aService = services.get(i - 1);
-      aService.delete();
+      aService.removeAppointment(this);
     }
     CustomerAccount placeholderCustomerAccount = customerAccount;
     this.customerAccount = null;

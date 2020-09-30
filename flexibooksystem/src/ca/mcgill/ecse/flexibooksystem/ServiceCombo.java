@@ -2,8 +2,9 @@
 /*This code was generated using the UMPLE 1.30.1.5099.60569f335 modeling language!*/
 
 package ca.mcgill.ecse.flexibooksystem;
+import java.util.*;
 
-// line 72 "../../../../flexibook.ump"
+// line 53 "../../../../flexibook.ump"
 public class ServiceCombo
 {
 
@@ -12,60 +13,41 @@ public class ServiceCombo
   //------------------------
 
   //ServiceCombo Attributes
-  private int maxnumberOfServices;
+  private int numberOfMainServices;
+  private int numberOfSubServices;
   private boolean hasSubServices;
 
   //ServiceCombo Associations
-  private MainService main;
-  private SubService sub;
-  private OwnerAccount ownerAccount;
+  private List<Service> Main;
   private Appointment appointment;
+  private List<Service> services;
   private Business business;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public ServiceCombo(int aMaxnumberOfServices, boolean aHasSubServices, MainService aMain, OwnerAccount aOwnerAccount, Appointment aAppointment, Business aBusiness)
+  public ServiceCombo(int aNumberOfMainServices, int aNumberOfSubServices, boolean aHasSubServices, Appointment aAppointment, Business aBusiness, Service[] allMain, Service[] allServices)
   {
-    maxnumberOfServices = aMaxnumberOfServices;
+    numberOfMainServices = aNumberOfMainServices;
+    numberOfSubServices = aNumberOfSubServices;
     hasSubServices = aHasSubServices;
-    if (aMain == null || aMain.getServiceCombo() != null)
+    Main = new ArrayList<Service>();
+    boolean didAddMain = setMain(allMain);
+    if (!didAddMain)
     {
-      throw new RuntimeException("Unable to create ServiceCombo due to aMain. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    main = aMain;
-    boolean didAddOwnerAccount = setOwnerAccount(aOwnerAccount);
-    if (!didAddOwnerAccount)
-    {
-      throw new RuntimeException("Unable to create makecombo due to ownerAccount. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create ServiceCombo, must have at least 1 Main. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     boolean didAddAppointment = setAppointment(aAppointment);
     if (!didAddAppointment)
     {
       throw new RuntimeException("Unable to create choosecombo due to appointment. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    boolean didAddBusiness = setBusiness(aBusiness);
-    if (!didAddBusiness)
+    services = new ArrayList<Service>();
+    boolean didAddServices = setServices(allServices);
+    if (!didAddServices)
     {
-      throw new RuntimeException("Unable to create combo due to business. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-  }
-
-  public ServiceCombo(int aMaxnumberOfServices, boolean aHasSubServices, int aNumberofServicesForMain, OwnerAccount aOwnerAccount, Appointment aAppointment, Business aBusiness)
-  {
-    maxnumberOfServices = aMaxnumberOfServices;
-    hasSubServices = aHasSubServices;
-    main = new MainService(aNumberofServicesForMain, this);
-    boolean didAddOwnerAccount = setOwnerAccount(aOwnerAccount);
-    if (!didAddOwnerAccount)
-    {
-      throw new RuntimeException("Unable to create makecombo due to ownerAccount. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    boolean didAddAppointment = setAppointment(aAppointment);
-    if (!didAddAppointment)
-    {
-      throw new RuntimeException("Unable to create choosecombo due to appointment. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create ServiceCombo, must have at least 2 services. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     boolean didAddBusiness = setBusiness(aBusiness);
     if (!didAddBusiness)
@@ -78,10 +60,18 @@ public class ServiceCombo
   // INTERFACE
   //------------------------
 
-  public boolean setMaxnumberOfServices(int aMaxnumberOfServices)
+  public boolean setNumberOfMainServices(int aNumberOfMainServices)
   {
     boolean wasSet = false;
-    maxnumberOfServices = aMaxnumberOfServices;
+    numberOfMainServices = aNumberOfMainServices;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setNumberOfSubServices(int aNumberOfSubServices)
+  {
+    boolean wasSet = false;
+    numberOfSubServices = aNumberOfSubServices;
     wasSet = true;
     return wasSet;
   }
@@ -94,9 +84,14 @@ public class ServiceCombo
     return wasSet;
   }
 
-  public int getMaxnumberOfServices()
+  public int getNumberOfMainServices()
   {
-    return maxnumberOfServices;
+    return numberOfMainServices;
+  }
+
+  public int getNumberOfSubServices()
+  {
+    return numberOfSubServices;
   }
 
   public boolean getHasSubServices()
@@ -108,82 +103,209 @@ public class ServiceCombo
   {
     return hasSubServices;
   }
-  /* Code from template association_GetOne */
-  public MainService getMain()
+  /* Code from template association_GetMany */
+  public Service getMain(int index)
   {
-    return main;
-  }
-  /* Code from template association_GetOne */
-  public SubService getSub()
-  {
-    return sub;
+    Service aMain = Main.get(index);
+    return aMain;
   }
 
-  public boolean hasSub()
+  public List<Service> getMain()
   {
-    boolean has = sub != null;
+    List<Service> newMain = Collections.unmodifiableList(Main);
+    return newMain;
+  }
+
+  public int numberOfMain()
+  {
+    int number = Main.size();
+    return number;
+  }
+
+  public boolean hasMain()
+  {
+    boolean has = Main.size() > 0;
     return has;
   }
-  /* Code from template association_GetOne */
-  public OwnerAccount getOwnerAccount()
+
+  public int indexOfMain(Service aMain)
   {
-    return ownerAccount;
+    int index = Main.indexOf(aMain);
+    return index;
   }
   /* Code from template association_GetOne */
   public Appointment getAppointment()
   {
     return appointment;
   }
+  /* Code from template association_GetMany */
+  public Service getService(int index)
+  {
+    Service aService = services.get(index);
+    return aService;
+  }
+
+  public List<Service> getServices()
+  {
+    List<Service> newServices = Collections.unmodifiableList(services);
+    return newServices;
+  }
+
+  public int numberOfServices()
+  {
+    int number = services.size();
+    return number;
+  }
+
+  public boolean hasServices()
+  {
+    boolean has = services.size() > 0;
+    return has;
+  }
+
+  public int indexOfService(Service aService)
+  {
+    int index = services.indexOf(aService);
+    return index;
+  }
   /* Code from template association_GetOne */
   public Business getBusiness()
   {
     return business;
   }
-  /* Code from template association_SetOptionalOneToOne */
-  public boolean setSub(SubService aNewSub)
+  /* Code from template association_IsNumberOfValidMethod */
+  public boolean isNumberOfMainValid()
+  {
+    boolean isValid = numberOfMain() >= minimumNumberOfMain();
+    return isValid;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfMain()
+  {
+    return 1;
+  }
+  /* Code from template association_AddManyToManyMethod */
+  public boolean addMain(Service aMain)
+  {
+    boolean wasAdded = false;
+    if (Main.contains(aMain)) { return false; }
+    Main.add(aMain);
+    if (aMain.indexOfServiceCombo(this) != -1)
+    {
+      wasAdded = true;
+    }
+    else
+    {
+      wasAdded = aMain.addServiceCombo(this);
+      if (!wasAdded)
+      {
+        Main.remove(aMain);
+      }
+    }
+    return wasAdded;
+  }
+  /* Code from template association_AddMStarToMany */
+  public boolean removeMain(Service aMain)
+  {
+    boolean wasRemoved = false;
+    if (!Main.contains(aMain))
+    {
+      return wasRemoved;
+    }
+
+    if (numberOfMain() <= minimumNumberOfMain())
+    {
+      return wasRemoved;
+    }
+
+    int oldIndex = Main.indexOf(aMain);
+    Main.remove(oldIndex);
+    if (aMain.indexOfServiceCombo(this) == -1)
+    {
+      wasRemoved = true;
+    }
+    else
+    {
+      wasRemoved = aMain.removeServiceCombo(this);
+      if (!wasRemoved)
+      {
+        Main.add(oldIndex,aMain);
+      }
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_SetMStarToMany */
+  public boolean setMain(Service... newMain)
   {
     boolean wasSet = false;
-    if (sub != null && !sub.equals(aNewSub) && equals(sub.getServiceCombo()))
+    ArrayList<Service> verifiedMain = new ArrayList<Service>();
+    for (Service aMain : newMain)
     {
-      //Unable to setSub, as existing sub would become an orphan
+      if (verifiedMain.contains(aMain))
+      {
+        continue;
+      }
+      verifiedMain.add(aMain);
+    }
+
+    if (verifiedMain.size() != newMain.length || verifiedMain.size() < minimumNumberOfMain())
+    {
       return wasSet;
     }
 
-    sub = aNewSub;
-    ServiceCombo anOldServiceCombo = aNewSub != null ? aNewSub.getServiceCombo() : null;
-
-    if (!this.equals(anOldServiceCombo))
+    ArrayList<Service> oldMain = new ArrayList<Service>(Main);
+    Main.clear();
+    for (Service aNewMain : verifiedMain)
     {
-      if (anOldServiceCombo != null)
+      Main.add(aNewMain);
+      if (oldMain.contains(aNewMain))
       {
-        anOldServiceCombo.sub = null;
+        oldMain.remove(aNewMain);
       }
-      if (sub != null)
+      else
       {
-        sub.setServiceCombo(this);
+        aNewMain.addServiceCombo(this);
       }
+    }
+
+    for (Service anOldMain : oldMain)
+    {
+      anOldMain.removeServiceCombo(this);
     }
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_SetOneToMany */
-  public boolean setOwnerAccount(OwnerAccount aOwnerAccount)
-  {
-    boolean wasSet = false;
-    if (aOwnerAccount == null)
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addMainAt(Service aMain, int index)
+  {  
+    boolean wasAdded = false;
+    if(addMain(aMain))
     {
-      return wasSet;
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfMain()) { index = numberOfMain() - 1; }
+      Main.remove(aMain);
+      Main.add(index, aMain);
+      wasAdded = true;
     }
+    return wasAdded;
+  }
 
-    OwnerAccount existingOwnerAccount = ownerAccount;
-    ownerAccount = aOwnerAccount;
-    if (existingOwnerAccount != null && !existingOwnerAccount.equals(aOwnerAccount))
+  public boolean addOrMoveMainAt(Service aMain, int index)
+  {
+    boolean wasAdded = false;
+    if(Main.contains(aMain))
     {
-      existingOwnerAccount.removeMakecombo(this);
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfMain()) { index = numberOfMain() - 1; }
+      Main.remove(aMain);
+      Main.add(index, aMain);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addMainAt(aMain, index);
     }
-    ownerAccount.addMakecombo(this);
-    wasSet = true;
-    return wasSet;
+    return wasAdded;
   }
   /* Code from template association_SetOneToMany */
   public boolean setAppointment(Appointment aAppointment)
@@ -203,6 +325,140 @@ public class ServiceCombo
     appointment.addChoosecombo(this);
     wasSet = true;
     return wasSet;
+  }
+  /* Code from template association_IsNumberOfValidMethod */
+  public boolean isNumberOfServicesValid()
+  {
+    boolean isValid = numberOfServices() >= minimumNumberOfServices();
+    return isValid;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfServices()
+  {
+    return 2;
+  }
+  /* Code from template association_AddManyToManyMethod */
+  public boolean addService(Service aService)
+  {
+    boolean wasAdded = false;
+    if (services.contains(aService)) { return false; }
+    services.add(aService);
+    if (aService.indexOfCombo(this) != -1)
+    {
+      wasAdded = true;
+    }
+    else
+    {
+      wasAdded = aService.addCombo(this);
+      if (!wasAdded)
+      {
+        services.remove(aService);
+      }
+    }
+    return wasAdded;
+  }
+  /* Code from template association_AddMStarToMany */
+  public boolean removeService(Service aService)
+  {
+    boolean wasRemoved = false;
+    if (!services.contains(aService))
+    {
+      return wasRemoved;
+    }
+
+    if (numberOfServices() <= minimumNumberOfServices())
+    {
+      return wasRemoved;
+    }
+
+    int oldIndex = services.indexOf(aService);
+    services.remove(oldIndex);
+    if (aService.indexOfCombo(this) == -1)
+    {
+      wasRemoved = true;
+    }
+    else
+    {
+      wasRemoved = aService.removeCombo(this);
+      if (!wasRemoved)
+      {
+        services.add(oldIndex,aService);
+      }
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_SetMStarToMany */
+  public boolean setServices(Service... newServices)
+  {
+    boolean wasSet = false;
+    ArrayList<Service> verifiedServices = new ArrayList<Service>();
+    for (Service aService : newServices)
+    {
+      if (verifiedServices.contains(aService))
+      {
+        continue;
+      }
+      verifiedServices.add(aService);
+    }
+
+    if (verifiedServices.size() != newServices.length || verifiedServices.size() < minimumNumberOfServices())
+    {
+      return wasSet;
+    }
+
+    ArrayList<Service> oldServices = new ArrayList<Service>(services);
+    services.clear();
+    for (Service aNewService : verifiedServices)
+    {
+      services.add(aNewService);
+      if (oldServices.contains(aNewService))
+      {
+        oldServices.remove(aNewService);
+      }
+      else
+      {
+        aNewService.addCombo(this);
+      }
+    }
+
+    for (Service anOldService : oldServices)
+    {
+      anOldService.removeCombo(this);
+    }
+    wasSet = true;
+    return wasSet;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addServiceAt(Service aService, int index)
+  {  
+    boolean wasAdded = false;
+    if(addService(aService))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfServices()) { index = numberOfServices() - 1; }
+      services.remove(aService);
+      services.add(index, aService);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveServiceAt(Service aService, int index)
+  {
+    boolean wasAdded = false;
+    if(services.contains(aService))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfServices()) { index = numberOfServices() - 1; }
+      services.remove(aService);
+      services.add(index, aService);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addServiceAt(aService, index);
+    }
+    return wasAdded;
   }
   /* Code from template association_SetOneToMany */
   public boolean setBusiness(Business aBusiness)
@@ -226,30 +482,23 @@ public class ServiceCombo
 
   public void delete()
   {
-    MainService existingMain = main;
-    main = null;
-    if (existingMain != null)
+    ArrayList<Service> copyOfMain = new ArrayList<Service>(Main);
+    Main.clear();
+    for(Service aMain : copyOfMain)
     {
-      existingMain.delete();
-    }
-    SubService existingSub = sub;
-    sub = null;
-    if (existingSub != null)
-    {
-      existingSub.delete();
-      existingSub.setServiceCombo(null);
-    }
-    OwnerAccount placeholderOwnerAccount = ownerAccount;
-    this.ownerAccount = null;
-    if(placeholderOwnerAccount != null)
-    {
-      placeholderOwnerAccount.removeMakecombo(this);
+      aMain.removeServiceCombo(this);
     }
     Appointment placeholderAppointment = appointment;
     this.appointment = null;
     if(placeholderAppointment != null)
     {
       placeholderAppointment.removeChoosecombo(this);
+    }
+    ArrayList<Service> copyOfServices = new ArrayList<Service>(services);
+    services.clear();
+    for(Service aService : copyOfServices)
+    {
+      aService.removeCombo(this);
     }
     Business placeholderBusiness = business;
     this.business = null;
@@ -263,11 +512,9 @@ public class ServiceCombo
   public String toString()
   {
     return super.toString() + "["+
-            "maxnumberOfServices" + ":" + getMaxnumberOfServices()+ "," +
+            "numberOfMainServices" + ":" + getNumberOfMainServices()+ "," +
+            "numberOfSubServices" + ":" + getNumberOfSubServices()+ "," +
             "hasSubServices" + ":" + getHasSubServices()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "main = "+(getMain()!=null?Integer.toHexString(System.identityHashCode(getMain())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "sub = "+(getSub()!=null?Integer.toHexString(System.identityHashCode(getSub())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "ownerAccount = "+(getOwnerAccount()!=null?Integer.toHexString(System.identityHashCode(getOwnerAccount())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "appointment = "+(getAppointment()!=null?Integer.toHexString(System.identityHashCode(getAppointment())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "business = "+(getBusiness()!=null?Integer.toHexString(System.identityHashCode(getBusiness())):"null");
   }

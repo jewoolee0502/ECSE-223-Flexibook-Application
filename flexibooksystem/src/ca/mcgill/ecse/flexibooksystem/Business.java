@@ -2,11 +2,11 @@
 /*This code was generated using the UMPLE 1.30.1.5099.60569f335 modeling language!*/
 
 package ca.mcgill.ecse.flexibooksystem;
+import java.sql.Time;
 import java.sql.Date;
 import java.util.*;
-import java.sql.Time;
 
-// line 80 "../../../../flexibook.ump"
+// line 62 "../../../../flexibook.ump"
 public class Business
 {
 
@@ -16,7 +16,8 @@ public class Business
 
   //Business Attributes
   private String contactInfo;
-  private int businessHours;
+  private Time businesshourstart;
+  private Time businesshourend;
   private Date holidays;
   private String nameBusiness;
   private String address;
@@ -31,10 +32,11 @@ public class Business
   // CONSTRUCTOR
   //------------------------
 
-  public Business(String aContactInfo, int aBusinessHours, Date aHolidays, String aNameBusiness, String aAddress, FlexiBook aFlexiBook, OwnerAccount aOwnerAccount)
+  public Business(String aContactInfo, Time aBusinesshourstart, Time aBusinesshourend, Date aHolidays, String aNameBusiness, String aAddress, FlexiBook aFlexiBook, OwnerAccount aOwnerAccount)
   {
     contactInfo = aContactInfo;
-    businessHours = aBusinessHours;
+    businesshourstart = aBusinesshourstart;
+    businesshourend = aBusinesshourend;
     holidays = aHolidays;
     nameBusiness = aNameBusiness;
     address = aAddress;
@@ -64,10 +66,18 @@ public class Business
     return wasSet;
   }
 
-  public boolean setBusinessHours(int aBusinessHours)
+  public boolean setBusinesshourstart(Time aBusinesshourstart)
   {
     boolean wasSet = false;
-    businessHours = aBusinessHours;
+    businesshourstart = aBusinesshourstart;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setBusinesshourend(Time aBusinesshourend)
+  {
+    boolean wasSet = false;
+    businesshourend = aBusinesshourend;
     wasSet = true;
     return wasSet;
   }
@@ -101,9 +111,14 @@ public class Business
     return contactInfo;
   }
 
-  public int getBusinessHours()
+  public Time getBusinesshourstart()
   {
-    return businessHours;
+    return businesshourstart;
+  }
+
+  public Time getBusinesshourend()
+  {
+    return businesshourend;
   }
 
   public Date getHolidays()
@@ -196,9 +211,9 @@ public class Business
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public ServiceCombo addCombo(int aMaxnumberOfServices, boolean aHasSubServices, MainService aMain, OwnerAccount aOwnerAccount, Appointment aAppointment)
+  public ServiceCombo addCombo(int aNumberOfMainServices, int aNumberOfSubServices, boolean aHasSubServices, Appointment aAppointment, Service[] allMain, Service[] allServices)
   {
-    return new ServiceCombo(aMaxnumberOfServices, aHasSubServices, aMain, aOwnerAccount, aAppointment, this);
+    return new ServiceCombo(aNumberOfMainServices, aNumberOfSubServices, aHasSubServices, aAppointment, this, allMain, allServices);
   }
 
   public boolean addCombo(ServiceCombo aCombo)
@@ -268,9 +283,9 @@ public class Business
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Service addService(String aName, float aPrice, Time aDownTimeStart, Time aDownTimeEnd, String aType, OwnerAccount aOwnerAccount, Appointment aAppointment, MainService aMainService, SubService aSubService)
+  public Service addService(String aName, float aPrice, Time aDownTimeStart, Time aDownTimeEnd, String aDuration, String aType)
   {
-    return new Service(aName, aPrice, aDownTimeStart, aDownTimeEnd, aType, aOwnerAccount, aAppointment, aMainService, aSubService, this);
+    return new Service(aName, aPrice, aDownTimeStart, aDownTimeEnd, aDuration, aType, this);
   }
 
   public boolean addService(Service aService)
@@ -419,9 +434,10 @@ public class Business
   {
     return super.toString() + "["+
             "contactInfo" + ":" + getContactInfo()+ "," +
-            "businessHours" + ":" + getBusinessHours()+ "," +
             "nameBusiness" + ":" + getNameBusiness()+ "," +
             "address" + ":" + getAddress()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "businesshourstart" + "=" + (getBusinesshourstart() != null ? !getBusinesshourstart().equals(this)  ? getBusinesshourstart().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "businesshourend" + "=" + (getBusinesshourend() != null ? !getBusinesshourend().equals(this)  ? getBusinesshourend().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "holidays" + "=" + (getHolidays() != null ? !getHolidays().equals(this)  ? getHolidays().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "flexiBook = "+(getFlexiBook()!=null?Integer.toHexString(System.identityHashCode(getFlexiBook())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "ownerAccount = "+(getOwnerAccount()!=null?Integer.toHexString(System.identityHashCode(getOwnerAccount())):"null");

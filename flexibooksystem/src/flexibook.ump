@@ -47,7 +47,7 @@ Time downTimeStart;
 Time downTimeEnd;
   String duration;
 String type; 
-  2..*--* ServiceCombo combo;
+ 2..*--* ServiceCombo combo;
  }
 
 class ServiceCombo

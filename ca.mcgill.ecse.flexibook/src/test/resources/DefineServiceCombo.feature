@@ -16,17 +16,17 @@ Feature: Define Service Combo
       | cut        |       20 |             0 |                0 |
       | dry        |       10 |             0 |                0 |
     Given the Owner with username "owner" is logged in
-    When "owner" initiates the definition of a service combo "<name>" with main service "<mainService>", services "<services>" and mandatory setting "<mandatory>"
+    When "owner" initiates the definition of a service combo "<name>" with main service "Item<mainService>", services "<services>" and mandatory setting "<mandatory>"
     Then the service combo "<name>" shall exist in the system
     Then the service combo "<name>" shall contain the services "<services>" with mandatory setting "<mandatory>"
     Then the main service of the service combo "<name>" shall be "<mainService>"
     Then the service "<mainService>" in service combo "<name>" shall be mandatory
-    Then the number of service combos in the system shall be "1"
+    Then the number of service combos in the system shall be "<numberofcombo>"
 
     Examples: 
-      | name        | mainService | services     | mandatory        |
-      | Cut-Regular | cut         | wash,dry,cut | false,false,true |
-      | Wash-Cut    | wash        | wash,dry,cut | true,true,false  |
+      | name        | mainService | services     | mandatory        |numberofcombo  |
+      | Cut-Regular | cut         | wash,dry,cut | false,false,true |1              |
+      | Wash-Cut    | wash        | wash,dry,cut | true,true,false  |2              |
 
   Scenario Outline: Define a service combo with invalid parameters
     Given the following services exist in the system:
@@ -76,5 +76,5 @@ Feature: Define Service Combo
 
     Examples: 
       | username  | error                                            |
-      | customer1 | You are not authorized to perform this operation |
+      | cust5omer1 | You are not authorized to perform this operation |
       | customer2 | You are not authorized to perform this operation |

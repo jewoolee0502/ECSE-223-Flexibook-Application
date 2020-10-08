@@ -3,12 +3,25 @@
  */
 package ca.mcgill.ecse.flexibook.application;
 
+import ca.mcgill.ecse.flexibook.model.FlexiBook;
+
 public class FlexiBookApplication {
-    public String getGreeting() {
+  private static FlexiBook flexibook;  
+  public String getGreeting() {
         return "Hello world.";
     }
 
     public static void main(String[] args) {
         System.out.println(new FlexiBookApplication().getGreeting());
     }
+
+    public static FlexiBook getflexibook() {
+      if (flexibook == null) {
+          flexibook = new FlexiBook();
+      }
+      return flexibook;
+  }
+    public static void setflexibook(FlexiBook fb) {
+      flexibook = fb;
+  }
 }

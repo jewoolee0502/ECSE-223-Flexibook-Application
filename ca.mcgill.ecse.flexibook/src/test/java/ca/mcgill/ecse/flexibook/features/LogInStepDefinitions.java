@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
+import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.Customer;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
 import ca.mcgill.ecse.flexibook.model.Service;
@@ -17,7 +18,7 @@ public class LogInStepDefinitions {
 	public void the_following_customers_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
 		  List<Map<String, String>> valueMaps = dataTable.asMaps();
 		    for (Map<String, String> map : valueMaps) {
-		     String name = map.get("userrname");
+		     String name = map.get("username");
 		     String passcode = map.get("password");
 		     Customer customer = null;
 		     int count =0;
@@ -37,7 +38,6 @@ public class LogInStepDefinitions {
 		     if(customer!=null) {
 		     flexibook.addCustomer(customer);}
 		    }
-	    throw new io.cucumber.java.PendingException();
 	}
 
 
@@ -48,7 +48,6 @@ public class LogInStepDefinitions {
 	}
 	@Then("the user should be successfully logged in")
 	public void the_user_should_be_successfully_logged_in() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+	    FlexiBookApplication.getflexibook();
 	}
 }

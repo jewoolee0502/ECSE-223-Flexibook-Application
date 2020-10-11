@@ -52,4 +52,13 @@ ServiceCombo thiscombo=new ServiceCombo(string2, fb,main , comboitems);
 thiscombo.setFlexiBook(fb);
  } 
 }
+  
+  public static void AttemptLogIn(String userID,String passcode) {
+	  FlexiBook flexi=FlexiBookApplication.getflexibook();
+	  for(Customer c:flexi.getCustomers()) {
+		  if(c.getUsername().equals(userID)||c.getPassword().equals(passcode)) {
+			  
+		  }
+	  }
+  }
 }

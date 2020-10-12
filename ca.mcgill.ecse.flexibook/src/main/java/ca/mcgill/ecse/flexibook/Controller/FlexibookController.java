@@ -28,7 +28,7 @@ String nameofmain=new String(array);
         mainservice = (Service) fb.getBookableService(i);
       }
     }
-    
+
     ComboItem main=new ComboItem(true, mainservice);
  ArrayList <ComboItem> items=new ArrayList();
     String[] parts = string4.split(","); 
@@ -52,14 +52,15 @@ String nameofmain=new String(array);
     ServiceCombo thiscombo=new ServiceCombo(string2, fb,main , comboitems);
 
 thiscombo.setFlexiBook(fb);
- } 
+ } else {throw new java.lang.IllegalArgumentException("You are not authorized to perform this operation");}
 }
   
   public static Boolean AttemptLogIn(String userID,String passcode) {
 	  FlexiBook flexi=FlexiBookApplication.getflexibook();
 	  for(Customer c:flexi.getCustomers()) {
 		  if(c.getUsername().equals(userID)||c.getPassword().equals(passcode)) {
-			  return true;
+			 
+		    return true;
 		  }
 	  }
 	  return false;

@@ -21,12 +21,12 @@ Feature: Define Service Combo
     Then the service combo "<name>" shall contain the services "<services>" with mandatory setting "<mandatory>"
     Then the main service of the service combo "<name>" shall be "<mainService>"
     Then the service "<mainService>" in service combo "<name>" shall be mandatory
-    Then the number of service combos in the system shall be "<numberofcombo>"
+    Then the number of service combos in the system shall be "1"
 
     Examples: 
-      | name        | mainService | services     | mandatory        |numberofcombo  |
-      | Cut-Regular | cut         | wash,dry,cut | false,false,true |1              |
-      | Wash-Cut    | wash        | wash,dry,cut | true,true,false  |2              |
+      | name        | mainService | services     | mandatory        |
+      | Cut-Regular | cut         | wash,dry,cut | false,false,true |
+      | Wash-Cut    | wash        | wash,dry,cut | true,true,false  |
 
   Scenario Outline: Define a service combo with invalid parameters
     Given the following services exist in the system:
@@ -76,5 +76,5 @@ Feature: Define Service Combo
 
     Examples: 
       | username  | error                                            |
-      | cust5omer1 | You are not authorized to perform this operation |
+      | cust5omer1| You are not authorized to perform this operation |
       | customer2 | You are not authorized to perform this operation |

@@ -1,5 +1,6 @@
 package ca.mcgill.ecse.flexibook.features;
 
+import static org.junit.Assert.assertEquals;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +45,7 @@ public class LogInStepDefinitions {
 
 	@When("the user tries to log in with username {string} and password {string}")
 	public void the_user_tries_to_log_in_with_username_and_password(String string, String string2) {
-	    FlexibookController.AttemptLogIn(string, string2);
+	   FlexibookController.AttemptLogIn(string, string2);
 	}
 	@Then("the user should be successfully logged in")
 	public void the_user_should_be_successfully_logged_in() {

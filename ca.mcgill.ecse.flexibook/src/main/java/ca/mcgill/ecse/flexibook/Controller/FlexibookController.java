@@ -54,4 +54,14 @@ String nameofmain=new String(array);
 thiscombo.setFlexiBook(fb);
  } 
 }
+  
+  public static Boolean AttemptLogIn(String userID,String passcode) {
+	  FlexiBook flexi=FlexiBookApplication.getflexibook();
+	  for(Customer c:flexi.getCustomers()) {
+		  if(c.getUsername().equals(userID)||c.getPassword().equals(passcode)) {
+			  return true;
+		  }
+	  }
+	  return false;
+  }
 }

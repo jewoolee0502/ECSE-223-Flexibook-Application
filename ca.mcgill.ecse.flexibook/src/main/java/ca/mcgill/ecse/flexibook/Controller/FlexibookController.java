@@ -8,7 +8,7 @@ import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.*;
 public class FlexibookController {
 
-  public static void makecombo(String string, String string2, String string3, String string4, String string5) {
+  public static void makecombo(String string, String string2, String string3, String string4, String string5) throws InvalidInputException {
   Service mainservice = null;
   
   FlexiBook fb = FlexiBookApplication.getflexibook();
@@ -48,7 +48,9 @@ String nameofmain=new String(array);
     }
    
     ComboItem[] comboitems=items.toArray(new ComboItem[items.size()]);
-ServiceCombo thiscombo=new ServiceCombo(string2, fb,main , comboitems);
+
+    ServiceCombo thiscombo=new ServiceCombo(string2, fb,main , comboitems);
+
 thiscombo.setFlexiBook(fb);
  } 
 }

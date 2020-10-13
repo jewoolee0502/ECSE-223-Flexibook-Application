@@ -9,6 +9,7 @@ import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.Customer;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
 import ca.mcgill.ecse.flexibook.model.Service;
+import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -51,4 +52,5 @@ public class LogInStepDefinitions {
 	public void the_user_should_be_successfully_logged_in() {
 	    FlexiBookApplication.getflexibook();
 	}
+
 }

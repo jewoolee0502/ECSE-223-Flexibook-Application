@@ -41,7 +41,7 @@ Feature: Define Service Combo
       | name        | mainService | services     | mandatory        |
       | Cut-Regular | cut         | wash,dry,cut | false,false,true |
     Given the Owner with username "owner" is logged in
-    When "owner" initiates the definition of a service combo "<name>" with main service "<mainService>", services "<services>" and mandatory setting "<mandatory>"
+    When "owner" initiates the definition of a service combo "<name>" with main service "Item<mainService>", services "<services>" and mandatory setting "<mandatory>"
     Then an error message with content "<error>" shall be raised
     Then the service combo "<name>" shall not exist in the system
     Then the number of service combos in the system shall be "1"

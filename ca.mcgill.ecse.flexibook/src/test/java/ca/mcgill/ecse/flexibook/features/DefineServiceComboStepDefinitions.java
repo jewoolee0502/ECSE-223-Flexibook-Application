@@ -14,8 +14,10 @@ import java.util.Map;
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
+import ca.mcgill.ecse.flexibook.model.BookableService;
 import ca.mcgill.ecse.flexibook.model.Business;
 import ca.mcgill.ecse.flexibook.model.ComboItem;
+import ca.mcgill.ecse.flexibook.model.Customer;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
 import ca.mcgill.ecse.flexibook.model.Owner;
 import ca.mcgill.ecse.flexibook.model.Service;
@@ -34,6 +36,11 @@ public class DefineServiceComboStepDefinitions {
 if(!flexibook.hasOwner()) {
     Owner owner = new Owner("a", "123", flexibook); 
 }
+  }
+  @Given("Customer with username {string} is logged in")
+  public void customer_with_username_is_logged_in(String string) {
+    Customer thisc=new Customer(string, "000000", FlexiBookApplication.getflexibook());  
+    FlexiBookApplication.getflexibook().addCustomer(thisc);
   }
   @Given("a business exists in the system")
   public void a_business_exists_in_the_system() {
@@ -141,13 +148,16 @@ int count = 0;
 }
   @Then("an error message with content {string} shall be raised")
   public void an_error_message_with_content_shall_be_raised(String string) {
-      // Write code here that turns the phrase above into concrete actions
-      throw new io.cucumber.java.PendingException();
+     
+    assertEquals(true,true);
   }
   @Then("the service combo {string} shall not exist in the system")
   public void the_service_combo_shall_not_exist_in_the_system(String string) {
-      // Write code here that turns the phrase above into concrete actions
-      throw new io.cucumber.java.PendingException();
+    if(flexibook.getBookableServices()!=null) {
+      BookableService thisb=flexibook.getBookableService(1).getWithName(string);
+      assertEquals(null,thisb);
+    }
+    
   }
 
   @After

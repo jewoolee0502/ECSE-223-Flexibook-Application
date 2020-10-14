@@ -8,9 +8,9 @@ import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.*;
 public class FlexibookController {
 
-  public static String makecombo(String string, String string2, String string3, String string4, String string5) throws InvalidInputException {
+  public static void makecombo(String string, String string2, String string3, String string4, String string5) throws InvalidInputException {
   Service mainservice = null;
-  ComboItem main = null;
+  ComboItem main;
   FlexiBook fb = FlexiBookApplication.getflexibook();
   String mainname = null;
   if(fb.getOwner().getUsername().equals(string)) {
@@ -24,7 +24,7 @@ char[] array=new char[mainname.length()-4];
 mainname.getChars(4, mainname.length(), array, 0);
 String nameofmain=new String(array);
  
-  for (int i =0;i<fb.getBookableServices().size();i++) {
+   for (int i =0;i<fb.getBookableServices().size();i++) {
       
       if(fb.getBookableService(i).getName().equals(nameofmain)) {
         mainservice = (Service) fb.getBookableService(i);
@@ -34,7 +34,7 @@ if(mainservice!=null) {
  main =new ComboItem(true, mainservice); }
 else {
   System.out.println(nameofmain);
-  return(" Service "+nameofmain+" does not exist");
+  throw new InvalidInputException("Service "+nameofmain+" does not exist");
 }
  ArrayList <ComboItem> items=new ArrayList();
     String[] parts = string4.split(","); 
@@ -47,37 +47,36 @@ else {
          items.add(thisubservice);
          if(thisubservice.getService().getName().equals(nameofmain)) {
            main=thisubservice;
-             if(main.getMandatory()!=true) {
-               return("Main service must be mandatory");
-             }
+           if(main.getMandatory()!=true) {
+             throw new InvalidInputException("Main service must be mandatory");
+           }
          }
         }else if(fb.getBookableService(i).getWithName(parts[k])==null) {
-          return(" Service "+ parts[k] +" does not exist");
+          throw new InvalidInputException("Service "+ parts[k] +" does not exist");
         }
       }
      
     }
     if(items.contains(main)!=true) {
-      return(" Main service must be included in the services ");
+      throw new InvalidInputException("Main service must be included in the services");
+    }
+    if(items.size()<2) {
+      throw new InvalidInputException("A service Combo must contain at least 2 services");  
     }
     ComboItem[] comboitems=items.toArray(new ComboItem[items.size()]);
-    if (comboitems.length<=1) {
-      return(" A service Combo must contain at least 2 services "); 
-    }
-    
+
    if(fb.getBookableServices()!=null) {
      if(fb.getBookableService(0).getWithName(string2)!=null)
      {
-       return("Service combo "+string2+ " already exists ");
+       throw new InvalidInputException("Service combo "+string2+ " already exists");
      }
    }
     ServiceCombo thiscombo=new ServiceCombo(string2, fb,main , comboitems);
     int checkmain =0;
 
 thiscombo.setFlexiBook(fb);
-return("succeed"); } else {return("You are not authorized to perform this operation");}
-
-  }
+ } else {throw new InvalidInputException("You are not authorized to perform this operation");}
+}
   
   public static Boolean AttemptLogIn(String userID,String passcode) {
 	  FlexiBook flexi=FlexiBookApplication.getflexibook();

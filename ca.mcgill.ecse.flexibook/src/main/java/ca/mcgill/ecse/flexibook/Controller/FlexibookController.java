@@ -8,6 +8,15 @@ import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.*;
 public class FlexibookController {
 
+  /**
+   * DefineService combo: This method takes in all the parameters to create a service combo in the flexibook system
+   * 
+   * @author Haipeng Yue
+   * 
+   * @param String owername, String comboname, String mainservicename, String Services, String mandatorySetting
+   * @throws InvalidInputException an error is encountered
+   * @return void
+   */
   public static void makecombo(String string, String string2, String string3, String string4, String string5) throws InvalidInputException {
   Service mainservice = null;
   ComboItem main;
@@ -67,7 +76,8 @@ else {
 
    if(fb.getBookableServices()!=null) {
      if(fb.getBookableService(0).getWithName(string2)!=null)
-     {
+     {String thiss=string2;
+       fb.getBookableService(0).getWithName(string2).setName(thiss+"1");
        throw new InvalidInputException("Service combo "+string2+ " already exists");
      }
    }
@@ -77,6 +87,18 @@ else {
 thiscombo.setFlexiBook(fb);
  } else {throw new InvalidInputException("You are not authorized to perform this operation");}
 }
+  public static void updatecombo(String string, String string2, String string3, String string4, String string5, String string6) throws InvalidInputException {
+    FlexiBook fb = FlexiBookApplication.getflexibook();
+if(fb.getBookableServices().size()!=0) {
+  if(fb.getBookableService(0).getWithName(string2)!=null) {
+    fb.getBookableService(0).getWithName(string2).delete();
+    makecombo(string,string3,string4,string5,string6);
+  }else {
+    makecombo(string,string3,string4,string5,string6);
+  }
+}
+    
+  }
   
   public static Boolean AttemptLogIn(String userID,String passcode) {
 	  FlexiBook flexi=FlexiBookApplication.getflexibook();

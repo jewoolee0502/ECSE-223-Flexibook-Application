@@ -104,7 +104,6 @@ if(!flexibook.hasOwner()) {
            flexibook.addCustomer(customer);}
           }
   }
-
   @Given("the Owner with username {string} is logged in")
   public void the_owner_with_username_is_logged_in(String string) {
      flexibook.getOwner().setUsername(string);
@@ -178,11 +177,11 @@ int count = 0;
     }
  assertEquals(string,Integer.toString(count));
 }
-  @Then("an error message with content {string} shall be raised")
+ /* @Then("an error message with content {string} shall be raised")
   public void an_error_message_with_content_shall_be_raised(String string) {
-    
-   assertEquals(string,thise.getMessage());
-  }
+    String message=thise.getMessage();
+   assertEquals(string,message);
+  }*/
   @Then("the service combo {string} shall not exist in the system")
   public void the_service_combo_shall_not_exist_in_the_system(String string) throws InvalidInputException {
     if(flexibook.getBookableServices()!=null) {

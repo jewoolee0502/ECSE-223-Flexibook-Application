@@ -15,8 +15,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class LogInStepDefinitions {
-/*	private static FlexiBook flexibook = new FlexiBook();
-	@Given("the following customers exist in the system:")
+	private static FlexiBook flexibook; 
+	/*@Given("the following customers exist in the system:")
 	public void the_following_customers_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
 		  List<Map<String, String>> valueMaps = dataTable.asMaps();
 		    for (Map<String, String> map : valueMaps) {
@@ -40,9 +40,9 @@ public class LogInStepDefinitions {
 		     if(customer!=null) {
 		     flexibook.addCustomer(customer);}
 		    }
-	}
+	}*/
 
-*/
+
 
 	@When("the user tries to log in with username {string} and password {string}")
 	public void the_user_tries_to_log_in_with_username_and_password(String string, String string2) {

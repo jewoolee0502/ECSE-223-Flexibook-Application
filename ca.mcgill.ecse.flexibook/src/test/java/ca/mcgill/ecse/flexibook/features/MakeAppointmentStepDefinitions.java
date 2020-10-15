@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
+import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.Business;
 import ca.mcgill.ecse.flexibook.model.Customer;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
 import ca.mcgill.ecse.flexibook.model.Owner;
 import ca.mcgill.ecse.flexibook.model.Service;
+import ca.mcgill.ecse.flexibook.util.SystemTime;
 import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -19,7 +21,10 @@ import io.cucumber.java.en.When;
 
 public class MakeAppointmentStepDefinitions {
 
-	FlexiBook flexibook = FlexiBookApplication.getflexibook();
+	private FlexiBook flexibook = FlexiBookApplication.getflexibook();
+<<<<<<< HEAD
+
+=======
 
 	@Given("a Flexibook system exists")
 	public void a_flexibook_system_exists() {
@@ -32,23 +37,15 @@ public class MakeAppointmentStepDefinitions {
 
 	@Given("the system's time and date is {string}")
 	public void the_system_s_time_and_date_is(String string) {
-		//TODO
+		SystemTime systime = new SystemTime(string, true);
+		
 	}
+>>>>>>> afaaa304c4ef3c5724486615c41759e346194ea6
 
-	@Given("an owner account exists in the system")
-	public void an_owner_account_exists_in_the_system() {
-		if(!flexibook.hasOwner()) {
-			new Owner("flexi_owner", "123456", flexibook);
-		}
-	}
 
-	@Given("a business exists in the system")
-	public void a_business_exists_in_the_system() {
-		if(!flexibook.hasBusiness()) {
-			new Business("business","address","1234567890","123@mail.com",flexibook);
-		}
-	}
 
+<<<<<<< HEAD
+=======
 	@Given("the following customers exist in the system:")
 	public void the_following_customers_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
 		List<Map<String, String>> list = dataTable.asMaps();
@@ -56,33 +53,27 @@ public class MakeAppointmentStepDefinitions {
 			String username = map.get("username");
 			String password = map.get("password");
 			new Customer(username, password, flexibook);
+
 		}
 	}
+>>>>>>> afaaa304c4ef3c5724486615c41759e346194ea6
 
-	@Given("the following services exist in the system:")
-	public void the_following_services_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
-		List<Map<String,String>> list = dataTable.asMaps();
-		for(Map<String,String> map : list) {
-			String name = map.get("name");
-			Integer duration = Integer.decode(map.get("duration"));
-			Integer downtimeStart = Integer.decode(map.get("downtimeStart"));
-			Integer downtimeDuration = Integer.decode(map.get("downtimeDuration"));
-			new Service(name, flexibook,duration, downtimeStart, downtimeDuration);
-		}
-	}
 
+<<<<<<< HEAD
+=======
 	@Given("the following service combos exist in the system:")
-	public void the_following_service_combos_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
+	public void the_following_service_combos_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) throws InvalidInputException {
 		List<Map<String,String>> list = dataTable.asMaps();
+		String owner = flexibook.getOwner().getUsername();
 		for(Map<String,String> map : list) {
 			String name = map.get("name");
-			String mainService = map.get("mainService");
-			String[] services = map.get("services").split(",");
-			String[] mandatory = map.get("mandatory").split(",");
-			//TODO
-
+			String mainService = "Item"+map.get("mainService");
+			String services = map.get("services");
+			String mandatory = map.get("mandatory");
+			FlexibookController.makecombo(owner, name, mainService, services, mandatory);
 		}
 	}
+>>>>>>> afaaa304c4ef3c5724486615c41759e346194ea6
 
 	@Given("the business has the following opening hours")
 	public void the_business_has_the_following_opening_hours(io.cucumber.datatable.DataTable dataTable) {
@@ -90,7 +81,7 @@ public class MakeAppointmentStepDefinitions {
 		for(Map<String,String> map : list) {
 			String day = map.get("day");
 			Time startTime = Time.valueOf(map.get("startTime")+":00");//why not in correct format!!!
-			Time endTime = Time.valueOf(map.get("endTime")+"00");
+			Time endTime = Time.valueOf(map.get("endTime")+":00");
 			Business business = this.flexibook.getBusiness();
 			//TODO
 		}
@@ -102,25 +93,29 @@ public class MakeAppointmentStepDefinitions {
 		for(Map<String,String> map : list) {
 			Date startDate = Date.valueOf(map.get("startDate"));
 			Date endDate = Date.valueOf(map.get("endDate"));
-			Time startTime = Time.valueOf(map.get("startTime"));
-			Time endTime = Time.valueOf(map.get("endTime"));
+			Time startTime = Time.valueOf(map.get("startTime")+":00");
+			Time endTime = Time.valueOf(map.get("endTime")+":00");
 			Business business = this.flexibook.getBusiness();
 			//TODO
 		}
 	}
+<<<<<<< HEAD
+
+=======
 	@Given("the following appointments exist in the system:")
 	public void the_following_appointments_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
 		List<Map<String,String>> list = dataTable.asMaps();
 		for(Map<String,String> map : list) {
 			String customer = map.get("customer");
 			String serviceName = map.get("serviceName");
-			String[] optServices = map.get("optServices").split(",");
+			String optServices = map.get("optServices");
 			Date date = Date.valueOf(map.get("date"));
-			Time startTime = Time.valueOf(map.get("startTime"));
-			Time endTime = Time.valueOf(map.get("endTime"));
+			Time startTime = Time.valueOf(map.get("startTime")+":00");
+			Time endTime = Time.valueOf(map.get("endTime")+":00");
 			//TODO
 		}
 	}
+>>>>>>> afaaa304c4ef3c5724486615c41759e346194ea6
 
 	@Given("{string} is logged in to their account")
 	public void is_logged_in_to_their_account(String customer1) {
@@ -129,17 +124,42 @@ public class MakeAppointmentStepDefinitions {
 
 	@When("{string} schedules an appointment on {string} for {string} at {string}")
 	public void schedules_an_appointment_on_for_at(String customer, String date, String serviceName, String startTime) {
+		try {
+			FlexibookController.MakeAppointment(customer,date, serviceName,startTime);
+		}catch(Exception e){
+			throw e;
+		}
+
 	}
+	
 	@Then("{string} shall have a {string} appointment on {string} from {string} to {string}")
 	public void shall_have_a_appointment_on_from_to(String customer, String serviceName, String date, String startTime, String endTime) {
-		FlexibookController.MakeAppointment(customer,date, serviceName,startTime);
 
 	}
 	@Then("there shall be {int} more appointment in the system")
 	public void there_shall_be_more_appointment_in_the_system(Integer int1) {
-		//TODO
-	}
 
+	}
+	
+	@Then("the system shall report {string}")
+	public void the_system_shall_report(String string) {
+	    // Write code here that turns the phrase above into concrete actions
+	}
+	
+	@When("{string} selects {string} for the service combo")
+	public void selects_for_the_service_combo(String string, String string2) {
+	    // Write code here that turns the phrase above into concrete actions
+	    
+	}
+	
+	//owner schedule 
+	@When("{string} schedules an appointment on on {string} for {string} at {string}")
+	public void schedules_an_appointment_on_on_for_at(String string, String string2, String string3, String string4) {
+	    // Write code here that turns the phrase above into concrete actions
+	    
+	}
+	
+	
 	@After
 	public void tearDown() {
 		flexibook=FlexiBookApplication.getflexibook();

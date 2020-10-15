@@ -19,7 +19,7 @@ Feature: Update Service Combo
       | name       | mainService | services     | mandatory        |
       | Cut-Normal | cut         | wash,cut,dry | false,true,false |
     Given the Owner with username "owner" is logged in
-    When "owner" initiates the update of service combo "Cut-Normal" to name "<name>", main service "<mainService>" and services "<services>" and mandatory setting "<mandatory>"
+    When "owner" initiates the update of service combo "Cut-Normal" to name "<name>", main service "Item<mainService>" and services "<services>" and mandatory setting "<mandatory>"
     Then the service combo "Cut-Normal" shall be updated to name "<name>"
     Then the service combo "<name>" shall contain the services "<services>" with mandatory setting "<mandatory>"
     Then the main service of the service combo "<name>" shall be "<mainService>"
@@ -42,9 +42,9 @@ Feature: Update Service Combo
     Given the following service combos exist in the system:
       | name       | mainService | services     | mandatory        |
       | Cut-Normal | cut         | wash,cut,dry | false,true,false |
-      | Wash-Dry   | wash        | wash,dry     | trye,false       |
+      | Wash-Dry   | wash        | wash,dry     | true,false       |
     Given the Owner with username "owner" is logged in
-    When "owner" initiates the update of service combo "Cut-Normal" to name "<name>", main service "<mainService>" and services "<services>" and mandatory setting "<mandatory>"
+    When "owner" initiates the update of service combo "Cut-Normal" to name "<name>", main service "Item<mainService>" and services "<services>" and mandatory setting "<mandatory>"
     Then an error message with content "<error>" shall be raised
     Then the service combo "Cut-Normal" shall preserve the following properties:
       | name       | mainService | services     | mandatory        |

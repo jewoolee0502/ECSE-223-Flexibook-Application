@@ -7,7 +7,7 @@ import io.cucumber.java.en.When;
 
 public class SignUpForCustomerAccountStepDefinition {
 
-	private static FlexiBook flexibook = new FlexiBook();
+	private FlexiBook flexibook;
 	
 	@Given("there is no existing username {string}")
 	public void there_is_no_existing_username(String string) {

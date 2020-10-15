@@ -40,6 +40,31 @@ if(!flexibook.hasOwner()) {
     Owner owner = new Owner("a", "123", flexibook); 
 }
   }
+  @Given("the following customers exist in the system:")
+  public void the_following_customers_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
+    List<Map<String, String>> valueMaps = dataTable.asMaps();
+      for (Map<String, String> map : valueMaps) {
+       String name = map.get("username");
+       String passcode = map.get("password");
+       Customer customer = null;
+       int count =0;
+       if (flexibook.numberOfCustomers()!=0) {
+        for (Customer c: flexibook.getCustomers()) {
+          if(!(c.getUsername().equals(name))) {
+           count=count+1;
+         }
+        }
+        if(count==flexibook.getBookableServices().size()) {
+          customer=new Customer(name,passcode, flexibook);
+        }
+       }
+       else{
+        customer=new Customer(name,passcode, flexibook);
+      }
+       if(customer!=null) {
+       flexibook.addCustomer(customer);}
+      }
+}
   @Given("Customer with username {string} is logged in")
   public void customer_with_username_is_logged_in(String string) {
     Customer thisc=new Customer(string, "000000", FlexiBookApplication.getflexibook());  
@@ -79,31 +104,7 @@ if(!flexibook.hasOwner()) {
      FlexibookController.makecombo(owner, name, mainservice, services, mandatory);
     }
   }
-  @Given("the following customers exist in the system:")
-  public void the_following_customers_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
-        List<Map<String, String>> valueMaps = dataTable.asMaps();
-          for (Map<String, String> map : valueMaps) {
-           String name = map.get("username");
-           String passcode = map.get("password");
-           Customer customer = null;
-           int count =0;
-           if (flexibook.numberOfCustomers()!=0) {
-            for (Customer c: flexibook.getCustomers()) {
-              if(!(c.getUsername().equals(name))) {
-               count=count+1;
-             }
-            }
-            if(count==flexibook.getBookableServices().size()) {
-              customer=new Customer(name,passcode, flexibook);
-            }
-           }
-           else{
-            customer=new Customer(name,passcode, flexibook);
-          }
-           if(customer!=null) {
-           flexibook.addCustomer(customer);}
-          }
-  }
+  
   @Given("the Owner with username {string} is logged in")
   public void the_owner_with_username_is_logged_in(String string) {
      flexibook.getOwner().setUsername(string);
@@ -177,11 +178,11 @@ int count = 0;
     }
  assertEquals(string,Integer.toString(count));
 }
- /* @Then("an error message with content {string} shall be raised")
+  @Then("an error message with content {string} shall be raised")
   public void an_error_message_with_content_shall_be_raised(String string) {
     String message=thise.getMessage();
    assertEquals(string,message);
-  }*/
+  }
   @Then("the service combo {string} shall not exist in the system")
   public void the_service_combo_shall_not_exist_in_the_system(String string) throws InvalidInputException {
     if(flexibook.getBookableServices()!=null) {

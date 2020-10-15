@@ -20,11 +20,9 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class MakeAppointmentStepDefinitions {
-
+/*
 	private FlexiBook flexibook = FlexiBookApplication.getflexibook();
-<<<<<<< HEAD
 
-=======
 
 	@Given("a Flexibook system exists")
 	public void a_flexibook_system_exists() {
@@ -40,12 +38,10 @@ public class MakeAppointmentStepDefinitions {
 		SystemTime systime = new SystemTime(string, true);
 		
 	}
->>>>>>> afaaa304c4ef3c5724486615c41759e346194ea6
 
 
 
-<<<<<<< HEAD
-=======
+
 	@Given("the following customers exist in the system:")
 	public void the_following_customers_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
 		List<Map<String, String>> list = dataTable.asMaps();
@@ -56,11 +52,7 @@ public class MakeAppointmentStepDefinitions {
 
 		}
 	}
->>>>>>> afaaa304c4ef3c5724486615c41759e346194ea6
 
-
-<<<<<<< HEAD
-=======
 	@Given("the following service combos exist in the system:")
 	public void the_following_service_combos_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) throws InvalidInputException {
 		List<Map<String,String>> list = dataTable.asMaps();
@@ -73,7 +65,7 @@ public class MakeAppointmentStepDefinitions {
 			FlexibookController.makecombo(owner, name, mainService, services, mandatory);
 		}
 	}
->>>>>>> afaaa304c4ef3c5724486615c41759e346194ea6
+
 
 	@Given("the business has the following opening hours")
 	public void the_business_has_the_following_opening_hours(io.cucumber.datatable.DataTable dataTable) {
@@ -99,9 +91,7 @@ public class MakeAppointmentStepDefinitions {
 			//TODO
 		}
 	}
-<<<<<<< HEAD
 
-=======
 	@Given("the following appointments exist in the system:")
 	public void the_following_appointments_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
 		List<Map<String,String>> list = dataTable.asMaps();
@@ -115,7 +105,7 @@ public class MakeAppointmentStepDefinitions {
 			//TODO
 		}
 	}
->>>>>>> afaaa304c4ef3c5724486615c41759e346194ea6
+
 
 	@Given("{string} is logged in to their account")
 	public void is_logged_in_to_their_account(String customer1) {
@@ -164,5 +154,5 @@ public class MakeAppointmentStepDefinitions {
 	public void tearDown() {
 		flexibook=FlexiBookApplication.getflexibook();
 		flexibook.delete();
-	}
+	}*/
 }

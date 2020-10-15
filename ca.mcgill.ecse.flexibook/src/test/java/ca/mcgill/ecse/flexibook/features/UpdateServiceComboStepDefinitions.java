@@ -25,11 +25,7 @@ public class UpdateServiceComboStepDefinitions {
   }
 
 
-  @Then("an error message with content {string} shall be raised")
-  public void an_error_message_with_content_shall_be_raised(String string) {
-    String message=thise.getMessage();
-   assertEquals(string,message);
-  }
+
   @Then("the service combo {string} shall preserve the following properties:")
   public void the_service_combo_shall_preserve_the_following_properties(String string, io.cucumber.datatable.DataTable dataTable) {
     List<Map<String, String>> valueMaps = dataTable.asMaps();

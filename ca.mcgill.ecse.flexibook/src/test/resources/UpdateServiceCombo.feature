@@ -38,6 +38,7 @@ Feature: Update Service Combo
       | extensions |       50 |             0 |                0 |
       | color      |       75 |            45 |               30 |
       | cut        |       20 |             0 |                0 |
+      | highlights |       90 |            50 |               40 |
       | dry        |       10 |             0 |                0 |
     Given the following service combos exist in the system:
       | name       | mainService | services     | mandatory        |
@@ -54,7 +55,7 @@ Feature: Update Service Combo
       | name          | mainService | services                | mandatory            | error                                         |
       | Cut-Highlight | highlight   | wash,dry,cut            | false,false,true     | Service highlight does not exist              |
       | Cut-Highlight | highlights  | wash,dry,cut            | false,false,true     | Main service must be included in the services |
-      | Cut-Normal    | cut         | cut                     | true                 | A service Combo must have at least 2 services |
+      | Cut-Normal    | cut         | cut                     | true                 | A service Combo must contain at least 2 services |
       | Cut-Extension | extensions  | wash,dry,cut,extensions | true,true,true,false | Main service must be mandatory                |
       | Cut-Lunch     | cut         | wash,dry,cut,lunch      | true,true,true,false | Service lunch does not exist                  |
       | Wash-Dry      | wash        | wash,dry                | true,true            | Service combo Wash-Dry already exists         |

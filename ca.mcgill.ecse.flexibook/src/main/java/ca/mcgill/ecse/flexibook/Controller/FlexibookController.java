@@ -13,13 +13,18 @@ public class FlexibookController {
    * 
    * @author Haipeng Yue
    * 
-   * @param String owername, String comboname, String mainservicename, String Services, String mandatorySetting
+   * @param String owername is string.
+   * @paramString comboname is string2.
+   * @param String mainservicename is string3.
+   * @paramString Services is String4
+   * @paramString mandatorySetting is string5
    * @throws InvalidInputException an error is encountered
    * @return void
    */
   public static void makecombo(String string, String string2, String string3, String string4, String string5) throws InvalidInputException {
   Service mainservice = null;
-  ComboItem main;
+  ComboItem main=null;
+
   FlexiBook fb = FlexiBookApplication.getflexibook();
   String mainname = null;
   if(fb.getOwner().getUsername().equals(string)) {
@@ -27,23 +32,21 @@ public class FlexibookController {
     if(j>3) {
      mainname+= string3.charAt(j);
     }
-  }
+  }    if(fb.getBookableServices()!=null) {
+     if(fb.getBookableService(0).getWithName(string2)!=null)
+     {
+        throw new InvalidInputException("Service combo "+string2+ " already exists");
+     }
+   }
+    ServiceCombo thiscombo=new ServiceCombo(string2, fb);
   
+   
 char[] array=new char[mainname.length()-4];
 mainname.getChars(4, mainname.length(), array, 0);
 String nameofmain=new String(array);
- 
-   for (int i =0;i<fb.getBookableServices().size();i++) {
-      
-      if(fb.getBookableService(i).getName().equals(nameofmain)) {
-        mainservice = (Service) fb.getBookableService(i);
-      }
-    }
-if(mainservice!=null) {
- main =new ComboItem(true, mainservice); }
-else {
-  System.out.println(nameofmain);
-  throw new InvalidInputException("Service "+nameofmain+" does not exist");
+ if(fb.getBookableService(0).getWithName(nameofmain)==null) {
+   thiscombo.delete();
+   throw new InvalidInputException("Service "+nameofmain+" does not exist");
 }
  ArrayList <ComboItem> items=new ArrayList();
     String[] parts = string4.split(","); 
@@ -52,53 +55,130 @@ else {
       for (int i =0;i<fb.getBookableServices().size();i++) {
         if(fb.getBookableService(i).getName().equals(parts[k])) {
           Service thissub=(Service) fb.getBookableService(i);
-          ComboItem thisubservice=new ComboItem(Boolean.parseBoolean(setting[k]),thissub);
-         items.add(thisubservice);
+          ComboItem thisubservice=new ComboItem(Boolean.parseBoolean(setting[k]),thissub,thiscombo);
+          thiscombo.addService(thisubservice);
+          items.add(thisubservice);
          if(thisubservice.getService().getName().equals(nameofmain)) {
+           thiscombo.setMainService(thisubservice);
            main=thisubservice;
            if(main.getMandatory()!=true) {
+           thiscombo.delete();
              throw new InvalidInputException("Main service must be mandatory");
            }
          }
         }else if(fb.getBookableService(i).getWithName(parts[k])==null) {
+          thiscombo.delete();
           throw new InvalidInputException("Service "+ parts[k] +" does not exist");
         }
       }
      
     }
     if(items.contains(main)!=true) {
+    thiscombo.delete();
       throw new InvalidInputException("Main service must be included in the services");
     }
     if(items.size()<2) {
+      thiscombo.delete();
       throw new InvalidInputException("A service Combo must contain at least 2 services");  
     }
     ComboItem[] comboitems=items.toArray(new ComboItem[items.size()]);
 
-   if(fb.getBookableServices()!=null) {
-     if(fb.getBookableService(0).getWithName(string2)!=null)
-     {String thiss=string2;
-       fb.getBookableService(0).getWithName(string2).setName(thiss+"1");
-       throw new InvalidInputException("Service combo "+string2+ " already exists");
-     }
-   }
-    ServiceCombo thiscombo=new ServiceCombo(string2, fb,main , comboitems);
-    int checkmain =0;
-
 thiscombo.setFlexiBook(fb);
- } else {throw new InvalidInputException("You are not authorized to perform this operation");}
+
+ } else {
+   throw new InvalidInputException("You are not authorized to perform this operation");}
 }
+  
+  
+  
+  /**
+   * update: This method takes in all the parameters to update a service combo in the flexibook system
+   * 
+   * @author Haipeng Yue
+   * 
+   * @param String owername is string.
+   * @param String oldcomboname is string2
+   * @param String new comboname is string3.
+   * @param String mainservicename is string4.
+   * @paramString Services is String5
+   * @paramString mandatorySetting is string6
+   * @throws InvalidInputException an error is encountered
+   * @return void
+   */
+
   public static void updatecombo(String string, String string2, String string3, String string4, String string5, String string6) throws InvalidInputException {
-    FlexiBook fb = FlexiBookApplication.getflexibook();
+FlexiBook fb = FlexiBookApplication.getflexibook();
+String mainname=null;
+ComboItem main=null;
+if(fb.getOwner().getUsername().equals(string)==true) {
 if(fb.getBookableServices().size()!=0) {
-  if(fb.getBookableService(0).getWithName(string2)!=null) {
+if(fb.getBookableService(0).getWithName(string2)==null) {
+  throw new InvalidInputException("Service combo does not exist");
+}else {
+    if(string2.equals(string3)!=true) {
+    makecombo(string,string3,string4,string5,string6);
     fb.getBookableService(0).getWithName(string2).delete();
-    makecombo(string,string3,string4,string5,string6);
-  }else {
-    makecombo(string,string3,string4,string5,string6);
-  }
+    }else {
+      ServiceCombo combo=(ServiceCombo) fb.getBookableService(0).getWithName(string2);
+      for(int j =0;j<string4.length();j++) {
+        if(j>3) {
+         mainname+= string4.charAt(j);
+        }
+      } 
+      char[] array=new char[mainname.length()-4];
+      mainname.getChars(4, mainname.length(), array, 0);
+      String nameofmain=new String(array);
+       if(fb.getBookableService(0).getWithName(nameofmain)==null) {
+         throw new InvalidInputException("Service "+nameofmain+" does not exist");
+      }
+       ArrayList <ComboItem> items=new ArrayList();
+       String[] parts = string5.split(","); 
+       String[] setting = string6.split(",");
+         for (int k=0;k<parts.length;k++) {
+         if(fb.getBookableServices().size()!=0) {
+           Service thissub=(Service) fb.getBookableService(0).getWithName(parts[k]);
+           boolean man=Boolean.parseBoolean(setting[k]);
+           if(thissub==null) {
+           throw new InvalidInputException("Service "+ parts[k] +" does not exist"); 
+           }
+           if(thissub.getName().equals(nameofmain)) {
+             if(man!=true) {
+               throw new InvalidInputException("Main service must be mandatory");
+             }
+           }
+           ComboItem thisubservice=new ComboItem(man,thissub,combo);
+           items.add(thisubservice);
+           if (thisubservice.getService().getName().equals(nameofmain)) {
+             main=thisubservice;
+           }
+         }
+       } 
+
+         if(items.contains(main)!=true) {
+         for(int i=0;i<items.size();i++) {
+           items.get(i).delete();
+         }
+         throw new InvalidInputException("Main service must be included in the services");
+       }
+       if(items.size()<2) {
+         for(int i=0;i<items.size();i++) {
+           items.get(i).delete();
+         }
+         throw new InvalidInputException("A service Combo must contain at least 2 services");  
+       }
+       int k=combo.getServices().size();
+       for (int i=0;i<k-items.size();i++) {
+         combo.getService(0).delete();
+       }
+       combo.setMainService(main);
+
+ }
+  
 }
-    
-  }
+}
+}else {throw new InvalidInputException("You are not authorized to perform this operation");  
+}
+}
   
   public static Boolean AttemptLogIn(String userID,String passcode) {
 	  FlexiBook flexi=FlexiBookApplication.getflexibook();
@@ -110,4 +190,17 @@ if(fb.getBookableServices().size()!=0) {
 	  }
 	  return false;
   }
+public static void CreateUser(String a, String b) throws InvalidInputException {
+  FlexiBook fb=FlexiBookApplication.getflexibook();
+  if(a==null|| a=="         "){
+    throw new InvalidInputException("username");
+  }else if(fb.getCustomers().size()>0) {
+    if(fb.getCustomer(0).getWithUsername(a)!=null) {
+      
+      
+    }
+  }
+  Customer thisc=new Customer(a, b, fb);
+}
+
 }

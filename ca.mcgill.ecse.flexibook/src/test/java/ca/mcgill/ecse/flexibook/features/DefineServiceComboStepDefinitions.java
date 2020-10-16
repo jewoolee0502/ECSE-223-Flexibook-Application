@@ -27,7 +27,7 @@ import ca.mcgill.ecse.flexibook.model.ServiceCombo;
 
 public class DefineServiceComboStepDefinitions {
   private  FlexiBook flexibook;
-  private  InvalidInputException thise=null;
+  private String error;
   @Given("a Flexibook system exists")
   public void a_flexibook_system_exists() {
   flexibook=new FlexiBook();
@@ -67,6 +67,7 @@ if(!flexibook.hasOwner()) {
 }
   @Given("Customer with username {string} is logged in")
   public void customer_with_username_is_logged_in(String string) {
+    
     Customer thisc=new Customer(string, "000000", FlexiBookApplication.getflexibook());  
     FlexiBookApplication.getflexibook().addCustomer(thisc);
   }
@@ -114,7 +115,8 @@ if(!flexibook.hasOwner()) {
     try {  
     FlexibookController.makecombo(string, string2, string3, string4, string5);
     }catch (InvalidInputException e) {
-      thise=e;
+      error=e.getMessage();
+      FlexiBookApplication.setmessage(error);
     }
     }
   @Then("the service combo {string} shall exist in the system")
@@ -137,7 +139,7 @@ for (int i =0;i<flexibook.getBookableServices().size();i++) {
            String[] parts = string2.split(",");
          String[] setting = string3.split(",");
          for (int k=0;k<services.size();k++) {
-        assertEquals(services.get(k).getService().getName(),parts[k]);
+         assertEquals(services.get(k).getService().getName(),parts[k]);
          assertEquals(Boolean.toString(services.get(k).getMandatory()),setting[k]);
        }
       }}
@@ -178,10 +180,27 @@ int count = 0;
     }
  assertEquals(string,Integer.toString(count));
 }
+
+  @Then("the service combo {string} shall preserve the following properties:")
+  public void the_service_combo_shall_preserve_the_following_properties(String string, io.cucumber.datatable.DataTable dataTable) {
+    List<Map<String, String>> valueMaps = dataTable.asMaps();
+    for (Map<String, String> map : valueMaps) {
+      String name=map.get("name");
+      String mainservice = map.get("mainService");
+      String services = map.get("services");
+      String mandatory = map.get("mandatory"); 
+      assertEquals(name,flexibook.getBookableService(0).getWithName(string).getName());
+      ServiceCombo thiscombo=(ServiceCombo)flexibook.getBookableService(0).getWithName(string);
+      assertEquals(thiscombo.getMainService().getService().getName(),mainservice);
+      
+      
+    }
+  } 
   @Then("an error message with content {string} shall be raised")
   public void an_error_message_with_content_shall_be_raised(String string) {
-    String message=thise.getMessage();
-   assertEquals(string,message);
+ String e = FlexiBookApplication.returnmessage();
+   assertEquals(string,e);
+   FlexiBookApplication.setmessage(null);
   }
   @Then("the service combo {string} shall not exist in the system")
   public void the_service_combo_shall_not_exist_in_the_system(String string) throws InvalidInputException {

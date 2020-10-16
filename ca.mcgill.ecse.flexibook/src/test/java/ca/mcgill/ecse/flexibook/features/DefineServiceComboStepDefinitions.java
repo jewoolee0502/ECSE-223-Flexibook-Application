@@ -67,9 +67,10 @@ if(!flexibook.hasOwner()) {
 }
   @Given("Customer with username {string} is logged in")
   public void customer_with_username_is_logged_in(String string) {
-    
-    Customer thisc=new Customer(string, "000000", FlexiBookApplication.getflexibook());  
-    FlexiBookApplication.getflexibook().addCustomer(thisc);
+  if(flexibook.getCustomers().size()!=0) {
+  Customer thisc=(Customer) flexibook.getCustomer(0).getWithUsername(string);
+  FlexiBookApplication.setCurrentuser(thisc);
+  }
   }
   @Given("a business exists in the system")
   public void a_business_exists_in_the_system() {

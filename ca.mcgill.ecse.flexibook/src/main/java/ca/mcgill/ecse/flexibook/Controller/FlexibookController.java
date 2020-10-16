@@ -32,7 +32,7 @@ public class FlexibookController {
     if(j>3) {
      mainname+= string3.charAt(j);
     }
-  }    if(fb.getBookableServices()!=null) {
+  }    if(fb.getBookableServices().size()!=0) {
      if(fb.getBookableService(0).getWithName(string2)!=null)
      {
         throw new InvalidInputException("Service combo "+string2+ " already exists");

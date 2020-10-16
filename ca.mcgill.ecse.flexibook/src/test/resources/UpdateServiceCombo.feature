@@ -65,7 +65,7 @@ Feature: Update Service Combo
       | username  | password |
       | customer1 |  1234567 |
       | customer2 |  8901234 |
-     Given the following services exist in the system:
+    Given the following services exist in the system:
       | name       | duration | downtimeStart | downtimeDuration |
       | wash       |      100 |             0 |                0 |
       | extensions |       50 |             0 |                0 |

@@ -1,22 +1,23 @@
 package ca.mcgill.ecse.flexibook.features;
 
 import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 import java.util.Map;
+
+import org.junit.After;
 
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.Customer;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
-import ca.mcgill.ecse.flexibook.model.Service;
-import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class LogInStepDefinitions {
 	private static FlexiBook flexibook; 
-	/*@Given("the following customers exist in the system:")
+	@Given("the following customers exist in the system:")
 	public void the_following_customers_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
 		  List<Map<String, String>> valueMaps = dataTable.asMaps();
 		    for (Map<String, String> map : valueMaps) {
@@ -30,17 +31,16 @@ public class LogInStepDefinitions {
 		         count=count+1;
 		       }
 		      }
-		      if(count==flexibook.getBookableServices().size()) {
+		      if(count==flexibook.getCustomers().size()) {
 		        customer=new Customer(name,passcode, flexibook);
 		      }
 		     }
-		     else{
-		      customer=new Customer(name,passcode, flexibook);
-		    }
 		     if(customer!=null) {
-		     flexibook.addCustomer(customer);}
+			     flexibook.addCustomer(customer);}
 		    }
-	}*/
+		    
+		    }
+
 
 
 
@@ -50,7 +50,13 @@ public class LogInStepDefinitions {
 	}
 	@Then("the user should be successfully logged in")
 	public void the_user_should_be_successfully_logged_in() {
-	    FlexiBookApplication.getflexibook();
+	    assertEquals(FlexiBookApplication.getCurrentUser(),flexibook.getCustomer(0));
+	}
+	@After
+	public void tearDown() {
+	   flexibook=FlexiBookApplication.getflexibook();
+	    flexibook.delete();
 	}
 
-}
+	}
+

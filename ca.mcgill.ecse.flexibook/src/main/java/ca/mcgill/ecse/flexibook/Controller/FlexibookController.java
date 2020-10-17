@@ -180,15 +180,24 @@ if(fb.getBookableService(0).getWithName(string2)==null) {
 }
 }
   
-  public static Boolean AttemptLogIn(String userID,String passcode) {
+  public static void AttemptLogIn(String userID,String passcode) throws InvalidInputException {
 	  FlexiBook flexi=FlexiBookApplication.getflexibook();
+	  if(flexi.getOwner()==null) {
+		  Owner owner=new Owner(userID,passcode, flexi);
+		  flexi.setOwner(owner);
+	  }
 	  for(Customer c:flexi.getCustomers()) {
 		  if(c.getUsername().equals(userID)||c.getPassword().equals(passcode)) {
-			 
-		    return true;
+			  FlexiBookApplication.setCurrentUser(c);
+		    
 		  }
 	  }
-	  return false;
+	  if(flexi.getOwner().getUsername().equals(userID)||flexi.getOwner().getPassword().equals(passcode)) {
+		  FlexiBookApplication.setCurrentUser(flexi.getOwner());
+		 
+	  }
+	  else throw new InvalidInputException ("Username/password not found");
+	  
   }
 public static void CreateUser(String a, String b) throws InvalidInputException {
   FlexiBook fb=FlexiBookApplication.getflexibook();

@@ -50,7 +50,7 @@ public class AddServiceStepDefiniton {
 	     Service service = null;
 	     int count =0;
 	     FlexiBook thisf=flexibook;
-	     service=new Service(name, FlexiBookApplication.getflexibook(), duration, downtimeDuration, downtimeStart);
+	     service=new Service(name, FlexiBookApplication.getflexibook(), duration, downtimeStart, downtimeDuration);
 	     
 	     }
   }

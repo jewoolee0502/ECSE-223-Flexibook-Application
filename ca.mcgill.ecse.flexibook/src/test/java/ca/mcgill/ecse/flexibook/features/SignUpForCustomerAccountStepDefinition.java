@@ -18,7 +18,7 @@ import io.cucumber.java.en.When;
 
 public class SignUpForCustomerAccountStepDefinition {
 
-private FlexiBook flexibook=FlexiBookApplication.getflexibook();
+	private FlexiBook flexibook=FlexiBookApplication.getflexibook();
 	private String error;
 	private int errorCntr =0;
 
@@ -26,101 +26,76 @@ private FlexiBook flexibook=FlexiBookApplication.getflexibook();
 
 	@Given("there is no existing username {string}")
 	public void there_is_no_existing_username(String username) {
-<<<<<<< HEAD
+
 		flexibook = FlexiBookApplication.getflexibook();
 
 		String name = username;
 		if(flexibook.getCustomers().size() != 0) {
 			if(flexibook.getCustomer(0).getWithUsername(username) != null) {
 				flexibook.getCustomer(0).getWithUsername(username).delete();
-=======
-		 flexibook = FlexiBookApplication.getflexibook();
-
-			String name = username;
-			if(flexibook.getCustomers().size()!=0) {
-			  if(flexibook.getCustomer(0).getWithUsername(username)!=null) {
-			  flexibook.getCustomer(0).getWithUsername(username).delete();
->>>>>>> 37449ad5887376088e73ff7228b7018ba052e740
 			}
-			   
 		}
-
 	}
 
-	@Given("there is an existing username {string}")
-	public void there_is_an_existing_username(String username) throws InvalidInputException {
-<<<<<<< HEAD
-		flexibook = FlexiBookApplication.getflexibook();
-		if(username == null || username == "") {
-			throw new InvalidInputException("The username cannot be empty.");
-		}
-		else if(flexibook.getCustomers().size() == 0) {
-			if(flexibook.getCustomer(0).getWithUsername(username) == null) {
-				flexibook.getCustomer(0).getWithUsername(username).delete();
+		@Given("there is an existing username {string}")
+		public void there_is_an_existing_username(String username) throws InvalidInputException {
+
+			flexibook = FlexiBookApplication.getflexibook();
+			if(username == null || username == "") {
+				throw new InvalidInputException("The username cannot be empty.");
 			}
-=======
-		FlexiBook fb = FlexiBookApplication.getflexibook();
-		if(username == null || username == "") {
-			throw new InvalidInputException("The username cannot be empty.");
+			else if(User.getWithUsername(username) == flexibook.getCustomers()) {
+				if(flexibook.getCustomer(0).getWithUsername(username) == null) {
+					flexibook.getCustomer(0).getWithUsername(username).delete();
+				}
+				Customer currentCustomer = new Customer(username, username, flexibook);
+			}
 		}
-		else if(User.getWithUsername(username) == fb.getCustomers()) {
-			fb.getCustomers().contains(username);
-			//can not do contain 
->>>>>>> 37449ad5887376088e73ff7228b7018ba052e740
-			throw new InvalidInputException("The username already exists.");
+
+		@Given("the user is logged in to an account with username {string}")
+		public void the_user_is_logged_in_to_an_account_with_username(String username) {
+			if(flexibook.getCustomers().size() != 0) {
+				Customer currentUser = (Customer) flexibook.getCustomer(0).getWithUsername(username);
+				FlexiBookApplication.setCurrentuser(currentUser);
+			}
+			FlexiBookApplication.setCurrentuser(flexibook.getCustomer(0).getWithUsername(username));
 		}
-		Customer currentCustomer = new Customer(username, username, flexibook);
 
-	}
-
-	@Given("the user is logged in to an account with username {string}")
-	public void the_user_is_logged_in_to_an_account_with_username(String username) {
-		if(flexibook.getCustomers().size() != 0) {
-			Customer currentUser = (Customer) flexibook.getCustomer(0).getWithUsername(username);
-			FlexiBookApplication.setCurrentuser(currentUser);
-<<<<<<< HEAD
+		@When("the user provides a new username {string} and a password {string}")
+		public void the_user_provides_a_new_username_and_a_password(String username, String password) throws InvalidInputException {
+			try {
+				FlexibookController.CreateUser(username, password);
+			} catch (InvalidInputException e) {
+				error += e.getMessage();
+				throw new InvalidInputException("Error.");
+			}
 		}
-		FlexiBookApplication.setCurrentuser(flexibook.getCustomer(0).getWithUsername(username));
-=======
-		}FlexiBookApplication.setCurrentuser( flexibook.getCustomer(0).getWithUsername(username));
->>>>>>> 37449ad5887376088e73ff7228b7018ba052e740
-	}
 
-	@When("the user provides a new username {string} and a password {string}")
-	public void the_user_provides_a_new_username_and_a_password(String username, String password) throws InvalidInputException {
-		try {
-			FlexibookController.CreateUser(username, password);
-		} catch (InvalidInputException e) {
-			error += e.getMessage();
-			throw new InvalidInputException("Error.");
+		@Then("a new customer account shall be created")
+		public void a_new_customer_account_shall_be_created() {
+			//assertEquals(userCount + userCntrBeforeCreation, flexibook.getCustomers().size()); //check this code again with the size of the existing customer account
+
 		}
-	}
 
-	@Then("a new customer account shall be created")
-	public void a_new_customer_account_shall_be_created() {
-		//assertEquals(userCount + userCntrBeforeCreation, flexibook.getCustomers().size()); //check this code again with the size of the existing customer account
+		@Then("the account shall have username {string} and password {string}")
+		public void the_account_shall_have_username_and_password(String username, String password) {
+			assertEquals(username, flexibook.getCustomer(0).getWithUsername(username).getUsername());
+			assertEquals(password, flexibook.getCustomer(0).getWithUsername(username).getPassword());
 
-	}
+		}
 
-	@Then("the account shall have username {string} and password {string}")
-	public void the_account_shall_have_username_and_password(String username, String password) {
-		assertEquals(username, flexibook.getCustomer(0).getWithUsername(username).getUsername());
-		assertEquals(password, flexibook.getCustomer(0).getWithUsername(username).getPassword());
+		@Then("no new account shall be created")
+		public void no_new_account_shall_be_created() throws Throwable {
+			assertEquals(0, flexibook.getCustomers().size());
 
-	}
+		}
 
-	@Then("no new account shall be created")
-	public void no_new_account_shall_be_created() throws Throwable {
-		assertEquals(0, flexibook.getCustomers().size());
+		@Then("an error message {string} shall be raised")
+		public void an_error_message_shall_be_raised(String errorMsg) {
+			assertTrue(error.contains(errorMsg));
 
-	}
+		}
 
-	@Then("an error message {string} shall be raised")
-	public void an_error_message_shall_be_raised(String errorMsg) {
-		assertTrue(error.contains(errorMsg));
 
 	}
-
-
-}
 

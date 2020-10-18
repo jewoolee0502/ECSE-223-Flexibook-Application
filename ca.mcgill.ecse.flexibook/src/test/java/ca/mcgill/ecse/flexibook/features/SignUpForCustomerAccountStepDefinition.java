@@ -25,32 +25,31 @@ public class SignUpForCustomerAccountStepDefinition {
 	private int userCntrBeforeCreation;
 
 	@Given("there is no existing username {string}")
-	public void there_is_no_existing_username(String username, io.cucumber.datatable.DataTable dataTable) {
-		FlexiBook fb = FlexiBookApplication.getflexibook();
+	public void there_is_no_existing_username(String username) {
+		flexibook = FlexiBookApplication.getflexibook();
 
-		List<Map<String, String>> valueMaps = dataTable.asMaps();
-		for(Map<String,String> map : valueMaps) {
-			String name = map.get("username");
-			String passcode = map.get("password");
-			Customer customer = null;
-			if(User.getWithUsername(username) != fb.getCustomers()) {
-				Customer customerAccount = new Customer("name", passcode, fb);
+		String name = username;
+		if(flexibook.getCustomers().size() != 0) {
+			if(flexibook.getCustomer(0).getWithUsername(username) != null) {
+				flexibook.getCustomer(0).getWithUsername(username).delete();
 			}
 		}
 
 	}
 
 	@Given("there is an existing username {string}")
-	public void there_is_an_existing_username(String username, String password) throws InvalidInputException {
-		FlexiBook fb = FlexiBookApplication.getflexibook();
+	public void there_is_an_existing_username(String username) throws InvalidInputException {
+		flexibook = FlexiBookApplication.getflexibook();
 		if(username == null || username == "") {
 			throw new InvalidInputException("The username cannot be empty.");
 		}
-		else if(User.getWithUsername(username) == fb.getCustomers()) {
-			fb.getCustomers().contains(username);
+		else if(flexibook.getCustomers().size() == 0) {
+			if(flexibook.getCustomer(0).getWithUsername(username) == null) {
+				flexibook.getCustomer(0).getWithUsername(username).delete();
+			}
 			throw new InvalidInputException("The username already exists.");
 		}
-		Customer currentCustomer = new Customer(username, username, fb);
+		Customer currentCustomer = new Customer(username, username, flexibook);
 
 	}
 
@@ -60,6 +59,7 @@ public class SignUpForCustomerAccountStepDefinition {
 			Customer currentUser = (Customer) flexibook.getCustomer(0).getWithUsername(username);
 			FlexiBookApplication.setCurrentuser(currentUser);
 		}
+		FlexiBookApplication.setCurrentuser(flexibook.getCustomer(0).getWithUsername(username));
 	}
 
 	@When("the user provides a new username {string} and a password {string}")

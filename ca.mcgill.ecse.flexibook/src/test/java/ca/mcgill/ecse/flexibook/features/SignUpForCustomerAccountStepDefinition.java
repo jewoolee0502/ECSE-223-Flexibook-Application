@@ -1,64 +1,102 @@
 package ca.mcgill.ecse.flexibook.features;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
+import java.util.Map;
+
+import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
+import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
+import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
+import ca.mcgill.ecse.flexibook.model.Customer;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
+import ca.mcgill.ecse.flexibook.model.User;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class SignUpForCustomerAccountStepDefinition {
 
-	private FlexiBook flexibook;
-	
+private FlexiBook flexibook;
+	private String error;
+	private int errorCntr =0;
+
+	private int userCntrBeforeCreation;
+
 	@Given("there is no existing username {string}")
-	public void there_is_no_existing_username(String string) {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+	public void there_is_no_existing_username(String username) {
+		FlexiBook fb = FlexiBookApplication.getflexibook();
+
+			String name = username;
+			if(fb.getCustomers().size()!=0) {
+			  if(fb.getCustomer(0).getWithUsername(username)!=null) {
+			  fb.getCustomer(0).getWithUsername(username).delete();
+			}
+			   
+		}
+
 	}
 
-	//Some other steps were also undefined:
-	
 	@Given("there is an existing username {string}")
-	public void there_is_an_existing_username(String string) {
-	    // Write code here that turns the phrase above into concrete actions
-		throw new io.cucumber.java.PendingException();
+	public void there_is_an_existing_username(String username) throws InvalidInputException {
+		FlexiBook fb = FlexiBookApplication.getflexibook();
+		if(username == null || username == "") {
+			throw new InvalidInputException("The username cannot be empty.");
+		}
+		else if(User.getWithUsername(username) == fb.getCustomers()) {
+			fb.getCustomers().contains(username);
+			//can not do contain 
+			throw new InvalidInputException("The username already exists.");
+		}
+		Customer currentCustomer = new Customer(username, username, fb);
+
 	}
 
 	@Given("the user is logged in to an account with username {string}")
-	public void the_user_is_logged_in_to_an_account_with_username(String string) {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+	public void the_user_is_logged_in_to_an_account_with_username(String username) {
+		if(flexibook.getCustomers().size() != 0) {
+			Customer currentUser = (Customer) flexibook.getCustomer(0).getWithUsername(username);
+			FlexiBookApplication.setCurrentuser(currentUser);
+		}
 	}
 
 	@When("the user provides a new username {string} and a password {string}")
-	public void the_user_provides_a_new_username_and_a_password(String string, String string2) {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+	public void the_user_provides_a_new_username_and_a_password(String username, String password) throws InvalidInputException {
+		try {
+			FlexibookController.CreateUser(username, password);
+		} catch (InvalidInputException e) {
+			error += e.getMessage();
+			throw new InvalidInputException("Error.");
+		}
+
 	}
-	
+
 	@Then("a new customer account shall be created")
 	public void a_new_customer_account_shall_be_created() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
-	}
-	
-	@Then("the account shall have username {string} and password {string}")
-	public void the_account_shall_have_username_and_password(String string, String string2) {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		//assertEquals(userCount + userCntrBeforeCreation, flexibook.getCustomers().size()); //check this code again with the size of the existing customer account
+
 	}
 
+	@Then("the account shall have username {string} and password {string}")
+	public void the_account_shall_have_username_and_password(String username, String password) {
+		assertEquals(username, flexibook.getCustomers().get(0).getUsername());
+		assertEquals(password, flexibook.getCustomers().get(0).getPassword());
+
+	}
 
 	@Then("no new account shall be created")
-	public void no_new_account_shall_be_created() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
-	}
-	@Then("an error message {string} shall be raised")
-	public void an_error_message_shall_be_raised(String string) {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+	public void no_new_account_shall_be_created() throws Throwable {
+		assertEquals(0, flexibook.getCustomers().size());
+
 	}
 
-	
+	@Then("an error message {string} shall be raised")
+	public void an_error_message_shall_be_raised(String errorMsg) {
+		assertTrue(error.contains(errorMsg));
+
+	}
+
+
 }
 

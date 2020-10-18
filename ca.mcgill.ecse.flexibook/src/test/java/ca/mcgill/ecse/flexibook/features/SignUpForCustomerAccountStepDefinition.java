@@ -18,7 +18,7 @@ import io.cucumber.java.en.When;
 
 public class SignUpForCustomerAccountStepDefinition {
 
-private FlexiBook flexibook;
+private FlexiBook flexibook=FlexiBookApplication.getflexibook();
 	private String error;
 	private int errorCntr =0;
 
@@ -79,8 +79,8 @@ private FlexiBook flexibook;
 
 	@Then("the account shall have username {string} and password {string}")
 	public void the_account_shall_have_username_and_password(String username, String password) {
-		assertEquals(username, flexibook.getCustomers().get(0).getUsername());
-		assertEquals(password, flexibook.getCustomers().get(0).getPassword());
+		assertEquals(username, flexibook.getCustomer(0).getWithUsername(username).getUsername());
+		assertEquals(password, flexibook.getCustomer(0).getWithUsername(username).getPassword());
 
 	}
 

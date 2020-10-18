@@ -21,6 +21,7 @@ public class SignUpForCustomerAccountStepDefinition {
 	private FlexiBook flexibook=FlexiBookApplication.getflexibook();
 	private String error;
 	private int errorCntr =0;
+	private int userCount = 0;
 
 	private int userCntrBeforeCreation;
 
@@ -64,7 +65,7 @@ public class SignUpForCustomerAccountStepDefinition {
 		@When("the user provides a new username {string} and a password {string}")
 		public void the_user_provides_a_new_username_and_a_password(String username, String password) throws InvalidInputException {
 			try {
-				FlexibookController.CreateUser(username, password);
+				FlexibookController.SignUpForCustomerAccount(username, password);
 			} catch (InvalidInputException e) {
 				error += e.getMessage();
 				throw new InvalidInputException("Error.");
@@ -73,7 +74,7 @@ public class SignUpForCustomerAccountStepDefinition {
 
 		@Then("a new customer account shall be created")
 		public void a_new_customer_account_shall_be_created() {
-			//assertEquals(userCount + userCntrBeforeCreation, flexibook.getCustomers().size()); //check this code again with the size of the existing customer account
+			assertEquals(userCount + userCntrBeforeCreation, flexibook.getCustomers().size()); //check this code again with the size of the existing customer account
 
 		}
 

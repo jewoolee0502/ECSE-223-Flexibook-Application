@@ -12,23 +12,23 @@ public class SystemTime {
 	
 	//please be free to edit this file if you have a better idea
 	//features related: ViewAppointmentCalendar; SetUpBusinessInfo; MakeAppointment
-	public SystemTime(String systime, boolean istest) {
+	public static void SystemTime(String systime, boolean istest) {
 		if(istest) {
-			this.SysTime = systime;
+			SysTime = systime;
 			
 		}else {
-			SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-ddZ");
+			SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd+HH:mm");
 			Date date = new Date();
-			this.SysTime = dateFormatter.format(date);
+			SysTime = dateFormatter.format(date);
 		}
 	}
 	
-	public String getSysTime() {
+	public static  String getSysTime() {
 		return SysTime;
 	}
 	
-	public void setSysTime(String systime) {
-		this.SysTime = systime;
+	public static void setSysTime(String systime) {
+		SysTime = systime;
 	}
 	//Example I found online
 	/*public static void main(String[] args) {  

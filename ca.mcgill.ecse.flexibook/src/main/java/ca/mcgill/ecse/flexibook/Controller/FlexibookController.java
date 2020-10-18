@@ -180,13 +180,13 @@ public class FlexibookController {
 		}
 	}
 
-public static boolean AttemptLogIn(String userID,String passcode,FlexiBook flexi) throws InvalidInputException{
-		
+	public static boolean AttemptLogIn(String userID,String passcode,FlexiBook flexi) throws InvalidInputException{
+
 		for(Customer c:flexi.getCustomers()) {
-			  if(c.getUsername().equals(userID)&&c.getPassword().equals(passcode)) {
-				  FlexiBookApplication.setCurrentuser(c);
-				  return true;
-			  }}
+			if(c.getUsername().equals(userID)&&c.getPassword().equals(passcode)) {
+				FlexiBookApplication.setCurrentuser(c);
+				return true;
+			}}
 		if(userID.equals("owner")&&passcode.equals("owner")) {
 			Owner owner=new Owner(userID,passcode,flexi);
 			flexi.setOwner(owner);
@@ -227,6 +227,30 @@ public static boolean AttemptLogIn(String userID,String passcode,FlexiBook flexi
 		}
 		return foundCustomer;
 	}
-	
+
+	public static void SignUpForCustomerAccount(String username, String password) throws InvalidInputException {
+
+		try {
+			FlexiBook flexibook = FlexiBookApplication.getflexibook();
+
+			if(!(username.equals("") || username == null || password.equals("") || password == null)) {
+				if(getCustomer(username) == null) {
+					flexibook.addCustomer(username, password);
+				}
+				else {
+					throw new InvalidInputException("the username already exists.");
+				}
+			}
+			else if(username.equals("") || username == null) {
+				throw new InvalidInputException("The username cannot be empty.");
+			}
+			else if(password.equals("") || password == null) {
+				throw new InvalidInputException("The password cannot be empty.");
+			}
+		} 
+		catch(RuntimeException e) {
+			throw new InvalidInputException(e.getMessage());
+		}
+	}
 
 }

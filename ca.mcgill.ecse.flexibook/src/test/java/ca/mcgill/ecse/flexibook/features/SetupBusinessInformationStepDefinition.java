@@ -27,11 +27,11 @@ public class SetupBusinessInformationStepDefinition {
 		  flexibook.setBusiness(null);
 	  }
 	}
-	@Given("the system's time and date is {string}")
+	/*@Given("the system's time and date is {string}")
 	public void the_system_s_time_and_date_is(String string) {
 		String[] arrOfStr = string.split("+", 2);
 		
-}
+}*/
 
 
 

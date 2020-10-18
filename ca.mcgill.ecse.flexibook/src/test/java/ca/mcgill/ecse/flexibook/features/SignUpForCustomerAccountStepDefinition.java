@@ -26,12 +26,12 @@ private FlexiBook flexibook;
 
 	@Given("there is no existing username {string}")
 	public void there_is_no_existing_username(String username) {
-		FlexiBook fb = FlexiBookApplication.getflexibook();
+		 flexibook = FlexiBookApplication.getflexibook();
 
 			String name = username;
-			if(fb.getCustomers().size()!=0) {
-			  if(fb.getCustomer(0).getWithUsername(username)!=null) {
-			  fb.getCustomer(0).getWithUsername(username).delete();
+			if(flexibook.getCustomers().size()!=0) {
+			  if(flexibook.getCustomer(0).getWithUsername(username)!=null) {
+			  flexibook.getCustomer(0).getWithUsername(username).delete();
 			}
 			   
 		}
@@ -58,7 +58,7 @@ private FlexiBook flexibook;
 		if(flexibook.getCustomers().size() != 0) {
 			Customer currentUser = (Customer) flexibook.getCustomer(0).getWithUsername(username);
 			FlexiBookApplication.setCurrentuser(currentUser);
-		}
+		}FlexiBookApplication.setCurrentuser( flexibook.getCustomer(0).getWithUsername(username));
 	}
 
 	@When("the user provides a new username {string} and a password {string}")
@@ -69,7 +69,6 @@ private FlexiBook flexibook;
 			error += e.getMessage();
 			throw new InvalidInputException("Error.");
 		}
-
 	}
 
 	@Then("a new customer account shall be created")

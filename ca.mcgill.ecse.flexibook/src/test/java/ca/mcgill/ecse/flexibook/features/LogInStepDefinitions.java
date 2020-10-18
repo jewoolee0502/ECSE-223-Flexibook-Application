@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.lang.reflect.Executable;
 import java.util.List;
@@ -39,18 +40,21 @@ public class LogInStepDefinitions {
 		    }
 	@When("the user tries to log in with username {string} and password {string}")
 	public void the_user_tries_to_log_in_with_username_and_password(String string, String string2) throws InvalidInputException {
-	   FlexibookController.AttemptLogIn(string, string2, flexibook);
+	   FlexibookController.AttemptLogIn(string, string2);
+	   
 	}
 	@Then("the user should be successfully logged in")
 	public void the_user_should_be_successfully_logged_in() {
 	    assertEquals(FlexiBookApplication.getCurrentuser(),flexibook.getCustomer(0));
 	}
+	@Then("the user should not be logged in")
+	public void the_user_should_not_be_logged_in() {
+	assertTrue(FlexiBookApplication.getCurrentuser()==null);
+	}
 	@Then("a new account shall be created")
 	public void a_new_account_shall_be_created() {
 	    assertTrue(flexibook.getOwner()!=null);
 	}
-
-
 	@Then("the user shall be successfully logged in")
 	public void the_user_shall_be_successfully_logged_in() {
 	    assertEquals(FlexiBookApplication.getCurrentuser(),flexibook.getOwner());

@@ -40,31 +40,7 @@ if(!flexibook.hasOwner()) {
     Owner owner = new Owner("a", "123", flexibook); 
 }
   }
-  @Given("the following customers exist in the system:")
-  public void the_following_customers_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
-    List<Map<String, String>> valueMaps = dataTable.asMaps();
-      for (Map<String, String> map : valueMaps) {
-       String name = map.get("username");
-       String passcode = map.get("password");
-       Customer customer = null;
-       int count =0;
-       if (flexibook.numberOfCustomers()!=0) {
-        for (Customer c: flexibook.getCustomers()) {
-          if(!(c.getUsername().equals(name))) {
-           count=count+1;
-         }
-        }
-        if(count==flexibook.getBookableServices().size()) {
-          customer=new Customer(name,passcode, flexibook);
-        }
-       }
-       else{
-        customer=new Customer(name,passcode, flexibook);
-      }
-       if(customer!=null) {
-       flexibook.addCustomer(customer);}
-      }
-}
+ 
   @Given("Customer with username {string} is logged in")
   public void customer_with_username_is_logged_in(String string) {
   if(flexibook.getCustomers().size()!=0) {

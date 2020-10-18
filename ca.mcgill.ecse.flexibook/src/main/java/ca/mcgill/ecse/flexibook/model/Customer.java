@@ -4,8 +4,6 @@
 package ca.mcgill.ecse.flexibook.model;
 import java.util.*;
 
-import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
-
 // line 23 "../../../../../FlexiBook.ump"
 public class Customer extends User
 {
@@ -17,7 +15,6 @@ public class Customer extends User
   //Customer Associations
   private FlexiBook flexiBook;
   private List<Appointment> appointments;
-  private List<User> users;
 
   //------------------------
   // CONSTRUCTOR

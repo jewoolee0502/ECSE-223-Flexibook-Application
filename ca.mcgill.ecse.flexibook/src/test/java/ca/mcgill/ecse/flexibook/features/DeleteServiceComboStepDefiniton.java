@@ -5,12 +5,12 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class DeleteServiceComboStepDefiniton {
-  @Given("the system's time and date is {string}")
+ /* @Given("the system's time and date is {string}")
   public void the_system_s_time_and_date_is(String string) {
       // Write code here that turns the phrase above into concrete actions
       throw new io.cucumber.java.PendingException();
   }
-
+*/
 
  
   @Given("the following appointments exist in the system:")

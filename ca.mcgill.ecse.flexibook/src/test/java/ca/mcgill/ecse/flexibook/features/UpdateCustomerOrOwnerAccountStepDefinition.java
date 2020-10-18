@@ -6,7 +6,7 @@ import io.cucumber.java.en.When;
 
 public class UpdateCustomerOrOwnerAccountStepDefinition {
 
-	@Given("a Flexibook system exists")
+	/*@Given("a Flexibook system exists")
 	public void a_flexibook_system_exists() {
 	    // Write code here that turns the phrase above into concrete actions
 	    throw new io.cucumber.java.PendingException();
@@ -41,5 +41,6 @@ public class UpdateCustomerOrOwnerAccountStepDefinition {
 	    // Write code here that turns the phrase above into concrete actions
 	    throw new io.cucumber.java.PendingException();
 	}
+	*/
 
 }

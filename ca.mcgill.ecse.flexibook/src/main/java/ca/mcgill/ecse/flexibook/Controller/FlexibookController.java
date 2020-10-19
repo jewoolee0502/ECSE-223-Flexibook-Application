@@ -332,5 +332,117 @@ public class FlexibookController {
 		}
 
 	}
+	
+	/**
+ * This method takes all parameters to make a new appointment in the system.
+ * 
+ * @author Yujing Yan
+ * 
+ * @param customer -- can be customer or owner. If it's owner, throw exception.
+ * @param date
+ * @param serviceName
+ * @param optionalServices
+ * @param startTime
+ * @throws InvalidInputException
+ */
+	public static void MakeAppointment(String customer, String date, String serviceName, String optionalServices, String startTime) throws InvalidInputException{
+		FlexiBook fb = FlexiBookApplication.getflexibook();
+
+		if(fb.getBusiness()==null) {
+			throw new InvalidInputException("The business should exist for making an appointment.");
+		}
+		if(customer.equals(fb.getOwner().getUsername())) {
+			throw new InvalidInputException("An owner cannot make an appointment");
+		}
+
+		int cindex = -1;
+		for(Customer c : fb.getCustomers()) {
+			if(c.getUsername().equals(customer)) {
+				cindex = fb.indexOfCustomer(c);
+			}
+		}
+		if(cindex == -1) {
+			throw new InvalidInputException("There is no customer ["+customer+"] exists.");
+		}
+
+		int sindex = -1;
+		for(BookableService s : fb.getBookableServices()) {
+			if(s.getName().equals(serviceName)) {
+				sindex = fb.indexOfBookableService(s);
+			}
+		}
+		if(sindex == -1) {
+			throw new InvalidInputException("There is no bookable service["+serviceName+"] exists.");
+		}
+
+
+		Date servicedate = Date.valueOf(date);
+		Time starttime = Time.valueOf(startTime+":00");
+		Time endtime = null;
+		int duration = 0;
+		if(fb.getBookableService(sindex) instanceof Service) {
+			Service service = (Service)fb.getBookableService(sindex);
+			duration = service.getDuration();
+
+		}else if(fb.getBookableService(sindex) instanceof ServiceCombo){
+			ServiceCombo combo = (ServiceCombo)fb.getBookableService(sindex);
+
+			duration = combo.getMainService().getService().getDuration();
+			String[] optService = optionalServices.split(",");
+			for(ComboItem item : combo.getServices()) {
+				for(String str : optService) {
+					if(str.equals(item.getService().getName())) {
+						duration+=item.getService().getDuration();
+					}
+				}
+			}
+		}
+
+		LocalTime localtime = starttime.toLocalTime();
+		localtime.plusMinutes(duration);
+		endtime = Time.valueOf(localtime);
+		TimeSlot timeslot = new TimeSlot(servicedate,starttime,servicedate,endtime, fb);
+
+		for(Appointment appointment : fb.getAppointments()) {
+			TimeSlot slot = appointment.getTimeSlot();
+			if(!isNoOverlap(timeslot,slot)) {
+				throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
+			}
+		}
+		
+		for(TimeSlot slot : fb.getBusiness().getHolidays()) {
+			if(!isNoOverlap(timeslot,slot)) {
+				throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
+			}
+		}
+		for(TimeSlot slot : fb.getBusiness().getVacation()) {
+			if(!isNoOverlap(timeslot,slot)) {
+				throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
+			}
+		}
+		
+		//TODO kind of GOP
+		int day = servicedate.getDay();
+		if(day == 0 || day == 6) {
+			throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
+		}
+
+		Appointment appointment = new Appointment(fb.getCustomer(cindex), fb.getBookableService(sindex), timeslot, fb);
+		
+	}
+
+	public static boolean isNoOverlap(TimeSlot t1, TimeSlot t2) {
+		if(t1.getStartDate().equals(t2.getStartDate())) {
+			if(t1.getEndTime().before(t2.getStartTime()) || 
+					t2.getEndTime().before(t1.getStartTime())) {
+				//is not overlap
+				return true;
+			}else {
+				return false;
+			}
+		}
+		return true;
+	}
+
 
 }

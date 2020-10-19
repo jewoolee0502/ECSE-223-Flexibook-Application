@@ -1,11 +1,18 @@
 package ca.mcgill.ecse.flexibook.Controller;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalTime;
+
 import com.google.common.base.CharMatcher;
 import java.io.*;
-import java.util.*;
+
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.*;
+
+
 public class FlexibookController {
 
 	/**

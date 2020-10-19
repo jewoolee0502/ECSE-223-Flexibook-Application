@@ -31,11 +31,11 @@ public class MakeAppointmentStepDefinitions {
 	//		}
 	//	}
 
-	@Given("the system's time and date is {string}")
-	public void the_system_s_time_and_date_is(String string) {
-		SystemTime systime = new SystemTime(string, true);
-
-	}
+//	@Given("the system's time and date is {string}")
+//	public void the_system_s_time_and_date_is(String string) {
+//		SystemTime systime = new SystemTime(string, true);
+//
+//	}
 
 	//	@Given("an owner account exists in the system")
 	//	public void an_owner_account_exists_in_the_system() {
@@ -114,18 +114,18 @@ public class MakeAppointmentStepDefinitions {
 		}
 	}
 	
-	@Given("the following appointments exist in the system:")
-	public void the_following_appointments_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) throws InvalidInputException {
-		List<Map<String,String>> list = dataTable.asMaps();
-		for(Map<String,String> map : list) {
-			String customer = map.get("customer");
-			String serviceName = map.get("serviceName");
-			String optServices = map.get("optServices");
-			String date = map.get("date");
-			String startTime = map.get("startTime");
-			FlexibookController.MakeAppointment(customer, date, serviceName, optServices, startTime);
-		}
-	}
+//	@Given("the following appointments exist in the system:")
+//	public void the_following_appointments_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) throws InvalidInputException {
+//		List<Map<String,String>> list = dataTable.asMaps();
+//		for(Map<String,String> map : list) {
+//			String customer = map.get("customer");
+//			String serviceName = map.get("serviceName");
+//			String optServices = map.get("optServices");
+//			String date = map.get("date");
+//			String startTime = map.get("startTime");
+//			FlexibookController.MakeAppointment(customer, date, serviceName, optServices, startTime);
+//		}
+//	}
 
 	@Given("{string} is logged in to their account")
 	public void is_logged_in_to_their_account(String customer1) {

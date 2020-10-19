@@ -34,12 +34,12 @@ public class DefineServiceComboStepDefinitions {
     FlexiBookApplication.setflexibook(flexibook);
   }
 
-  @Given("an owner account exists in the system")
-  public void an_owner_account_exists_in_the_system() {
-if(!flexibook.hasOwner()) {
-    Owner owner = new Owner("a", "123", flexibook); 
-}
-  }
+//  @Given("an owner account exists in the system")
+//  public void an_owner_account_exists_in_the_system() {
+//if(!flexibook.hasOwner()) {
+//    Owner owner = new Owner("a", "123", flexibook); 
+//}
+//  }
  
   @Given("Customer with username {string} is logged in")
   public void customer_with_username_is_logged_in(String string) {

@@ -198,14 +198,13 @@ public class FlexibookController {
 		else throw new InvalidInputException("Username/password not found");
 
 		}
-	public static boolean LogOut() throws InvalidInputException {
+	public static void LogOut() throws InvalidInputException {
 		FlexiBook flexi=FlexiBookApplication.getflexibook();
 		if(FlexiBookApplication.getCurrentuser()==null) {
 			throw new InvalidInputException("User is already logged out");
 		}
 		if(FlexiBookApplication.getCurrentuser()!=null) {
 			FlexiBookApplication.setCurrentuser(null);
-			return true;
 		}
 		throw new InvalidInputException("No user found with corresponding Username");
 	}
@@ -236,8 +235,8 @@ public class FlexibookController {
 	private static Customer getCustomer(String username) {
 		Customer foundCustomer = null;
 		for(Customer customer : FlexiBookApplication.getflexibook().getCustomers()) {
-			if(customer.getUsername() == username) {
-				break;
+			if(customer.getUsername().equals(username)) {
+				return customer;
 			}
 		}
 		return foundCustomer;
@@ -248,27 +247,38 @@ public class FlexibookController {
 		try {
 			FlexiBook flexibook = FlexiBookApplication.getflexibook();
 
-			if(FlexiBookApplication.getCurrentuser().equals(flexibook.getOwner())) {  
+			if(FlexiBookApplication.getCurrentuser().getUsername().equals("Owner")) {  
 				throw new InvalidInputException("You must log out of the owner account before creating a customer account");
 			}
 			else {
-				if(!(username.equals("") || username == null || password.equals("") || password == null)) {
-					if(getCustomer(username) == null) {
-						flexibook.addCustomer(username, password);
-					}
-					else {
-						throw new InvalidInputException("The username already exists");
-					}
-				}
-				else if(username.equals("") || username == null) {
+				if(username.equals("") || username == null) {
 					throw new InvalidInputException("The user name cannot be empty");
 				}
 				else if(password.equals("") || password == null) {
 					throw new InvalidInputException("The password cannot be empty");
 				}
+//				else if(getCustomer(username) != null) {
+//					throw new InvalidInputException("The username already exists");
+//				}
+//				else {
+//					flexibook.addCustomer(username, password);
+//				}
+				else {
+					if(flexibook.getCustomers().size() == 0) {
+						Customer c = new Customer(username, password, flexibook);
+						flexibook.addCustomer(c);
+					}				
+					if(flexibook.getCustomer(0).getWithUsername(username) == null) {
+						Customer cstmr = new Customer(username, password, flexibook);
+						flexibook.addCustomer(cstmr);
+					}
+					else {
+						throw new InvalidInputException("The username already exists");
+					}
+				}
 			}
 		} 
-		catch(RuntimeException e) {
+		catch(InvalidInputException e) {
 			throw new InvalidInputException(e.getMessage());
 		}
 	}
@@ -276,15 +286,15 @@ public class FlexibookController {
 	public static void UpdateAccount(String oldUsername, String newUsername, String newPassword) throws InvalidInputException {
 
 		FlexiBook flexibook = FlexiBookApplication.getflexibook();
-		User user = getCustomer(oldUsername);
+		User user = flexibook.getCustomer(0).getWithUsername(oldUsername);
 
 		if(oldUsername.equals("owner")) {
 			user = flexibook.getOwner();
 		}
 		else {
-			user = getCustomer(oldUsername);
+			user = flexibook.getCustomer(0).getWithUsername(oldUsername);
 		}
-		if(getCustomer(newUsername) != null) {
+		if(flexibook.getCustomer(0).getWithUsername(newUsername) != null) {
 			throw new InvalidInputException("Username not available");
 		}
 		else if(user != null) {
@@ -298,7 +308,7 @@ public class FlexibookController {
 		else if(newPassword.equals("") || newPassword == null) {
 			throw new InvalidInputException("The password cannot be empty");
 		}
-		else if(getCustomer(newUsername) == null) {
+		else if(flexibook.getCustomer(0).getWithUsername(newUsername) == null) {
 			user.setUsername(newUsername);
 			user.setPassword(newPassword);
 		}
@@ -307,7 +317,7 @@ public class FlexibookController {
 	public static void DeleteCustomerAccount(String username, String target) throws InvalidInputException {
 
 		FlexiBook flexibook = FlexiBookApplication.getflexibook();
-		Customer user = getCustomer(username);
+		Customer user = (Customer) flexibook.getCustomer(0).getWithUsername(username);
 
 		if(user != null) {
 			if(username.equals(target) && !(username.equals("owner"))) {

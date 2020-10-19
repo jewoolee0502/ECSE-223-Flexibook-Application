@@ -1,16 +1,18 @@
 package ca.mcgill.ecse.flexibook.features;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 import java.util.Map;
+
+import org.junit.Before;
 
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.Customer;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
+import ca.mcgill.ecse.flexibook.model.Owner;
 import ca.mcgill.ecse.flexibook.model.User;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -24,8 +26,15 @@ public class SignUpForCustomerAccountStepDefinition {
 	private int errorCntr = 0;
 	private int userCount = 0;
 
-	private int userCntrBeforeCreation;
+	private static int userCntrBeforeCreation;
 
+	@Before
+	public static void setUp() {
+		FlexiBookApplication.setCurrentuser(null);
+		FlexiBookApplication.getflexibook().delete();
+		userCntrBeforeCreation = 0;
+	}
+	
 	@Given("there is no existing username {string}")
 	public void there_is_no_existing_username(String username) {
 
@@ -39,9 +48,15 @@ public class SignUpForCustomerAccountStepDefinition {
 
 		flexibook = FlexiBookApplication.getflexibook();
 
-		if(User.getWithUsername(username) == null) { 
-			flexibook.addCustomer(username, "password");
+		if(username.equals("owner")) {
+			Owner owner = new Owner(username, "password", flexibook);
 		}
+		else {
+			if(User.getWithUsername(username) == null) { 
+				flexibook.addCustomer(username, "password");
+			}
+		}
+		
 	}
 
 	@Given("the user is logged in to an account with username {string}")
@@ -52,7 +67,9 @@ public class SignUpForCustomerAccountStepDefinition {
 				if (c.getUsername().equals(username)) user = c;
 			}
 		}
-		if(flexibook.getOwner().getUsername().equals(username)) user=flexibook.getOwner();
+		else if(flexibook.getOwner() != null && flexibook.getOwner().getUsername().equals(username)) {
+			user = flexibook.getOwner();
+		}
 		FlexiBookApplication.setCurrentuser(user);
 	}
 
@@ -62,33 +79,38 @@ public class SignUpForCustomerAccountStepDefinition {
 		try {
 			FlexibookController.SignUpForCustomerAccount(username, password);
 		} catch (InvalidInputException e) {
-			error += e.getMessage();
-			throw new InvalidInputException("Error.");
+			error = e.getMessage();
+			FlexiBookApplication.setmessage(error);
 		}
+		userCount ++;
 	}
 
 	@Then("a new customer account shall be created")
 	public void a_new_customer_account_shall_be_created() {
+		flexibook.getCustomers().size();
 		assertEquals(userCount + userCntrBeforeCreation, flexibook.getCustomers().size());
 
 	}
 
 	@Then("the account shall have username {string} and password {string}")
 	public void the_account_shall_have_username_and_password(String username, String password) {
-		assertEquals(username, flexibook.getCustomers().get(0).getUsername());
-		assertEquals(password, flexibook.getCustomers().get(0).getPassword());
+		assertEquals(username, flexibook.getCustomer(0).getWithUsername(username).getUsername());
+		assertEquals(password, flexibook.getCustomer(0).getWithUsername(username).getPassword());
 
 	}
 
 	@Then("no new account shall be created")
 	public void no_new_account_shall_be_created() throws Throwable {
-		assertEquals(0, flexibook.getCustomers().size());
+//		assertEquals(flexibook.getCustomer(0), flexibook.getCustomer(1));
+		assertEquals(userCntrBeforeCreation, flexibook.getCustomers().size());
 
 	}
 
 	@Then("an error message {string} shall be raised")
 	public void an_error_message_shall_be_raised(String errorMsg) {
-		assertTrue(error.contains(errorMsg));
+		String e = FlexiBookApplication.returnmessage();
+		assertEquals(errorMsg, e);
+		FlexiBookApplication.setmessage(null);
 
 	}
 

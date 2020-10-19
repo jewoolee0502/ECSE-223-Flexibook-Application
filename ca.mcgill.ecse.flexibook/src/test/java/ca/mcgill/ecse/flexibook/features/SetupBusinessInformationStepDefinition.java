@@ -10,17 +10,17 @@ public class SetupBusinessInformationStepDefinition {
 	  private  FlexiBook flexibook;
 	  private  InvalidInputException thise=null;
 
-	@Given("an owner account exists in the system with username {string} and password {string}")
-	public void an_owner_account_exists_in_the_system_with_username_and_password(String string, String string2) throws Exception{
-		flexibook=FlexiBookApplication.getflexibook();
-	if(!flexibook.hasOwner()) {
-		
-		   Owner owner =new Owner(string, string2, flexibook);
-		   flexibook.setOwner(owner);
-	}
-		  
-	   
-	}
+//	@Given("an owner account exists in the system with username {string} and password {string}")
+//	public void an_owner_account_exists_in_the_system_with_username_and_password(String string, String string2) throws Exception{
+//		flexibook=FlexiBookApplication.getflexibook();
+//	if(!flexibook.hasOwner()) {
+//		
+//		   Owner owner =new Owner(string, string2, flexibook);
+//		   flexibook.setOwner(owner);
+//	}
+//		  
+//	   
+//	}
 	@Given("no business exists")
 	public void no_business_exists() {
 	  if(flexibook.getBusiness()!=null) {

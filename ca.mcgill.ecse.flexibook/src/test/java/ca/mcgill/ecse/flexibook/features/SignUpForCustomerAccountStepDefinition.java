@@ -55,13 +55,14 @@ public class SignUpForCustomerAccountStepDefinition {
 
 		@Given("the user is logged in to an account with username {string}")
 		public void the_user_is_logged_in_to_an_account_with_username(String username) {
-			if(flexibook.getCustomers().size() != 0) {
-				Customer currentUser = (Customer) flexibook.getCustomer(0).getWithUsername(username);
-				FlexiBookApplication.setCurrentuser(currentUser);
-			}
-			FlexiBookApplication.setCurrentuser(flexibook.getCustomer(0).getWithUsername(username));
+			User user =null;
+			if(flexibook.getCustomers().size()!=0) {
+			for(Customer c:flexibook.getCustomers()) {
+				if (c.getUsername().equals(username)) user =c;
+			}}
+			if(flexibook.getOwner().getUsername().equals(username)) user=flexibook.getOwner();
+			FlexiBookApplication.setCurrentuser(user);
 		}
-
 		@When("the user provides a new username {string} and a password {string}")
 		public void the_user_provides_a_new_username_and_a_password(String username, String password) throws InvalidInputException {
 			try {

@@ -51,6 +51,12 @@ public class LogInStepDefinitions {
 	public void the_user_should_not_be_logged_in() {
 	assertTrue(FlexiBookApplication.getCurrentuser()==null);
 	}
+	@Then(" an error message {string} shall be raised")
+	public void  an_error_message_shall_be_raised(String string) {
+		String e=FlexiBookApplication.returnmessage();
+		assertEquals(string,e);
+		FlexiBookApplication.setmessage(null);
+	}
 	@Then("a new account shall be created")
 	public void a_new_account_shall_be_created() {
 	    assertTrue(flexibook.getOwner()!=null);
@@ -60,6 +66,7 @@ public class LogInStepDefinitions {
 	    assertEquals(FlexiBookApplication.getCurrentuser(),flexibook.getOwner());
 
 	}
+
 	@After
 	public void tearDown() {
 	   flexibook=FlexiBookApplication.getflexibook();

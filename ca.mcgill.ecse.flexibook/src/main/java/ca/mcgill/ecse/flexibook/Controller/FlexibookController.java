@@ -260,7 +260,7 @@ public class FlexibookController {
 					}
 				}
 				else if(username.equals("") || username == null) {
-					throw new InvalidInputException("The username cannot be empty");
+					throw new InvalidInputException("The user name cannot be empty");
 				}
 				else if(password.equals("") || password == null) {
 					throw new InvalidInputException("The password cannot be empty");
@@ -292,7 +292,7 @@ public class FlexibookController {
 			}
 		}
 		else if(newUsername.equals("") || newUsername == null) {
-			throw new InvalidInputException("The username cannot be empty");
+			throw new InvalidInputException("The user name cannot be empty");
 		}
 		else if(newPassword.equals("") || newPassword == null) {
 			throw new InvalidInputException("The password cannot be empty");

@@ -233,24 +233,79 @@ public class FlexibookController {
 		try {
 			FlexiBook flexibook = FlexiBookApplication.getflexibook();
 
-			if(!(username.equals("") || username == null || password.equals("") || password == null)) {
-				if(getCustomer(username) == null) {
-					flexibook.addCustomer(username, password);
-				}
-				else {
-					throw new InvalidInputException("the username already exists.");
-				}
+			if(FlexiBookApplication.getCurrentuser().equals(flexibook.getOwner())) {  
+				throw new InvalidInputException("You must log out of the owner account before creating a customer account");
 			}
-			else if(username.equals("") || username == null) {
-				throw new InvalidInputException("The username cannot be empty.");
-			}
-			else if(password.equals("") || password == null) {
-				throw new InvalidInputException("The password cannot be empty.");
+			else {
+				if(!(username.equals("") || username == null || password.equals("") || password == null)) {
+					if(getCustomer(username) == null) {
+						flexibook.addCustomer(username, password);
+					}
+					else {
+						throw new InvalidInputException("The username already exists");
+					}
+				}
+				else if(username.equals("") || username == null) {
+					throw new InvalidInputException("The username cannot be empty");
+				}
+				else if(password.equals("") || password == null) {
+					throw new InvalidInputException("The password cannot be empty");
+				}
 			}
 		} 
 		catch(RuntimeException e) {
 			throw new InvalidInputException(e.getMessage());
 		}
+	}
+
+	public static void UpdateAccount(String oldUsername, String newUsername, String newPassword) throws InvalidInputException {
+
+		FlexiBook flexibook = FlexiBookApplication.getflexibook();
+		User user = getCustomer(oldUsername);
+
+		if(oldUsername.equals("owner")) {
+			user = flexibook.getOwner();
+		}
+		else {
+			user = getCustomer(oldUsername);
+		}
+		if(getCustomer(newUsername) != null) {
+			throw new InvalidInputException("Username not available");
+		}
+		else if(user != null) {
+			if(oldUsername.equals("owner") && (!newUsername.equals("owner"))) {
+				throw new InvalidInputException("Changing username of owner is not allowed");	
+			}
+		}
+		else if(newUsername.equals("") || newUsername == null) {
+			throw new InvalidInputException("The username cannot be empty");
+		}
+		else if(newPassword.equals("") || newPassword == null) {
+			throw new InvalidInputException("The password cannot be empty");
+		}
+		else if(getCustomer(newUsername) == null) {
+			user.setUsername(newUsername);
+			user.setPassword(newPassword);
+		}
+	}
+
+	public static void DeleteCustomerAccount(String username, String target) throws InvalidInputException {
+
+		FlexiBook flexibook = FlexiBookApplication.getflexibook();
+		Customer user = getCustomer(username);
+
+		if(user != null) {
+			if(username.equals(target) && !(username.equals("owner"))) {
+				for(Appointment appointment : user.getAppointments()) {
+					appointment.delete();
+				}
+				user.delete();
+			}
+			else {
+				throw new InvalidInputException("You do not have permission to delete this account");
+			}
+		}
+
 	}
 
 }

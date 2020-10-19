@@ -1,26 +1,22 @@
 package ca.mcgill.ecse.flexibook.features;
 
+import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
+import ca.mcgill.ecse.flexibook.model.FlexiBook;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class UpdateCustomerOrOwnerAccountStepDefinition {
 
-	@Given("a Flexibook system exists")
-	public void a_flexibook_system_exists() {
-	    
-		
-		// Write code here that turns the phrase above into concrete actions
-	    //throw new io.cucumber.java.PendingException();
-	}
+private FlexiBook flexibook = FlexiBookApplication.getflexibook();
 
-	@Given("an owner account exists in the system with username {string} and password {string}")
-	public void an_owner_account_exists_in_the_system_with_username_and_password(String string, String string2) {
-	    
-		
-		// Write code here that turns the phrase above into concrete actions
-	    //throw new io.cucumber.java.PendingException();
-	}
+//	@Given("an owner account exists in the system with username {string} and password {string}")
+//	public void an_owner_account_exists_in_the_system_with_username_and_password(String string, String string2) {
+//	    
+//		
+//		// Write code here that turns the phrase above into concrete actions
+//	    //throw new io.cucumber.java.PendingException();
+//	}
 	
 
 	

@@ -37,10 +37,31 @@ public class SignUpForCustomerAccountStepDefinition {
 	@Given("there is an existing username {string}")
 	public void there_is_an_existing_username(String username) throws InvalidInputException {
 
+<<<<<<< HEAD
 		flexibook = FlexiBookApplication.getflexibook();
 
 		if(User.getWithUsername(username) == null) { 
 			flexibook.addCustomer(username, "password");
+=======
+		@Given("the user is logged in to an account with username {string}")
+		public void the_user_is_logged_in_to_an_account_with_username(String username) {
+			User user =null;
+			if(flexibook.getCustomers().size()!=0) {
+			for(Customer c:flexibook.getCustomers()) {
+				if (c.getUsername().equals(username)) user =c;
+			}}
+			if(flexibook.getOwner().getUsername().equals(username)) user=flexibook.getOwner();
+			FlexiBookApplication.setCurrentuser(user);
+		}
+		@When("the user provides a new username {string} and a password {string}")
+		public void the_user_provides_a_new_username_and_a_password(String username, String password) throws InvalidInputException {
+			try {
+				FlexibookController.SignUpForCustomerAccount(username, password);
+			} catch (InvalidInputException e) {
+				error += e.getMessage();
+				throw new InvalidInputException("Error.");
+			}
+>>>>>>> 60275299de7a649568c407fdc18bb151c492aff9
 		}
 	}
 

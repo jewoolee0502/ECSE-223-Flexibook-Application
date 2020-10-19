@@ -198,13 +198,14 @@ public class FlexibookController {
 		else throw new InvalidInputException("Username/password not found");
 
 		}
-	public static void LogOut() throws InvalidInputException {
+	public static boolean LogOut() throws InvalidInputException {
 		FlexiBook flexi=FlexiBookApplication.getflexibook();
 		if(FlexiBookApplication.getCurrentuser()==null) {
 			throw new InvalidInputException("User is already logged out");
 		}
 		if(FlexiBookApplication.getCurrentuser()!=null) {
 			FlexiBookApplication.setCurrentuser(null);
+			return true;
 		}
 		throw new InvalidInputException("No user found with corresponding Username");
 	}

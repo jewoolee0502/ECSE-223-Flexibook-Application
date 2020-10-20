@@ -10,6 +10,7 @@ import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.Appointment;
+import ca.mcgill.ecse.flexibook.model.Customer;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -26,8 +27,8 @@ public class DeleteCustomerAccountStepDefinition {
 	@Given("the account with username {string} has pending appointments")
 	public void the_account_with_username_has_pending_appointments(String username) {
 
-		if(FlexibookController.getCustomer(username).getAppointments().size() == 0) {
-			Appointment appointment = new Appointment(FlexibookController.getCustomer(username), null, null, flexibook);
+		if(getCustomer(username).getAppointments().size() == 0) {
+			Appointment appointment = new Appointment(getCustomer(username), null, null, flexibook);
 		}
 	}
 
@@ -35,7 +36,7 @@ public class DeleteCustomerAccountStepDefinition {
 	public void the_user_tries_to_delete_account_with_the_username(String username) throws InvalidInputException {
 
 		if(!(username.equals("owner"))) {
-			oldAppointments = FlexibookController.getCustomer(username).getAppointments();
+			oldAppointments = getCustomer(username).getAppointments();
 		}
 		
 		try {
@@ -52,10 +53,10 @@ public class DeleteCustomerAccountStepDefinition {
 	public void the_account_with_the_username_does_not_exist(String username) {
 
 		if(username.equals("owner")) {
-			assertNull(FlexibookController.getCustomer(username));
+			assertNull(getCustomer(username));
 		}
 		else {
-			assertFalse(flexibook.getCustomers().contains(FlexibookController.getCustomer(username)));
+			assertFalse(flexibook.getCustomers().contains(getCustomer(username)));
 		}
 	}
 
@@ -77,10 +78,21 @@ public class DeleteCustomerAccountStepDefinition {
 	public void the_account_with_the_username_exists(String username) {
 		
 		boolean exists = false;
-		if(FlexibookController.getCustomer(username) != null) {
+		if(getCustomer(username) != null) {
 			exists = true;
 		}
 		assertTrue(exists);
+	}
+	
+	
+	private static Customer getCustomer(String username) {
+		Customer foundCustomer = null;
+		for(Customer customer : FlexiBookApplication.getflexibook().getCustomers()) {
+			if(customer.getUsername().equals(username)) {
+				return customer;
+			}
+		}
+		return foundCustomer;
 	}
 	
 	

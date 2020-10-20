@@ -98,7 +98,7 @@ Feature: Delete Service Combo
       | Wash-Dry   | wash        | wash,dry       | true,false       |
       | Wash-Color | color       | wash,dry,color | false,false,true |
     Given the following appointments exist in the system:
-      | customer  | serviceName | optServices        | date       | startTime | endTime |
+      | customer  | serviceName | optServices | date       | startTime | endTime |
       | customer1 | Cut-Normal  | wash,cut,dry       | 2020-09-01 | 13:00     | 14:00   |
       | customer2 | Cut-Normal  | wash,cut,dry       | 2019-09-03 | 13:00     | 14:00   |
       | customer2 | Wash-Dry    | wash,dry           | 2019-09-12 | 13:00     | 13:30   |

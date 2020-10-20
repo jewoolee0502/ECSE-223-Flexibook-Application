@@ -11,6 +11,7 @@ import java.io.*;
 
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.*;
+import ca.mcgill.ecse.flexibook.util.SystemTime;
 
 
 public class FlexibookController {
@@ -242,15 +243,38 @@ public class FlexibookController {
      */
 	public static void deletecombo(String name,String comboname) throws InvalidInputException {
 	 FlexiBook fb =FlexiBookApplication.getflexibook();
+	 String time=SystemTime.gettime(SystemTime.getSysTime());
+	 String date=SystemTime.getdate(SystemTime.getSysTime());
 	  if(name.equals(fb.getOwner().getUsername())==true) {
-	   if(fb.getBookableServices().size()!=0) {
+	    if(fb.getBookableServices().size()!=0) {
 	     if(fb.getBookableService(0).getWithName(comboname)!=null) {
-	       fb.getBookableService(0).getWithName(comboname).delete();
+	       if(fb.getBookableService(0).getWithName(comboname).getAppointments().size()>0) {
+	         for(int i=0;i<fb.getAppointments().size();i++) {
+	           String startdate=fb.getBookableService(0).getWithName(comboname).getAppointment(i).getTimeSlot().getStartDate().toString();
+	           if(SystemTime.comparedate(date,startdate)==2) {
+	             throw new InvalidInputException("Service combo "+comboname+ " has future appointments"); 
+	           }else if(SystemTime.comparedate(date,startdate)==1) {
+	             fb.getBookableService(0).getWithName(comboname).delete();
+                 break;
+	           }else if(SystemTime.comparedate(date,startdate)==0) {
+	             String starttime=fb.getBookableService(0).getWithName(comboname).getAppointment(i).getTimeSlot().getStartTime().toString();
+	             if(SystemTime.comparetime(time,starttime)==1) {
+	               fb.getBookableService(0).getWithName(comboname).delete();
+	               break;
+	             }else {
+	               throw new InvalidInputException("Service combo "+comboname+ " has future appointments");
+	             }
+	           }
+	         }
+	       }else{fb.getBookableService(0).getWithName(comboname).delete();}
+	       
 	     }
 	   }
 	  }else {
 	    throw new InvalidInputException("You are not authorized to perform this operation"); 
 	  }
+	
+	
 	}
 	
 	
@@ -469,10 +493,10 @@ public class FlexibookController {
 		}
 
 		//TODO kind of GOP
-		int day = servicedate.getDay();
+		/*int day = servicedate.getDay();
 		if(day == 0 || day == 6) {
 			throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
-		}
+		}*/
 
 		Appointment appointment = new Appointment(fb.getCustomer(cindex), fb.getBookableService(sindex), timeslot, fb);
 

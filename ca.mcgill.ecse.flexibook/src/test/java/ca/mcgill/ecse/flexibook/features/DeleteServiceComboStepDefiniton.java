@@ -1,8 +1,11 @@
 package ca.mcgill.ecse.flexibook.features;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.List;
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
+import ca.mcgill.ecse.flexibook.model.Appointment;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
 import ca.mcgill.ecse.flexibook.util.SystemTime;
 import io.cucumber.java.After;
@@ -11,24 +14,32 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class DeleteServiceComboStepDefiniton {
-private FlexiBook flexibook=new FlexiBook();
+private FlexiBook flexibook=FlexiBookApplication.getflexibook();
 
  
  
   @When("{string} initiates the deletion of service combo {string}")
   public void initiates_the_deletion_of_service_combo(String string, String string2) throws InvalidInputException {
-    FlexibookController.deletecombo(string, string2);
-    System.out.println(SystemTime.comparetime("2020-10-01+14:00", "2020-10-01+14:01"));
+    try{
+      FlexibookController.deletecombo(string, string2);
+    }catch (InvalidInputException e) {
+      FlexiBookApplication.setmessage(e.getMessage());
+    }
   }
   @Then("the number of appointments in the system with service {string} shall be {string}")
   public void the_number_of_appointments_in_the_system_with_service_shall_be(String string, String string2) {
-      // Write code here that turns the phrase above into concrete actions
-      throw new io.cucumber.java.PendingException();
+int count =0;
+    for(int i =0;i<flexibook.getAppointments().size();i++) {
+ if(flexibook.getAppointment(i).getBookableService().getName().equals(string)) {
+  count++;
+}
+}
+    assertEquals(Integer.decode(string2),count);
   }
   @Then("the number of appointments in the system shall be {string}")
   public void the_number_of_appointments_in_the_system_shall_be(String string) {
-      // Write code here that turns the phrase above into concrete actions
-      throw new io.cucumber.java.PendingException();
+    List<Appointment> thi=flexibook.getAppointments();  
+    assertEquals(Integer.decode(string),flexibook.getAppointments().size());
       
   }
   @After

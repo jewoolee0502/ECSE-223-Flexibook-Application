@@ -452,4 +452,23 @@ public class FlexibookController {
 	}
 
 
+
+	public static void updateservice(String string, String string2, String string3, String string4, String string5,
+			String string6) throws InvalidInputException {
+		FlexiBook fb = FlexiBookApplication.getflexibook();
+		  String servicename = null;
+		
+		if(fb.getOwner().getUsername().equals(string)==true) {
+			if(fb.getBookableServices().size()!=0) {
+				if(fb.getBookableService(0).getWithName(string2)==null) {
+					throw new InvalidInputException("Service does not exist");
+				}
+								
+		}else {throw new InvalidInputException("You are not authorized to perform this operation");  
+		}
+		}
+	}
 }
+
+
+

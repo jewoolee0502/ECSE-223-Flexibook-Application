@@ -191,20 +191,20 @@ public class FlexibookController {
 	public static boolean AttemptLogIn(String userID,String passcode) throws InvalidInputException {
 		FlexiBook flexi=FlexiBookApplication.getflexibook();
 		try {
-		for(Customer c:flexi.getCustomers()) {
-			if(c.getUsername().equals(userID)&&c.getPassword().equals(passcode)) {
-				FlexiBookApplication.setCurrentuser(c);
+			for(Customer c:flexi.getCustomers()) {
+				if(c.getUsername().equals(userID)&&c.getPassword().equals(passcode)) {
+					FlexiBookApplication.setCurrentuser(c);
+					return true;
+
+				}}
+			if(userID.equals("owner")&&passcode.equals("owner")) {
+				Owner owner=new Owner(userID,passcode,flexi);
+				flexi.setOwner(owner);
+				FlexiBookApplication.setCurrentuser(flexi.getOwner());
 				return true;
+			}
 
-			}}
-		if(userID.equals("owner")&&passcode.equals("owner")) {
-			Owner owner=new Owner(userID,passcode,flexi);
-			flexi.setOwner(owner);
-			FlexiBookApplication.setCurrentuser(flexi.getOwner());
-			return true;
-		}
-
-		else FlexiBookApplication.setCurrentuser(null); 
+			else FlexiBookApplication.setCurrentuser(null); 
 			throw new InvalidInputException("Username/password not found");
 		}
 		catch(InvalidInputException e) {
@@ -214,13 +214,13 @@ public class FlexibookController {
 	public static void LogOut() throws InvalidInputException {
 		FlexiBook flexi=FlexiBookApplication.getflexibook();
 		try {
-		if(FlexiBookApplication.getCurrentuser()==null) {
-			throw new InvalidInputException("User is already logged out");
-		}
-		if(FlexiBookApplication.getCurrentuser()!=null) {
-			FlexiBookApplication.setCurrentuser(null);
-		}
-		throw new InvalidInputException("No user found with corresponding Username");
+			if(FlexiBookApplication.getCurrentuser()==null) {
+				throw new InvalidInputException("User is already logged out");
+			}
+			if(FlexiBookApplication.getCurrentuser()!=null) {
+				FlexiBookApplication.setCurrentuser(null);
+			}
+			throw new InvalidInputException("No user found with corresponding Username");
 		}
 		catch(InvalidInputException e) {
 			throw new InvalidInputException(e.getMessage());
@@ -240,54 +240,54 @@ public class FlexibookController {
 		Customer thisc=new Customer(a, b, fb);
 	}
 
-	
+
 	/**
-     * deketecombo: This method takes an input of username and a combo name. The method will decide whether to initiate the deleting method
-     * 
-     * @author Haipeng Yue
-     * 
-     * @param String username
-     * @param
-     * @throws InvalidInputException an error is encountered
-     * @return void
-     */
+	 * deketecombo: This method takes an input of username and a combo name. The method will decide whether to initiate the deleting method
+	 * 
+	 * @author Haipeng Yue
+	 * 
+	 * @param String username
+	 * @param
+	 * @throws InvalidInputException an error is encountered
+	 * @return void
+	 */
 	public static void deletecombo(String name,String comboname) throws InvalidInputException {
-	 FlexiBook fb =FlexiBookApplication.getflexibook();
-	 String time=SystemTime.gettime(SystemTime.getSysTime());
-	 String date=SystemTime.getdate(SystemTime.getSysTime());
-	  if(name.equals(fb.getOwner().getUsername())==true) {
-	    if(fb.getBookableServices().size()!=0) {
-	     if(fb.getBookableService(0).getWithName(comboname)!=null) {
-	       if(fb.getBookableService(0).getWithName(comboname).getAppointments().size()>0) {
-	         for(int i=0;i<fb.getAppointments().size();i++) {
-	           String startdate=fb.getBookableService(0).getWithName(comboname).getAppointment(i).getTimeSlot().getStartDate().toString();
-	           if(SystemTime.comparedate(date,startdate)==2) {
-	             throw new InvalidInputException("Service combo "+comboname+ " has future appointments"); 
-	           }else if(SystemTime.comparedate(date,startdate)==1) {
-	             fb.getBookableService(0).getWithName(comboname).delete();
-                 break;
-	           }else if(SystemTime.comparedate(date,startdate)==0) {
-	             String starttime=fb.getBookableService(0).getWithName(comboname).getAppointment(i).getTimeSlot().getStartTime().toString();
-	             if(SystemTime.comparetime(time,starttime)==1) {
-	               fb.getBookableService(0).getWithName(comboname).delete();
-	               break;
-	             }else {
-	               throw new InvalidInputException("Service combo "+comboname+ " has future appointments");
-	             }
-	           }
-	         }
-	       }else{fb.getBookableService(0).getWithName(comboname).delete();}
-	       
-	     }
-	   }
-	  }else {
-	    throw new InvalidInputException("You are not authorized to perform this operation"); 
-	  }
-	
-	
+		FlexiBook fb =FlexiBookApplication.getflexibook();
+		String time=SystemTime.gettime(SystemTime.getSysTime());
+		String date=SystemTime.getdate(SystemTime.getSysTime());
+		if(name.equals(fb.getOwner().getUsername())==true) {
+			if(fb.getBookableServices().size()!=0) {
+				if(fb.getBookableService(0).getWithName(comboname)!=null) {
+					if(fb.getBookableService(0).getWithName(comboname).getAppointments().size()>0) {
+						for(int i=0;i<fb.getAppointments().size();i++) {
+							String startdate=fb.getBookableService(0).getWithName(comboname).getAppointment(i).getTimeSlot().getStartDate().toString();
+							if(SystemTime.comparedate(date,startdate)==2) {
+								throw new InvalidInputException("Service combo "+comboname+ " has future appointments"); 
+							}else if(SystemTime.comparedate(date,startdate)==1) {
+								fb.getBookableService(0).getWithName(comboname).delete();
+								break;
+							}else if(SystemTime.comparedate(date,startdate)==0) {
+								String starttime=fb.getBookableService(0).getWithName(comboname).getAppointment(i).getTimeSlot().getStartTime().toString();
+								if(SystemTime.comparetime(time,starttime)==1) {
+									fb.getBookableService(0).getWithName(comboname).delete();
+									break;
+								}else {
+									throw new InvalidInputException("Service combo "+comboname+ " has future appointments");
+								}
+							}
+						}
+					}else{fb.getBookableService(0).getWithName(comboname).delete();}
+
+				}
+			}
+		}else {
+			throw new InvalidInputException("You are not authorized to perform this operation"); 
+		}
+
+
 	}
-	
-	
+
+
 	/**
 	 * Customer: This method takes in all the parameters and looks for a customer account that has the same username.
 	 * 
@@ -298,7 +298,7 @@ public class FlexibookController {
 	 * @return foundCustomer
 	 */
 
-	public static Customer getCustomer(String username) {
+	private static Customer getCustomer(String username) {
 		Customer foundCustomer = null;
 		for(Customer customer : FlexiBookApplication.getflexibook().getCustomers()) {
 			if(customer.getUsername().equals(username)) {
@@ -313,7 +313,7 @@ public class FlexibookController {
 		try {
 			FlexiBook flexibook = FlexiBookApplication.getflexibook();
 
-			if(FlexiBookApplication.getCurrentuser().getUsername().equals("Owner")) {  
+			if(flexibook.getOwner() != null && FlexiBookApplication.getCurrentuser() == flexibook.getOwner()) {  
 				throw new InvalidInputException("You must log out of the owner account before creating a customer account");
 			}
 			else {
@@ -344,7 +344,7 @@ public class FlexibookController {
 				}
 			}
 		} 
-		
+
 		catch(InvalidInputException e) {
 			throw new InvalidInputException(e.getMessage());
 		}
@@ -355,33 +355,33 @@ public class FlexibookController {
 		try {
 
 			FlexiBook flexibook = FlexiBookApplication.getflexibook();
-			User user = flexibook.getCustomer(0).getWithUsername(oldUsername);
+			User user;
 
 			if(oldUsername.equals("owner")) {
 				user = flexibook.getOwner();
 			}
 			else {
-				user = flexibook.getCustomer(0).getWithUsername(oldUsername);
+				user = getCustomer(oldUsername);
 			}
-			if(flexibook.getCustomer(0).getWithUsername(newUsername) != null) {
+			if(getCustomer(newUsername) != null) {
 				throw new InvalidInputException("Username not available");
 			}
 			else if(user != null) {
 				if(oldUsername.equals("owner") && (!newUsername.equals("owner"))) {
 					throw new InvalidInputException("Changing username of owner is not allowed");	
 				}
+				else if(newUsername.equals("") || newUsername == null) {
+					throw new InvalidInputException("The user name cannot be empty");
+				}
+				else if(newPassword.equals("") || newPassword == null) {
+					throw new InvalidInputException("The password cannot be empty");
+				}
+				else {
+					user.setUsername(newUsername);
+					user.setPassword(newPassword);
+				}
 			}
-			else if(newUsername.equals("") || newUsername == null) {
-				throw new InvalidInputException("The user name cannot be empty");
-			}
-			else if(newPassword.equals("") || newPassword == null) {
-				throw new InvalidInputException("The password cannot be empty");
-			}
-			else if(flexibook.getCustomer(0).getWithUsername(newUsername) == null) {
-				user.setUsername(newUsername);
-				user.setPassword(newPassword);
-			}
-			
+
 		} catch (InvalidInputException e) {
 			throw new InvalidInputException(e.getMessage());
 		}
@@ -391,7 +391,7 @@ public class FlexibookController {
 	public static void DeleteCustomerAccount(String username, String target) throws InvalidInputException {
 
 		try {
-			
+
 			FlexiBook flexibook = FlexiBookApplication.getflexibook();
 			Customer user = (Customer) flexibook.getCustomer(0).getWithUsername(username);
 
@@ -406,11 +406,11 @@ public class FlexibookController {
 					throw new InvalidInputException("You do not have permission to delete this account");
 				}
 			}
-			
+
 		} catch (InvalidInputException e) {
 			throw new InvalidInputException(e.getMessage());
 		}
-		
+
 
 	}
 
@@ -530,16 +530,16 @@ public class FlexibookController {
 	public static void updateservice(String string, String string2, String string3, String string4, String string5,
 			String string6) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
-		  String servicename = null;
-		
+		String servicename = null;
+
 		if(fb.getOwner().getUsername().equals(string)==true) {
 			if(fb.getBookableServices().size()!=0) {
 				if(fb.getBookableService(0).getWithName(string2)==null) {
 					throw new InvalidInputException("Service does not exist");
 				}
-								
-		}else {throw new InvalidInputException("You are not authorized to perform this operation");  
-		}
+
+			}else {throw new InvalidInputException("You are not authorized to perform this operation");  
+			}
 		}
 	}
 }

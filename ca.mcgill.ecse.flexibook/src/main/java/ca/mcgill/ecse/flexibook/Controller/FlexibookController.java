@@ -204,7 +204,7 @@ public class FlexibookController {
 
 		else throw new InvalidInputException("Username/password not found");
 
-		}
+	}
 	public static void LogOut() throws InvalidInputException {
 		FlexiBook flexi=FlexiBookApplication.getflexibook();
 		if(FlexiBookApplication.getCurrentuser()==null) {
@@ -264,12 +264,12 @@ public class FlexibookController {
 				else if(password.equals("") || password == null) {
 					throw new InvalidInputException("The password cannot be empty");
 				}
-//				else if(getCustomer(username) != null) {
-//					throw new InvalidInputException("The username already exists");
-//				}
-//				else {
-//					flexibook.addCustomer(username, password);
-//				}
+				//				else if(getCustomer(username) != null) {
+				//					throw new InvalidInputException("The username already exists");
+				//				}
+				//				else {
+				//					flexibook.addCustomer(username, password);
+				//				}
 				else {
 					if(flexibook.getCustomers().size() == 0) {
 						Customer c = new Customer(username, password, flexibook);
@@ -285,6 +285,7 @@ public class FlexibookController {
 				}
 			}
 		} 
+		
 		catch(InvalidInputException e) {
 			throw new InvalidInputException(e.getMessage());
 		}
@@ -292,66 +293,80 @@ public class FlexibookController {
 
 	public static void UpdateAccount(String oldUsername, String newUsername, String newPassword) throws InvalidInputException {
 
-		FlexiBook flexibook = FlexiBookApplication.getflexibook();
-		User user = flexibook.getCustomer(0).getWithUsername(oldUsername);
+		try {
 
-		if(oldUsername.equals("owner")) {
-			user = flexibook.getOwner();
-		}
-		else {
-			user = flexibook.getCustomer(0).getWithUsername(oldUsername);
-		}
-		if(flexibook.getCustomer(0).getWithUsername(newUsername) != null) {
-			throw new InvalidInputException("Username not available");
-		}
-		else if(user != null) {
-			if(oldUsername.equals("owner") && (!newUsername.equals("owner"))) {
-				throw new InvalidInputException("Changing username of owner is not allowed");	
+			FlexiBook flexibook = FlexiBookApplication.getflexibook();
+			User user = flexibook.getCustomer(0).getWithUsername(oldUsername);
+
+			if(oldUsername.equals("owner")) {
+				user = flexibook.getOwner();
 			}
+			else {
+				user = flexibook.getCustomer(0).getWithUsername(oldUsername);
+			}
+			if(flexibook.getCustomer(0).getWithUsername(newUsername) != null) {
+				throw new InvalidInputException("Username not available");
+			}
+			else if(user != null) {
+				if(oldUsername.equals("owner") && (!newUsername.equals("owner"))) {
+					throw new InvalidInputException("Changing username of owner is not allowed");	
+				}
+			}
+			else if(newUsername.equals("") || newUsername == null) {
+				throw new InvalidInputException("The user name cannot be empty");
+			}
+			else if(newPassword.equals("") || newPassword == null) {
+				throw new InvalidInputException("The password cannot be empty");
+			}
+			else if(flexibook.getCustomer(0).getWithUsername(newUsername) == null) {
+				user.setUsername(newUsername);
+				user.setPassword(newPassword);
+			}
+			
+		} catch (InvalidInputException e) {
+			throw new InvalidInputException(e.getMessage());
 		}
-		else if(newUsername.equals("") || newUsername == null) {
-			throw new InvalidInputException("The user name cannot be empty");
-		}
-		else if(newPassword.equals("") || newPassword == null) {
-			throw new InvalidInputException("The password cannot be empty");
-		}
-		else if(flexibook.getCustomer(0).getWithUsername(newUsername) == null) {
-			user.setUsername(newUsername);
-			user.setPassword(newPassword);
-		}
+
 	}
 
 	public static void DeleteCustomerAccount(String username, String target) throws InvalidInputException {
 
-		FlexiBook flexibook = FlexiBookApplication.getflexibook();
-		Customer user = (Customer) flexibook.getCustomer(0).getWithUsername(username);
+		try {
+			
+			FlexiBook flexibook = FlexiBookApplication.getflexibook();
+			Customer user = (Customer) flexibook.getCustomer(0).getWithUsername(username);
 
-		if(user != null) {
-			if(username.equals(target) && !(username.equals("owner"))) {
-				for(Appointment appointment : user.getAppointments()) {
-					appointment.delete();
+			if(user != null) {
+				if(username.equals(target) && !(username.equals("owner"))) {
+					for(Appointment appointment : user.getAppointments()) {
+						appointment.delete();
+					}
+					user.delete();
 				}
-				user.delete();
+				else {
+					throw new InvalidInputException("You do not have permission to delete this account");
+				}
 			}
-			else {
-				throw new InvalidInputException("You do not have permission to delete this account");
-			}
+			
+		} catch (InvalidInputException e) {
+			throw new InvalidInputException(e.getMessage());
 		}
+		
 
 	}
-	
+
 	/**
- * This method takes all parameters to make a new appointment in the system.
- * 
- * @author Yujing Yan
- * 
- * @param customer -- can be customer or owner. If it's owner, throw exception.
- * @param date
- * @param serviceName
- * @param optionalServices
- * @param startTime
- * @throws InvalidInputException
- */
+	 * This method takes all parameters to make a new appointment in the system.
+	 * 
+	 * @author Yujing Yan
+	 * 
+	 * @param customer -- can be customer or owner. If it's owner, throw exception.
+	 * @param date
+	 * @param serviceName
+	 * @param optionalServices
+	 * @param startTime
+	 * @throws InvalidInputException
+	 */
 	public static void MakeAppointment(String customer, String date, String serviceName, String optionalServices, String startTime) throws InvalidInputException{
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 
@@ -416,7 +431,7 @@ public class FlexibookController {
 				throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
 			}
 		}
-		
+
 		for(TimeSlot slot : fb.getBusiness().getHolidays()) {
 			if(!isNoOverlap(timeslot,slot)) {
 				throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
@@ -427,7 +442,7 @@ public class FlexibookController {
 				throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
 			}
 		}
-		
+
 		//TODO kind of GOP
 		int day = servicedate.getDay();
 		if(day == 0 || day == 6) {
@@ -435,7 +450,7 @@ public class FlexibookController {
 		}
 
 		Appointment appointment = new Appointment(fb.getCustomer(cindex), fb.getBookableService(sindex), timeslot, fb);
-		
+
 	}
 
 	public static boolean isNoOverlap(TimeSlot t1, TimeSlot t2) {

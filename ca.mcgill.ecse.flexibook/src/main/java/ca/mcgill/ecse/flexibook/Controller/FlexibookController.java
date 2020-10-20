@@ -229,6 +229,31 @@ public class FlexibookController {
 		Customer thisc=new Customer(a, b, fb);
 	}
 
+	
+	/**
+     * deketecombo: This method takes an input of username and a combo name. The method will decide whether to initiate the deleting method
+     * 
+     * @author Haipeng Yue
+     * 
+     * @param String username
+     * @param
+     * @throws InvalidInputException an error is encountered
+     * @return void
+     */
+	public static void deletecombo(String name,String comboname) throws InvalidInputException {
+	 FlexiBook fb =FlexiBookApplication.getflexibook();
+	  if(name.equals(fb.getOwner().getUsername())==true) {
+	   if(fb.getBookableServices().size()!=0) {
+	     if(fb.getBookableService(0).getWithName(comboname)!=null) {
+	       fb.getBookableService(0).getWithName(comboname).delete();
+	     }
+	   }
+	  }else {
+	    throw new InvalidInputException("You are not authorized to perform this operation"); 
+	  }
+	}
+	
+	
 	/**
 	 * Customer: This method takes in all the parameters and looks for a customer account that has the same username.
 	 * 

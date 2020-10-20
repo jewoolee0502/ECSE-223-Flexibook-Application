@@ -30,10 +30,61 @@ public class SystemTime {
 	public static void setSysTime(String systime) {
 		SysTime = systime;
 	}
-	//Example I found online
-	/*public static void main(String[] args) {  
-	    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
-	    Date date = new Date();  
-	    System.out.println(formatter.format(date));  
-	}  */
+	public static String getdate(String systime) {
+	  String[]parts=systime.split("+");
+	  
+	  return parts[0];
+	}
+	   public static String gettime(String systime) {
+	      String[]parts=systime.split("+");
+	      return parts[1];
+	    }
+	   public static int comparedate(String time1,String time2) {
+	    int check=0;	     
+	    String date2=time2.split("\\+")[0];
+	    String date1=time1.split("\\+")[0];
+	       String[] split1=date1.split("-"); 
+	      String[] split2=date2.split("-");
+	       if(Integer.decode(split1[0])>Integer.decode(split2[0])) {
+	         check=1;
+	       }else if(Integer.decode(split1[0])<Integer.decode(split2[0])) {
+	         check=2;
+	       }else {
+	         if(Integer.decode(split1[1])>Integer.decode(split2[1])) {
+	           check=1;
+	         }else if(Integer.decode(split1[1])<Integer.decode(split2[1])) {
+	           check=2;
+	         }else {
+	           if(Integer.decode(split1[2])>Integer.decode(split2[2])) {
+	             check=1;
+	           }else if(Integer.decode(split1[2])<Integer.decode(split2[2])) {
+	             check=2;
+	           }else {
+	             check=0;
+	           }
+	         }
+	       }
+	     return check;
+	     }
+	   public static int comparetime(String time1,String time2) {
+	     int check=0;       
+	        String t2=time2.split("\\+")[1];
+	        String t1=time1.split("\\+")[1];
+	          String[] split1=t1.split(":"); 
+	          String[] split2=t2.split(":");
+	          if(Integer.decode(split1[0])>Integer.decode(split2[0])) {
+	             check=1;
+	           }else if(Integer.decode(split1[0])<Integer.decode(split2[0])) {
+	             check=2;
+	           }else {
+	             if(Integer.decode(split1[1])>Integer.decode(split2[1])) {
+	               
+	               check=1;
+	             }else if(Integer.decode(split1[1])<Integer.decode(split2[1])) {
+	               check=2;
+	             }else {
+	               check=0;
+	             }
+	   }return check;
+}
 }

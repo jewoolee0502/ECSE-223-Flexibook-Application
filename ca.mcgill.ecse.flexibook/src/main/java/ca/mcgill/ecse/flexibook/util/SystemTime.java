@@ -30,10 +30,58 @@ public class SystemTime {
 	public static void setSysTime(String systime) {
 		SysTime = systime;
 	}
-	//Example I found online
-	/*public static void main(String[] args) {  
-	    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
-	    Date date = new Date();  
-	    System.out.println(formatter.format(date));  
-	}  */
+	public static String getdate(String systime) {
+	  String[] parts1=systime.split("\\+");
+	  
+	  return parts1[0];
+	}
+	   public static String gettime(String systime) {
+	      String[] parts2=systime.split("\\+");
+	      return parts2[1];
+	    }
+	   public static int comparedate(String time1,String time2) {
+	    int check=0;	     
+
+	       String[] split1=time1.split("-"); 
+	      String[] split2=time2.split("-");
+	       if(Integer.parseInt(split1[0])>Integer.parseInt(split2[0])) {
+	         check=1;
+	       }else if(Integer.parseInt(split1[0])<Integer.parseInt(split2[0])) {
+	         check=2;
+	       }else {
+	         if(Integer.parseInt(split1[1])>Integer.parseInt(split2[1])) {
+	           check=1;
+	         }else if(Integer.parseInt(split1[1])<Integer.parseInt(split2[1])) {
+	           check=2;
+	         }else {
+	           if(Integer.parseInt(split1[2])>Integer.parseInt(split2[2])) {
+	             check=1;
+	           }else if(Integer.parseInt(split1[2])<Integer.parseInt(split2[2])) {
+	             check=2;
+	           }else {
+	             check=0;
+	           }
+	         }
+	       }
+	     return check;
+	     }
+	   public static int comparetime(String time1,String time2) {
+	     int check=0;       
+	          String[] split1=time1.split(":"); 
+	          String[] split2=time2.split(":");
+	          if(Integer.parseInt(split1[0])>Integer.parseInt(split2[0])) {
+	             check=1;
+	           }else if(Integer.parseInt(split1[0])<Integer.parseInt(split2[0])) {
+	             check=2;
+	           }else {
+	             if(Integer.parseInt(split1[1])>Integer.parseInt(split2[1])) {
+	               
+	               check=1;
+	             }else if(Integer.parseInt(split1[1])<Integer.parseInt(split2[1])) {
+	               check=2;
+	             }else {
+	               check=0;
+	             }
+	   }return check;
+}
 }

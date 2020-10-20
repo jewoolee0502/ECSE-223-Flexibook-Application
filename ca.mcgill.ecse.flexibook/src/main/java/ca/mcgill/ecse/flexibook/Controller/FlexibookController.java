@@ -288,7 +288,7 @@ public class FlexibookController {
 	 * @return foundCustomer
 	 */
 
-	private static Customer getCustomer(String username) {
+	public static Customer getCustomer(String username) {
 		Customer foundCustomer = null;
 		for(Customer customer : FlexiBookApplication.getflexibook().getCustomers()) {
 			if(customer.getUsername().equals(username)) {

@@ -25,6 +25,8 @@ public class SignUpForCustomerAccountStepDefinition {
 	private String error;
 	private int errorCntr = 0;
 	private int userCount = 0;
+	
+	private User tempUser;
 
 	private static int userCntrBeforeCreation;
 
@@ -61,16 +63,27 @@ public class SignUpForCustomerAccountStepDefinition {
 
 	@Given("the user is logged in to an account with username {string}")
 	public void the_user_is_logged_in_to_an_account_with_username(String username) {
+		
 		User user = null;
-		if(flexibook.getCustomers().size() != 0) {
-			for(Customer c : flexibook.getCustomers()) {
-				if (c.getUsername().equals(username)) user = c;
-			}
-		}
-		else if(flexibook.getOwner() != null && flexibook.getOwner().getUsername().equals(username)) {
+//		if(flexibook.getCustomers().size() != 0) {
+//			for(Customer c : flexibook.getCustomers()) {
+//				if (c.getUsername().equals(username)) user = c;
+//			}
+//		}
+//		else if(flexibook.getOwner() != null && flexibook.getOwner().getUsername().equals(username)) {
+//			user = flexibook.getOwner();
+//		}
+		
+		if(username.equals("owner")) {
 			user = flexibook.getOwner();
 		}
+		else {
+			user = getCustomer(username);
+		}
+		
 		FlexiBookApplication.setCurrentuser(user);
+		
+		tempUser = user;
 	}
 
 	@When("the user provides a new username {string} and a password {string}")
@@ -83,6 +96,7 @@ public class SignUpForCustomerAccountStepDefinition {
 			FlexiBookApplication.setmessage(error);
 		}
 		userCount ++;
+		tempUser = getCustomer(username);
 	}
 
 	@Then("a new customer account shall be created")
@@ -94,8 +108,11 @@ public class SignUpForCustomerAccountStepDefinition {
 
 	@Then("the account shall have username {string} and password {string}")
 	public void the_account_shall_have_username_and_password(String username, String password) {
-		assertEquals(username, flexibook.getCustomer(0).getWithUsername(username).getUsername());
-		assertEquals(password, flexibook.getCustomer(0).getWithUsername(username).getPassword());
+		assertEquals(username, tempUser.getUsername());
+		assertEquals(password, tempUser.getPassword());
+		
+//		assertEquals(username, flexibook.getCustomer(0).getWithUsername(username).getUsername());
+//		assertEquals(password, flexibook.getCustomer(0).getWithUsername(username).getPassword());
 
 	}
 
@@ -113,7 +130,16 @@ public class SignUpForCustomerAccountStepDefinition {
 		FlexiBookApplication.setmessage(null);
 
 	}
-
+	
+	private static Customer getCustomer(String username) {
+		Customer foundCustomer = null;
+		for(Customer customer : FlexiBookApplication.getflexibook().getCustomers()) {
+			if(customer.getUsername().equals(username)) {
+				return customer;
+			}
+		}
+		return foundCustomer;
+	}
 
 }
 

@@ -62,8 +62,8 @@ public class SignUpForCustomerAccountStepDefinition {
 	@Given("the user is logged in to an account with username {string}")
 	public void the_user_is_logged_in_to_an_account_with_username(String username) {
 		User user = null;
-		if(flexibook.getCustomers().size()!= 0) {
-			for(Customer c:flexibook.getCustomers()) {
+		if(flexibook.getCustomers().size() != 0) {
+			for(Customer c : flexibook.getCustomers()) {
 				if (c.getUsername().equals(username)) user = c;
 			}
 		}

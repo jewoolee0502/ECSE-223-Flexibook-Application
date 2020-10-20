@@ -190,6 +190,7 @@ public class FlexibookController {
 
 	public static boolean AttemptLogIn(String userID,String passcode) throws InvalidInputException {
 		FlexiBook flexi=FlexiBookApplication.getflexibook();
+		try {
 		for(Customer c:flexi.getCustomers()) {
 			if(c.getUsername().equals(userID)&&c.getPassword().equals(passcode)) {
 				FlexiBookApplication.setCurrentuser(c);
@@ -203,11 +204,16 @@ public class FlexibookController {
 			return true;
 		}
 
-		else throw new InvalidInputException("Username/password not found");
-
+		else FlexiBookApplication.setCurrentuser(null); 
+			throw new InvalidInputException("Username/password not found");
+		}
+		catch(InvalidInputException e) {
+			throw new InvalidInputException(e.getMessage());
+		}
 	}
 	public static void LogOut() throws InvalidInputException {
 		FlexiBook flexi=FlexiBookApplication.getflexibook();
+		try {
 		if(FlexiBookApplication.getCurrentuser()==null) {
 			throw new InvalidInputException("User is already logged out");
 		}
@@ -215,6 +221,10 @@ public class FlexibookController {
 			FlexiBookApplication.setCurrentuser(null);
 		}
 		throw new InvalidInputException("No user found with corresponding Username");
+		}
+		catch(InvalidInputException e) {
+			throw new InvalidInputException(e.getMessage());
+		}
 	}
 
 	public static void CreateUser(String a, String b) throws InvalidInputException {

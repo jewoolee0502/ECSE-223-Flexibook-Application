@@ -15,7 +15,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class UpdateServiceComboStepDefinitions {
-  private  FlexiBook flexibook;
+  private  FlexiBook flexibook=FlexiBookApplication.getflexibook();
   private String error;
   @When("{string} initiates the update of service combo {string} to name {string}, main service {string} and services {string} and mandatory setting {string}")
   public void initiates_the_update_of_service_combo_to_name_main_service_and_services_and_mandatory_setting(String string, String string2, String string3, String string4, String string5, String string6) throws InvalidInputException {

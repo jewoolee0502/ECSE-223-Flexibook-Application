@@ -172,7 +172,7 @@ public class FlexibookController {
 							for(int i=0;i<items.size();i++) {
 								items.get(i).delete();
 							}
-							throw new InvalidInputException("A service Combo must contain at least 2 services");  
+							throw new InvalidInputException("A service Combo must have at least 2 services");  
 						}
 						int k=combo.getServices().size();
 						for (int i=0;i<k-items.size();i++) {

@@ -39,7 +39,6 @@ Feature: Update Service Combo
       | highlights |       90 |            50 |               40 |
       | color      |       75 |            45 |               30 |
       | cut        |       20 |             0 |                0 |
-      | highlights |       90 |            50 |               40 |
       | dry        |       10 |             0 |                0 |
     Given the following service combos exist in the system:
       | name       | mainService | services     | mandatory        |

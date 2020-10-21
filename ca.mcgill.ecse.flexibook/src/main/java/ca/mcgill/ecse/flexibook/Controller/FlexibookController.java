@@ -363,10 +363,7 @@ public class FlexibookController {
 			else {
 				user = getCustomer(oldUsername);
 			}
-			if(getCustomer(newUsername) != null) {
-				throw new InvalidInputException("Username not available");
-			}
-			else if(user != null) {
+			if(user != null) {
 				if(oldUsername.equals("owner") && (!newUsername.equals("owner"))) {
 					throw new InvalidInputException("Changing username of owner is not allowed");	
 				}
@@ -375,6 +372,9 @@ public class FlexibookController {
 				}
 				else if(newPassword.equals("") || newPassword == null) {
 					throw new InvalidInputException("The password cannot be empty");
+				}
+				else if(getCustomer(newUsername) != null) {   
+					throw new InvalidInputException("Username not available");
 				}
 				else {
 					user.setUsername(newUsername);

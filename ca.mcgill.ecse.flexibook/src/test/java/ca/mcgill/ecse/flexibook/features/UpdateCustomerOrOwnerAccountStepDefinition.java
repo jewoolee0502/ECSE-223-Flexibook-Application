@@ -55,7 +55,7 @@ public class UpdateCustomerOrOwnerAccountStepDefinition {
 	public void the_account_shall_not_be_updated() {
 
 		assertEquals(oldUsername, FlexiBookApplication.getCurrentuser().getUsername());
-		assertEquals(oldPassword, FlexiBookApplication.getCurrentuser().getUsername());
+		assertEquals(oldPassword, FlexiBookApplication.getCurrentuser().getPassword());
 	}
 
 }

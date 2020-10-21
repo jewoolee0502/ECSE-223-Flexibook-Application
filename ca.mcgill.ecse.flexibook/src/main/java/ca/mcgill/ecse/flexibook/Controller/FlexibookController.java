@@ -393,12 +393,15 @@ public class FlexibookController {
 		try {
 
 			FlexiBook flexibook = FlexiBookApplication.getflexibook();
+			
 			Customer user = (Customer) flexibook.getCustomer(0).getWithUsername(username);
 
 			if(user != null) {
 				if(username.equals(target) && !(username.equals("owner"))) {
+					
 					for(Appointment appointment : user.getAppointments()) {
 						appointment.delete();
+						
 					}
 					user.delete();
 				}

@@ -26,7 +26,7 @@ public class UpdateCustomerOrOwnerAccountStepDefinition {
 	@Given("an owner account exists in the system with username {string} and password {string}")
 	public void an_owner_account_exists_in_the_system_with_username_and_password(String ownerUser, String ownerPass) {
 
-		if(flexibook.getOwner() != null) {
+		if(flexibook.getOwner() == null) {
 			Owner owner = new Owner(ownerUser, ownerPass, flexibook);
 		}
 	}
@@ -55,7 +55,7 @@ public class UpdateCustomerOrOwnerAccountStepDefinition {
 	public void the_account_shall_not_be_updated() {
 
 		assertEquals(oldUsername, FlexiBookApplication.getCurrentuser().getUsername());
-		assertEquals(oldPassword, FlexiBookApplication.getCurrentuser().getUsername());
+		assertEquals(oldPassword, FlexiBookApplication.getCurrentuser().getPassword());
 	}
 
 }

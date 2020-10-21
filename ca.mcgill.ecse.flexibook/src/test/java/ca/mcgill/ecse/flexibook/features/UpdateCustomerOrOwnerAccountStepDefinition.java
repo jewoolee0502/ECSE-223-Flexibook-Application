@@ -26,7 +26,7 @@ public class UpdateCustomerOrOwnerAccountStepDefinition {
 	@Given("an owner account exists in the system with username {string} and password {string}")
 	public void an_owner_account_exists_in_the_system_with_username_and_password(String ownerUser, String ownerPass) {
 
-		if(flexibook.getOwner() != null) {
+		if(flexibook.getOwner() == null) {
 			Owner owner = new Owner(ownerUser, ownerPass, flexibook);
 		}
 	}
@@ -36,7 +36,7 @@ public class UpdateCustomerOrOwnerAccountStepDefinition {
 	public void the_user_tries_to_update_account_with_a_new_username_and_password(String newUsername, String newPassword) throws InvalidInputException {
 
 		try {
-
+		   
 			oldUsername = FlexiBookApplication.getCurrentuser().getUsername();
 			oldPassword = FlexiBookApplication.getCurrentuser().getPassword();
 

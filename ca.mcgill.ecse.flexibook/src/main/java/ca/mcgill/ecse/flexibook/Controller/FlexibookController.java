@@ -1,11 +1,19 @@
 package ca.mcgill.ecse.flexibook.Controller;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalTime;
+
 import com.google.common.base.CharMatcher;
 import java.io.*;
-import java.util.*;
+
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.*;
+import ca.mcgill.ecse.flexibook.util.SystemTime;
+
+
 public class FlexibookController {
 
 	/**
@@ -164,7 +172,7 @@ public class FlexibookController {
 							for(int i=0;i<items.size();i++) {
 								items.get(i).delete();
 							}
-							throw new InvalidInputException("A service Combo must contain at least 2 services");  
+							throw new InvalidInputException("A service Combo must have at least 2 services");  
 						}
 						int k=combo.getServices().size();
 						for (int i=0;i<k-items.size();i++) {
@@ -180,20 +188,44 @@ public class FlexibookController {
 		}
 	}
 
-public static boolean AttemptLogIn(String userID,String passcode,FlexiBook flexi) throws InvalidInputException{
-		
-		for(Customer c:flexi.getCustomers()) {
-			  if(c.getUsername().equals(userID)&&c.getPassword().equals(passcode)) {
-				  FlexiBookApplication.setCurrentuser(c);
-				  return true;
-			  }}
-		if(userID.equals("owner")&&passcode.equals("owner")) {
-			Owner owner=new Owner(userID,passcode,flexi);
-			flexi.setOwner(owner);
-			FlexiBookApplication.setCurrentuser(flexi.getOwner());
-			return true;
+	public static boolean AttemptLogIn(String userID,String passcode) throws InvalidInputException {
+		FlexiBook flexi=FlexiBookApplication.getflexibook();
+		try {
+			for(Customer c:flexi.getCustomers()) {
+				if(c.getUsername().equals(userID)&&c.getPassword().equals(passcode)) {
+					FlexiBookApplication.setCurrentuser(c);
+					return true;
+
+				}}
+			if(userID.equals("owner")&&passcode.equals("owner")) {
+				Owner owner=new Owner(userID,passcode,flexi);
+				flexi.setOwner(owner);
+				FlexiBookApplication.setCurrentuser(flexi.getOwner());
+				return true;
+			}
+
+			else FlexiBookApplication.setCurrentuser(null); 
+			throw new InvalidInputException("Username/password not found");
 		}
-		throw new InvalidInputException("Username/password not found");}
+		catch(InvalidInputException e) {
+			throw new InvalidInputException(e.getMessage());
+		}
+	}
+	public static void LogOut() throws InvalidInputException {
+		FlexiBook flexi=FlexiBookApplication.getflexibook();
+		try {
+			if(FlexiBookApplication.getCurrentuser()==null) {
+				throw new InvalidInputException("User is already logged out");
+			}
+			if(FlexiBookApplication.getCurrentuser()!=null) {
+				FlexiBookApplication.setCurrentuser(null);
+			}
+			throw new InvalidInputException("No user found with corresponding Username");
+		}
+		catch(InvalidInputException e) {
+			throw new InvalidInputException(e.getMessage());
+		}
+	}
 
 	public static void CreateUser(String a, String b) throws InvalidInputException {
 		FlexiBook fb=FlexiBookApplication.getflexibook();
@@ -208,6 +240,54 @@ public static boolean AttemptLogIn(String userID,String passcode,FlexiBook flexi
 		Customer thisc=new Customer(a, b, fb);
 	}
 
+
+	/**
+	 * deketecombo: This method takes an input of username and a combo name. The method will decide whether to initiate the deleting method
+	 * 
+	 * @author Haipeng Yue
+	 * 
+	 * @param String username
+	 * @param
+	 * @throws InvalidInputException an error is encountered
+	 * @return void
+	 */
+	public static void deletecombo(String name,String comboname) throws InvalidInputException {
+		FlexiBook fb =FlexiBookApplication.getflexibook();
+		String time=SystemTime.gettime(SystemTime.getSysTime());
+		String date=SystemTime.getdate(SystemTime.getSysTime());
+		if(name.equals(fb.getOwner().getUsername())==true) {
+			if(fb.getBookableServices().size()!=0) {
+				if(fb.getBookableService(0).getWithName(comboname)!=null) {
+					if(fb.getBookableService(0).getWithName(comboname).getAppointments().size()>0) {
+						for(int i=0;i<fb.getAppointments().size();i++) {
+							String startdate=fb.getBookableService(0).getWithName(comboname).getAppointment(i).getTimeSlot().getStartDate().toString();
+							if(SystemTime.comparedate(date,startdate)==2) {
+								throw new InvalidInputException("Service combo "+comboname+ " has future appointments"); 
+							}else if(SystemTime.comparedate(date,startdate)==1) {
+								fb.getBookableService(0).getWithName(comboname).delete();
+								break;
+							}else if(SystemTime.comparedate(date,startdate)==0) {
+								String starttime=fb.getBookableService(0).getWithName(comboname).getAppointment(i).getTimeSlot().getStartTime().toString();
+								if(SystemTime.comparetime(time,starttime)==1) {
+									fb.getBookableService(0).getWithName(comboname).delete();
+									break;
+								}else {
+									throw new InvalidInputException("Service combo "+comboname+ " has future appointments");
+								}
+							}
+						}
+					}else{fb.getBookableService(0).getWithName(comboname).delete();}
+
+				}
+			}
+		}else {
+			throw new InvalidInputException("You are not authorized to perform this operation"); 
+		}
+
+
+	}
+
+
 	/**
 	 * Customer: This method takes in all the parameters and looks for a customer account that has the same username.
 	 * 
@@ -221,12 +301,251 @@ public static boolean AttemptLogIn(String userID,String passcode,FlexiBook flexi
 	private static Customer getCustomer(String username) {
 		Customer foundCustomer = null;
 		for(Customer customer : FlexiBookApplication.getflexibook().getCustomers()) {
-			if(customer.getUsername() == username) {
-				break;
+			if(customer.getUsername().equals(username)) {
+				return customer;
 			}
 		}
 		return foundCustomer;
 	}
-	
 
+	public static void SignUpForCustomerAccount(String username, String password) throws InvalidInputException {
+
+		try {
+			FlexiBook flexibook = FlexiBookApplication.getflexibook();
+
+			if(flexibook.getOwner() != null && FlexiBookApplication.getCurrentuser() == flexibook.getOwner()) {  
+				throw new InvalidInputException("You must log out of the owner account before creating a customer account");
+			}
+			else {
+				if(username.equals("") || username == null) {
+					throw new InvalidInputException("The user name cannot be empty");
+				}
+				else if(password.equals("") || password == null) {
+					throw new InvalidInputException("The password cannot be empty");
+				}
+				//				else if(getCustomer(username) != null) {
+				//					throw new InvalidInputException("The username already exists");
+				//				}
+				//				else {
+				//					flexibook.addCustomer(username, password);
+				//				}
+				else {
+					if(flexibook.getCustomers().size() == 0) {
+						Customer c = new Customer(username, password, flexibook);
+						flexibook.addCustomer(c);
+					}				
+					if(flexibook.getCustomer(0).getWithUsername(username) == null) {
+						Customer cstmr = new Customer(username, password, flexibook);
+						flexibook.addCustomer(cstmr);
+					}
+					else {
+						throw new InvalidInputException("The username already exists");
+					}
+				}
+			}
+		} 
+
+		catch(InvalidInputException e) {
+			throw new InvalidInputException(e.getMessage());
+		}
+	}
+
+	public static void UpdateAccount(String oldUsername, String newUsername, String newPassword) throws InvalidInputException {
+
+		try {
+
+			FlexiBook flexibook = FlexiBookApplication.getflexibook();
+			User user;
+
+			if(oldUsername.equals("owner")) {
+				user = flexibook.getOwner();
+			}
+			else {
+				user = getCustomer(oldUsername);
+			}
+			if(user != null) {
+				if(oldUsername.equals("owner") && (!newUsername.equals("owner"))) {
+					throw new InvalidInputException("Changing username of owner is not allowed");	
+				}
+				else if(newUsername.equals("") || newUsername == null) {
+					throw new InvalidInputException("The user name cannot be empty");
+				}
+				else if(newPassword.equals("") || newPassword == null) {
+					throw new InvalidInputException("The password cannot be empty");
+				}
+				else if(getCustomer(newUsername) != null) {   
+					throw new InvalidInputException("Username not available");
+				}
+				else {
+					user.setUsername(newUsername);
+					user.setPassword(newPassword);
+				}
+			}
+
+		} catch (InvalidInputException e) {
+			throw new InvalidInputException(e.getMessage());
+		}
+
+	}
+
+	public static void DeleteCustomerAccount(String username, String target) throws InvalidInputException {
+
+		try {
+
+			FlexiBook flexibook = FlexiBookApplication.getflexibook();
+			
+			Customer user = (Customer) flexibook.getCustomer(0).getWithUsername(username);
+
+			if(user != null) {
+				if(username.equals(target) && !(username.equals("owner"))) {
+					
+					for(Appointment appointment : user.getAppointments()) {
+						appointment.delete();
+						
+					}
+					user.delete();
+				}
+				else {
+					throw new InvalidInputException("You do not have permission to delete this account");
+				}
+			}
+
+		} catch (InvalidInputException e) {
+			throw new InvalidInputException(e.getMessage());
+		}
+
+
+	}
+
+	/**
+	 * This method takes all parameters to make a new appointment in the system.
+	 * 
+	 * @author Yujing Yan
+	 * 
+	 * @param customer -- can be customer or owner. If it's owner, throw exception.
+	 * @param date
+	 * @param serviceName
+	 * @param optionalServices
+	 * @param startTime
+	 * @throws InvalidInputException
+	 */
+	public static void MakeAppointment(String customer, String date, String serviceName, String optionalServices, String startTime) throws InvalidInputException{
+		FlexiBook fb = FlexiBookApplication.getflexibook();
+
+		if(fb.getBusiness()==null) {
+			throw new InvalidInputException("The business should exist for making an appointment.");
+		}
+		if(customer.equals(fb.getOwner().getUsername())) {
+			throw new InvalidInputException("An owner cannot make an appointment");
+		}
+
+		int cindex = -1;
+		for(Customer c : fb.getCustomers()) {
+			if(c.getUsername().equals(customer)) {
+				cindex = fb.indexOfCustomer(c);
+			}
+		}
+		if(cindex == -1) {
+			throw new InvalidInputException("There is no customer ["+customer+"] exists.");
+		}
+
+		int sindex = -1;
+		for(BookableService s : fb.getBookableServices()) {
+			if(s.getName().equals(serviceName)) {
+				sindex = fb.indexOfBookableService(s);
+			}
+		}
+		if(sindex == -1) {
+			throw new InvalidInputException("There is no bookable service["+serviceName+"] exists.");
+		}
+
+
+		Date servicedate = Date.valueOf(date);
+		Time starttime = Time.valueOf(startTime+":00");
+		Time endtime = null;
+		int duration = 0;
+		if(fb.getBookableService(sindex) instanceof Service) {
+			Service service = (Service)fb.getBookableService(sindex);
+			duration = service.getDuration();
+
+		}else if(fb.getBookableService(sindex) instanceof ServiceCombo){
+			ServiceCombo combo = (ServiceCombo)fb.getBookableService(sindex);
+
+			duration = combo.getMainService().getService().getDuration();
+			String[] optService = optionalServices.split(",");
+			for(ComboItem item : combo.getServices()) {
+				for(String str : optService) {
+					if(str.equals(item.getService().getName())) {
+						duration+=item.getService().getDuration();
+					}
+				}
+			}
+		}
+
+		LocalTime localtime = starttime.toLocalTime();
+		localtime.plusMinutes(duration);
+		endtime = Time.valueOf(localtime);
+		TimeSlot timeslot = new TimeSlot(servicedate,starttime,servicedate,endtime, fb);
+
+		for(Appointment appointment : fb.getAppointments()) {
+			TimeSlot slot = appointment.getTimeSlot();
+			if(!isNoOverlap(timeslot,slot)) {
+				throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
+			}
+		}
+
+		for(TimeSlot slot : fb.getBusiness().getHolidays()) {
+			if(!isNoOverlap(timeslot,slot)) {
+				throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
+			}
+		}
+		for(TimeSlot slot : fb.getBusiness().getVacation()) {
+			if(!isNoOverlap(timeslot,slot)) {
+				throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
+			}
+		}
+
+		//TODO kind of GOP
+		/*int day = servicedate.getDay();
+		if(day == 0 || day == 6) {
+			throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
+		}*/
+
+		Appointment appointment = new Appointment(fb.getCustomer(cindex), fb.getBookableService(sindex), timeslot, fb);
+
+	}
+
+	public static boolean isNoOverlap(TimeSlot t1, TimeSlot t2) {
+		if(t1.getStartDate().equals(t2.getStartDate())) {
+			if(t1.getEndTime().before(t2.getStartTime()) || 
+					t2.getEndTime().before(t1.getStartTime())) {
+				//is not overlap
+				return true;
+			}else {
+				return false;
+			}
+		}
+		return true;
+	}
+
+
+
+	public static void updateservice(String string, String string2, String string3, String string4, String string5,
+			String string6) throws InvalidInputException {
+		FlexiBook fb = FlexiBookApplication.getflexibook();
+		String servicename = null;
+
+		if(fb.getOwner().getUsername().equals(string)==true) {
+			if(fb.getBookableServices().size()!=0) {
+				if(fb.getBookableService(0).getWithName(string2)==null) {
+					throw new InvalidInputException("Service does not exist");
+				}
+
+			}else {throw new InvalidInputException("You are not authorized to perform this operation");  
+			}
+		}
+	}
 }
+
+
+

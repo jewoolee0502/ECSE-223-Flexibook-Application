@@ -35,9 +35,9 @@ public class DefineServiceComboStepDefinitions {
   }
 
   @Given("an owner account exists in the system")
-  public void an_owner_account_exists_in_the_system() {
+ public void an_owner_account_exists_in_the_system() {
 if(!flexibook.hasOwner()) {
-    Owner owner = new Owner("a", "123", flexibook); 
+   Owner owner = new Owner("a", "123", flexibook); 
 }
   }
  

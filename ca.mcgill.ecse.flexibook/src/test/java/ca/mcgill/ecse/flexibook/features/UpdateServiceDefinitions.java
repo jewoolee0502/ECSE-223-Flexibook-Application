@@ -17,6 +17,7 @@ import ca.mcgill.ecse.flexibook.model.Business;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
 import ca.mcgill.ecse.flexibook.model.Owner;
 import ca.mcgill.ecse.flexibook.model.Service;
+import ca.mcgill.ecse.flexibook.model.ServiceCombo;
 
 public class UpdateServiceDefinitions {
 	private  FlexiBook flexibook;
@@ -24,8 +25,12 @@ public class UpdateServiceDefinitions {
 	  
 	  @When("{string} initiates the update of the service {string} to name {string}, duration {string}, start of down time {string} and down time duration {string}")
 	  public void initiates_the_update_of_the_service_to_name_duration_start_of_down_time_and_down_time_duration(String string, String string2, String string3, String string4, String string5, String string6) {
-	      // Write code here that turns the phrase above into concrete actions
-	      throw new io.cucumber.java.PendingException();
+		  try{
+		        FlexibookController.updateservice(string, string2, string3, string4, string5, string6);
+		      }catch (InvalidInputException e) {
+		        error=e.getMessage();
+		        FlexiBookApplication.setmessage(error);
+		      }
 	  }
 
 
@@ -38,14 +43,14 @@ public class UpdateServiceDefinitions {
 	  
 	  @Then("the service {string} shall still preserve the following properties:")
 	  public void the_service_shall_still_preserve_the_following_properties(String string, io.cucumber.datatable.DataTable dataTable) {
-	      // Write code here that turns the phrase above into concrete actions
-	      // For automatic transformation, change DataTable to one of
-	      // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
-	      // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
-	      // Double, Byte, Short, Long, BigInteger or BigDecimal.
-	      //
-	      // For other transformations you can register a DataTableType.
-	      throw new io.cucumber.java.PendingException();
+		  List<Map<String, String>> valueMaps = dataTable.asMaps();
+		    for (Map<String, String> map : valueMaps) {
+		      String name=map.get("name");
+		      String services = map.get("services");
+		      assertEquals(name,flexibook.getBookableService(0).getWithName(string).getName());
+		      
+		      
+		    }
 	  }
 	  
 	  @After

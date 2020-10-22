@@ -27,7 +27,7 @@ public class DeleteCustomerAccountStepDefinition {
  
 	@Given("the account with username {string} has pending appointments")
 	public void the_account_with_username_has_pending_appointments(String username) {
-
+// mistake need to fixedv
 		/*if(getCustomer(username).getAppointments().size() == 0) {
 			Appointment appointment = new Appointment(getCustomer(username), null, null, flexibook);
 		}*/

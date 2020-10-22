@@ -111,7 +111,7 @@ public class SignUpForCustomerAccountStepDefinition {
 		//assertEquals(username, tempUser.getUsername());
 		//assertEquals(password, tempUser.getPassword());
 		
-		assertEquals(username, flexibook.getCustomer(0).getWithUsername(username).getUsername());
+	assertEquals(username, flexibook.getCustomer(0).getWithUsername(username).getUsername());
 		assertEquals(password, flexibook.getCustomer(0).getWithUsername(username).getPassword());
 
 	}

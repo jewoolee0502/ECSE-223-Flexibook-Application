@@ -30,12 +30,13 @@ public class LogInStepDefinitions {
 	  
 	@Given("the following customers exist in the system:")
 	public void the_following_customers_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
-		  List<Map<String, String>> valueMaps = dataTable.asMaps();
+	  flexibook=FlexiBookApplication.getflexibook();
+	  List<Map<String, String>> valueMaps = dataTable.asMaps();
 		    for (Map<String, String> map : valueMaps) {
 		     String name = map.get("username");
 		     String passcode = map.get("password");
+		     FlexiBook fb=flexibook;
 		     Customer customer=new Customer(name, passcode, flexibook);
-		     flexibook.addCustomer(customer);
 		     }
 
 		    

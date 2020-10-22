@@ -53,13 +53,14 @@ private FlexiBook flexibook=FlexiBookApplication.getflexibook();
 
 	}
 
-	@Given("the user is logged in to an account with username {string}")
+	/*@Given("the user is logged in to an account with username {string}")
 	public void the_user_is_logged_in_to_an_account_with_username(String username) {
 		if(flexibook.getCustomers().size() != 0) {
 			Customer currentUser = (Customer) flexibook.getCustomer(0).getWithUsername(username);
 			FlexiBookApplication.setCurrentuser(currentUser);
 		}FlexiBookApplication.setCurrentuser( flexibook.getCustomer(0).getWithUsername(username));
 	}
+	*/
 
 	@When("the user provides a new username {string} and a password {string}")
 	public void the_user_provides_a_new_username_and_a_password(String username, String password) throws InvalidInputException {

@@ -33,7 +33,9 @@ public class Service extends BookableService
   // INTERFACE
   //------------------------
 
-  public boolean setDuration(int aDuration)
+
+
+public boolean setDuration(int aDuration)
   {
     boolean wasSet = false;
     duration = aDuration;

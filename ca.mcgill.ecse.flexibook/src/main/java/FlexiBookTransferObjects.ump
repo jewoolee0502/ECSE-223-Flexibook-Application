@@ -1,4 +1,4 @@
-namespace ca.mcgill.ecse.flexibook.controlller;
+namespace ca.mcgill.ecse.flexibook.Controller;
 class TOUser {
   username;
   password;

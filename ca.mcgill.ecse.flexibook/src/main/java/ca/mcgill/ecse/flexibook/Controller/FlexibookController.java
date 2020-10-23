@@ -5,6 +5,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.sql.Date;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 
 import com.google.common.base.CharMatcher;
@@ -413,6 +416,7 @@ public class FlexibookController {
 			throw new InvalidInputException(e.getMessage());
 		}
 
+
 	}
 
 	/**
@@ -543,16 +547,58 @@ public class FlexibookController {
 			}
 		}
 	}
-	public static void viewAppointmentCalendar(String username, Date date) throws InvalidInputException{
-		Calendar cal=Calendar.getInstance();
-		cal.setTime(date);
-		int day =cal.get(Calendar.DAY_OF_WEEK);
-		if (day==1) {
-
+	public static ArrayList<TimeSlot> getUnavailableTimeSlots (String username, String date)throws InvalidInputException{
+		String error;
+		FlexiBook flexibook=FlexiBookApplication.getflexibook();
+		ArrayList<TimeSlot> list = new ArrayList<TimeSlot>();
+		Date newDate = null;
+		try {
+		newDate=dateChecker(date);}
+		catch(ParseException e) {
+			throw new InvalidInputException(date+" is not a valid date");
 		}
+<<<<<<< HEAD
 	}
 
+=======
+		for(Appointment appointment:flexibook.getAppointments()) {
+			if(appointment.getTimeSlot().getStartDate().equals(newDate)) {
+				list.add(appointment.getTimeSlot());
+				
+			}
+		}
+		return list;
+		}
+	public static ArrayList<TimeSlot> getAvailableTimeSlots(String username, String date) throws InvalidInputException{
+		String error;
+		int count=0;
+		FlexiBook flexibook=FlexiBookApplication.getflexibook();
+		ArrayList<TimeSlot> list = new ArrayList<TimeSlot>();
+		Date newDate = null;
+		try {
+		newDate=dateChecker(date);}
+		catch(ParseException e) {
+			throw new InvalidInputException(date+" is not a valid date");
+		}
+		catch(IllegalArgumentException f) {
+			throw new InvalidInputException(date+" is not a valid date");
+		}
+		for(TimeSlot ts:flexibook.getTimeSlots()) {
+			for (Appointment a:flexibook.getAppointments()) {
+				if(!(a.getTimeSlot().equals(ts))&&a.getTimeSlot().getStartDate().equals(newDate)) {
+					count++;
+				}
+			}
+			if (count==flexibook.getAppointments().size()) {
+				list.add(ts);
+			}
+		}		
+		return list;
+		}
+	private static Date dateChecker(String date)throws ParseException , IllegalArgumentException{
+		DateFormat formatDate = new SimpleDateFormat("yyyy-mm-dd");
+		formatDate.parse(date);
+		return Date.valueOf(date);
 }
-
-
-
+>>>>>>> c0bf45a3b376500df7f9c7eb2dfa6eea2e0d3c24
+}

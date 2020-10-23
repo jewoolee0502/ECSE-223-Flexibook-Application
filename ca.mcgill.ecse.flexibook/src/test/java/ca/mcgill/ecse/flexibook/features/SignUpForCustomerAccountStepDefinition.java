@@ -109,11 +109,11 @@ public class SignUpForCustomerAccountStepDefinition {
 
 	@Then("the account shall have username {string} and password {string}")
 	public void the_account_shall_have_username_and_password(String username, String password) {
-		assertEquals(username, tempUser.getUsername());
-		assertEquals(password, tempUser.getPassword());
+		//assertEquals(username, tempUser.getUsername());
+		//assertEquals(password, tempUser.getPassword());
 		
-//		assertEquals(username, flexibook.getCustomer(0).getWithUsername(username).getUsername());
-//		assertEquals(password, flexibook.getCustomer(0).getWithUsername(username).getPassword());
+	assertEquals(username, flexibook.getCustomer(0).getWithUsername(username).getUsername());
+		assertEquals(password, flexibook.getCustomer(0).getWithUsername(username).getPassword());
 
 	}
 

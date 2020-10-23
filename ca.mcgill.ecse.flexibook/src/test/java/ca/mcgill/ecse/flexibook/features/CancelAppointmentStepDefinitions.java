@@ -4,7 +4,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class CancelAppointmentStepDefinitions {
-	@When("{string} attempts to cancel their {string} appointment on {string} at {string}")
+	
+  @When("{string} attempts to cancel their {string} appointment on {string} at {string}")
 	public void attempts_to_cancel_their_appointment_on_at(String string, String string2, String string3, String string4) {
 	    
 	}

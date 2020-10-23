@@ -12,6 +12,7 @@ import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.Appointment;
 import ca.mcgill.ecse.flexibook.model.Customer;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
+import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -26,10 +27,10 @@ public class DeleteCustomerAccountStepDefinition {
  
 	@Given("the account with username {string} has pending appointments")
 	public void the_account_with_username_has_pending_appointments(String username) {
-
-		if(getCustomer(username).getAppointments().size() == 0) {
+// mistake need to fixedv
+		/*if(getCustomer(username).getAppointments().size() == 0) {
 			Appointment appointment = new Appointment(getCustomer(username), null, null, flexibook);
-		}
+		}*/
 	}
 
 	@When("the user tries to delete account with the username {string}")
@@ -94,6 +95,5 @@ public class DeleteCustomerAccountStepDefinition {
 		}
 		return foundCustomer;
 	}
-	
-	
+
 }

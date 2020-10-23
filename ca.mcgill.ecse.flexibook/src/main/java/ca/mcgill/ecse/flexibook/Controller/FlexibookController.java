@@ -215,7 +215,7 @@ public class FlexibookController {
 		FlexiBook flexi=FlexiBookApplication.getflexibook();
 		try {
 			if(FlexiBookApplication.getCurrentuser()==null) {
-				throw new InvalidInputException("User is already logged out");
+				throw new InvalidInputException("The user is already logged out");
 			}
 			if(FlexiBookApplication.getCurrentuser()!=null) {
 				FlexiBookApplication.setCurrentuser(null);

@@ -20,8 +20,8 @@ import ca.mcgill.ecse.flexibook.model.Service;
 import ca.mcgill.ecse.flexibook.model.ServiceCombo;
 
 public class UpdateServiceDefinitions {
-	private  FlexiBook flexibook;
-	  private String error;
+  private FlexiBook flexibook=FlexiBookApplication.getflexibook(); 
+  private String error;
 	  
 	  @When("{string} initiates the update of the service {string} to name {string}, duration {string}, start of down time {string} and down time duration {string}")
 	  public void initiates_the_update_of_the_service_to_name_duration_start_of_down_time_and_down_time_duration(String string, String string2, String string3, String string4, String string5, String string6) {

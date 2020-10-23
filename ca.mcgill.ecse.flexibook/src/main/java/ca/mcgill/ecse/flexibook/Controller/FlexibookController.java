@@ -548,7 +548,7 @@ public class FlexibookController {
 			}
 		}
 	}
-<<<<<<< HEAD
+
 	/**
 	 * This method takes all parameters to set the business information in the system.
 	 * 
@@ -616,9 +616,6 @@ public class FlexibookController {
 	}
 	}
 		
-}
-
-=======
 	//	public static ArrayList<TimeSlot> getUnavailableTimeSlots (String username, String date)throws InvalidInputException{
 	//		String error;
 	//		FlexiBook flexibook=FlexiBookApplication.getflexibook();
@@ -668,7 +665,6 @@ public class FlexibookController {
 		}		
 		return list;
 	}
->>>>>>> f7bdd47d644a66921864eef814c2aabf6f1156fc
 
 	private static Date dateChecker(String date)throws ParseException , IllegalArgumentException{
 		DateFormat formatDate = new SimpleDateFormat("yyyy-mm-dd");

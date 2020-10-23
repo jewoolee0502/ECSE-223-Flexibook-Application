@@ -28,24 +28,14 @@ public class SetupBusinessInformationStepDefinition {
 	  private  InvalidInputException thise=null;
 	  private String resultString="not be";
 
-//	@Given("an owner account exists in the system with username {string} and password {string}")
-//	public void an_owner_account_exists_in_the_system_with_username_and_password(String string, String string2) throws Exception{
-//		flexibook=FlexiBookApplication.getflexibook();
-//	if(!flexibook.hasOwner()) {
-//		
-//		   Owner owner =new Owner(string, string2, flexibook);
-//		   flexibook.setOwner(owner);
-//	}
-//		  
-//	   
-//	}
+
 	@Given("no business exists")
 	public void no_business_exists() {
 	  if(flexibook.getBusiness()!=null) {
 		  flexibook.setBusiness(null);
 	  }
 	}
-<<<<<<< HEAD
+	/*
 	@Given("the user is logged in to an account with username {string}")
 	public void the_user_is_logged_in_to_an_account_with_username(String string) {
 	    // Write code here that turns the phrase above into concrete actions
@@ -70,30 +60,7 @@ public class SetupBusinessInformationStepDefinition {
 		  FlexiBookApplication.setCurrentuser(aUser);
 		  FlexiBookApplication.getCurrentuser().setUsername(string);
 	}
-=======
-//	@Given("the user is logged in to an account with username {string}")
-//	public void the_user_is_logged_in_to_an_account_with_username(String string) {
-//	    // Write code here that turns the phrase above into concrete actions
-//		
-//		User aUser=null;
-//		  if(flexibook.getCustomers().size()!=0) {
-//			 for(Customer customer:flexibook.getCustomers()) {
-//				 if(customer.getUsername().equals(string)) {
-//					  aUser=customer;
-//					 }
-//				 }
-//			 }
-//		  else if(flexibook.getOwner()!=null) {
-//			  if(flexibook.getOwner().getUsername().equals(string)) {
-//				 aUser=flexibook.getOwner() ;
-//			  }
-//		  }
-//
-//		  FlexiBookApplication.setCurrentuser(aUser);
-//	}
->>>>>>> f7bdd47d644a66921864eef814c2aabf6f1156fc
-
-
+	*/
 	@When("the user tries to set up the business information with new {string} and {string} and {string} and {string}")
 		public void the_user_tries_to_set_up_the_business_information_with_new_and_and_and(String string, String string2, String string3, String string4)throws InvalidInputException {
 	    try {  
@@ -131,11 +98,11 @@ public class SetupBusinessInformationStepDefinition {
 	public void an_error_message_shall_raised(String string, String string2) {
 		String e = FlexiBookApplication.returnmessage();
 		   assertEquals(string,e);
-		   if(resultString.equals(string2))
 		   assertEquals(string2, resultString);
 		   FlexiBookApplication.setmessage(null);
 		   
 	}
+	/*
 	@Given("a business exists with the following information:")
 	public void a_business_exists_with_the_following_information(io.cucumber.datatable.DataTable dataTable) throws InvalidInputException {
 	    // Write code here that turns the phrase above into concrete actions
@@ -179,12 +146,8 @@ public class SetupBusinessInformationStepDefinition {
 	    		business.addBusinessHour(nHour);
 			  }
 	    }
-	    @When("the user tries to add a new business hour on {string} with start time {string} and end time {string}")
-	    public void the_user_tries_to_add_a_new_business_hour_on_with_start_time_and_end_time(String string, String string2, String string3) {
-	        
-	    }
 
 
-
+*/
 
 }

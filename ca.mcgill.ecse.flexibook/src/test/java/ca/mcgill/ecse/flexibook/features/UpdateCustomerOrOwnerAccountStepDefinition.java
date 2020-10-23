@@ -39,7 +39,8 @@ public class UpdateCustomerOrOwnerAccountStepDefinition {
 		   
 			oldUsername = FlexiBookApplication.getCurrentuser().getUsername();
 			oldPassword = FlexiBookApplication.getCurrentuser().getPassword();
-
+			
+			
 			FlexibookController.UpdateAccount(oldUsername, newUsername, newPassword);
 
 		} catch (InvalidInputException e) {

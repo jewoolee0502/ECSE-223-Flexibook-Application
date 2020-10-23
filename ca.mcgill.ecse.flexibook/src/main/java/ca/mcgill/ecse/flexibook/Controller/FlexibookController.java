@@ -1,9 +1,13 @@
 package ca.mcgill.ecse.flexibook.Controller;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.sql.Date;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 
 import com.google.common.base.CharMatcher;
@@ -393,23 +397,21 @@ public class FlexibookController {
 
 		try {
 
-			FlexiBook flexibook = FlexiBookApplication.getflexibook();
-			
-			Customer user = (Customer) flexibook.getCustomer(0).getWithUsername(username);
+			Customer user = getCustomer(username);
 
-			if(user != null) {
-				if(username.equals(target) && !(username.equals("owner"))) {
-					
-					for(Appointment appointment : user.getAppointments()) {
-						appointment.delete();
-						
-					}
-					user.delete();
-				}
-				else {
-					throw new InvalidInputException("You do not have permission to delete this account");
-				}
+			if((!(username.equals(target))) || username.equals("owner")) {
+				throw new InvalidInputException("You do not have permission to delete this account");
 			}
+			else {
+
+				for(Appointment appointment : user.getAppointments()) {
+					appointment.delete();
+
+				}
+				user.delete();
+				FlexiBookApplication.setCurrentuser(null);
+			}
+
 
 		} catch (InvalidInputException e) {
 			throw new InvalidInputException(e.getMessage());
@@ -546,6 +548,7 @@ public class FlexibookController {
 			}
 		}
 	}
+<<<<<<< HEAD
 	/**
 	 * This method takes all parameters to set the business information in the system.
 	 * 
@@ -615,5 +618,62 @@ public class FlexibookController {
 		
 }
 
+=======
+	//	public static ArrayList<TimeSlot> getUnavailableTimeSlots (String username, String date)throws InvalidInputException{
+	//		String error;
+	//		FlexiBook flexibook=FlexiBookApplication.getflexibook();
+	//		ArrayList<TimeSlot> list = new ArrayList<TimeSlot>();
+	//		Date newDate = null;
+	//		try {
+	//		newDate=dateChecker(date);}
+	//		catch(ParseException e) {
+	//			throw new InvalidInputException(date+" is not a valid date");
+	//		}
+	//<<<<<<< HEAD
+	//	}
+	//
+	//=======
+	//		for(Appointment appointment:flexibook.getAppointments()) {
+	//			if(appointment.getTimeSlot().getStartDate().equals(newDate)) {
+	//				list.add(appointment.getTimeSlot());
+	//				
+	//			}
+	//		}
+	//		return list;
+	//		}
 
+	public static ArrayList<TimeSlot> getAvailableTimeSlots(String username, String date) throws InvalidInputException {
+		String error;
+		int count=0;
+		FlexiBook flexibook=FlexiBookApplication.getflexibook();
+		ArrayList<TimeSlot> list = new ArrayList<TimeSlot>();
+		Date newDate = null;
+		try {
+			newDate=dateChecker(date);}
+		catch(ParseException e) {
+			throw new InvalidInputException(date+" is not a valid date");
+		}
+		catch(IllegalArgumentException f) {
+			throw new InvalidInputException(date+" is not a valid date");
+		}
+		for(TimeSlot ts:flexibook.getTimeSlots()) {
+			for (Appointment a:flexibook.getAppointments()) {
+				if(!(a.getTimeSlot().equals(ts))&&a.getTimeSlot().getStartDate().equals(newDate)) {
+					count++;
+				}
+			}
+			if (count==flexibook.getAppointments().size()) {
+				list.add(ts);
+			}
+		}		
+		return list;
+	}
+>>>>>>> f7bdd47d644a66921864eef814c2aabf6f1156fc
 
+	private static Date dateChecker(String date)throws ParseException , IllegalArgumentException{
+		DateFormat formatDate = new SimpleDateFormat("yyyy-mm-dd");
+		formatDate.parse(date);
+		return Date.valueOf(date);
+	}
+
+}

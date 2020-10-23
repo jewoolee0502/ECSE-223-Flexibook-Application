@@ -25,7 +25,7 @@ public class SignUpForCustomerAccountStepDefinition {
 	private String error;
 	private int errorCntr = 0;
 	private int userCount = 0;
-	
+
 	private User tempUser;
 
 	private static int userCntrBeforeCreation;
@@ -36,7 +36,7 @@ public class SignUpForCustomerAccountStepDefinition {
 		FlexiBookApplication.getflexibook().delete();
 		userCntrBeforeCreation = 0;
 	}
-	
+
 	@Given("there is no existing username {string}")
 	public void there_is_no_existing_username(String username) {
 
@@ -58,34 +58,40 @@ public class SignUpForCustomerAccountStepDefinition {
 				flexibook.addCustomer(username, "password");
 			}
 		}
-		
+
 	}
 
-	/*@Given("the user is logged in to an account with username {string}")
+	@Given("the user is logged in to an account with username {string}")
 	public void the_user_is_logged_in_to_an_account_with_username(String username) {
-		
+
 		User user = null;
-//		if(flexibook.getCustomers().size() != 0) {
-//			for(Customer c : flexibook.getCustomers()) {
-//				if (c.getUsername().equals(username)) user = c;
-//			}
-//		}
-//		else if(flexibook.getOwner() != null && flexibook.getOwner().getUsername().equals(username)) {
-//			user = flexibook.getOwner();
-//		}
-		
+		//		if(flexibook.getCustomers().size() != 0) {
+		//			for(Customer c : flexibook.getCustomers()) {
+		//				if (c.getUsername().equals(username)) user = c;
+		//			}
+		//		}
+		//		else if(flexibook.getOwner() != null && flexibook.getOwner().getUsername().equals(username)) {
+		//			user = flexibook.getOwner();
+		//		}
+
 		if(username.equals("owner")) {
+			if(flexibook.getOwner() == null) {
+				Owner owner = new Owner("owner", "owner", flexibook);
+			}
 			user = flexibook.getOwner();
 		}
 		else {
+			if(getCustomer(username) == null) {
+				user = new Customer(username, "password", flexibook);
+			}
 			user = getCustomer(username);
 		}
-		
+
 		FlexiBookApplication.setCurrentuser(user);
-		
+
 		tempUser = user;
 	}
-	*/
+
 
 	@When("the user provides a new username {string} and a password {string}")
 	public void the_user_provides_a_new_username_and_a_password(String username, String password) throws InvalidInputException {
@@ -111,15 +117,15 @@ public class SignUpForCustomerAccountStepDefinition {
 	public void the_account_shall_have_username_and_password(String username, String password) {
 		//assertEquals(username, tempUser.getUsername());
 		//assertEquals(password, tempUser.getPassword());
-		
-	assertEquals(username, flexibook.getCustomer(0).getWithUsername(username).getUsername());
+
+		assertEquals(username, flexibook.getCustomer(0).getWithUsername(username).getUsername());
 		assertEquals(password, flexibook.getCustomer(0).getWithUsername(username).getPassword());
 
 	}
 
 	@Then("no new account shall be created")
 	public void no_new_account_shall_be_created() throws Throwable {
-//		assertEquals(flexibook.getCustomer(0), flexibook.getCustomer(1));
+		//		assertEquals(flexibook.getCustomer(0), flexibook.getCustomer(1));
 		assertEquals(userCntrBeforeCreation, flexibook.getCustomers().size());
 
 	}
@@ -131,7 +137,7 @@ public class SignUpForCustomerAccountStepDefinition {
 		FlexiBookApplication.setmessage(null);
 
 	}
-	
+
 	private static Customer getCustomer(String username) {
 		Customer foundCustomer = null;
 		for(Customer customer : FlexiBookApplication.getflexibook().getCustomers()) {

@@ -24,7 +24,7 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 
 public class SetupBusinessInformationStepDefinition {
-	  private  FlexiBook flexibook;
+	  private  FlexiBook flexibook=FlexiBookApplication.getflexibook();
 	  private  InvalidInputException thise=null;
 	  private String resultString="not be";
 
@@ -41,11 +41,11 @@ public class SetupBusinessInformationStepDefinition {
 //	}
 	@Given("no business exists")
 	public void no_business_exists() {
-		flexibook=FlexiBookApplication.getflexibook();
 	  if(flexibook.getBusiness()!=null) {
 		  flexibook.setBusiness(null);
 	  }
 	}
+<<<<<<< HEAD
 	@Given("the user is logged in to an account with username {string}")
 	public void the_user_is_logged_in_to_an_account_with_username(String string) {
 	    // Write code here that turns the phrase above into concrete actions
@@ -70,6 +70,28 @@ public class SetupBusinessInformationStepDefinition {
 		  FlexiBookApplication.setCurrentuser(aUser);
 		  FlexiBookApplication.getCurrentuser().setUsername(string);
 	}
+=======
+//	@Given("the user is logged in to an account with username {string}")
+//	public void the_user_is_logged_in_to_an_account_with_username(String string) {
+//	    // Write code here that turns the phrase above into concrete actions
+//		
+//		User aUser=null;
+//		  if(flexibook.getCustomers().size()!=0) {
+//			 for(Customer customer:flexibook.getCustomers()) {
+//				 if(customer.getUsername().equals(string)) {
+//					  aUser=customer;
+//					 }
+//				 }
+//			 }
+//		  else if(flexibook.getOwner()!=null) {
+//			  if(flexibook.getOwner().getUsername().equals(string)) {
+//				 aUser=flexibook.getOwner() ;
+//			  }
+//		  }
+//
+//		  FlexiBookApplication.setCurrentuser(aUser);
+//	}
+>>>>>>> f7bdd47d644a66921864eef814c2aabf6f1156fc
 
 
 	@When("the user tries to set up the business information with new {string} and {string} and {string} and {string}")

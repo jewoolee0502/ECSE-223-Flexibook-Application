@@ -11,11 +11,12 @@ import java.io.*;
 
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.*;
+import ca.mcgill.ecse.flexibook.model.BusinessHour.DayOfWeek;
 import ca.mcgill.ecse.flexibook.util.SystemTime;
 
 
 public class FlexibookController {
-
+	
 	/**
 	 * DefineService combo: This method takes in all the parameters to create a service combo in the flexibook system
 	 * 
@@ -545,6 +546,73 @@ public class FlexibookController {
 			}
 		}
 	}
+	/**
+	 * This method takes all parameters to set the business information in the system.
+	 * 
+	 * @author Zhixin Xiong
+	 * @param name 
+	 * @param  address
+	 * @param phone number
+	 * @param email
+	 */
+	public static void setBusinessInformation(String string, String string2, String string3, String string4)throws InvalidInputException {
+		FlexiBook fb = FlexiBookApplication.getflexibook();
+		try {
+			String user = fb.getOwner().getUsername();
+			String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
+		if(user.equals(currentUserString)==false) {
+			throw new InvalidInputException("No permission to set up business information");
+		}
+		String aString="@gmail.com" ;
+		int begin=string4.length()-aString.length();
+		int end=string4.length();
+		if(begin<=0) {
+			throw new InvalidInputException("Invalid email");
+		}else {
+			String subString =string4.substring(begin,end);
+			if(subString.equals(aString)==false) {
+				throw new InvalidInputException("Invalid email");
+		}
+		}
+		
+		Business newBusiness=new Business(string, string2, string3, string4,fb );
+		fb.setBusiness(newBusiness);	
+		FlexiBookApplication.setmessage("");
+	} catch (Exception e) {
+		// TODO: handle exception
+		String ebString=e.getMessage();
+		FlexiBookApplication.setmessage(e.getMessage());
+		String ab=FlexiBookApplication.returnmessage();
+	}
+	}
+	public static void addNewBusinessHour(String string, String string2, String string3) {
+		FlexiBook fb = FlexiBookApplication.getflexibook();
+		try {
+			Business business= fb.getBusiness();
+	    	boolean hasSuchHour=false;
+	    	if(business.getBusinessHours().size()!=0) {
+				 for(BusinessHour hour:business.getBusinessHours()) {
+					 if(hour.getDayOfWeek().equals(DayOfWeek.valueOf(string))&&hour.getStartTime().equals(Time.valueOf(string2+":00"))&&hour.getEndTime().equals(Time.valueOf(string3+":00"))) {
+						 hasSuchHour=true;
+						  return;
+						 }
+					 }
+				 }
+	    	if(hasSuchHour==false) {
+	    		DayOfWeek dayOfWeek=DayOfWeek.valueOf(string);
+	    		Time startTime=Time.valueOf(string2+":00");
+	    		Time endTime=Time.valueOf(string3+":00");
+	    		BusinessHour nHour=new BusinessHour(dayOfWeek, startTime, endTime,fb);
+	    		business.addBusinessHour(nHour);
+			  }
+	} catch (Exception e) {
+		// TODO: handle exception
+		String ebString=e.getMessage();
+		FlexiBookApplication.setmessage(e.getMessage());
+		String ab=FlexiBookApplication.returnmessage();
+	}
+	}
+		
 }
 
 

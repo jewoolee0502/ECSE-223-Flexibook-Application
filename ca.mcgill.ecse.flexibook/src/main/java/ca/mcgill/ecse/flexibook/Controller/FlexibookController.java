@@ -547,36 +547,37 @@ public class FlexibookController {
 			}
 		}
 	}
-	public static ArrayList<TimeSlot> getUnavailableTimeSlots (String username, String date)throws InvalidInputException{
-		String error;
-		FlexiBook flexibook=FlexiBookApplication.getflexibook();
-		ArrayList<TimeSlot> list = new ArrayList<TimeSlot>();
-		Date newDate = null;
-		try {
-		newDate=dateChecker(date);}
-		catch(ParseException e) {
-			throw new InvalidInputException(date+" is not a valid date");
-		}
-<<<<<<< HEAD
-	}
+	//	public static ArrayList<TimeSlot> getUnavailableTimeSlots (String username, String date)throws InvalidInputException{
+	//		String error;
+	//		FlexiBook flexibook=FlexiBookApplication.getflexibook();
+	//		ArrayList<TimeSlot> list = new ArrayList<TimeSlot>();
+	//		Date newDate = null;
+	//		try {
+	//		newDate=dateChecker(date);}
+	//		catch(ParseException e) {
+	//			throw new InvalidInputException(date+" is not a valid date");
+	//		}
+	//<<<<<<< HEAD
+	//	}
+	//
+	//=======
+	//		for(Appointment appointment:flexibook.getAppointments()) {
+	//			if(appointment.getTimeSlot().getStartDate().equals(newDate)) {
+	//				list.add(appointment.getTimeSlot());
+	//				
+	//			}
+	//		}
+	//		return list;
+	//		}
 
-=======
-		for(Appointment appointment:flexibook.getAppointments()) {
-			if(appointment.getTimeSlot().getStartDate().equals(newDate)) {
-				list.add(appointment.getTimeSlot());
-				
-			}
-		}
-		return list;
-		}
-	public static ArrayList<TimeSlot> getAvailableTimeSlots(String username, String date) throws InvalidInputException{
+	public static ArrayList<TimeSlot> getAvailableTimeSlots(String username, String date) throws InvalidInputException {
 		String error;
 		int count=0;
 		FlexiBook flexibook=FlexiBookApplication.getflexibook();
 		ArrayList<TimeSlot> list = new ArrayList<TimeSlot>();
 		Date newDate = null;
 		try {
-		newDate=dateChecker(date);}
+			newDate=dateChecker(date);}
 		catch(ParseException e) {
 			throw new InvalidInputException(date+" is not a valid date");
 		}
@@ -594,11 +595,12 @@ public class FlexibookController {
 			}
 		}		
 		return list;
-		}
+	}
+
 	private static Date dateChecker(String date)throws ParseException , IllegalArgumentException{
 		DateFormat formatDate = new SimpleDateFormat("yyyy-mm-dd");
 		formatDate.parse(date);
 		return Date.valueOf(date);
-}
->>>>>>> c0bf45a3b376500df7f9c7eb2dfa6eea2e0d3c24
+	}
+
 }

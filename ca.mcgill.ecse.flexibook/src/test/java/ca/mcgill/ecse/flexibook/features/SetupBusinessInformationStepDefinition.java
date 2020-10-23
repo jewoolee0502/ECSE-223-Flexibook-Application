@@ -1,11 +1,16 @@
 package ca.mcgill.ecse.flexibook.features;
 
+import org.omg.CORBA.UserException;
+
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
+import ca.mcgill.ecse.flexibook.model.Customer;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
 import ca.mcgill.ecse.flexibook.model.Owner;
 import ca.mcgill.ecse.flexibook.model.User;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
+import io.cucumber.java.en.Then;
 
 public class SetupBusinessInformationStepDefinition {
 	  private  FlexiBook flexibook;
@@ -24,29 +29,35 @@ public class SetupBusinessInformationStepDefinition {
 //	}
 	@Given("no business exists")
 	public void no_business_exists() {
+		flexibook=FlexiBookApplication.getflexibook();
 	  if(flexibook.getBusiness()!=null) {
 		  flexibook.setBusiness(null);
 	  }
 	}
-	/*@Given("the system's time and date is {string}")
-	public void the_system_s_time_and_date_is(String string) {
-		String[] arrOfStr = string.split("+", 2);
-		
-}*/
+	@Given("the user is logged in to an account with username {string}")
+	public void the_user_is_logged_in_to_an_account_with_username(String string) {
+	    // Write code here that turns the phrase above into concrete actions
+		User aUser=null;
+		  if(flexibook.getCustomers().size()!=0) {
+			 for(Customer customer:flexibook.getCustomers()) {
+				 if(customer.getUsername().equals(string)) {
+					  aUser=customer;
+					 }
+				 }
+			 }
+		  else if(flexibook.getOwner()!=null) {
+			  if(flexibook.getOwner().getUsername().equals(string)) {
+				 aUser=flexibook.getOwner() ;
+			  }
+		  }
+		  else {
+			  aUser=new Customer(string,null,flexibook); 
+		  }
+		  FlexiBookApplication.setCurrentuser(aUser);
+	}
 
-		@Given("the user is logged in to an account with username {string}")
-		public void the_user_is_logged_in_to_an_account_with_username(String string) {
-			User aUser=FlexiBookApplication.getCurrentuser();
-			if(!aUser.getUsername().equals(string)) {
-				aUser.setUsername(string);
-			}
-			FlexiBookApplication.
-		}
 
-
-		Some other steps were also undefined:
-
-		@When("the user tries to set up the business information with new {string} and {string} and {string} and {string}")
+	@When("the user tries to set up the business information with new {string} and {string} and {string} and {string}")
 		public void the_user_tries_to_set_up_the_business_information_with_new_and_and_and(String string, String string2, String string3, String string4) {
 		    // Write code here that turns the phrase above into concrete actions
 		    throw new io.cucumber.java.PendingException();

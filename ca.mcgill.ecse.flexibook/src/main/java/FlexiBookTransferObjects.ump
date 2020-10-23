@@ -1,0 +1,50 @@
+namespace ca.mcgill.ecse.flexibook.controlller;
+class TOUser {
+  username;
+  password;
+}
+
+class TOOwner {
+  username;
+  password;
+}
+
+class TOCustomer {
+  username;
+  password;
+}
+
+class TOBusiness {
+  name;
+  address;
+  phoneNumber;
+  email;
+}
+
+class TOBusinessHour {
+  Time startTime;
+  Time endTime;
+}
+  
+class TOTimeSlot {
+  Date startDate;
+  Time startTime;
+  Date endDate;
+  Time endTime;
+}
+
+
+class TOService {
+  name;
+  int duration;
+  int downtimeDuration;
+  int downtimeStart;
+}
+
+class TOServiceCombo {
+  name;
+}
+
+class TOComboItem {
+  Boolean mandatory;
+}

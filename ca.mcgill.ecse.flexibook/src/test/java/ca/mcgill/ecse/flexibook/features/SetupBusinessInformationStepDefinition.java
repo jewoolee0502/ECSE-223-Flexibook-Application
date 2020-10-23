@@ -13,7 +13,7 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 
 public class SetupBusinessInformationStepDefinition {
-	  private  FlexiBook flexibook;
+	  private  FlexiBook flexibook=FlexiBookApplication.getflexibook();
 	  private  InvalidInputException thise=null;
 
 //	@Given("an owner account exists in the system with username {string} and password {string}")
@@ -29,7 +29,6 @@ public class SetupBusinessInformationStepDefinition {
 //	}
 	@Given("no business exists")
 	public void no_business_exists() {
-		flexibook=FlexiBookApplication.getflexibook();
 	  if(flexibook.getBusiness()!=null) {
 		  flexibook.setBusiness(null);
 	  }
@@ -37,6 +36,7 @@ public class SetupBusinessInformationStepDefinition {
 	@Given("the user is logged in to an account with username {string}")
 	public void the_user_is_logged_in_to_an_account_with_username(String string) {
 	    // Write code here that turns the phrase above into concrete actions
+		
 		User aUser=null;
 		  if(flexibook.getCustomers().size()!=0) {
 			 for(Customer customer:flexibook.getCustomers()) {
@@ -50,9 +50,7 @@ public class SetupBusinessInformationStepDefinition {
 				 aUser=flexibook.getOwner() ;
 			  }
 		  }
-		  else {
-			  aUser=new Customer(string,null,flexibook); 
-		  }
+
 		  FlexiBookApplication.setCurrentuser(aUser);
 	}
 

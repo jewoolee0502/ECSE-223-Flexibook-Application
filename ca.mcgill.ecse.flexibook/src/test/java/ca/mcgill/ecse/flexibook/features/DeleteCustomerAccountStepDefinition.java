@@ -22,13 +22,13 @@ public class DeleteCustomerAccountStepDefinition {
 	private String error;
 	private FlexiBook flexibook = FlexiBookApplication.getflexibook();
 	private List<Appointment> oldAppointments;
-	
+
 	private int errorCount = 0;
- 
+
 	@Given("the account with username {string} has pending appointments")
 	public void the_account_with_username_has_pending_appointments(String username) {
 
-	if(getCustomer(username).getAppointments() == null) {
+		if(getCustomer(username).getAppointments() == null) {
 			Appointment appointment = new Appointment(getCustomer(username), null, null, flexibook);
 		}
 	}
@@ -39,7 +39,7 @@ public class DeleteCustomerAccountStepDefinition {
 		if(!(username.equals("owner"))) {
 			oldAppointments = getCustomer(username).getAppointments();
 		}
-		
+
 		try {
 			String target = FlexiBookApplication.getCurrentuser().getUsername();
 			FlexibookController.DeleteCustomerAccount(target, username);
@@ -77,15 +77,23 @@ public class DeleteCustomerAccountStepDefinition {
 
 	@Then("the account with the username {string} exists")
 	public void the_account_with_the_username_exists(String username) {
-		
+
 		boolean exists = false;
-		if(getCustomer(username) != null) {
-			exists = true;
+		if(username.equals("owner")) {
+			if(flexibook.getOwner() != null) {
+				exists = true;
+			}
+		}
+		else {
+			if(getCustomer(username) != null) {
+				exists = true;
+			}
 		}
 		assertTrue(exists);
+			
 	}
-	
-	
+
+
 	private static Customer getCustomer(String username) {
 		Customer foundCustomer = null;
 		for(Customer customer : FlexiBookApplication.getflexibook().getCustomers()) {

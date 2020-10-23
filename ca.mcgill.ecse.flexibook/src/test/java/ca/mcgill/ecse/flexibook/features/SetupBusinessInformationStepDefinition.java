@@ -33,26 +33,26 @@ public class SetupBusinessInformationStepDefinition {
 		  flexibook.setBusiness(null);
 	  }
 	}
-	@Given("the user is logged in to an account with username {string}")
-	public void the_user_is_logged_in_to_an_account_with_username(String string) {
-	    // Write code here that turns the phrase above into concrete actions
-		
-		User aUser=null;
-		  if(flexibook.getCustomers().size()!=0) {
-			 for(Customer customer:flexibook.getCustomers()) {
-				 if(customer.getUsername().equals(string)) {
-					  aUser=customer;
-					 }
-				 }
-			 }
-		  else if(flexibook.getOwner()!=null) {
-			  if(flexibook.getOwner().getUsername().equals(string)) {
-				 aUser=flexibook.getOwner() ;
-			  }
-		  }
-
-		  FlexiBookApplication.setCurrentuser(aUser);
-	}
+//	@Given("the user is logged in to an account with username {string}")
+//	public void the_user_is_logged_in_to_an_account_with_username(String string) {
+//	    // Write code here that turns the phrase above into concrete actions
+//		
+//		User aUser=null;
+//		  if(flexibook.getCustomers().size()!=0) {
+//			 for(Customer customer:flexibook.getCustomers()) {
+//				 if(customer.getUsername().equals(string)) {
+//					  aUser=customer;
+//					 }
+//				 }
+//			 }
+//		  else if(flexibook.getOwner()!=null) {
+//			  if(flexibook.getOwner().getUsername().equals(string)) {
+//				 aUser=flexibook.getOwner() ;
+//			  }
+//		  }
+//
+//		  FlexiBookApplication.setCurrentuser(aUser);
+//	}
 
 
 	@When("the user tries to set up the business information with new {string} and {string} and {string} and {string}")

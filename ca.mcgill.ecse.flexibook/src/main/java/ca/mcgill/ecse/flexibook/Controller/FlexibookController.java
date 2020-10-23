@@ -1,6 +1,7 @@
 package ca.mcgill.ecse.flexibook.Controller;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.sql.Date;
 import java.sql.Time;
@@ -544,6 +545,15 @@ public class FlexibookController {
 			}
 		}
 	}
+	public static void viewAppointmentCalendar(String username, Date date) throws InvalidInputException{
+		Calendar cal=Calendar.getInstance();
+		cal.setTime(date);
+		int day =cal.get(Calendar.DAY_OF_WEEK);
+		if (day==1) {
+
+		}
+		}
+
 }
 
 

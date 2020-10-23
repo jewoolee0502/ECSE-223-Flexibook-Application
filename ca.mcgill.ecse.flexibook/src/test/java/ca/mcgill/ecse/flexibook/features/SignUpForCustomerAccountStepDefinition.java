@@ -61,7 +61,7 @@ public class SignUpForCustomerAccountStepDefinition {
 		
 	}
 
-	@Given("the user is logged in to an account with username {string}")
+	/*@Given("the user is logged in to an account with username {string}")
 	public void the_user_is_logged_in_to_an_account_with_username(String username) {
 		
 		User user = null;
@@ -85,6 +85,7 @@ public class SignUpForCustomerAccountStepDefinition {
 		
 		tempUser = user;
 	}
+	*/
 
 	@When("the user provides a new username {string} and a password {string}")
 	public void the_user_provides_a_new_username_and_a_password(String username, String password) throws InvalidInputException {

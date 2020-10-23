@@ -1,4 +1,5 @@
 namespace ca.mcgill.ecse.flexibook.model;
+use FlexBookTranforObjects.ump;
 
 class FlexiBook {
   1 <@>- 0..1 Business business;

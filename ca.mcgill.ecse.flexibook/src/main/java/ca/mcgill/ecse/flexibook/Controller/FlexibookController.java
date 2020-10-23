@@ -393,23 +393,21 @@ public class FlexibookController {
 
 		try {
 
-			FlexiBook flexibook = FlexiBookApplication.getflexibook();
-			
-			Customer user = (Customer) flexibook.getCustomer(0).getWithUsername(username);
+			Customer user = getCustomer(username);
 
-			if(user != null) {
-				if(username.equals(target) && !(username.equals("owner"))) {
-					
-					for(Appointment appointment : user.getAppointments()) {
-						appointment.delete();
-						
-					}
-					user.delete();
-				}
-				else {
-					throw new InvalidInputException("You do not have permission to delete this account");
-				}
+			if((!(username.equals(target))) || username.equals("owner")) {
+				throw new InvalidInputException("You do not have permission to delete this account");
 			}
+			else {
+
+				for(Appointment appointment : user.getAppointments()) {
+					appointment.delete();
+
+				}
+				user.delete();
+				FlexiBookApplication.setCurrentuser(null);
+			}
+
 
 		} catch (InvalidInputException e) {
 			throw new InvalidInputException(e.getMessage());
@@ -552,7 +550,7 @@ public class FlexibookController {
 		if (day==1) {
 
 		}
-		}
+	}
 
 }
 

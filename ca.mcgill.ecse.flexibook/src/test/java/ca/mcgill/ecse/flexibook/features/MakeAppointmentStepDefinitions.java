@@ -27,15 +27,6 @@ public class MakeAppointmentStepDefinitions {
 		SystemTime.SystemTime(string, true);
 	}
 
-		@Given("the following customers exist in the system:")
-		public void the_following_customers_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
-			List<Map<String, String>> list = dataTable.asMaps();
-			for(Map<String,String> map : list) {
-				String username = map.get("username");
-				String password = map.get("password");
-				new Customer(username, password, flexibook);
-			}
-		}
 
 
 	@Given("the business has the following opening hours")

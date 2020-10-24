@@ -64,6 +64,16 @@ public class ViewAppointmentCalendarStepDefinition {
 	
 	@When("{string} requests the appointment calendar for the week starting on {string}")
 	public void requests_the_appointment_calendar_for_the_week_starting_on(String string, String string2) {
+		try{ArrayList<Date> weekDays=FlexibookController.getDaysofWeek(string2);
+		for(Date date:weekDays) {
+			notAvailable=FlexibookController.getUnavailableTimeSlots(string, date.toString());
+			available = FlexibookController.getAvailableTimeSlots(string, date.toString());
+		}}
+		catch(InvalidInputException e) {
+			error=e.getMessage();
+			FlexiBookApplication.setmessage(error);
+		}
+		
 	}
 	@Then("the following slots shall be unavailable:")
 	public void the_following_slots_shall_be_unavailable(io.cucumber.datatable.DataTable dataTable) {

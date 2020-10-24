@@ -842,28 +842,28 @@ public class FlexibookController {
 	}
 	}
 		
-	//	public static ArrayList<TimeSlot> getUnavailableTimeSlots (String username, String date)throws InvalidInputException{
-	//		String error;
-	//		FlexiBook flexibook=FlexiBookApplication.getflexibook();
-	//		ArrayList<TimeSlot> list = new ArrayList<TimeSlot>();
-	//		Date newDate = null;
-	//		try {
-	//		newDate=dateChecker(date);}
-	//		catch(ParseException e) {
-	//			throw new InvalidInputException(date+" is not a valid date");
-	//		}
-	//<<<<<<< HEAD
-	//	}
-	//
-	//=======
-	//		for(Appointment appointment:flexibook.getAppointments()) {
-	//			if(appointment.getTimeSlot().getStartDate().equals(newDate)) {
-	//				list.add(appointment.getTimeSlot());
-	//				
-	//			}
-	//		}
-	//		return list;
-	//		}
+		public static ArrayList<TimeSlot> getUnavailableTimeSlots (String username, String date)throws InvalidInputException{
+			String error;
+			FlexiBook flexibook=FlexiBookApplication.getflexibook();
+			ArrayList<TimeSlot> list = new ArrayList<TimeSlot>();
+			Date newDate = null;
+			try {
+			newDate=dateChecker(date);}
+			catch(ParseException e) {
+				throw new InvalidInputException(date+" is not a valid date");
+			}
+	
+		
+	
+	
+			for(Appointment appointment:flexibook.getAppointments()) {
+				if(appointment.getTimeSlot().getStartDate().equals(newDate)) {
+					list.add(appointment.getTimeSlot());
+					
+				}
+			}
+			return list;
+			}
 
 	public static ArrayList<TimeSlot> getAvailableTimeSlots(String username, String date) throws InvalidInputException {
 		String error;

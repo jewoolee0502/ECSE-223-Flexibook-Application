@@ -86,6 +86,7 @@ if(!flexibook.hasOwner()) {
   @Given("the Owner with username {string} is logged in")
   public void the_owner_with_username_is_logged_in(String string) {
      flexibook.getOwner().setUsername(string);
+     FlexiBookApplication.setCurrentuser(flexibook.getOwner());
   }
   @When("{string} initiates the definition of a service combo {string} with main service {string}, services {string} and mandatory setting {string}")
   public void initiates_the_definition_of_a_service_combo_with_main_service_services_and_mandatory_setting(String string, String string2, String string3, String string4, String string5) throws InvalidInputException {

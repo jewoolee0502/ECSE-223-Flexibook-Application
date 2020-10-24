@@ -101,7 +101,7 @@ public class ViewAppointmentCalendarStepDefinition {
 	@When("{string} requests the appointment calendar for the day of {string}")
 	public void requests_the_appointment_calendar_for_the_day_of(String string, String string2)  {
 		try { 
-		notAvailable=FlexibookController.getAvailableTimeSlots(string, string2);
+		notAvailable=FlexibookController.getUnavailableTimeSlots(string, string2);
 		available = FlexibookController.getAvailableTimeSlots(string, string2); 
 		}
 		catch(InvalidInputException e) {

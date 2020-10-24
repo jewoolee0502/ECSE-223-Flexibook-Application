@@ -682,6 +682,21 @@ public class FlexibookController {
 			throw new InvalidInputException("You are not authorized to perform this operation");}
 	}
 	
+	
+	
+	public static void deleteService(String string, String string2) {
+	  FlexiBook fb= FlexiBookApplication.getflexibook();
+	  if(fb.getBookableServices().size()!=0) {
+	  Service thiss=(Service) fb.getBookableService(0).getWithName(string2);
+	  
+	  }
+	
+	}
+	
+	
+	
+	
+	
 	/**
 	 * This method takes all parameters to set the business information in the system.
 	 * 

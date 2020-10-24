@@ -19,6 +19,7 @@ import ca.mcgill.ecse.flexibook.model.Customer;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
 import ca.mcgill.ecse.flexibook.model.Owner;
 import ca.mcgill.ecse.flexibook.model.User;
+import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -26,7 +27,7 @@ import io.cucumber.java.en.Then;
 public class SetupBusinessInformationStepDefinition {
 	  private  FlexiBook flexibook=FlexiBookApplication.getflexibook();
 	  private  InvalidInputException thise=null;
-	  private String resultString="not be";
+	  private String resultString="";
 
 
 	@Given("no business exists")
@@ -35,32 +36,6 @@ public class SetupBusinessInformationStepDefinition {
 		  flexibook.setBusiness(null);
 	  }
 	}
-	/*
-	@Given("the user is logged in to an account with username {string}")
-	public void the_user_is_logged_in_to_an_account_with_username(String string) {
-	    // Write code here that turns the phrase above into concrete actions
-		User aUser=null;
-		flexibook=FlexiBookApplication.getflexibook();
-		  if(flexibook.getCustomers().size()!=0) {
-			 for(Customer customer:flexibook.getCustomers()) {
-				 if(customer.getUsername().equals(string)) {
-					  aUser=customer;
-					 }
-				 }
-			 }
-		  if(flexibook.getOwner()!=null) {
-			  if(flexibook.getOwner().getUsername().equals(string)) {
-				 aUser=flexibook.getOwner() ;
-			  }
-		  }
-		  if(aUser==null) {
-			  aUser=new Owner(string,"000000",flexibook);
-		  }
-		  
-		  FlexiBookApplication.setCurrentuser(aUser);
-		  FlexiBookApplication.getCurrentuser().setUsername(string);
-	}
-	*/
 	@When("the user tries to set up the business information with new {string} and {string} and {string} and {string}")
 		public void the_user_tries_to_set_up_the_business_information_with_new_and_and_and(String string, String string2, String string3, String string4)throws InvalidInputException {
 	    try {  
@@ -73,23 +48,20 @@ public class SetupBusinessInformationStepDefinition {
 	@Then("a new business with new {string} and {string} and {string} and {string} shall {string} created")
 	public void a_new_business_with_new_and_and_and_shall_created(String string, String string2, String string3, String string4, String string5) {
 		Business cuBusiness=FlexiBookApplication.getflexibook().getBusiness();
-		String name="",address="",phoneNumber="",email="";
-		resultString="not be";
-		if(cuBusiness==null){
-			resultString="not be";
-		}else {
+		String name="",address="",phoneNumber="",email="";resultString="not be";
+		if(cuBusiness!=null) {
 		 name=cuBusiness.getName();
 		address=cuBusiness.getAddress();
 		 phoneNumber=cuBusiness.getPhoneNumber();
 		email=cuBusiness.getEmail();
+		resultString="be";
 		}
-		if(string.equals(name)&&string2.equals(address)&&string3.equals(phoneNumber)&&string4.equals(email)) {
-		assertTrue(cuBusiness!=null);
+		if(resultString.equals("be")) {
 		assertEquals(string,name);
 		assertEquals(string2,address);
 		assertEquals( string3,phoneNumber);
 		assertEquals( string4,email);
-		resultString="be";
+		assertEquals(string5, resultString);
 		}
 	}	
 
@@ -97,12 +69,23 @@ public class SetupBusinessInformationStepDefinition {
 	@Then("an error message {string} shall {string} raised")
 	public void an_error_message_shall_raised(String string, String string2) {
 		String e = FlexiBookApplication.returnmessage();
+		
+		System.out.println(resultString);
+		String resultError="not be";
+		if(resultString.equals("not be")) {
+			resultError="be";
+		}
 		   assertEquals(string,e);
-		   assertEquals(string2, resultString);
+		   assertEquals(string2, resultError);
 		   FlexiBookApplication.setmessage(null);
 		   
 	}
-	/*
+	@After
+	  public void tearDown() {
+	     flexibook=FlexiBookApplication.getflexibook();
+	      flexibook.delete();
+	} 
+	
 	@Given("a business exists with the following information:")
 	public void a_business_exists_with_the_following_information(io.cucumber.datatable.DataTable dataTable) throws InvalidInputException {
 	    // Write code here that turns the phrase above into concrete actions
@@ -146,8 +129,11 @@ public class SetupBusinessInformationStepDefinition {
 	    		business.addBusinessHour(nHour);
 			  }
 	    }
+	    @When("the user tries to add a new business hour on {string} with start time {string} and end time {string}")
+	    public void the_user_tries_to_add_a_new_business_hour_on_with_start_time_and_end_time(String string, String string2, String string3) {
+	        
+	    }
 
 
-*/
 
 }

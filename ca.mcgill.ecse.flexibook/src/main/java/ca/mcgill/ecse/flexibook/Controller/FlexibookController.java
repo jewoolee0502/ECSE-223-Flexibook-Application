@@ -591,23 +591,32 @@ public class FlexibookController {
 	public static void addNewBusinessHour(String string, String string2, String string3) {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		try {
+			String user = fb.getOwner().getUsername();
+			String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
+		if(user.equals(currentUserString)==false) {
+			throw new InvalidInputException("No permission to update business information");
+		}
+			DayOfWeek inputDayOfWeek=DayOfWeek.valueOf(string);
+			Time inputStTime=Time.valueOf(string2+":00");
+			Time inputEdTime=Time.valueOf(string3+":00");
+			if(inputStTime.before(inputEdTime)==false) {
+				throw new InvalidInputException("Start time must be before end time");
+			}
 			Business business= fb.getBusiness();
-	    	boolean hasSuchHour=false;
-	    	if(business.getBusinessHours().size()!=0) {
-				 for(BusinessHour hour:business.getBusinessHours()) {
-					 if(hour.getDayOfWeek().equals(DayOfWeek.valueOf(string))&&hour.getStartTime().equals(Time.valueOf(string2+":00"))&&hour.getEndTime().equals(Time.valueOf(string3+":00"))) {
-						 hasSuchHour=true;
-						  return;
-						 }
-					 }
-				 }
-	    	if(hasSuchHour==false) {
-	    		DayOfWeek dayOfWeek=DayOfWeek.valueOf(string);
-	    		Time startTime=Time.valueOf(string2+":00");
-	    		Time endTime=Time.valueOf(string3+":00");
-	    		BusinessHour nHour=new BusinessHour(dayOfWeek, startTime, endTime,fb);
-	    		business.addBusinessHour(nHour);
-			  }
+	    	BusinessHour aHour=business.getBusinessHour(0);
+    		DayOfWeek dayOfWeek=aHour.getDayOfWeek();
+    		Time startTime=aHour.getStartTime();
+    		Time endTime=aHour.getEndTime();
+    		if(dayOfWeek.equals(inputDayOfWeek)) {
+    			if(inputEdTime.before(endTime)&&inputEdTime.after(startTime)) {
+    				throw new InvalidInputException("The business hours cannot overlap");
+    			}
+    		}
+    		BusinessHour newHour=new BusinessHour(inputDayOfWeek, inputStTime, inputEdTime, fb);
+    		business.addBusinessHour(newHour);
+    		fb.addHour(newHour);
+    		FlexiBookApplication.setmessage("");	
+			  
 	} catch (Exception e) {
 		// TODO: handle exception
 		String ebString=e.getMessage();

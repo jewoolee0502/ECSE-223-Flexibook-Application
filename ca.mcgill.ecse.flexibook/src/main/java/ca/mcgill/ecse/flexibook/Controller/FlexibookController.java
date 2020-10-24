@@ -1042,28 +1042,44 @@ public class FlexibookController {
 		}
 	}
 
-	public static ArrayList<TimeSlot> getUnavailableTimeSlots (String username, String date)throws InvalidInputException{
-		String error;
-		FlexiBook flexibook=FlexiBookApplication.getflexibook();
-		ArrayList<TimeSlot> list = new ArrayList<TimeSlot>();
-		Date newDate = null;
-		try {
+	/**
+	 * getUnavailableTimeSlots: This method takes as input a date and a username and returns the unavailable time slots for a day. 	 * 
+	 * @author James Willems
+	 * @param String username
+	 * @param String date
+	 * @throws InvalidInputException an error is encountered
+	 * @return ArrayList<TimeSlot>
+	 */
+		public static ArrayList<TimeSlot> getUnavailableTimeSlots (String username, String date)throws InvalidInputException{
+			String error;
+			FlexiBook flexibook=FlexiBookApplication.getflexibook();
+			ArrayList<TimeSlot> list = new ArrayList<TimeSlot>();
+			Date newDate = null;
+			try {
 			newDate=dateChecker(date);}
-		catch(ParseException e) {
-			throw new InvalidInputException(date+" is not a valid date");
-		}
-
-
-
-
-		for(Appointment appointment:flexibook.getAppointments()) {
-			if(appointment.getTimeSlot().getStartDate().equals(newDate)) {
-				list.add(appointment.getTimeSlot());
-
+			catch(ParseException e) {
+				throw new InvalidInputException(date+" is not a valid date");
 			}
-		}
-		return list;
-	}
+			catch(IllegalArgumentException f) {
+				throw new InvalidInputException(date+" is not a valid date");
+			}
+	
+			for(Appointment appointment:flexibook.getAppointments()) {
+				if(appointment.getTimeSlot().getStartDate().equals(newDate)) {
+					list.add(appointment.getTimeSlot());
+					
+				}
+			}
+			return list;
+			}
+		/**
+		 * getAvailableTimeSlots: This method takes as input a date and a username and returns the available time slots for a day. 	 * 
+		 * @author James Willems
+		 * @param String username
+		 * @param String date
+		 * @throws InvalidInputException an error is encountered
+		 * @return ArrayList<TimeSlot>
+		 */
 
 	public static ArrayList<TimeSlot> getAvailableTimeSlots(String username, String date) throws InvalidInputException {
 		String error;
@@ -1091,11 +1107,88 @@ public class FlexibookController {
 		}		
 		return list;
 	}
-
+	/**
+	 * date Checker: This method takes as input a date as a string and returns it as a Date object. 	 * 
+	 * @author James Willems
+	 * @param String date
+	 * @throws InvalidInputException an error is encountered
+	 * @throws Illegal Argument Exception
+	 * @return Date date
+	 */
 	private static Date dateChecker(String date)throws ParseException , IllegalArgumentException{
 		DateFormat formatDate = new SimpleDateFormat("yyyy-mm-dd");
 		formatDate.parse(date);
 		return Date.valueOf(date);
 	}
+	/**
+	 * getDaysOfWeek: This method takes as input a date and returns all the remaining days of the week. 	 * 
+	 * @author James Willems
+	 * @param String date
+	 * @throws InvalidInputException an error is encountered
+	 * @return ArrayList<Date>
+	 */
+
+	public static ArrayList<Date> getDaysofWeek(String date) throws InvalidInputException{
+		String error;
+		int day;
+		FlexiBook flexibook=FlexiBookApplication.getflexibook();
+		ArrayList<Date> list = new ArrayList<Date>();
+		Date newDate = null;
+	
+		try {
+			newDate=dateChecker(date);}
+		catch(ParseException e) {
+			throw new InvalidInputException(date+" is not a valid date");
+		}
+		catch(IllegalArgumentException f) {
+			throw new InvalidInputException(date+" is not a valid date");
+		}	
+		Calendar c = Calendar.getInstance();
+        c.setTime(newDate);
+        day=newDate.getDay();
+        switch(day){
+        case 0: for(int i=0;i<6;i++) {
+        	c.add(Calendar.DATE,1);
+        	java.util.Date intDate=c.getTime();
+        	Date intermediate=  new Date(intDate.getTime());
+        	list.add(intermediate);
+        	
+        }break;
+        case 1: for(int i=0;i<5;i++) {
+        	c.add(Calendar.DATE,1);
+        	java.sql.Date intermediate=  (java.sql.Date) c.getTime();
+        	list.add(intermediate);
+        }break;
+        case 2: for(int i=0;i<4;i++) {
+        	c.add(Calendar.DATE,1);
+        	java.sql.Date intermediate=  (java.sql.Date) c.getTime();
+        	list.add(intermediate);
+        }break;
+        case 3: for(int i=0;i<3;i++) {
+        	c.add(Calendar.DATE,1);
+        	java.sql.Date intermediate=  (java.sql.Date) c.getTime();
+        	list.add(intermediate);
+        }break;
+        case 4: for(int i=0;i<2;i++) {
+        	c.add(Calendar.DATE,1);
+        	java.sql.Date intermediate=  (java.sql.Date) c.getTime();
+        	list.add(intermediate);
+        }break;
+        case 5: for(int i=0;i<1;i++) {
+        	c.add(Calendar.DATE,1);
+        	java.sql.Date intermediate=  (java.sql.Date) c.getTime();
+        	list.add(intermediate);
+        }break;
+   
+           }
+        return list;
+	}
+
+
+
+
 
 }
+
+
+

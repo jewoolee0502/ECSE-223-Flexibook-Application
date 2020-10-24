@@ -638,13 +638,7 @@ public class FlexibookController {
 			Service thisservice=new Service(string2, fb, 0, 0, 0);
 
 
-			char[] array=new char[servicename.length()-4];
-			servicename.getChars(4,servicename.length(), array, 0);
-			String nameofmain=new String(array);
-			if(fb.getBookableService(0).getWithName(servicename)==null) {
-				thisservice.delete();
-				throw new InvalidInputException("Service "+servicename+" does not exist");
-			}
+			
 			
 		} else {
 			throw new InvalidInputException("You are not authorized to perform this operation");}

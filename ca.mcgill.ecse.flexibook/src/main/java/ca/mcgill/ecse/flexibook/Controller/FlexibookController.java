@@ -346,12 +346,6 @@ public class FlexibookController {
 				else if(password.equals("") || password == null) {
 					throw new InvalidInputException("The password cannot be empty");
 				}
-				//				else if(getCustomer(username) != null) {
-				//					throw new InvalidInputException("The username already exists");
-				//				}
-				//				else {
-				//					flexibook.addCustomer(username, password);
-				//				}
 				else {
 					if(flexibook.getCustomers().size() == 0) {
 						Customer c = new Customer(username, password, flexibook);

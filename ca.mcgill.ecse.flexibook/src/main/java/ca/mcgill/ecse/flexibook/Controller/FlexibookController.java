@@ -536,32 +536,80 @@ public class FlexibookController {
 	 * This method takes all parameters to update a service in the system.
 	 * 
 	 * @author Tianyu Zhao
+	 * @param  
 	 * 
 	 * @param ownername
-	 * @param oldservicename
-	 * @param newserviceName
-	 * @param service
+	 * @param color
+	 * @param servicename
+	 * @param duration
+	 * @param downtimeStart
+	 * @param downtimeDuration
 	 * @throws InvalidInputException
 	 */
 	public static void updateservice(String string, String string2, String string3, String string4, String string5,
 			String string6) throws InvalidInputException {
+        Service service = null;
+		
+
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		String servicename = null;
-
-		if(fb.getOwner().getUsername().equals(string)==true) {
-			if(fb.getBookableServices().size()!=0) {
-				if(fb.getBookableService(0).getWithName(string2)==null) {
-					throw new InvalidInputException("Service does not exist");
-				}else {
-					if(string2.equals(string3)!=true) {
-						fb.getBookableService(0).getWithName(string2).delete();
-					}
-					}
-
-			}else {throw new InvalidInputException("You are not authorized to perform this operation");  
-			}
+		
+		int duration=Integer.parseInt(string3);
+		int downstart=Integer.parseInt(string4);
+		int downduration=Integer.parseInt(string5);
+		if(fb.getOwner().getUsername().equals(string)) {
+		if(fb.getBookableServices().size()==0) {
+		  		
+		if(duration<0||duration==0) {
+		
+		  throw new InvalidInputException("Duration must be positive"); 
+		}else if(downstart>0 && downduration<=0) {
+		  
+		  throw new InvalidInputException("Downtime duration must be positive"); 
+		}else if (downstart==0 && downduration<0) {
+		  throw new InvalidInputException("Downtime duration must be "+downstart); 
+		}else if (downstart==0&& downduration>0) {
+		  throw new InvalidInputException("Downtime must not start at the beginning of the service"); 
+		}else if (downstart<0) {
+          throw new InvalidInputException("Downtime must not start before the beginning of the service"); 
+        }else if (downstart>duration) {
+          throw new InvalidInputException("Downtime must not the end of the service"); 
+        }else if (downduration>duration-downstart) {
+          throw new InvalidInputException("Downtime must not end after the service"); 
+        }else {
+         
+          Service thisservice=new Service(string2, fb, duration,downduration , downstart);
+        }
+		}else if(fb.getBookableService(0).getWithName(string2)!=null) {
+		  throw new InvalidInputException("Service "+string2+ " already exists");
+		}else if(fb.getBookableService(0).getWithName(string2)==null) {
+		  if(duration<0||duration==0) {
+	        
+		    throw new InvalidInputException("Duration must be positive"); 
+	        }else if(downstart>0 && downduration<=0) {
+	          
+	          throw new InvalidInputException("Downtime duration must be positive"); 
+	        }else if (downstart==0&& downduration<0) {
+	          
+	          throw new InvalidInputException("Downtime duration must be "+downstart); 
+	        }else if (downstart==0&& downduration>0) {
+	          throw new InvalidInputException("Downtime must not start at the beginning of the service"); 
+	        }else if (downstart<0) {
+	          throw new InvalidInputException("Downtime must not start before the beginning of the service"); 
+	        }else if (downstart>duration) {
+	          throw new InvalidInputException("Downtime must not start after the end of the service"); 
+	        }else if (downduration>duration-downstart) {
+	          throw new InvalidInputException("Downtime must not end after the service"); 
+	        }else {
+	          Service thisservice=new Service(string2, fb, duration, downduration, downstart);
+	        }
 		}
+		
+		  } else {
+		  
+			throw new InvalidInputException("You are not authorized to perform this operation");}
 	}
+	
 	
 	/**
 	 * deleteService: This method takes an input of servicename. The method will decide whether to initiate the deleting method
@@ -616,7 +664,9 @@ public class FlexibookController {
 	 * @author Tianyu Zhao
 	 * @param  ownername 
 	 * @param  servicename
-	 * @param  services
+	 * @param  duration
+	 * @param  downstart
+	 * @param  downduration
 	 */
 	public static void addService(String string, String string2, String string3, String string4, String string5) throws InvalidInputException {
 		Service service = null;
@@ -624,7 +674,7 @@ public class FlexibookController {
 
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		String servicename = null;
-		//convert to inter
+		//convert integer to string
 		int duration=Integer.parseInt(string3);
 		int downstart=Integer.parseInt(string4);
 		int downduration=Integer.parseInt(string5);

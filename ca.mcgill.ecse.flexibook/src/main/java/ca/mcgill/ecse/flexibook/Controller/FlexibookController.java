@@ -595,7 +595,7 @@ public class FlexibookController {
 									fb.getBookableService(0).getWithName(servicename).delete();
 									break;
 								}else {
-									throw new InvalidInputException("Service "+name+ " has future appointments");
+									throw new InvalidInputException("Service "+servicename+ " has future appointments");
 								}
 							}
 						}

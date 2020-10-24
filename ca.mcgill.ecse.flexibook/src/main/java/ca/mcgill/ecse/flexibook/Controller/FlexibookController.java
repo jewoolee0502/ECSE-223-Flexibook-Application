@@ -252,7 +252,7 @@ public class FlexibookController {
 	 * @author Haipeng Yue
 	 * 
 	 * @param String username
-	 * @param
+	 * @param String name of the combo to be deleated.
 	 * @throws InvalidInputException an error is encountered
 	 * @return void
 	 */
@@ -663,6 +663,7 @@ public class FlexibookController {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		try {
 			String user = fb.getOwner().getUsername();
+			
 			String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
 		if(user.equals(currentUserString)==false) {
 			throw new InvalidInputException("No permission to set up business information");

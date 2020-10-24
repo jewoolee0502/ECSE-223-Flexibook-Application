@@ -29,10 +29,6 @@ public class AddServiceStepDefiniton {
 	      FlexiBookApplication.setmessage(e.getMessage());
 	    }
   }
-
-
-  
-
   @Then("the service {string} shall exist in the system")
   public void the_service_shall_exist_in_the_system(String string) {
 	 	  String servicename = null;

@@ -252,7 +252,7 @@ public class FlexibookController {
 		}
 	}
 
-	public static void CreateUser(String a, String b) throws InvalidInputException {
+	public static void CreateUser(String a, String b) throws InvalidInputException { 
 		FlexiBook fb=FlexiBookApplication.getflexibook();
 		if(a==null|| a=="         "){
 			throw new InvalidInputException("username");
@@ -314,13 +314,13 @@ public class FlexibookController {
 
 
 	/**
-	 * Customer: This method takes in all the parameters and looks for a customer account that has the same username.
+	 * This method takes in all the parameters and looks for a customer account that has the same username.
 	 * 
 	 * @author Jewoo Lee
 	 * 
-	 * @param String username is the username of the customer account
-	 * @throws InvalidInputException an error is encountered
-	 * @return foundCustomer
+	 * @param username - username of the customer account
+	 * 
+	 * @throws InvalidInputException
 	 */
 
 	private static Customer getCustomer(String username) {
@@ -333,6 +333,18 @@ public class FlexibookController {
 		return foundCustomer;
 	}
 
+	
+	/**
+	 * This method takes in all parameters to sign-up for customer account
+	 * 
+	 * @author Jewoo Lee
+	 * 
+	 * @param username
+	 * @param password
+	 * 
+	 * @throws InvalidInputException
+	 */
+	
 	public static void SignUpForCustomerAccount(String username, String password) throws InvalidInputException {
 
 		try {
@@ -374,6 +386,19 @@ public class FlexibookController {
 			throw new InvalidInputException(e.getMessage());
 		}
 	}
+	
+	
+	/**
+	 * This method takes in all parameters to update either or both owner and customer account
+	 * 
+	 * @author Jewoo Lee
+	 * 
+	 * @param oldUsername - the old username before the account was updated
+	 * @param newUsername - the new updated username of the customer or owner account
+	 * @param newPassword - the new updated password of the customer or owner account
+	 * 
+	 * @throws InvalidInputException
+	 */
 
 	public static void UpdateAccount(String oldUsername, String newUsername, String newPassword) throws InvalidInputException {
 
@@ -413,6 +438,18 @@ public class FlexibookController {
 
 	}
 
+	
+	/**
+	 * This method takes in all parameters to delete customer account
+	 * 
+	 * @author Jewoo Lee
+	 * 
+	 * @param username - the customer or owner's account username
+	 * @param target - the target username that wants to be deleted
+	 * 
+	 * @throws InvalidInputException
+	 */
+	
 	public static void DeleteCustomerAccount(String username, String target) throws InvalidInputException {
 
 		try {
@@ -770,7 +807,7 @@ public class FlexibookController {
 	 * 
 	 * @author Zhixin Xiong
 	 * @param name 
-	 * @param  address
+	 * @param address
 	 * @param phone number
 	 * @param email
 	 */

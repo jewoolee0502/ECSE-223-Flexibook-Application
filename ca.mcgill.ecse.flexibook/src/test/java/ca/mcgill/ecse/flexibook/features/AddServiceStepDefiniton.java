@@ -24,7 +24,7 @@ public class AddServiceStepDefiniton {
   @When("{string} initiates the addition of the service {string} with duration {string}, start of down time {string} and down time duration {string}")
   public void initiates_the_addition_of_the_service_with_duration_start_of_down_time_and_down_time_duration(String string, String string2, String string3, String string4, String string5) {
 	  try{
-	      FlexibookController.AddService(string, string2);
+	      FlexibookController.addService(string, string2, string3);
 	    }catch (InvalidInputException e) {
 	      FlexiBookApplication.setmessage(e.getMessage());
 	    }

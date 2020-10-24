@@ -247,7 +247,7 @@ public class FlexibookController {
 
 
 	/**
-	 * deketecombo: This method takes an input of username and a combo name. The method will decide whether to initiate the deleting method
+	 * deletecombo: This method takes an input of username and a combo name. The method will decide whether to initiate the deleting method
 	 * 
 	 * @author Haipeng Yue
 	 * 
@@ -532,7 +532,17 @@ public class FlexibookController {
 	}
 
 
-
+	/**
+	 * This method takes all parameters to update a service in the system.
+	 * 
+	 * @author Tianyu Zhao
+	 * 
+	 * @param ownername
+	 * @param oldservicename
+	 * @param newserviceName
+	 * @param service
+	 * @throws InvalidInputException
+	 */
 	public static void updateservice(String string, String string2, String string3, String string4, String string5,
 			String string6) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
@@ -542,13 +552,104 @@ public class FlexibookController {
 			if(fb.getBookableServices().size()!=0) {
 				if(fb.getBookableService(0).getWithName(string2)==null) {
 					throw new InvalidInputException("Service does not exist");
-				}
+				}else {
+					if(string2.equals(string3)!=true) {
+						fb.getBookableService(0).getWithName(string2).delete();
+					}
+					}
 
 			}else {throw new InvalidInputException("You are not authorized to perform this operation");  
 			}
 		}
 	}
+	
+	/**
+	 * deleteService: This method takes an input of servicename. The method will decide whether to initiate the deleting method
+	 * 
+	 * @author Tianyu Zhao
+	 * 
+	 * @param String servicename
+	 * @param ownername
+	 * @throws InvalidInputException an error is encountered
+	 * @return void
+	 */
 
+	public static void deleteService(String servicename) throws InvalidInputException {
+		FlexiBook fb =FlexiBookApplication.getflexibook();
+		String time=SystemTime.gettime(SystemTime.getSysTime());
+		String date=SystemTime.getdate(SystemTime.getSysTime());
+		if(servicename.equals(fb.getOwner().getUsername())==true) {
+			if(fb.getBookableServices().size()!=0) {
+				if(fb.getBookableService(0).getWithName(servicename)!=null) {
+					if(fb.getBookableService(0).getWithName(servicename).getAppointments().size()>0) {
+						for(int i=0;i<fb.getAppointments().size();i++) {
+							String startdate=fb.getBookableService(0).getWithName(servicename).getAppointment(i).getTimeSlot().getStartDate().toString();
+							if(SystemTime.comparedate(date,startdate)==2) {
+								throw new InvalidInputException("Service "+servicename+ " has future appointments"); 
+							}else if(SystemTime.comparedate(date,startdate)==1) {
+								fb.getBookableService(0).getWithName(servicename).delete();
+								break;
+							}else if(SystemTime.comparedate(date,startdate)==0) {
+								String starttime=fb.getBookableService(0).getWithName(servicename).getAppointment(i).getTimeSlot().getStartTime().toString();
+								if(SystemTime.comparetime(time,starttime)==1) {
+									fb.getBookableService(0).getWithName(servicename).delete();
+									break;
+								}else {
+									throw new InvalidInputException("Service "+name+ " has future appointments");
+								}
+							}
+						}
+					}else{fb.getBookableService(0).getWithName(servicename).delete();}
+
+				}
+			}
+		}else {
+			throw new InvalidInputException("You are not authorized to perform this operation"); 
+		}
+
+
+	}
+	
+	/**
+	 * This method takes all parameters to add a new service in the system.
+	 * 
+	 * @author Tianyu Zhao
+	 * @param  ownername 
+	 * @param  servicename
+	 * @param  services
+	 */
+	public static void addService(String string, String string2, String string3) throws InvalidInputException {
+		Service mainservice = null;
+		ComboItem main=null;
+
+		FlexiBook fb = FlexiBookApplication.getflexibook();
+		String servicename = null;
+		if(fb.getOwner().getUsername().equals(string)) {
+			for(int j =0;j<string3.length();j++) {
+				if(j>3) {
+					servicename+= string3.charAt(j);
+				}
+			}    if(fb.getBookableServices().size()!=0) {
+				if(fb.getBookableService(0).getWithName(string2)!=null)
+				{
+					throw new InvalidInputException("Service "+string2+ " already exists");
+				}
+			}
+			Service thisservice=new Service(string2, fb, 0, 0, 0);
+
+
+			char[] array=new char[servicename.length()-4];
+			servicename.getChars(4,servicename.length(), array, 0);
+			String nameofmain=new String(array);
+			if(fb.getBookableService(0).getWithName(servicename)==null) {
+				thisservice.delete();
+				throw new InvalidInputException("Service "+servicename+" does not exist");
+			}
+			
+		} else {
+			throw new InvalidInputException("You are not authorized to perform this operation");}
+	}
+	
 	/**
 	 * This method takes all parameters to set the business information in the system.
 	 * 

@@ -19,12 +19,15 @@ import ca.mcgill.ecse.flexibook.model.Owner;
 import ca.mcgill.ecse.flexibook.model.Service;
 
 public class AddServiceStepDefiniton {
-	private  FlexiBook flexibook=FlexiBookApplication.getflexibook();
+	private  FlexiBook flexibook;
 	  private  InvalidInputException thise=null;
   @When("{string} initiates the addition of the service {string} with duration {string}, start of down time {string} and down time duration {string}")
   public void initiates_the_addition_of_the_service_with_duration_start_of_down_time_and_down_time_duration(String string, String string2, String string3, String string4, String string5) {
-      // Write code here that turns the phrase above into concrete actions
-      throw new io.cucumber.java.PendingException();
+	  try{
+	      FlexibookController.AddService(string, string2);
+	    }catch (InvalidInputException e) {
+	      FlexiBookApplication.setmessage(e.getMessage());
+	    }
   }
 
 

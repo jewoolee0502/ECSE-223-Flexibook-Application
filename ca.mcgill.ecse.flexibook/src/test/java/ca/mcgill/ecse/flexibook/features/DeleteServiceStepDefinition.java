@@ -24,22 +24,7 @@ public class DeleteServiceStepDefinition {
 	      FlexiBookApplication.setmessage(e.getMessage());
 	    }
 	  }
-	  @Then("the number of appointments in the system with service {string} shall be {string}")
-	  public void the_number_of_appointments_in_the_system_with_service_shall_be(String string, String string2) {
-	int count =0;
-	    for(int i =0;i<flexibook.getAppointments().size();i++) {
-	 if(flexibook.getAppointment(i).getBookableService().getName().equals(string)) {
-	  count++;
-	}
-	}
-	    assertEquals(Integer.decode(string2),count);
-	  }
-	  @Then("the number of appointments in the system shall be {string}")
-	  public void the_number_of_appointments_in_the_system_shall_be(String string) {
-	    List<Appointment> thi=flexibook.getAppointments();  
-	    assertEquals(Integer.decode(string),flexibook.getAppointments().size());
-	      
-	  }
+
 	  @After
 	  public void tearDown() {
 	      flexibook=FlexiBookApplication.getflexibook();

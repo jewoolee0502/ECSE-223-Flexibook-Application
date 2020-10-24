@@ -46,8 +46,6 @@ public class AddServiceStepDefiniton {
 	    for (int i=0;i<flexibook.getBookableServices().size();i++) {
 	      if(flexibook.getBookableService(i).getName().equals(string)) {
 	        servicename=flexibook.getBookableService(i).getName();
-	        ServiceCombo thiscombo=(ServiceCombo) flexibook.getBookableService(i);
-	       
 	         
 	      }}
 	    assertEquals(servicename,string);
@@ -58,7 +56,7 @@ public class AddServiceStepDefiniton {
   public void the_number_of_services_in_the_system_shall_be(String string) {
 	  int count = 0;
 	  for (int i =0;i<flexibook.getBookableServices().size();i++) {
-	      if(flexibook.getBookableService(i).getName().contains("-")) {
+	      if(!flexibook.getBookableService(i).getName().contains("-")) {
 	       
 	       String name=flexibook.getBookableService(i).getName();
 	        count =count+1;

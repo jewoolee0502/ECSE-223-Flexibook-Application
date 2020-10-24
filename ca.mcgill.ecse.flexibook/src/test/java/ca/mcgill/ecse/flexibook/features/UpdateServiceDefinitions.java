@@ -37,8 +37,10 @@ public class UpdateServiceDefinitions {
 
 	  @Then("the service {string} shall be updated to name {string}, duration {string}, start of down time {string} and down time duration {string}")
 	  public void the_service_shall_be_updated_to_name_duration_start_of_down_time_and_down_time_duration(String string, String string2, String string3, String string4, String string5) {
-	      // Write code here that turns the phrase above into concrete actions
-	      throw new io.cucumber.java.PendingException();
+	    Service thiss=(Service) flexibook.getBookableService(0).getWithName(string2);
+	    assertEquals(string3,Integer.toString(thiss.getDuration()) );
+	    assertEquals(string4,Integer.toString(thiss.getDowntimeStart()));
+	    assertEquals(string5,Integer.toString(thiss.getDowntimeDuration()));
 	  }
 	  
 	  @Then("the service {string} shall still preserve the following properties:")

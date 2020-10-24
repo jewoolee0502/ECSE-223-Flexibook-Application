@@ -546,43 +546,14 @@ public class FlexibookController {
 	 * @param downtimeDuration
 	 * @throws InvalidInputException
 	 */
-	public static void updateservice(String string, String string2, String string3, String string4, String string5,
-			String string6) throws InvalidInputException {
-        Service service = null;
-		
-
+	public static void updateservice(String string, String string2, String string3, String string4, String string5,String string6) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
-		String servicename = null;
-		
-		int duration=Integer.parseInt(string3);
-		int downstart=Integer.parseInt(string4);
-		int downduration=Integer.parseInt(string5);
+		Service thiss=(Service) fb.getBookableService(0).getWithName(string2);
+		int duration=Integer.parseInt(string4);
+		int downstart=Integer.parseInt(string5);
+		int downduration=Integer.parseInt(string6);
 		if(fb.getOwner().getUsername().equals(string)) {
-		if(fb.getBookableServices().size()==0) {
-		  		
-		if(duration<0||duration==0) {
-		
-		  throw new InvalidInputException("Duration must be positive"); 
-		}else if(downstart>0 && downduration<=0) {
-		  
-		  throw new InvalidInputException("Downtime duration must be positive"); 
-		}else if (downstart==0 && downduration<0) {
-		  throw new InvalidInputException("Downtime duration must be "+downstart); 
-		}else if (downstart==0&& downduration>0) {
-		  throw new InvalidInputException("Downtime must not start at the beginning of the service"); 
-		}else if (downstart<0) {
-          throw new InvalidInputException("Downtime must not start before the beginning of the service"); 
-        }else if (downstart>duration) {
-          throw new InvalidInputException("Downtime must not the end of the service"); 
-        }else if (downduration>duration-downstart) {
-          throw new InvalidInputException("Downtime must not end after the service"); 
-        }else {
-         
-          Service thisservice=new Service(string2, fb, duration,downduration , downstart);
-        }
-		}else if(fb.getBookableService(0).getWithName(string2)!=null) {
-		  throw new InvalidInputException("Service "+string2+ " already exists");
-		}else if(fb.getBookableService(0).getWithName(string2)==null) {
+         if(fb.getBookableService(0).getWithName(string3)==null) {
 		  if(duration<0||duration==0) {
 	        
 		    throw new InvalidInputException("Duration must be positive"); 
@@ -601,11 +572,38 @@ public class FlexibookController {
 	        }else if (downduration>duration-downstart) {
 	          throw new InvalidInputException("Downtime must not end after the service"); 
 	        }else {
-	          Service thisservice=new Service(string2, fb, duration, downduration, downstart);
+	          thiss.setName(string3); 
+	          thiss.setDowntimeStart(downstart);
+	          thiss.setDowntimeDuration(downduration);
+	          thiss.setDuration(duration); 
 	        }
-		}
+		}else if(string2.equals(string3)) {
+		     if(duration<0||duration==0) {
+             
+             throw new InvalidInputException("Duration must be positive"); 
+             }else if(downstart>0 && downduration<=0) {
+               
+               throw new InvalidInputException("Downtime duration must be positive"); 
+             }else if (downstart==0&& downduration<0) {
+               
+               throw new InvalidInputException("Downtime duration must be "+downstart); 
+             }else if (downstart==0&& downduration>0) {
+               throw new InvalidInputException("Downtime must not start at the beginning of the service"); 
+             }else if (downstart<0) {
+               throw new InvalidInputException("Downtime must not start before the beginning of the service"); 
+             }else if (downstart>duration) {
+               throw new InvalidInputException("Downtime must not start after the end of the service"); 
+             }else if (downduration>duration-downstart) {
+               throw new InvalidInputException("Downtime must not end after the service"); 
+             }else {
+               thiss.setDowntimeStart(downstart);
+               thiss.setDowntimeDuration(downduration);
+               thiss.setDuration(duration);
+             }}else if(fb.getBookableService(0).getWithName(string3)!=null) {
+               throw new InvalidInputException("Service "+string3+" already exists");
+             }
 		
-		  } else {
+		} else {
 		  
 			throw new InvalidInputException("You are not authorized to perform this operation");}
 	}

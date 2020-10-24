@@ -192,6 +192,16 @@ public class FlexibookController {
 		}else {throw new InvalidInputException("You are not authorized to perform this operation");  
 		}
 	}
+	/**
+	 * AttemptLogIn: This method takes an input of username and a password. It will check if the person trying to log in is registered in the system with the right password
+	 * 
+	 * @author James Willems
+	 * 
+	 * @param String userID
+	 * @param String passcode.
+	 * @throws InvalidInputException an error is encountered
+	 * @return boolean
+	 */
 
 	public static boolean AttemptLogIn(String userID,String passcode) throws InvalidInputException {
 		FlexiBook flexi=FlexiBookApplication.getflexibook();
@@ -216,6 +226,16 @@ public class FlexibookController {
 			throw new InvalidInputException(e.getMessage());
 		}
 	}
+
+	/**
+	 * LogOut: This method takes no inputs. It will check if the user is already logged in or not, and log him out.
+	 * 
+	 * @author James Willems
+	 * 
+	 * @throws InvalidInputException an error is encountered
+	 * @return void
+	 */
+
 	public static void LogOut() throws InvalidInputException {
 		FlexiBook flexi=FlexiBookApplication.getflexibook();
 		try {
@@ -232,7 +252,7 @@ public class FlexibookController {
 		}
 	}
 
-	public static void CreateUser(String a, String b) throws InvalidInputException {
+	public static void CreateUser(String a, String b) throws InvalidInputException { 
 		FlexiBook fb=FlexiBookApplication.getflexibook();
 		if(a==null|| a=="         "){
 			throw new InvalidInputException("username");
@@ -252,7 +272,7 @@ public class FlexibookController {
 	 * @author Haipeng Yue
 	 * 
 	 * @param String username
-	 * @param String name of the combo to be deleted.
+	 * @param String name of the combo to be deleated.
 	 * @throws InvalidInputException an error is encountered
 	 * @return void
 	 */
@@ -294,13 +314,13 @@ public class FlexibookController {
 
 
 	/**
-	 * Customer: This method takes in all the parameters and looks for a customer account that has the same username.
+	 * This method takes in all the parameters and looks for a customer account that has the same username.
 	 * 
 	 * @author Jewoo Lee
 	 * 
-	 * @param String username is the username of the customer account
-	 * @throws InvalidInputException an error is encountered
-	 * @return foundCustomer
+	 * @param username - username of the customer account
+	 * 
+	 * @throws InvalidInputException
 	 */
 
 	private static Customer getCustomer(String username) {
@@ -312,6 +332,18 @@ public class FlexibookController {
 		}
 		return foundCustomer;
 	}
+
+
+	/**
+	 * This method takes in all parameters to sign-up for customer account
+	 * 
+	 * @author Jewoo Lee
+	 * 
+	 * @param username
+	 * @param password
+	 * 
+	 * @throws InvalidInputException
+	 */
 
 	public static void SignUpForCustomerAccount(String username, String password) throws InvalidInputException {
 
@@ -355,6 +387,19 @@ public class FlexibookController {
 		}
 	}
 
+
+	/**
+	 * This method takes in all parameters to update either or both owner and customer account
+	 * 
+	 * @author Jewoo Lee
+	 * 
+	 * @param oldUsername - the old username before the account was updated
+	 * @param newUsername - the new updated username of the customer or owner account
+	 * @param newPassword - the new updated password of the customer or owner account
+	 * 
+	 * @throws InvalidInputException
+	 */
+
 	public static void UpdateAccount(String oldUsername, String newUsername, String newPassword) throws InvalidInputException {
 
 		try {
@@ -392,6 +437,18 @@ public class FlexibookController {
 		}
 
 	}
+
+
+	/**
+	 * This method takes in all parameters to delete customer account
+	 * 
+	 * @author Jewoo Lee
+	 * 
+	 * @param username - the customer or owner's account username
+	 * @param target - the target username that wants to be deleted
+	 * 
+	 * @throws InvalidInputException
+	 */
 
 	public static void DeleteCustomerAccount(String username, String target) throws InvalidInputException {
 
@@ -699,32 +756,78 @@ public class FlexibookController {
 	 * This method takes all parameters to update a service in the system.
 	 * 
 	 * @author Tianyu Zhao
+	 * @param  
 	 * 
 	 * @param ownername
-	 * @param oldservicename
-	 * @param newserviceName
-	 * @param service
+	 * @param color
+	 * @param servicename
+	 * @param duration
+	 * @param downtimeStart
+	 * @param downtimeDuration
 	 * @throws InvalidInputException
 	 */
-	public static void updateservice(String string, String string2, String string3, String string4, String string5,
-			String string6) throws InvalidInputException {
+	public static void updateservice(String string, String string2, String string3, String string4, String string5,String string6) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
-		String servicename = null;
+		Service thiss=(Service) fb.getBookableService(0).getWithName(string2);
+		int duration=Integer.parseInt(string4);
+		int downstart=Integer.parseInt(string5);
+		int downduration=Integer.parseInt(string6);
+		if(fb.getOwner().getUsername().equals(string)) {
+			if(fb.getBookableService(0).getWithName(string3)==null) {
+				if(duration<0||duration==0) {
 
-		if(fb.getOwner().getUsername().equals(string)==true) {
-			if(fb.getBookableServices().size()!=0) {
-				if(fb.getBookableService(0).getWithName(string2)==null) {
-					throw new InvalidInputException("Service does not exist");
+					throw new InvalidInputException("Duration must be positive"); 
+				}else if(downstart>0 && downduration<=0) {
+
+					throw new InvalidInputException("Downtime duration must be positive"); 
+				}else if (downstart==0&& downduration<0) {
+
+					throw new InvalidInputException("Downtime duration must be "+downstart); 
+				}else if (downstart==0&& downduration>0) {
+					throw new InvalidInputException("Downtime must not start at the beginning of the service"); 
+				}else if (downstart<0) {
+					throw new InvalidInputException("Downtime must not start before the beginning of the service"); 
+				}else if (downstart>duration) {
+					throw new InvalidInputException("Downtime must not start after the end of the service"); 
+				}else if (downduration>duration-downstart) {
+					throw new InvalidInputException("Downtime must not end after the service"); 
 				}else {
-					if(string2.equals(string3)!=true) {
-						fb.getBookableService(0).getWithName(string2).delete();
-					}
+					thiss.setName(string3); 
+					thiss.setDowntimeStart(downstart);
+					thiss.setDowntimeDuration(downduration);
+					thiss.setDuration(duration); 
+				}
+			}else if(string2.equals(string3)) {
+				if(duration<0||duration==0) {
+
+					throw new InvalidInputException("Duration must be positive"); 
+				}else if(downstart>0 && downduration<=0) {
+
+					throw new InvalidInputException("Downtime duration must be positive"); 
+				}else if (downstart==0&& downduration<0) {
+
+					throw new InvalidInputException("Downtime duration must be "+downstart); 
+				}else if (downstart==0&& downduration>0) {
+					throw new InvalidInputException("Downtime must not start at the beginning of the service"); 
+				}else if (downstart<0) {
+					throw new InvalidInputException("Downtime must not start before the beginning of the service"); 
+				}else if (downstart>duration) {
+					throw new InvalidInputException("Downtime must not start after the end of the service"); 
+				}else if (downduration>duration-downstart) {
+					throw new InvalidInputException("Downtime must not end after the service"); 
+				}else {
+					thiss.setDowntimeStart(downstart);
+					thiss.setDowntimeDuration(downduration);
+					thiss.setDuration(duration);
+				}}else if(fb.getBookableService(0).getWithName(string3)!=null) {
+					throw new InvalidInputException("Service "+string3+" already exists");
 				}
 
-			}else {throw new InvalidInputException("You are not authorized to perform this operation");  
-			}
-		}
+		} else {
+
+			throw new InvalidInputException("You are not authorized to perform this operation");}
 	}
+
 
 	/**
 	 * deleteService: This method takes an input of servicename. The method will decide whether to initiate the deleting method
@@ -732,13 +835,12 @@ public class FlexibookController {
 	 * @author Tianyu Zhao
 	 * 
 	 * @param String servicename
-	 * @param String ownername
-	 * @param String name of the service to be deleted.
+	 * @param ownername
 	 * @throws InvalidInputException an error is encountered
 	 * @return void
 	 */
 
-	public static void deleteService(String servicename,String string2) throws InvalidInputException {
+	public static void deleteService(String servicename) throws InvalidInputException {
 		FlexiBook fb =FlexiBookApplication.getflexibook();
 		String time=SystemTime.gettime(SystemTime.getSysTime());
 		String date=SystemTime.getdate(SystemTime.getSysTime());
@@ -781,8 +883,8 @@ public class FlexibookController {
 	 * @param  ownername 
 	 * @param  servicename
 	 * @param  duration
-	 * @param  downtimeStart
-	 * @param  downtimeDuration
+	 * @param  downstart
+	 * @param  downduration
 	 */
 	public static void addService(String string, String string2, String string3, String string4, String string5) throws InvalidInputException {
 		Service service = null;
@@ -790,32 +892,85 @@ public class FlexibookController {
 
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		String servicename = null;
+		//convert integer to string
+		int duration=Integer.parseInt(string3);
+		int downstart=Integer.parseInt(string4);
+		int downduration=Integer.parseInt(string5);
 		if(fb.getOwner().getUsername().equals(string)) {
-			for(int j =0;j<string3.length();j++) {
-				if(j>3) {
-					servicename+= string3.charAt(j);
+			if(fb.getBookableServices().size()==0) {
+
+				if(duration<0||duration==0) {
+
+					throw new InvalidInputException("Duration must be positive"); 
+				}else if(downstart>0 && downduration<=0) {
+
+					throw new InvalidInputException("Downtime duration must be positive"); 
+				}else if (downstart==0&& downduration<0) {
+
+					throw new InvalidInputException("Downtime duration must be "+downstart); 
+				}else if (downstart==0&& downduration>0) {
+					throw new InvalidInputException("Downtime must not start at the beginning of the service"); 
+				}else if (downstart<0) {
+					throw new InvalidInputException("Downtime must not start before the beginning of the service"); 
+				}else if (downstart>duration) {
+					throw new InvalidInputException("Downtime must not start after the end of the service"); 
+				}else if (downduration>duration-downstart) {
+					throw new InvalidInputException("Downtime must not end after the service"); 
+				}else {
+
+					Service thisservice=new Service(string2, fb, duration,downduration , downstart);
 				}
-			}    if(fb.getBookableServices().size()!=0) {
-				if(fb.getBookableService(0).getWithName(string2)!=null)
-				{
-					throw new InvalidInputException("Service "+string2+ " already exists");
+			}else if(fb.getBookableService(0).getWithName(string2)!=null) {
+				throw new InvalidInputException("Service "+string2+ " already exists");
+			}else if(fb.getBookableService(0).getWithName(string2)==null) {
+				if(duration<0||duration==0) {
+
+					throw new InvalidInputException("Duration must be positive"); 
+				}else if(downstart>0 && downduration<=0) {
+
+					throw new InvalidInputException("Downtime duration must be positive"); 
+				}else if (downstart==0&& downduration<0) {
+
+					throw new InvalidInputException("Downtime duration must be "+downstart); 
+				}else if (downstart==0&& downduration>0) {
+					throw new InvalidInputException("Downtime must not start at the beginning of the service"); 
+				}else if (downstart<0) {
+					throw new InvalidInputException("Downtime must not start before the beginning of the service"); 
+				}else if (downstart>duration) {
+					throw new InvalidInputException("Downtime must not start after the end of the service"); 
+				}else if (downduration>duration-downstart) {
+					throw new InvalidInputException("Downtime must not end after the service"); 
+				}else {
+					Service thisservice=new Service(string2, fb, duration, downduration, downstart);
 				}
 			}
-			Service thisservice=new Service(string2, fb, 0, 0, 0);
-
-
-
 
 		} else {
+
 			throw new InvalidInputException("You are not authorized to perform this operation");}
 	}
+
+
+
+	public static void deleteService(String string, String string2) {
+		FlexiBook fb= FlexiBookApplication.getflexibook();
+		if(fb.getBookableServices().size()!=0) {
+			Service thiss=(Service) fb.getBookableService(0).getWithName(string2);
+
+		}
+
+	}
+
+
+
+
 
 	/**
 	 * This method takes all parameters to set the business information in the system.
 	 * 
 	 * @author Zhixin Xiong
 	 * @param name 
-	 * @param  address
+	 * @param address
 	 * @param phone number
 	 * @param email
 	 */
@@ -887,28 +1042,28 @@ public class FlexibookController {
 		}
 	}
 
-		public static ArrayList<TimeSlot> getUnavailableTimeSlots (String username, String date)throws InvalidInputException{
-			String error;
-			FlexiBook flexibook=FlexiBookApplication.getflexibook();
-			ArrayList<TimeSlot> list = new ArrayList<TimeSlot>();
-			Date newDate = null;
-			try {
+	public static ArrayList<TimeSlot> getUnavailableTimeSlots (String username, String date)throws InvalidInputException{
+		String error;
+		FlexiBook flexibook=FlexiBookApplication.getflexibook();
+		ArrayList<TimeSlot> list = new ArrayList<TimeSlot>();
+		Date newDate = null;
+		try {
 			newDate=dateChecker(date);}
-			catch(ParseException e) {
-				throw new InvalidInputException(date+" is not a valid date");
+		catch(ParseException e) {
+			throw new InvalidInputException(date+" is not a valid date");
+		}
+
+
+
+
+		for(Appointment appointment:flexibook.getAppointments()) {
+			if(appointment.getTimeSlot().getStartDate().equals(newDate)) {
+				list.add(appointment.getTimeSlot());
+
 			}
-			catch(IllegalArgumentException f) {
-				throw new InvalidInputException(date+" is not a valid date");
-			}
-	
-			for(Appointment appointment:flexibook.getAppointments()) {
-				if(appointment.getTimeSlot().getStartDate().equals(newDate)) {
-					list.add(appointment.getTimeSlot());
-					
-				}
-			}
-			return list;
-			}
+		}
+		return list;
+	}
 
 	public static ArrayList<TimeSlot> getAvailableTimeSlots(String username, String date) throws InvalidInputException {
 		String error;
@@ -942,64 +1097,5 @@ public class FlexibookController {
 		formatDate.parse(date);
 		return Date.valueOf(date);
 	}
-	public static ArrayList<Date> getDaysofWeek(String date) throws InvalidInputException{
-		String error;
-		int day;
-		FlexiBook flexibook=FlexiBookApplication.getflexibook();
-		ArrayList<Date> list = new ArrayList<Date>();
-		Date newDate = null;
-	
-		try {
-			newDate=dateChecker(date);}
-		catch(ParseException e) {
-			throw new InvalidInputException(date+" is not a valid date");
-		}
-		catch(IllegalArgumentException f) {
-			throw new InvalidInputException(date+" is not a valid date");
-		}	
-		Calendar c = Calendar.getInstance();
-        c.setTime(newDate);
-        day=newDate.getDay();
-        switch(day){
-        case 0: for(int i=0;i<6;i++) {
-        	c.add(Calendar.DATE,1);
-        	java.util.Date intDate=c.getTime();
-        	Date intermediate=  new Date(intDate.getTime());
-        	list.add(intermediate);
-        	
-        }break;
-        case 1: for(int i=0;i<5;i++) {
-        	c.add(Calendar.DATE,1);
-        	java.sql.Date intermediate=  (java.sql.Date) c.getTime();
-        	list.add(intermediate);
-        }break;
-        case 2: for(int i=0;i<4;i++) {
-        	c.add(Calendar.DATE,1);
-        	java.sql.Date intermediate=  (java.sql.Date) c.getTime();
-        	list.add(intermediate);
-        }break;
-        case 3: for(int i=0;i<3;i++) {
-        	c.add(Calendar.DATE,1);
-        	java.sql.Date intermediate=  (java.sql.Date) c.getTime();
-        	list.add(intermediate);
-        }break;
-        case 4: for(int i=0;i<2;i++) {
-        	c.add(Calendar.DATE,1);
-        	java.sql.Date intermediate=  (java.sql.Date) c.getTime();
-        	list.add(intermediate);
-        }break;
-        case 5: for(int i=0;i<1;i++) {
-        	c.add(Calendar.DATE,1);
-        	java.sql.Date intermediate=  (java.sql.Date) c.getTime();
-        	list.add(intermediate);
-        }break;
-   
-           }
-        return list;
-	}
-
-
-
-
 
 }

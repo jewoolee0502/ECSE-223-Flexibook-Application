@@ -619,8 +619,8 @@ public class FlexibookController {
 	 * @param  services
 	 */
 	public static void addService(String string, String string2, String string3) throws InvalidInputException {
-		Service mainservice = null;
-		ComboItem main=null;
+		Service service = null;
+		
 
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		String servicename = null;

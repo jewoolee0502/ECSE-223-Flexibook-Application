@@ -252,7 +252,7 @@ public class FlexibookController {
 	 * @author Haipeng Yue
 	 * 
 	 * @param String username
-	 * @param String name of the combo to be deleated.
+	 * @param String name of the combo to be deleted.
 	 * @throws InvalidInputException an error is encountered
 	 * @return void
 	 */
@@ -569,12 +569,13 @@ public class FlexibookController {
 	 * @author Tianyu Zhao
 	 * 
 	 * @param String servicename
-	 * @param ownername
+	 * @param String ownername
+	 * @param String name of the service to be deleted.
 	 * @throws InvalidInputException an error is encountered
 	 * @return void
 	 */
 
-	public static void deleteService(String servicename) throws InvalidInputException {
+	public static void deleteService(String servicename,String string2) throws InvalidInputException {
 		FlexiBook fb =FlexiBookApplication.getflexibook();
 		String time=SystemTime.gettime(SystemTime.getSysTime());
 		String date=SystemTime.getdate(SystemTime.getSysTime());
@@ -616,9 +617,11 @@ public class FlexibookController {
 	 * @author Tianyu Zhao
 	 * @param  ownername 
 	 * @param  servicename
-	 * @param  services
+	 * @param  duration
+	 * @param  downtimeStart
+	 * @param  downtimeDuration
 	 */
-	public static void addService(String string, String string2, String string3) throws InvalidInputException {
+	public static void addService(String string, String string2, String string3, String string4, String string5) throws InvalidInputException {
 		Service service = null;
 		
 
@@ -776,5 +779,8 @@ public class FlexibookController {
 		formatDate.parse(date);
 		return Date.valueOf(date);
 	}
+
+
+
 
 }

@@ -39,24 +39,16 @@ public class FlexibookController {
 		ComboItem main=null;
 
 		FlexiBook fb = FlexiBookApplication.getflexibook();
-		String mainname = null;
 		if(fb.getOwner().getUsername().equals(string)) {
-			for(int j =0;j<string3.length();j++) {
-				if(j>3) {
-					mainname+= string3.charAt(j);
-				}
-			}    if(fb.getBookableServices().size()!=0) {
+
+			   if(fb.getBookableServices().size()!=0) {
 				if(fb.getBookableService(0).getWithName(string2)!=null)
 				{
 					throw new InvalidInputException("Service combo "+string2+ " already exists");
 				}
 			}
 			ServiceCombo thiscombo=new ServiceCombo(string2, fb);
-
-
-			char[] array=new char[mainname.length()-4];
-			mainname.getChars(4, mainname.length(), array, 0);
-			String nameofmain=new String(array);
+            String nameofmain=string3;
 			if(fb.getBookableService(0).getWithName(nameofmain)==null) {
 				thiscombo.delete();
 				throw new InvalidInputException("Service "+nameofmain+" does not exist");
@@ -121,7 +113,7 @@ public class FlexibookController {
 
 	public static void updatecombo(String string, String string2, String string3, String string4, String string5, String string6) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
-		String mainname=null;
+		
 		ComboItem main=null;
 		if(fb.getOwner().getUsername().equals(string)==true) {
 			if(fb.getBookableServices().size()!=0) {
@@ -133,14 +125,8 @@ public class FlexibookController {
 						fb.getBookableService(0).getWithName(string2).delete();
 					}else {
 						ServiceCombo combo=(ServiceCombo) fb.getBookableService(0).getWithName(string2);
-						for(int j =0;j<string4.length();j++) {
-							if(j>3) {
-								mainname+= string4.charAt(j);
-							}
-						} 
-						char[] array=new char[mainname.length()-4];
-						mainname.getChars(4, mainname.length(), array, 0);
-						String nameofmain=new String(array);
+						
+						String nameofmain=string4;
 						if(fb.getBookableService(0).getWithName(nameofmain)==null) {
 							throw new InvalidInputException("Service "+nameofmain+" does not exist");
 						}
@@ -529,7 +515,7 @@ public class FlexibookController {
 		Date localDate = Date.valueOf(sys[0]);
 		Time localTime = Time.valueOf(sys[1]+":00");
 		if(localDate.after(servicedate)) {
-			throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
+			throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);   
 		}else if(localDate.equals(servicedate)) {
 			if(localTime.after(starttime)) {
 				throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);

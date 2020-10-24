@@ -76,7 +76,7 @@ if(!flexibook.hasOwner()) {
     List<Map<String, String>> valueMaps = dataTable.asMaps();
     for (Map<String, String> map : valueMaps) {
      String name = map.get("name");
-     String mainservice = "Item"+map.get("mainService");
+     String mainservice = map.get("mainService");
      String services = map.get("services");
      String mandatory = map.get("mandatory"); 
      FlexibookController.makecombo(owner, name, mainservice, services, mandatory);
@@ -95,6 +95,7 @@ if(!flexibook.hasOwner()) {
     }catch (InvalidInputException e) {
       error=e.getMessage();
       FlexiBookApplication.setmessage(error);
+     System.out.println(error);
     }
     }
   @Then("the service combo {string} shall exist in the system")

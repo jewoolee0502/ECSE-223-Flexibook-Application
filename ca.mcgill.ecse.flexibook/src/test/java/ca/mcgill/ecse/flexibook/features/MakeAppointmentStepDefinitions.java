@@ -59,14 +59,24 @@ public class MakeAppointmentStepDefinitions {
 	
 	@Given("the following appointments exist in the system:")
 	public void the_following_appointments_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) throws InvalidInputException {
-		List<Map<String,String>> list = dataTable.asMaps();
+		flexibook=FlexiBookApplication.getflexibook();
+	  List<Map<String,String>> list = dataTable.asMaps();
 		for(Map<String,String> map : list) {
 			String customer = map.get("customer");
 			String serviceName = map.get("serviceName");
 			String optServices = map.get("optServices");
 			String date = map.get("date");
 			String startTime = map.get("startTime");
-			FlexibookController.MakeAppointment(customer, date, serviceName, optServices, startTime);
+			String endTime=map.get("endTime");
+			Date nowdate=Date.valueOf(date);
+			Time start=Time.valueOf(startTime+":00");
+			Time end=Time.valueOf(endTime+":00");
+			TimeSlot t=new TimeSlot(nowdate,start,nowdate,end,flexibook);
+			BookableService b = flexibook.getBookableService(0).getWithName(serviceName);
+			Appointment a = new Appointment((Customer) flexibook.getCustomer(0).getWithUsername(customer), b, t, flexibook);
+			String time =SystemTime.getSysTime();
+			System.out.println(time);
+			
 		}
 	}
 

@@ -192,6 +192,16 @@ public class FlexibookController {
 		}else {throw new InvalidInputException("You are not authorized to perform this operation");  
 		}
 	}
+	/**
+	 * AttemptLogIn: This method takes an input of username and a password. It will check if the person trying to log in is registered in the system with the right password
+	 * 
+	 * @author James Willems
+	 * 
+	 * @param String userID
+	 * @param String passcode.
+	 * @throws InvalidInputException an error is encountered
+	 * @return boolean
+	 */
 
 	public static boolean AttemptLogIn(String userID,String passcode) throws InvalidInputException {
 		FlexiBook flexi=FlexiBookApplication.getflexibook();
@@ -216,6 +226,16 @@ public class FlexibookController {
 			throw new InvalidInputException(e.getMessage());
 		}
 	}
+	
+	/**
+	 * LogOut: This method takes no inputs. It will check if the user is already logged in or not, and log him out.
+	 * 
+	 * @author James Willems
+	 * 
+	 * @throws InvalidInputException an error is encountered
+	 * @return void
+	 */
+
 	public static void LogOut() throws InvalidInputException {
 		FlexiBook flexi=FlexiBookApplication.getflexibook();
 		try {

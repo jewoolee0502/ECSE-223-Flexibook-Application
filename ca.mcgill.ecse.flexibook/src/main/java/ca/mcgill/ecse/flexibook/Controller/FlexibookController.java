@@ -815,57 +815,56 @@ public class FlexibookController {
 			throw new InvalidInputException("You are not authorized to perform this operation");}
 	}
 
-
 	/**
-	 * deleteService: This method takes an input of servicenames. The method will decide whether to initiate the deleting method
-	 * 
-	 * @author Tianyu Zhao
-	 * @param String servicename a string of services
-	 * @param ownername
-	 * @throws InvalidInputException --- an error is encountered
-	 * @return void
-	 */
+     * deleteService: This method takes an input of servicenames. The method will decide whether to initiate the deleting method
+     * 
+     * @author Tianyu Zhao
+     * @param String servicename a string of services
+     * @param ownername
+     * @throws InvalidInputException --- an error is encountered
+     * @return void
+     */
 
-	public static void deleteService(String owner, String servicename) throws InvalidInputException {
-		FlexiBook fb =FlexiBookApplication.getflexibook();
-		String time=SystemTime.gettime(SystemTime.getSysTime());
-		String date=SystemTime.getdate(SystemTime.getSysTime());
-		
-		if(fb.getBookableServices().size()!=0) {
-				Service thiss=(Service) fb.getBookableService(0).getWithName(servicename);
-				}
+    public static void deleteService(String owner, String servicename) throws InvalidInputException {
+        FlexiBook fb =FlexiBookApplication.getflexibook();
+        String time=SystemTime.gettime(SystemTime.getSysTime());
+        String date=SystemTime.getdate(SystemTime.getSysTime());
+        
+        if(fb.getBookableServices().size()!=0) {
+                Service thiss=(Service) fb.getBookableService(0).getWithName(servicename);
+                }
 
-		if(servicename.equals(fb.getOwner().getUsername())==true) {
-			if(fb.getBookableServices().size()!=0) {
-				if(fb.getBookableService(0).getWithName(servicename)!=null) {
-					if(fb.getBookableService(0).getWithName(servicename).getAppointments().size()>0) {
-						for(int i=0;i<fb.getAppointments().size();i++) {
-							String startdate=fb.getBookableService(0).getWithName(servicename).getAppointment(i).getTimeSlot().getStartDate().toString();
-							if(SystemTime.comparedate(date,startdate)==2) {
-								throw new InvalidInputException("Service "+servicename+ " contains future appointments"); 
-							}else if(SystemTime.comparedate(date,startdate)==1) {
-								fb.getBookableService(0).getWithName(servicename).delete();
-								break;
-							}else if(SystemTime.comparedate(date,startdate)==0) {
-								String starttime=fb.getBookableService(0).getWithName(servicename).getAppointment(i).getTimeSlot().getStartTime().toString();
-								if(SystemTime.comparetime(time,starttime)==1) {
-									fb.getBookableService(0).getWithName(servicename).delete();
-									break;
-								}else {
-									throw new InvalidInputException("Service "+servicename+ " contains future appointments");
-								}
-							}
-						}
-					}else{fb.getBookableService(0).getWithName(servicename).delete();}
+        if(owner.equals(fb.getOwner().getUsername())==true) {
+            if(fb.getBookableServices().size()!=0) {
+                if(fb.getBookableService(0).getWithName(servicename)!=null) {
+                    if(fb.getBookableService(0).getWithName(servicename).getAppointments().size()>0) {
+                        for(int i=0;i<fb.getAppointments().size();i++) {
+                            String startdate=fb.getBookableService(0).getWithName(servicename).getAppointment(i).getTimeSlot().getStartDate().toString();
+                            if(SystemTime.comparedate(date,startdate)==2) {
+                                throw new InvalidInputException("Service "+servicename+ " contains future appointments"); 
+                            }else if(SystemTime.comparedate(date,startdate)==1) {
+                                fb.getBookableService(0).getWithName(servicename).delete();
+                                
+                            }else if(SystemTime.comparedate(date,startdate)==0) {
+                                String starttime=fb.getBookableService(0).getWithName(servicename).getAppointment(i).getTimeSlot().getStartTime().toString();
+                                if(SystemTime.comparetime(time,starttime)==1) {
+                                    fb.getBookableService(0).getWithName(servicename).delete();
+                                   
+                                }else {
+                                    throw new InvalidInputException("Service "+servicename+ " contains future appointments");
+                                }
+                            }
+                        }
+                    }else{fb.getBookableService(0).getWithName(servicename).delete();}
 
-				}
-			}
-		}else {
-			throw new InvalidInputException("You are not authorized to perform this operation"); 
-		}
+                }
+            }
+        }else {
+            throw new InvalidInputException("You are not authorized to perform this operation"); 
+        }
 
 
-	}
+    }
 
 	/**
 	 * This method takes all parameters to add a new service in the system.

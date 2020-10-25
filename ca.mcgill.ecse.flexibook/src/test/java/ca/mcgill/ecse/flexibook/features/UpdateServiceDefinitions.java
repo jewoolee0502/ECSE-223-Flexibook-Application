@@ -25,15 +25,16 @@ public class UpdateServiceDefinitions {
   private String error;
 	  
  @Given("the following service combos exist in the system:`")
-  public void the_following_service_combos_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
-      // Write code here that turns the phrase above into concrete actions
-      // For automatic transformation, change DataTable to one of
-      // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
-      // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
-      // Double, Byte, Short, Long, BigInteger or BigDecimal.
-      //
-      // For other transformations you can register a DataTableType.
-      throw new io.cucumber.java.PendingException();
+  public void the_following_service_combos_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) throws InvalidInputException {
+   String owner=flexibook.getOwner().getUsername();
+   List<Map<String, String>> valueMaps = dataTable.asMaps();
+   for (Map<String, String> map : valueMaps) {
+    String name = map.get("name");
+    String mainservice = map.get("mainService");
+    String services = map.get("services");
+    String mandatory = map.get("mandatory"); 
+    FlexibookController.makecombo(owner, name, mainservice, services, mandatory);
+   }
   }
 
   @When("{string} initiates the update of the service {string} to name {string}, duration {string}, start of down time {string} and down time duration {string}")

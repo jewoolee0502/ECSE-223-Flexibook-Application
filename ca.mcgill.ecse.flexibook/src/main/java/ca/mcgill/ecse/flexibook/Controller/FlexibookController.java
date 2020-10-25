@@ -826,7 +826,7 @@ public class FlexibookController {
 	 * @return void
 	 */
 
-	public static void deleteService(String owner, String servicename) throws InvalidInputException {
+	public static void deleteService(String ownername, String servicename) throws InvalidInputException {
 		FlexiBook fb =FlexiBookApplication.getflexibook();
 		String time=SystemTime.gettime(SystemTime.getSysTime());
 		String date=SystemTime.getdate(SystemTime.getSysTime());

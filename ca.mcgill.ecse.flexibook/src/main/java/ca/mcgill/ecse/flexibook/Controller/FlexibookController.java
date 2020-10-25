@@ -820,12 +820,12 @@ public class FlexibookController {
      * 
      * @author Tianyu Zhao
      * @param String servicename a string of services
-     * @param ownername
+     * @param owner
      * @throws InvalidInputException --- an error is encountered
      * @return void
      */
 
-    public static void deleteService(String ownername, String servicename) throws InvalidInputException {
+    public static void deleteService(String owner, String servicename) throws InvalidInputException {
         FlexiBook fb =FlexiBookApplication.getflexibook();
         String time=SystemTime.gettime(SystemTime.getSysTime());
         String date=SystemTime.getdate(SystemTime.getSysTime());
@@ -834,7 +834,7 @@ public class FlexibookController {
                 Service thiss=(Service) fb.getBookableService(0).getWithName(servicename);
                 }
 
-        if(ownername.equals(fb.getOwner().getUsername())==true) {
+        if(owner.equals(fb.getOwner().getUsername())==true) {
             if(fb.getBookableServices().size()!=0) {
                 if(fb.getBookableService(0).getWithName(servicename)!=null) {
                     if(fb.getBookableService(0).getWithName(servicename).getAppointments().size()>0) {

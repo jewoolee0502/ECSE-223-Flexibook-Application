@@ -47,7 +47,7 @@ Feature: Delete Service
       | username  | password |
       | customer1 | 12345678 |
       | customer2 | 12345678 |
-    Given the following service combos exist in the system:
+    Given the following service combos exist in the system:`
       | name         | mainService | services                | mandatory             |
       | Cut-Regular  | cut         | wash,dry,cut            | false,false,true      |
       | Wash-Deluxe  | wash        | wash,dry,cut,extensions | true,false,true,false |

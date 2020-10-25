@@ -76,7 +76,7 @@ if(!flexibook.hasOwner()) {
     List<Map<String, String>> valueMaps = dataTable.asMaps();
     for (Map<String, String> map : valueMaps) {
      String name = map.get("name");
-     String mainservice = "Item"+map.get("mainService");
+     String mainservice = map.get("mainService");
      String services = map.get("services");
      String mandatory = map.get("mandatory"); 
      FlexibookController.makecombo(owner, name, mainservice, services, mandatory);
@@ -86,6 +86,7 @@ if(!flexibook.hasOwner()) {
   @Given("the Owner with username {string} is logged in")
   public void the_owner_with_username_is_logged_in(String string) {
      flexibook.getOwner().setUsername(string);
+     FlexiBookApplication.setCurrentuser(flexibook.getOwner());
   }
   @When("{string} initiates the definition of a service combo {string} with main service {string}, services {string} and mandatory setting {string}")
   public void initiates_the_definition_of_a_service_combo_with_main_service_services_and_mandatory_setting(String string, String string2, String string3, String string4, String string5) throws InvalidInputException {
@@ -94,6 +95,7 @@ if(!flexibook.hasOwner()) {
     }catch (InvalidInputException e) {
       error=e.getMessage();
       FlexiBookApplication.setmessage(error);
+     System.out.println(error);
     }
     }
   @Then("the service combo {string} shall exist in the system")

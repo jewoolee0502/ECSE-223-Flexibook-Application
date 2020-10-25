@@ -676,12 +676,4 @@ public class FlexiBook
     
   }
 
-public Service AddService(Service s, int aDuration) {
-	Service aNewService = this.AddService(s, aDuration);
-	return aNewService;
-	
-}
-
-
-
 }

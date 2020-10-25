@@ -34,11 +34,11 @@ Feature: Update Service
       | color |       75 |            45 |               30 |
 
     Examples: 
-      | name            | duration | downtimeStart | downtimeDuration | error                                                       |
+      | name            | duration | downtimeStart | downtimeDuration | error                                                        |
       | color           |        0 |             0 |                0 | Duration must be positive                                   |
       | color           |      100 |            40 |                0 | Downtime duration must be positive                          |
       | classical color |       75 |             0 |               -1 | Downtime duration must be 0                                 |
-      | cut             |       30 |             0 |               10 | Downtime must not start at the beginning of the service     |
+      | cut             |       30 |             0 |               10 | Downtime must not start at the beginning of the service    |
       | cut             |       30 |            -1 |               10 | Downtime must not start before the beginning of the service |
       | new color       |       50 |            40 |               15 | Downtime must not end after the service                     |
       | dry             |       90 |            10 |               40 | Service dry already exists                                  |

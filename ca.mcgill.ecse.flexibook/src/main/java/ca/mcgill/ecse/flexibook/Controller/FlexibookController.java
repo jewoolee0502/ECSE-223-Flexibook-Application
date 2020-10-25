@@ -1009,7 +1009,7 @@ public class FlexibookController {
 				throw new InvalidInputException("Start time must be before end time");
 			}
 			Business business= fb.getBusiness();
-<<<<<<< HEAD
+
 	    	BusinessHour aHour=business.getBusinessHour(0);
     		DayOfWeek dayOfWeek=aHour.getDayOfWeek();
     		Time startTime=aHour.getStartTime();
@@ -1040,10 +1040,10 @@ public class FlexibookController {
 	//		catch(ParseException e) {
 	//			throw new InvalidInputException(date+" is not a valid date");
 	//		}
-	//<<<<<<< HEAD
+	
 	//	}
 	//
-	//=======
+
 	//		for(Appointment appointment:flexibook.getAppointments()) {
 	//			if(appointment.getTimeSlot().getStartDate().equals(newDate)) {
 	//				list.add(appointment.getTimeSlot());
@@ -1052,28 +1052,27 @@ public class FlexibookController {
 	//		}
 	//		return list;
 	//		}
-=======
-			BusinessHour aHour=business.getBusinessHour(0);
-			DayOfWeek dayOfWeek=aHour.getDayOfWeek();
-			Time startTime=aHour.getStartTime();
-			Time endTime=aHour.getEndTime();
-			if(dayOfWeek.equals(inputDayOfWeek)) {
-				if(inputEdTime.before(endTime)&&inputEdTime.after(startTime)) {
-					throw new InvalidInputException("The business hours cannot overlap");
-				}
-			}
-			BusinessHour newHour=new BusinessHour(inputDayOfWeek, inputStTime, inputEdTime, fb);
-			business.addBusinessHour(newHour);
-			fb.addHour(newHour);
-			FlexiBookApplication.setmessage("");	
-
-		} catch (Exception e) {
-			// TODO: handle exception
-			String ebString=e.getMessage();
-			FlexiBookApplication.setmessage(e.getMessage());
-			String ab=FlexiBookApplication.returnmessage();
-		}
-	}
+//			BusinessHour aHour=business.getBusinessHour(0);
+//			DayOfWeek dayOfWeek=aHour.getDayOfWeek();
+//			Time startTime=aHour.getStartTime();
+//			Time endTime=aHour.getEndTime();
+//			if(dayOfWeek.equals(inputDayOfWeek)) {
+//				if(inputEdTime.before(endTime)&&inputEdTime.after(startTime)) {
+//					throw new InvalidInputException("The business hours cannot overlap");
+//				}
+//			}
+//			BusinessHour newHour=new BusinessHour(inputDayOfWeek, inputStTime, inputEdTime, fb);
+//			business.addBusinessHour(newHour);
+//			fb.addHour(newHour);
+//			FlexiBookApplication.setmessage("");	
+//
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			String ebString=e.getMessage();
+//			FlexiBookApplication.setmessage(e.getMessage());
+//			String ab=FlexiBookApplication.returnmessage();
+//		}
+//	}
 
 	/**
 	 * getUnavailableTimeSlots: This method takes as input a date and a username and returns the unavailable time slots for a day. 	 * 
@@ -1113,7 +1112,7 @@ public class FlexibookController {
 		 * @throws InvalidInputException an error is encountered
 		 * @return ArrayList<TimeSlot>
 		 */
->>>>>>> 7f5f027a90442c57cd0cb6225a51dfcc6df283f7
+
 
 	public static ArrayList<TimeSlot> getAvailableTimeSlots(String username, String date) throws InvalidInputException {
 		String error;

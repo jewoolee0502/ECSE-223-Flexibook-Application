@@ -817,20 +817,24 @@ public class FlexibookController {
 
 
 	/**
-	 * deleteService: This method takes an input of servicename. The method will decide whether to initiate the deleting method
+	 * deleteService: This method takes an input of servicenames. The method will decide whether to initiate the deleting method
 	 * 
 	 * @author Tianyu Zhao
-	 * 
-	 * @param String servicename
+	 * @param String servicename a string of services
 	 * @param ownername
-	 * @throws InvalidInputException an error is encountered
+	 * @throws InvalidInputException --- an error is encountered
 	 * @return void
 	 */
 
-	public static void deleteService(String servicename) throws InvalidInputException {
+	public static void deleteService(String owner, String servicename) throws InvalidInputException {
 		FlexiBook fb =FlexiBookApplication.getflexibook();
 		String time=SystemTime.gettime(SystemTime.getSysTime());
 		String date=SystemTime.getdate(SystemTime.getSysTime());
+		
+		if(fb.getBookableServices().size()!=0) {
+				Service thiss=(Service) fb.getBookableService(0).getWithName(servicename);
+				}
+
 		if(servicename.equals(fb.getOwner().getUsername())==true) {
 			if(fb.getBookableServices().size()!=0) {
 				if(fb.getBookableService(0).getWithName(servicename)!=null) {
@@ -838,7 +842,7 @@ public class FlexibookController {
 						for(int i=0;i<fb.getAppointments().size();i++) {
 							String startdate=fb.getBookableService(0).getWithName(servicename).getAppointment(i).getTimeSlot().getStartDate().toString();
 							if(SystemTime.comparedate(date,startdate)==2) {
-								throw new InvalidInputException("Service "+servicename+ " has future appointments"); 
+								throw new InvalidInputException("Service "+servicename+ " contains future appointments"); 
 							}else if(SystemTime.comparedate(date,startdate)==1) {
 								fb.getBookableService(0).getWithName(servicename).delete();
 								break;
@@ -848,7 +852,7 @@ public class FlexibookController {
 									fb.getBookableService(0).getWithName(servicename).delete();
 									break;
 								}else {
-									throw new InvalidInputException("Service "+servicename+ " has future appointments");
+									throw new InvalidInputException("Service "+servicename+ " contains future appointments");
 								}
 							}
 						}
@@ -944,15 +948,7 @@ public class FlexibookController {
 
 
 
-	public static void deleteService(String string, String string2) {
-		FlexiBook fb= FlexiBookApplication.getflexibook();
-		if(fb.getBookableServices().size()!=0) {
-			Service thiss=(Service) fb.getBookableService(0).getWithName(string2);
-
-		}
-
-	}
-
+	
 
 
 

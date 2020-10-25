@@ -738,15 +738,22 @@ public class FlexibookController {
 	 * @author Tianyu Zhao
 	 * @param  
 	 * 
-	 * @param ownername
-	 * @param color
-	 * @param servicename
-	 * @param duration
+	 * @param ownername --- the name of current owner
+	 * @paramString --- ownername is string
+	 * @param color     
+	 * @paramString --- color is string2
+	 * @param servicename  --- a string of services, separated with ",".
+	 * @paramString --- servicename is string3
+	 * @param duration     --- the total amount of time needed for a service
+	 * @paramString --- duration is string4
 	 * @param downtimeStart
-	 * @param downtimeDuration
-	 * @throws InvalidInputException
+	 * @paramString --- downtimeStart is string5
+	 * @param downtimeDuration  
+	 * @paramString --- downtimeDuration is string6
+	 * @throws InvalidInputException --- if the input is invalid
+	 * @return void
 	 */
-	public static void updateservice(String string, String string2, String string3, String string4, String string5,String string6) throws InvalidInputException {
+	public static void updateservice(String string, String string2, String string3, String string4, String string5, String string6) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		Service thiss=(Service) fb.getBookableService(0).getWithName(string2);
 		int duration=Integer.parseInt(string4);
@@ -860,13 +867,20 @@ public class FlexibookController {
 	 * This method takes all parameters to add a new service in the system.
 	 * 
 	 * @author Tianyu Zhao
-	 * @param  ownername 
-	 * @param  servicename
-	 * @param  duration
-	 * @param  downstart
-	 * @param  downduration
+	 * @param  owner  --- the owner name of current owner
+	 * @paramString  --- owner is string
+	 * @param  name   --- name of the services, A string of services
+	 * @paramString   --- name is string2 
+	 * @param  duration  --- the total amount of time needed for a service
+	 * @paramString  ---   duration is string3
+	 * @param  downtimeStart  --- the start of the downtime
+	 * @paramString    downtieStart is string4
+	 * @param  downtimeDuration  --- the duration of downtime
+	 * @paramString --- downtimeDuration is string5
+	 * @throws InvalidInputException  if input is invalid
+	 * @return void
 	 */
-	public static void addService(String string, String string2, String string3, String string4, String string5) throws InvalidInputException {
+	public static void addService(String string, String string2, String string3, String string4,String string5) throws InvalidInputException {
 		Service service = null;
 
 

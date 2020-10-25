@@ -130,9 +130,35 @@ public class SetupBusinessInformationStepDefinition {
 			  }
 	    }
 	    @When("the user tries to add a new business hour on {string} with start time {string} and end time {string}")
-	    public void the_user_tries_to_add_a_new_business_hour_on_with_start_time_and_end_time(String string, String string2, String string3) {
-	        
+	    public void the_user_tries_to_add_a_new_business_hour_on_with_start_time_and_end_time(String string, String string2, String string3) throws InvalidInputException{
+	    	try {
+	    		resultString="be";
+	    		 FlexibookController.addNewBusinessHour(string,string2,string3);
+		        }catch (Exception e) {
+		    		// TODO: handle exception
+		        	resultString="not be";
+		    		String ebString=e.getMessage();
+		    		FlexiBookApplication.setmessage(e.getMessage());
+		    		String ab=FlexiBookApplication.returnmessage();
+		    	}
 	    }
+	    @Then("a new business hour shall {string} created")
+	    public void a_new_business_hour_shall_created(String string) {
+	    	
+	    	assertEquals(string, resultString);
+	    }
+	    /*@When("the user tries to access the business information")
+	    public void the_user_tries_to_access_the_business_information() {
+
+	    }
+
+
+	    @Then("the {string} and {string} and {string} and {string} shall be provided to the user")
+	    public void the_and_and_and_shall_be_provided_to_the_user(String string, String string2, String string3, String string4) {
+	      
+	    }
+*/
+
 
 
 

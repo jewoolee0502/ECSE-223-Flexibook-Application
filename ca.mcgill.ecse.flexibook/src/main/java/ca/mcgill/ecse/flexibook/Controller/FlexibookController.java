@@ -689,9 +689,8 @@ public class FlexibookController {
 		String ab=FlexiBookApplication.returnmessage();
 	}
 	}
-	public static void addNewBusinessHour(String string, String string2, String string3) {
+	public static void addNewBusinessHour(String string, String string2, String string3)throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
-		try {
 			String user = fb.getOwner().getUsername();
 			String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
 		if(user.equals(currentUserString)==false) {
@@ -717,15 +716,13 @@ public class FlexibookController {
     		business.addBusinessHour(newHour);
     		fb.addHour(newHour);
     		FlexiBookApplication.setmessage("");	
-			  
-	} catch (Exception e) {
-		// TODO: handle exception
-		String ebString=e.getMessage();
-		FlexiBookApplication.setmessage(e.getMessage());
-		String ab=FlexiBookApplication.returnmessage();
+
 	}
-	}
+	
+	/*public static String[] viewStrings BusinessInfor () {
 		
+	}
+		*/
 	//	public static ArrayList<TimeSlot> getUnavailableTimeSlots (String username, String date)throws InvalidInputException{
 	//		String error;
 	//		FlexiBook flexibook=FlexiBookApplication.getflexibook();

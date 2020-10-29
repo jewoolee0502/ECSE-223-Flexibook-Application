@@ -964,72 +964,7 @@ public class FlexibookController {
 	 * @param phone number
 	 * @param email
 	 */
-	public static void setBusinessInformation(String string, String string2, String string3, String string4)throws InvalidInputException {
-		FlexiBook fb = FlexiBookApplication.getflexibook();
-		try {
-			String user = fb.getOwner().getUsername();
-
-			String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
-			if(user.equals(currentUserString)==false) {
-				throw new InvalidInputException("No permission to set up business information");
-			}
-			String aString="@gmail.com" ;
-			int begin=string4.length()-aString.length();
-			int end=string4.length();
-			if(begin<=0) {
-				throw new InvalidInputException("Invalid email");
-			}else {
-				String subString =string4.substring(begin,end);
-				if(subString.equals(aString)==false) {
-					throw new InvalidInputException("Invalid email");
-				}
-			}
-
-			Business newBusiness=new Business(string, string2, string3, string4,fb );
-			fb.setBusiness(newBusiness);	
-			FlexiBookApplication.setmessage("");
-		} catch (Exception e) {
-			// TODO: handle exception
-			String ebString=e.getMessage();
-			FlexiBookApplication.setmessage(e.getMessage());
-			String ab=FlexiBookApplication.returnmessage();
-		}
-	}
-	public static void addNewBusinessHour(String string, String string2, String string3)throws InvalidInputException {
-		FlexiBook fb = FlexiBookApplication.getflexibook();
-			String user = fb.getOwner().getUsername();
-			String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
-			if(user.equals(currentUserString)==false) {
-				throw new InvalidInputException("No permission to update business information");
-			}
-			DayOfWeek inputDayOfWeek=DayOfWeek.valueOf(string);
-			Time inputStTime=Time.valueOf(string2+":00");
-			Time inputEdTime=Time.valueOf(string3+":00");
-			if(inputStTime.before(inputEdTime)==false) {
-				throw new InvalidInputException("Start time must be before end time");
-			}
-			Business business= fb.getBusiness();
-
-	    	BusinessHour aHour=business.getBusinessHour(0);
-    		DayOfWeek dayOfWeek=aHour.getDayOfWeek();
-    		Time startTime=aHour.getStartTime();
-    		Time endTime=aHour.getEndTime();
-    		if(dayOfWeek.equals(inputDayOfWeek)) {
-    			if(inputEdTime.before(endTime)&&inputEdTime.after(startTime)) {
-    				throw new InvalidInputException("The business hours cannot overlap");
-    			}
-    		}
-    		BusinessHour newHour=new BusinessHour(inputDayOfWeek, inputStTime, inputEdTime, fb);
-    		business.addBusinessHour(newHour);
-    		fb.addHour(newHour);
-    		FlexiBookApplication.setmessage("");	
-
-	}
 	
-	/*public static String[] viewStrings BusinessInfor () {
-		
-	}
-		*/
 	//	public static ArrayList<TimeSlot> getUnavailableTimeSlots (String username, String date)throws InvalidInputException{
 	//		String error;
 	//		FlexiBook flexibook=FlexiBookApplication.getflexibook();
@@ -1216,9 +1151,256 @@ public class FlexibookController {
            }
         return list;
 	}
+	public static void addTimeSlot(String type, String startDate, String startTime, String endDate, String endTime) throws InvalidInputException{
+    	FlexiBook flexibook=FlexiBookApplication.getflexibook();
+    	String mString="";
+    	FlexiBookApplication.setmessage(mString);
+    	FlexiBookApplication.setmessage("");
+    	FlexiBook fb = FlexiBookApplication.getflexibook();
+		String user = fb.getOwner().getUsername();
+		String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
+    	String tString="Vacation";
+    	
+    	Date currenDate=Date.valueOf(SystemTime.getdate(SystemTime.getSysTime()));
+		Business business=flexibook.getBusiness();
+    	List<TimeSlot> timeSlots;
+    	List<TimeSlot> anotherTimeSlots;
+    	if(type.equals("vacation")){
+    		timeSlots=business.getVacation();
+    		anotherTimeSlots=business.getHolidays();
+    	}else {
+    		tString="Holiday";
+			timeSlots=business.getHolidays();
+			anotherTimeSlots=business.getVacation();
+		}
+    	Date staDate=Date.valueOf(startDate);
+    	Time staTime=Time.valueOf(startTime+":00");
+    	Date enDate=Date.valueOf(endDate);
+    	Time enTime=Time.valueOf(endTime+":00");
 
+		if(user.equals(currentUserString)==false) {
+			throw new InvalidInputException("No permission to update business information");
+			}
+		if(currenDate.before(staDate)==false) {
+			throw new InvalidInputException(tString+" cannot start in the past");
+		}
+		if(staDate.before(enDate)==false) {
+			if((staDate.after(enDate))||(staDate.after(enDate)==false&&staTime.before(enTime)==false))
+			throw new InvalidInputException("Start time must be before end time");
+		}
 
+    	//check whether this slot overlap other time slots
+    	Boolean overlapDifferBoolean=false;
+    	for(TimeSlot Slota:anotherTimeSlots) {
+    		if(!((Slota.getEndDate().after(staDate)==false)||(Slota.getStartDate().before(enDate)==false))){
+    			overlapDifferBoolean=true;	
+    		}
+    		
+    	}
+    	if(overlapDifferBoolean==true) {
+    		throw new InvalidInputException("Holiday and vacation times cannot overlap");
+    	}
+    	Boolean overlapSameBoolean=false;
+    	for(TimeSlot Slota:timeSlots) {
+    		System.out.println(Slota);
+    		if(!((Slota.getEndDate().after(staDate)==false)||(Slota.getStartDate().before(enDate)==false))){
+    			overlapSameBoolean=true;	
+    		}
+    		
+    	}
+    	if(overlapSameBoolean==true) {
+    		throw new InvalidInputException(tString+" times cannot overlap");
+    	}
+    	
+    		TimeSlot slot=new TimeSlot(staDate,staTime,enDate,enTime,flexibook);
+    		if(type.equals("vacation")) {
+    			business.addVacation(slot);
+    			}
+    		else {
+    			business.addHoliday(slot);
+    		}
+    		
+    	  	
+	}/*
+	 * This method takes all parameters to set the business information in the system.
+	 * 
+	 * @author Zhixin Xiong
+	 * @param name
+	 * 
+	 * @param  address
+	 * @param phone number
+	 * @param email
+	 
+	 */     
+	public static void UpdateBusinessInformation(String name,String address,String phoneNumber,String email)throws InvalidInputException {
+		FlexiBook fb = FlexiBookApplication.getflexibook();
+		String user = fb.getOwner().getUsername();
+		String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
+		if(user.equals(currentUserString)==false) {
+			throw new InvalidInputException("No permission to update business information");
+		}
+		String aString="@gmail.com" ;
+		int begin=email.length()-aString.length();
+		int end=email.length();
+		if(begin<=0) {
+			throw new InvalidInputException("Invalid email");
+		}else {
+			String subString =email.substring(begin,end);
+			if(subString.equals(aString)==false) {
+				throw new InvalidInputException("Invalid email");
+		}
+		}
+		fb.getBusiness().setEmail(email);
+		fb.getBusiness().setName(name);
+		fb.getBusiness().setPhoneNumber(phoneNumber);
+		fb.getBusiness().setAddress(address);
+		FlexiBookApplication.setmessage("");
+	
 
+}
+	public static void UpdateExistingBusinessHour(String ExistingDay, String ExistingStartTime, String newDay, String newstartTime, String newEndTime)throws InvalidInputException {
+		FlexiBook fb = FlexiBookApplication.getflexibook();
+		String user = fb.getOwner().getUsername();
+		String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
+	if(user.equals(currentUserString)==false) {
+		throw new InvalidInputException("No permission to update business information");
+	}
+		DayOfWeek inputDayOfWeek=DayOfWeek.valueOf(ExistingDay);
+		Time exiStTime=Time.valueOf(ExistingStartTime+":00");
+		DayOfWeek InputDay=DayOfWeek.valueOf(newDay);
+		Time inputStTime=Time.valueOf(newstartTime+":00");
+		Time inputEdTime=Time.valueOf(newEndTime+":00");
+		if(inputStTime.before(inputEdTime)==false) {
+			throw new InvalidInputException("Start time must be before end time");
+		}
+		Business business= fb.getBusiness();
+    	List<BusinessHour> aHours=business.getBusinessHours();
+    	BusinessHour thisBusinessHour=null;Boolean existBoolean=false;
+    	for(BusinessHour aHour:aHours) {
+    	DayOfWeek dayOfWeek=aHour.getDayOfWeek();
+		Time startTime=aHour.getStartTime();
+		Time endTime=aHour.getEndTime();
+		if(dayOfWeek.equals(inputDayOfWeek)) {
+			if(exiStTime.after(startTime)==false&&exiStTime.before(startTime)==false) {
+				existBoolean=true;
+				thisBusinessHour=aHour;
+			
+			}else {
+				existBoolean=false;
+			}
+		}
+		if(InputDay.equals(dayOfWeek)) {
+			if(existBoolean==false) {
+			if(!(inputEdTime.before(startTime)||inputStTime.after(endTime))) {
+				throw new InvalidInputException("The business hours cannot overlap");
+			}}
+			
+		}
+    	}
+    	thisBusinessHour.setStartTime(inputStTime);
+    	thisBusinessHour.setEndTime(inputEdTime);
+		FlexiBookApplication.setmessage("");	
+
+	}
+	/*public static void removerBusinessHour(String Day,String starTime) throws InvalidInputException{
+		FlexiBook fb = FlexiBookApplication.getflexibook();
+		String user = fb.getOwner().getUsername();
+		String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
+	if(user.equals(currentUserString)==false) {
+		throw new InvalidInputException("No permission to update business information");
+	}
+	DayOfWeek inputDayOfWeek=DayOfWeek.valueOf(Day);
+	Time exiStTime=Time.valueOf(starTime+":00");
+	
+	Business business= fb.getBusiness();
+	List<BusinessHour> aHours=business.getBusinessHours();
+	for(BusinessHour aHour:aHours) {
+    	DayOfWeek dayOfWeek=aHour.getDayOfWeek();
+		Time startTime=aHour.getStartTime();
+		Time endTime=aHour.getEndTime();
+		if(inputDayOfWeek.equals(dayOfWeek)) {
+			
+		}
+	}
+	}
+	*/
+
+	/**
+	 * This method takes all parameters to set the business information in the system.
+	 * 
+	 * @author Zhixin Xiong
+	 * @param name 
+	 * @param  address
+	 * @param phone number
+	 * @param email
+	 */
+	public static void setBusinessInformation(String name, String address, String phoneNumber, String email)throws InvalidInputException {
+		FlexiBook fb = FlexiBookApplication.getflexibook();
+			String user = fb.getOwner().getUsername();
+			String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
+		if(user.equals(currentUserString)==false) {
+			throw new InvalidInputException("No permission to set up business information");
+		}
+		String aString="@gmail.com" ;
+		int begin=email.length()-aString.length();
+		int end=email.length();
+		if(begin<=0) {
+			throw new InvalidInputException("Invalid email");
+		}else {
+			String subString =email.substring(begin,end);
+			if(subString.equals(aString)==false) {
+				throw new InvalidInputException("Invalid email");
+		}
+		}
+		
+		Business newBusiness=new Business(name, address, phoneNumber, email,fb );
+		fb.setBusiness(newBusiness);	
+		FlexiBookApplication.setmessage("");
+
+	
+	}
+	
+	public static void addNewBusinessHour(String string, String string2, String string3)throws InvalidInputException {
+		FlexiBook fb = FlexiBookApplication.getflexibook();
+			String user = fb.getOwner().getUsername();
+			String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
+		if(user.equals(currentUserString)==false) {
+			throw new InvalidInputException("No permission to update business information");
+		}
+			DayOfWeek inputDayOfWeek=DayOfWeek.valueOf(string);
+			Time inputStTime=Time.valueOf(string2+":00");
+			Time inputEdTime=Time.valueOf(string3+":00");
+			if(inputStTime.before(inputEdTime)==false) {
+				throw new InvalidInputException("Start time must be before end time");
+			}
+			Business business= fb.getBusiness();
+	    	BusinessHour aHour=business.getBusinessHour(0);
+    		DayOfWeek dayOfWeek=aHour.getDayOfWeek();
+    		Time startTime=aHour.getStartTime();
+    		Time endTime=aHour.getEndTime();
+    		if(dayOfWeek.equals(inputDayOfWeek)) {
+    			if(inputEdTime.before(endTime)&&inputEdTime.after(startTime)) {
+    				throw new InvalidInputException("The business hours cannot overlap");
+    			}
+    		}
+    		BusinessHour newHour=new BusinessHour(inputDayOfWeek, inputStTime, inputEdTime, fb);
+    		business.addBusinessHour(newHour);
+    		fb.addHour(newHour);
+    		FlexiBookApplication.setmessage("");	
+
+	}
+	
+	public static String[] viewBusinessInfor () {
+		FlexiBook flexiBook=FlexiBookApplication.getflexibook();
+		Business business=flexiBook.getBusiness();
+		String[]busiStrings=new String[4];
+		busiStrings[0]=business.getName();
+		busiStrings[1]=business.getAddress();
+		busiStrings[2]=business.getPhoneNumber();
+		busiStrings[3]=business.getEmail();
+		return busiStrings;
+		
+	}
 
 
 }

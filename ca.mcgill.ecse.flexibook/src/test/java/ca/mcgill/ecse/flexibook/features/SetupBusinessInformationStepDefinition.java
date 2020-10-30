@@ -27,7 +27,7 @@ public class SetupBusinessInformationStepDefinition {
 	  private  String[] businessInfor;
 	  private TimeSlot newTimeSlot=null;
 	  private String typeofNewslot=" ";
-	  private String resultError="not be";
+	  public static String resultError="not be";
 	  
 	  
 
@@ -44,9 +44,11 @@ public class SetupBusinessInformationStepDefinition {
 	    try {  
 	    	resultString="be";
 	        FlexibookController.setBusinessInformation(string, string2, string3, string4);
+	        resultError="not be";
 	        }catch (InvalidInputException e) {
 	        	resultString="not be";
 	    		FlexiBookApplication.setmessage(e.getMessage());
+	    		resultError="be";
 	        }
 	        
 		}
@@ -77,9 +79,6 @@ public class SetupBusinessInformationStepDefinition {
 		
 		System.out.println(resultString);
 		
-		if(resultString.equals("not be")) {
-			resultError="be";
-		}
 		   assertEquals(string,e);
 		   assertEquals(string2, resultError);
 		   FlexiBookApplication.setmessage(null);
@@ -111,36 +110,19 @@ public class SetupBusinessInformationStepDefinition {
 	     Business aNewBusiness=new Business(name, address, phonenumber, email, flexibook);
 	    }
 	}
-	    @Given("the business has a business hour on {string} with start time {string} and end time {string}")
-	    public void the_business_has_a_business_hour_on_with_start_time_and_end_time(String string,String string2,String string3) {
-	    	flexibook=FlexiBookApplication.getflexibook();
-	    	Business business= flexibook.getBusiness();
-	    	boolean hasSuchHour=false;
-	    	if(business.getBusinessHours().size()!=0) {
-				 for(BusinessHour hour:business.getBusinessHours()) {
-					 if(hour.getDayOfWeek().equals(DayOfWeek.valueOf(string))&&hour.getStartTime().equals(Time.valueOf(string2+":00"))&&hour.getEndTime().equals(Time.valueOf(string3+":00"))) {
-						 hasSuchHour=true;
-						  return;
-						 }
-					 }
-				 }
-	    	if(hasSuchHour==false) {
-	    		DayOfWeek dayOfWeek=DayOfWeek.valueOf(string);
-	    		Time startTime=Time.valueOf(string2+":00");
-	    		Time endTime=Time.valueOf(string3+":00");
-	    		BusinessHour nHour=new BusinessHour(dayOfWeek, startTime, endTime, flexibook);
-	    		business.addBusinessHour(nHour);
-			  }
-	    }
+
 	    @When("the user tries to add a new business hour on {string} with start time {string} and end time {string}")
 	    public void the_user_tries_to_add_a_new_business_hour_on_with_start_time_and_end_time(String string, String string2, String string3) throws InvalidInputException{
 	    	try {
 	    		resultString="be";
+	    		
 	    		 FlexibookController.addNewBusinessHour(string,string2,string3);
+	    		 resultError="not be";
 		        }catch (Exception e) {
 		    		// TODO: handle exception
 		        	resultString="not be";
 		    		FlexiBookApplication.setmessage(e.getMessage());
+		    		resultError="be";
 		    	}
 	    }
 	    @Then("a new business hour shall {string} created")

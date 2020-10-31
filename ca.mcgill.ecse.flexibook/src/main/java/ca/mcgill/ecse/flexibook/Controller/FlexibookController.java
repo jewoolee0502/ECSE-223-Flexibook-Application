@@ -1314,10 +1314,7 @@ public class FlexibookController {
 	Business business= fb.getBusiness();
 	Boolean exiBoolean=false;
 	List<BusinessHour> aHours=business.getBusinessHours();
-	for(BusinessHour aHour:aHours) {
-    	DayOfWeek dayOfWeek=aHour.getDayOfWeek();
-    	System.out.print(dayOfWeek);
-	}
+
 	for(BusinessHour aHour:aHours) {
     	DayOfWeek dayOfWeek=aHour.getDayOfWeek();
 		Time startTime=aHour.getStartTime();
@@ -1330,8 +1327,8 @@ public class FlexibookController {
 		}
 	}
 	if(exiBoolean) {
-	aHours.remove(toBeRemovedBusinessHour);
-	}
+		business.removeBusinessHour(toBeRemovedBusinessHour);
+		}
 	}
 
    public static void updateHolidayOrVacation(String type, String ExistingDate, String ExistingStartTime, String startDate, String startTime, String endDate,String endTime)throws InvalidInputException {
@@ -1361,15 +1358,22 @@ public class FlexibookController {
     	Time staTime=Time.valueOf(startTime+":00");
     	Date enDate=Date.valueOf(endDate);
     	Time enTime=Time.valueOf(endTime+":00");
+    	Date existDate=Date.valueOf(ExistingDate);
+    	Time exisTime=Time.valueOf(ExistingStartTime+":00");
 
 		if(user.equals(currentUserString)==false) {
 			throw new InvalidInputException("No permission to update business information");
 			}
 		if(currenDate.before(staDate)==false) {
-			throw new InvalidInputException(tString+" cannot start in the past");
+			if(tString.equals("Holiday")) {
+			throw new InvalidInputException(tString+" cannot be in the past");
+			}else {
+				throw new InvalidInputException(tString+" cannot start in the past");
+			}
 		}
 		if(staDate.before(enDate)==false) {
-			if((staDate.after(enDate))||(staDate.after(enDate)==false&&staTime.before(enTime)==false))
+			if((staDate.after(enDate))||(staDate.after(enDate)==false&&staTime.before(enTime)==false)) 
+				
 			throw new InvalidInputException("Start time must be before end time");
 		}
 
@@ -1386,17 +1390,12 @@ public class FlexibookController {
     	}
     	Boolean overlapSameBoolean=false;
     	for(TimeSlot Slota:timeSlots) {
-    		System.out.println(Slota);
-    		if(Slota.getEndDate().after(staDate)==false&&Slota.getStartDate().before(enDate)==false) {
-    			if(Slota.getStartTime().before(staTime)==false&&Slota.getStartTime().after(staTime)==false) {
-    				
-    			}
-    		}
+    		
     		if(!((Slota.getEndDate().after(staDate)==false)||(Slota.getStartDate().before(enDate)==false))){
     			overlapSameBoolean=true;	
     		}
-    		if(Slota.getEndDate().after(staDate)==false&&Slota.getStartDate().before(enDate)==false) {
-    			if(Slota.getStartTime().before(staTime)==false&&Slota.getStartTime().after(staTime)==false) {
+    		if(Slota.getStartDate().before(existDate)==false&&Slota.getStartDate().after(existDate)==false) {
+    			if(Slota.getStartTime().before(exisTime)==false&&Slota.getStartTime().after(exisTime)==false) {
     				overlapSameBoolean=false;
     				thiSlot=Slota;
     			}
@@ -1493,10 +1492,12 @@ public class FlexibookController {
 	Business business=flexibook.getBusiness();
 	List<TimeSlot> timeSlots;
 	List<TimeSlot> anotherTimeSlots;
+	Boolean isvaBoolean=true;
 	if(type.equals("vacation")){
 		timeSlots=business.getVacation();
 		anotherTimeSlots=business.getHolidays();
 	}else {
+		isvaBoolean=false;
 		tString="Holiday";
 		timeSlots=business.getHolidays();
 		anotherTimeSlots=business.getVacation();
@@ -1520,7 +1521,11 @@ public class FlexibookController {
 		}
 	}
 	if(exiBoolean) {
-	timeSlots.remove(thisTimeSlot);
+		if(isvaBoolean) {
+			business.removeVacation(thisTimeSlot);
+		}else {
+			business.removeHoliday(thisTimeSlot);
+		}
 	}
 	}
 	public static String[] viewBusinessInfor () {

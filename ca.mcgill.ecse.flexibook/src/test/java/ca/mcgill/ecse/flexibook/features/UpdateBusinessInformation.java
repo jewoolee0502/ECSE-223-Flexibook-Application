@@ -95,7 +95,9 @@ public class UpdateBusinessInformation {
 	@When("the user tries to remove the business hour starting {string} at {string}")
 	public void the_user_tries_to_remove_the_business_hour_starting_at(String string, String string2)  {  
 	        
-		try{FlexibookController.removerBusinessHour(string, string2);
+		try{
+			
+		FlexibookController.removerBusinessHour(string, string2);
 		 removeResult="not";
 	
 		 FlexiBookApplication.setmessage("");

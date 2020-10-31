@@ -23,6 +23,7 @@ public class UpdateBusinessInformation {
 	  private  InvalidInputException thise=null;
 	  private String removeResult="not";
 	  private String typeofNewslot=" ";
+	  private TimeSlot newTimeSlot=null;
 	    @Given("the business has a business hour on {string} with start time {string} and end time {string}")
 	    public void the_business_has_a_business_hour_on_with_start_time_and_end_time(String string,String string2,String string3) {
 	    	flexibook=FlexiBookApplication.getflexibook();
@@ -86,11 +87,9 @@ public class UpdateBusinessInformation {
    		
        }
 	}
-
 	@Then("the business hour shall {string} be updated")
 	public void the_business_hour_shall_be_updated(String string) {
-	    // Write code here that turns the phrase above into concrete actions
-	  
+	   assertEquals(string, SetupBusinessInformationStepDefinition.resultString);
 	}
 	@When("the user tries to remove the business hour starting {string} at {string}")
 	public void the_user_tries_to_remove_the_business_hour_starting_at(String string, String string2)  {  
@@ -114,6 +113,8 @@ public class UpdateBusinessInformation {
 	@Then("the business hour starting {string} at {string} shall {string} exist")
 	public void the_business_hour_starting_at_shall_exist(String string, String string2, String string3) {
 	
+		assertEquals(string3, removeResult);
+		
 	}
 	@Then("an error message {string} shall {string} be raised")
 	public void an_error_message_shall_be_raised(String string, String string2) {
@@ -129,6 +130,7 @@ public class UpdateBusinessInformation {
 		try {
      		typeofNewslot=string;
     		 FlexibookController.updateHolidayOrVacation(string, string2, string3, string4, string5, string6, string7);
+    		 
     		 SetupBusinessInformationStepDefinition.resultError="not be";
     		 SetupBusinessInformationStepDefinition.resultString="be";
     		 FlexiBookApplication.setmessage("");
@@ -139,12 +141,44 @@ public class UpdateBusinessInformation {
 	    	}
 	}
 
-
-
-	@Then("the {string} shall {string} updated with start date {string} at {string} and end date {string} at {string}")
-	public void the_shall_updated_with_start_date_at_and_end_date_at(String string, String string2, String string3, String string4, String string5, String string6) {
+@Then("the {string} shall {string} updated with start date {string} at {string} and end date {string} at {string}")
+public void the_shall_updated_with_start_date_at_and_end_date_at(String string, String string2, String string3, String string4, String string5, String string6) {
+ 
+	Business business=flexibook.getBusiness();
+	List<TimeSlot> timeSlots;
+	Date staDate=Date.valueOf(string3);
+	Time staTime=Time.valueOf(string4+":00");
+	Date enDate=Date.valueOf(string5);
+	Time enTime=Time.valueOf(string6+":00");
+	if(string.equals("vacation")){
+		
+		timeSlots=business.getVacation();
+	}else {
+		timeSlots=business.getHolidays();
+	}
+	boolean exist=false; 	
+	for(TimeSlot slot:timeSlots) {
+		if(slot.getStartDate().equals(staDate)&&slot.getStartTime().equals(staTime)&&slot.getEndDate().equals(enDate)&&slot.getEndTime().equals(enTime)) {
+			exist=true;
+			newTimeSlot=slot;
+			break;
+		}
+	}
+	if(exist==true) {
+	assertEquals(string, typeofNewslot);
+	assertEquals(string2,SetupBusinessInformationStepDefinition.resultString );
+	assertEquals(Date.valueOf(string3), newTimeSlot.getStartDate());
+	assertEquals(Time.valueOf(string4+":00"), newTimeSlot.getStartTime());
+	assertEquals(Date.valueOf(string5), newTimeSlot.getEndDate());
+	assertEquals(Time.valueOf(string6+":00"), newTimeSlot.getEndTime());
 
 	}
+}
+
+
+
+
+	
 	
 	@When("the user tries to remove an existing {string} with start date {string} at {string} and end date {string} at {string}")
 	public void the_user_tries_to_remove_an_existing_with_start_date_at_and_end_date_at(String string, String string2, String string3, String string4, String string5) {
@@ -159,12 +193,16 @@ public class UpdateBusinessInformation {
   		
       }
 	}
-
-
+		
 		@Then("the {string} with start date {string} at {string} shall {string} exist")
 		public void the_with_start_date_at_shall_exist(String string, String string2, String string3, String string4) {
-	
-		}
+		assertEquals(string4, removeResult);
+		
+
+	}
+
+
+
 
 
 }

@@ -948,23 +948,6 @@ public class FlexibookController {
 			throw new InvalidInputException("You are not authorized to perform this operation");}
 	}
 
-
-
-	
-
-
-
-
-	/**
-	 * This method takes all parameters to set the business information in the system.
-	 * 
-	 * @author Zhixin Xiong
-	 * @param name 
-	 * @param address
-	 * @param phone number
-	 * @param email
-	 */
-	
 	//	public static ArrayList<TimeSlot> getUnavailableTimeSlots (String username, String date)throws InvalidInputException{
 	//		String error;
 	//		FlexiBook flexibook=FlexiBookApplication.getflexibook();
@@ -1486,21 +1469,14 @@ public class FlexibookController {
 	
 	FlexiBook flexibook=FlexiBookApplication.getflexibook();
 
-	String tString="Vacation";
-	
-	Date currenDate=Date.valueOf(SystemTime.getdate(SystemTime.getSysTime()));
 	Business business=flexibook.getBusiness();
 	List<TimeSlot> timeSlots;
-	List<TimeSlot> anotherTimeSlots;
 	Boolean isvaBoolean=true;
 	if(type.equals("vacation")){
 		timeSlots=business.getVacation();
-		anotherTimeSlots=business.getHolidays();
 	}else {
 		isvaBoolean=false;
-		tString="Holiday";
 		timeSlots=business.getHolidays();
-		anotherTimeSlots=business.getVacation();
 	}
 	Date staDate=Date.valueOf(startDate);
 	Time staTime=Time.valueOf(startTime+":00");
@@ -1509,7 +1485,6 @@ public class FlexibookController {
 	
 
 	Boolean exiBoolean=false;
-	Boolean overlapSameBoolean=false;
 	TimeSlot thisTimeSlot=null;
 	for(TimeSlot Slota:timeSlots) {
 		

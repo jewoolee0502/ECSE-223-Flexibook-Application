@@ -21,6 +21,7 @@ import io.cucumber.java.en.When;
 public class MakeAppointmentStepDefinitions {
 
 	private FlexiBook flexibook = FlexiBookApplication.getflexibook();
+	private int count;
 
 	@Given("the system's time and date is {string}")
 	public void the_system_s_time_and_date_is(String string) {
@@ -102,23 +103,33 @@ public class MakeAppointmentStepDefinitions {
 		try {
 			if(customer.equals("owner")) {
 				FlexibookController.MakeAppointment(flexibook.getOwner().getUsername(), date, serviceName, null, startTime);
+			    count=1;
 			}
 			FlexibookController.MakeAppointment(customer,date, serviceName,null ,startTime);
 
 		}catch(InvalidInputException e){
 			FlexiBookApplication.setmessage(e.getMessage());
+			count=0;
 		}
 	}
 
 	@When("{string} schedules an appointment on {string} for {string} with {string} at {string}")
 	public void schedules_an_appointment_on_for_with_at(String customer, String date, String serviceName, String optionalServices, String startTime){
 		try {
+			count=1;
 			FlexibookController.MakeAppointment(customer, date, serviceName, optionalServices, startTime);
 
 		}catch(InvalidInputException e) {
+			count=0;
 			FlexiBookApplication.setmessage(e.getMessage());
 		}
 	}
+	@Then("there shall be {int} more appointment in the system")
+	public void there_shall_be_more_appointment_in_the_system(Integer int1) {
+		assertEquals(int1, (Integer)count);
+	   
+	}
+
 
 	@Then("{string} shall have a {string} appointment on {string} from {string} to {string}")
 	public void shall_have_a_appointment_on_from_to(String customer, String serviceName, String date, String startTime, String endTime) {
@@ -133,11 +144,7 @@ public class MakeAppointmentStepDefinitions {
 		
 	}
 
-	@Then("there shall be {int} more appointment in the system")
-	public void there_shall_be_more_appointment_in_the_system(Integer int1) {
-		int count = flexibook.numberOfAppointments();
-		
-	}
+
 
 	@Then("the system shall report {string}")
 	public void the_system_shall_report(String string) {

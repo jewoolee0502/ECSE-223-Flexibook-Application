@@ -1,58 +1,17 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.30.1.5099.60569f335 modeling language!*/
+namespace ca.mcgill.ecse.flexibook.model;
 
-package ca.mcgill.ecse.flexibook.model;
-import ca.mcgill.ecse.flexibook.application;
-import ca.mcgill.ecse.flexibook.Controller;
-import ca.mcgill.ecse.flexibook.model;
-import ca.mcgill.ecse.flexibook.util;
-import java.util.*;
+class Bookingprocess {
 
-// line 3 "../../../../../BookingProcess.ump"
-public class Bookingprocess
-{
+depend ca.mcgill.ecse.flexibook.application;
+depend ca.mcgill.ecse.flexibook.Controller;
+depend ca.mcgill.ecse.flexibook.model;
+depend ca.mcgill.ecse.flexibook.util;
+depend java.util.*;
 
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
 
-  //Bookingprocess State Machines
-  public enum Appointmentvanish {  }
-  private Appointmentvanish appointmentvanish;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-
-  public Bookingprocess()
-  {}
-
-  //------------------------
-  // INTERFACE
-  //------------------------
-
-  public String getAppointmentvanishFullName()
-  {
-    String answer = appointmentvanish.toString();
-    return answer;
-  }
-
-  public Appointmentvanish getAppointmentvanish()
-  {
-    return appointmentvanish;
-  }
-
-  public void delete()
-  {}
-  
-  //------------------------
-  // DEVELOPER CODE - PROVIDED AS-IS
-  //------------------------
-  
-  // line 12 "../../../../../BookingProcess.ump"
-  appointmentStatus 
-  {
-    booking {
+	appointmentStatus {
+    
+		booking {
      		makeappointment {
     			makeappoitment->booking.makeappointment;
      			makeappoitment->appointmentstart.checkarrival;
@@ -121,7 +80,12 @@ public class Bookingprocess
      		appointmentended {
      			end->appointmentvanish;
      		}
-  }
+     	}   
+ 
+     
+     	appointmentvanish {
 
-  
+     	}
+     
+	}
 }

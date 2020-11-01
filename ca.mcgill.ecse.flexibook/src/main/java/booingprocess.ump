@@ -7,7 +7,7 @@ depend ca.mcgill.ecse.flexibook.util;
 depend java.util.*;
 
 
-appointstatus {
+class AppointmentManagement {
     
 	booking {
      	makeappointment {
@@ -38,10 +38,10 @@ appointstatus {
      
      appointmentstart {
      	checkarrival {
-     		ownercheck->checkarrival;
-     		ownercheck->appointmentvanish; 
-     		cutomercheck->changeappointmentduring;
-     		cutomercheck->appointmentended;
+     		ownercheck -> checkarrival;
+     		ownercheck -> appointmentvanish; 
+     		cutomercheck -> changeappointmentduring;
+     		cutomercheck -> appointmentended;
      	}
      
      

@@ -238,19 +238,6 @@ public class FlexibookController {
 		}
 	}
 
-	public static void CreateUser(String a, String b) throws InvalidInputException { 
-		FlexiBook fb=FlexiBookApplication.getflexibook();
-		if(a==null|| a=="         "){
-			throw new InvalidInputException("username");
-		}else if(fb.getCustomers().size()>0) {
-			if(fb.getCustomer(0).getWithUsername(a)!=null) {
-
-
-			}
-		}
-		Customer thisc=new Customer(a, b, fb);
-	}
-
 
 	/**
 	 * deletecombo: This method takes an input of username and a combo name. The method will decide whether to initiate the deleting method
@@ -296,6 +283,33 @@ public class FlexibookController {
 		}
 
 
+	}
+	
+	/**
+	 * This method takes in all the parameters and creates a new user.
+	 * 
+	 * @author Jewoo Lee
+	 * 
+	 * @param username - username of the new user 
+	 * @param password - password of the new user
+	 * 
+	 * @throws InvalidInputException
+	 */
+	
+	
+	public static void CreateUser(String username, String password) throws InvalidInputException { 
+		FlexiBook fb = FlexiBookApplication.getflexibook();
+		
+		if(username == null || username == "         ") {
+			throw new InvalidInputException("username");
+			
+		} else if(fb.getCustomers().size() > 0) {
+			
+			if(fb.getCustomer(0).getWithUsername(username) != null) {
+
+			}
+		}
+		Customer thisc = new Customer(username, password, fb);
 	}
 
 

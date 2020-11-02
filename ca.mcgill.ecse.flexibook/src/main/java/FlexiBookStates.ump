@@ -1,78 +1,41 @@
 namespace ca.mcgill.ecse.flexibook.model;
 
-class AppointmentManagement {
+class Appointment {
 
 depend java.util.*;
-
-	AppointmentStatus {
-    
-    Booking {
-     	MakeAppointment(Customer customer, BookableService service, TimeSlot timeslot) / {
-     		doBookAppointment(customer, service, timeslot);
-     		
-     	} -> Booking;
-        MakeAppointmentFinish -> CheckArrival;
-        CheckCancel -> CancelAppointment;
-        CheckChange -> ChangeAppointment;
-    }
-    
-    
+  
+  appointmentStatus {
+    Booked{
       
-    ChangeAppointment {
-      	ChangeDatetime -> CheckArrival;
-      	ReChangeDatetime -> ChangeAppointment;
-      	ChangeCombo -> CheckArrival;
-      	ReChangeCombo -> ChangeAppointment;
-    }
+      updateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService) [oneDayDiff() & avilableTimeSlot()] / {
+        doUpdateAppointment(timeslot, newBookableService, optionalService);
+        doEndAppointment(timeslot, newBookableService, optionalService);
+      } -> Booked;
+      
+      cancelAppointment(Customer customer) [OneDayDiff()] / {
+        doCancelAppointment(customer);
+      } -> Final;
      
-    CancelAppointment {
-      	Cancel -> AppointmentVanish;
-      	ReBook -> Booking;
+        
+      
+      startAppointment() [isWithinAppTimeSlot()] / {
+        doStartAppointment();
+      } -> InProgress;
+      
     }
     
-    
-    
-    CheckArrival {
-      	OwnerCheckArrival -> AppointmentStart;
-      	OwnerCheckNoArrival -> AppointmentVanish; 
+    InProgress{
+      updateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService) [startTimeSame()] / {
+          doUpdateAppointment(timeslot, newBookableService, optionalService);
+      } -> InProgress;
+      
+      endAppointment() [finished()] / {
+        doEndAppointment();
+      } -> Final;
+      
     }
-    
-    AppointmentStart {
-      	ChangeNeeded -> ChangeAppointmentDuring;
-      	NoChangeNeeded -> AppointmentEnded;
-    }
-    
-    ChangeAppointmentDuring {
-      	ChangeCombo -> AppointmentEnded;
-      	ReChangeCombo -> ChangeAppointmentDuring;
-    }
-    
-    AppointmentEnded {
-      	OwnerEnd -> AppointmentVanish;
-    }  
-    
-    AppointmentVanish {
-    
-    }
-     
-    
   }
- 
- 
- /**
- *@author
- *
- *@Param customer - 
- *@Param BookableService - 
- *@Param timeslot -
- *@Param flexibook - 
- *
- */
-  
-  private void doBookAppointment(Customer customer, BookableService service, TimeSlot timeslot) {
-  	flexibook.addAppointment(customer, service, timeslot);
-  }
-  
-  
-
 }
+    
+  }
+ 

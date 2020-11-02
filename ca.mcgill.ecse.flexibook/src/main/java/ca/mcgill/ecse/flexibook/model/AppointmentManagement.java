@@ -339,7 +339,7 @@ public class AppointmentManagement
    * @Param flexibook - 
    * 
    */
-  // line 73 "../../../../../FlexiBookStates.ump"
+  // line 72 "../../../../../FlexiBookStates.ump"
    private void doBookAppointment(Customer customer, BookableService service, TimeSlot timeslot){
     flexibook.addAppointment(customer, service, timeslot);
   }

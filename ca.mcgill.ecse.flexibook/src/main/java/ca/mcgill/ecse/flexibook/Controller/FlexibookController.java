@@ -41,14 +41,14 @@ public class FlexibookController {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		if(fb.getOwner().getUsername().equals(string)) {
 
-			   if(fb.getBookableServices().size()!=0) {
+			if(fb.getBookableServices().size()!=0) {
 				if(fb.getBookableService(0).getWithName(string2)!=null)
 				{
 					throw new InvalidInputException("Service combo "+string2+ " already exists");
 				}
 			}
 			ServiceCombo thiscombo=new ServiceCombo(string2, fb);
-            String nameofmain=string3;
+			String nameofmain=string3;
 			if(fb.getBookableService(0).getWithName(nameofmain)==null) {
 				thiscombo.delete();
 				throw new InvalidInputException("Service "+nameofmain+" does not exist");
@@ -113,7 +113,7 @@ public class FlexibookController {
 
 	public static void updatecombo(String string, String string2, String string3, String string4, String string5, String string6) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
-		
+
 		ComboItem main=null;
 		if(fb.getOwner().getUsername().equals(string)==true) {
 			if(fb.getBookableServices().size()!=0) {
@@ -125,7 +125,7 @@ public class FlexibookController {
 						fb.getBookableService(0).getWithName(string2).delete();
 					}else {
 						ServiceCombo combo=(ServiceCombo) fb.getBookableService(0).getWithName(string2);
-						
+
 						String nameofmain=string4;
 						if(fb.getBookableService(0).getWithName(nameofmain)==null) {
 							throw new InvalidInputException("Service "+nameofmain+" does not exist");
@@ -284,7 +284,7 @@ public class FlexibookController {
 
 
 	}
-	
+
 	/**
 	 * This method takes in all the parameters and creates a new user.
 	 * 
@@ -295,16 +295,16 @@ public class FlexibookController {
 	 * 
 	 * @throws InvalidInputException
 	 */
-	
-	
+
+
 	public static void CreateUser(String username, String password) throws InvalidInputException { 
 		FlexiBook fb = FlexiBookApplication.getflexibook();
-		
+
 		if(username == null || username == "         ") {
 			throw new InvalidInputException("username");
-			
+
 		} else if(fb.getCustomers().size() > 0) {
-			
+
 			if(fb.getCustomer(0).getWithUsername(username) != null) {
 			}
 		}
@@ -684,10 +684,10 @@ public class FlexibookController {
 					}
 				}
 			}
-			
+
 			if(action.equals("add")) {
 				//TODO
-				
+
 			}
 
 		}
@@ -829,57 +829,57 @@ public class FlexibookController {
 	}
 
 	/**
-     * deleteService: This method takes an input of servicenames. The method will decide whether to initiate the deleting method
-     * 
-     * @author Tianyu Zhao
-     * @param String servicename a string of services
-     * @param owner
-     * @throws InvalidInputException --- an error is encountered
-     * @return void
-     */
+	 * deleteService: This method takes an input of servicenames. The method will decide whether to initiate the deleting method
+	 * 
+	 * @author Tianyu Zhao
+	 * @param String servicename a string of services
+	 * @param owner
+	 * @throws InvalidInputException --- an error is encountered
+	 * @return void
+	 */
 
-    public static void deleteService(String owner, String servicename) throws InvalidInputException {
-        FlexiBook fb =FlexiBookApplication.getflexibook();
-        String time=SystemTime.gettime(SystemTime.getSysTime());
-        String date=SystemTime.getdate(SystemTime.getSysTime());
-        
-        if(fb.getBookableServices().size()!=0) {
-                Service thiss=(Service) fb.getBookableService(0).getWithName(servicename);
-                }
+	public static void deleteService(String owner, String servicename) throws InvalidInputException {
+		FlexiBook fb =FlexiBookApplication.getflexibook();
+		String time=SystemTime.gettime(SystemTime.getSysTime());
+		String date=SystemTime.getdate(SystemTime.getSysTime());
 
-        if(owner.equals(fb.getOwner().getUsername())==true) {
-            if(fb.getBookableServices().size()!=0) {
-                if(fb.getBookableService(0).getWithName(servicename)!=null) {
-                    if(fb.getBookableService(0).getWithName(servicename).getAppointments().size()>0) {
-                        for(int i=0;i<fb.getAppointments().size();i++) {
-                            String startdate=fb.getBookableService(0).getWithName(servicename).getAppointment(i).getTimeSlot().getStartDate().toString();
-                            if(SystemTime.comparedate(date,startdate)==2) {
-                                throw new InvalidInputException("Service "+servicename+ " contains future appointments"); 
-                            }else if(SystemTime.comparedate(date,startdate)==1) {
-                                fb.getBookableService(0).getWithName(servicename).delete();
-                                
-                            }else if(SystemTime.comparedate(date,startdate)==0) {
-                                String starttime=fb.getBookableService(0).getWithName(servicename).getAppointment(i).getTimeSlot().getStartTime().toString();
-                                if(SystemTime.comparetime(time,starttime)==1) {
-                                    fb.getBookableService(0).getWithName(servicename).delete();
-                                   
-                                }else {
-                                    throw new InvalidInputException("Service "+servicename+ " contains future appointments");
-                                }
-                            }
-                        }
-                    }else{fb.getBookableService(0).getWithName(servicename).delete();}
+		if(fb.getBookableServices().size()!=0) {
+			Service thiss=(Service) fb.getBookableService(0).getWithName(servicename);
+		}
 
-                }
-            }
-        }else {
-            throw new InvalidInputException("You are not authorized to perform this operation"); 
-        }
+		if(owner.equals(fb.getOwner().getUsername())==true) {
+			if(fb.getBookableServices().size()!=0) {
+				if(fb.getBookableService(0).getWithName(servicename)!=null) {
+					if(fb.getBookableService(0).getWithName(servicename).getAppointments().size()>0) {
+						for(int i=0;i<fb.getAppointments().size();i++) {
+							String startdate=fb.getBookableService(0).getWithName(servicename).getAppointment(i).getTimeSlot().getStartDate().toString();
+							if(SystemTime.comparedate(date,startdate)==2) {
+								throw new InvalidInputException("Service "+servicename+ " contains future appointments"); 
+							}else if(SystemTime.comparedate(date,startdate)==1) {
+								fb.getBookableService(0).getWithName(servicename).delete();
+
+							}else if(SystemTime.comparedate(date,startdate)==0) {
+								String starttime=fb.getBookableService(0).getWithName(servicename).getAppointment(i).getTimeSlot().getStartTime().toString();
+								if(SystemTime.comparetime(time,starttime)==1) {
+									fb.getBookableService(0).getWithName(servicename).delete();
+
+								}else {
+									throw new InvalidInputException("Service "+servicename+ " contains future appointments");
+								}
+							}
+						}
+					}else{fb.getBookableService(0).getWithName(servicename).delete();}
+
+				}
+			}
+		}else {
+			throw new InvalidInputException("You are not authorized to perform this operation"); 
+		}
 
 
-    }
-    
-   
+	}
+
+
 
 
 	/**
@@ -971,7 +971,7 @@ public class FlexibookController {
 	//		catch(ParseException e) {
 	//			throw new InvalidInputException(date+" is not a valid date");
 	//		}
-	
+
 	//	}
 	//
 
@@ -983,27 +983,27 @@ public class FlexibookController {
 	//		}
 	//		return list;
 	//		}
-//			BusinessHour aHour=business.getBusinessHour(0);
-//			DayOfWeek dayOfWeek=aHour.getDayOfWeek();
-//			Time startTime=aHour.getStartTime();
-//			Time endTime=aHour.getEndTime();
-//			if(dayOfWeek.equals(inputDayOfWeek)) {
-//				if(inputEdTime.before(endTime)&&inputEdTime.after(startTime)) {
-//					throw new InvalidInputException("The business hours cannot overlap");
-//				}
-//			}
-//			BusinessHour newHour=new BusinessHour(inputDayOfWeek, inputStTime, inputEdTime, fb);
-//			business.addBusinessHour(newHour);
-//			fb.addHour(newHour);
-//			FlexiBookApplication.setmessage("");	
-//
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			String ebString=e.getMessage();
-//			FlexiBookApplication.setmessage(e.getMessage());
-//			String ab=FlexiBookApplication.returnmessage();
-//		}
-//	}
+	//			BusinessHour aHour=business.getBusinessHour(0);
+	//			DayOfWeek dayOfWeek=aHour.getDayOfWeek();
+	//			Time startTime=aHour.getStartTime();
+	//			Time endTime=aHour.getEndTime();
+	//			if(dayOfWeek.equals(inputDayOfWeek)) {
+	//				if(inputEdTime.before(endTime)&&inputEdTime.after(startTime)) {
+	//					throw new InvalidInputException("The business hours cannot overlap");
+	//				}
+	//			}
+	//			BusinessHour newHour=new BusinessHour(inputDayOfWeek, inputStTime, inputEdTime, fb);
+	//			business.addBusinessHour(newHour);
+	//			fb.addHour(newHour);
+	//			FlexiBookApplication.setmessage("");	
+	//
+	//		} catch (Exception e) {
+	//			// TODO: handle exception
+	//			String ebString=e.getMessage();
+	//			FlexiBookApplication.setmessage(e.getMessage());
+	//			String ab=FlexiBookApplication.returnmessage();
+	//		}
+	//	}
 
 	/**
 	 * getUnavailableTimeSlots: This method takes as input a date and a username and returns the unavailable time slots for a day. 	 * 
@@ -1013,36 +1013,36 @@ public class FlexibookController {
 	 * @throws InvalidInputException an error is encountered
 	 * @return ArrayList<TimeSlot>
 	 */
-		public static ArrayList<TimeSlot> getUnavailableTimeSlots (String username, String date)throws InvalidInputException{
-			String error;
-			FlexiBook flexibook=FlexiBookApplication.getflexibook();
-			ArrayList<TimeSlot> list = new ArrayList<TimeSlot>();
-			Date newDate = null;
-			try {
+	public static ArrayList<TimeSlot> getUnavailableTimeSlots (String username, String date)throws InvalidInputException{
+		String error;
+		FlexiBook flexibook=FlexiBookApplication.getflexibook();
+		ArrayList<TimeSlot> list = new ArrayList<TimeSlot>();
+		Date newDate = null;
+		try {
 			newDate=dateChecker(date);}
-			catch(ParseException e) {
-				throw new InvalidInputException(date+" is not a valid date");
+		catch(ParseException e) {
+			throw new InvalidInputException(date+" is not a valid date");
+		}
+		catch(IllegalArgumentException f) {
+			throw new InvalidInputException(date+" is not a valid date");
+		}
+
+		for(Appointment appointment:flexibook.getAppointments()) {
+			if(appointment.getTimeSlot().getStartDate().equals(newDate)) {
+				list.add(appointment.getTimeSlot());
+
 			}
-			catch(IllegalArgumentException f) {
-				throw new InvalidInputException(date+" is not a valid date");
-			}
-	
-			for(Appointment appointment:flexibook.getAppointments()) {
-				if(appointment.getTimeSlot().getStartDate().equals(newDate)) {
-					list.add(appointment.getTimeSlot());
-					
-				}
-			}
-			return list;
-			}
-		/**
-		 * getAvailableTimeSlots: This method takes as input a date and a username and returns the available time slots for a day. 	 * 
-		 * @author James Willems
-		 * @param String username
-		 * @param String date
-		 * @throws InvalidInputException an error is encountered
-		 * @return ArrayList<TimeSlot>
-		 */
+		}
+		return list;
+	}
+	/**
+	 * getAvailableTimeSlots: This method takes as input a date and a username and returns the available time slots for a day. 	 * 
+	 * @author James Willems
+	 * @param String username
+	 * @param String date
+	 * @throws InvalidInputException an error is encountered
+	 * @return ArrayList<TimeSlot>
+	 */
 
 
 	public static ArrayList<TimeSlot> getAvailableTimeSlots(String username, String date) throws InvalidInputException {
@@ -1098,7 +1098,7 @@ public class FlexibookController {
 		FlexiBook flexibook=FlexiBookApplication.getflexibook();
 		ArrayList<Date> list = new ArrayList<Date>();
 		Date newDate = null;
-	
+
 		try {
 			newDate=dateChecker(date);}
 		catch(ParseException e) {
@@ -1108,115 +1108,115 @@ public class FlexibookController {
 			throw new InvalidInputException(date+" is not a valid date");
 		}	
 		Calendar c = Calendar.getInstance();
-        c.setTime(newDate);
-        day=newDate.getDay();
-        switch(day){
-        case 0: for(int i=0;i<6;i++) {
-        	c.add(Calendar.DATE,1);
-        	java.util.Date intDate=c.getTime();
-        	Date intermediate=  new Date(intDate.getTime());
-        	list.add(intermediate);
-        	
-        }break;
-        case 1: for(int i=0;i<5;i++) {
-        	c.add(Calendar.DATE,1);
-        	java.sql.Date intermediate=  (java.sql.Date) c.getTime();
-        	list.add(intermediate);
-        }break;
-        case 2: for(int i=0;i<4;i++) {
-        	c.add(Calendar.DATE,1);
-        	java.sql.Date intermediate=  (java.sql.Date) c.getTime();
-        	list.add(intermediate);
-        }break;
-        case 3: for(int i=0;i<3;i++) {
-        	c.add(Calendar.DATE,1);
-        	java.sql.Date intermediate=  (java.sql.Date) c.getTime();
-        	list.add(intermediate);
-        }break;
-        case 4: for(int i=0;i<2;i++) {
-        	c.add(Calendar.DATE,1);
-        	java.sql.Date intermediate=  (java.sql.Date) c.getTime();
-        	list.add(intermediate);
-        }break;
-        case 5: for(int i=0;i<1;i++) {
-        	c.add(Calendar.DATE,1);
-        	java.sql.Date intermediate=  (java.sql.Date) c.getTime();
-        	list.add(intermediate);
-        }break;
-   
-           }
-        return list;
+		c.setTime(newDate);
+		day=newDate.getDay();
+		switch(day){
+		case 0: for(int i=0;i<6;i++) {
+			c.add(Calendar.DATE,1);
+			java.util.Date intDate=c.getTime();
+			Date intermediate=  new Date(intDate.getTime());
+			list.add(intermediate);
+
+		}break;
+		case 1: for(int i=0;i<5;i++) {
+			c.add(Calendar.DATE,1);
+			java.sql.Date intermediate=  (java.sql.Date) c.getTime();
+			list.add(intermediate);
+		}break;
+		case 2: for(int i=0;i<4;i++) {
+			c.add(Calendar.DATE,1);
+			java.sql.Date intermediate=  (java.sql.Date) c.getTime();
+			list.add(intermediate);
+		}break;
+		case 3: for(int i=0;i<3;i++) {
+			c.add(Calendar.DATE,1);
+			java.sql.Date intermediate=  (java.sql.Date) c.getTime();
+			list.add(intermediate);
+		}break;
+		case 4: for(int i=0;i<2;i++) {
+			c.add(Calendar.DATE,1);
+			java.sql.Date intermediate=  (java.sql.Date) c.getTime();
+			list.add(intermediate);
+		}break;
+		case 5: for(int i=0;i<1;i++) {
+			c.add(Calendar.DATE,1);
+			java.sql.Date intermediate=  (java.sql.Date) c.getTime();
+			list.add(intermediate);
+		}break;
+
+		}
+		return list;
 	}
 	public static void addTimeSlot(String type, String startDate, String startTime, String endDate, String endTime) throws InvalidInputException{
-    	FlexiBook flexibook=FlexiBookApplication.getflexibook();
-    	String mString="";
-    	FlexiBookApplication.setmessage(mString);
-    	FlexiBookApplication.setmessage("");
-    	FlexiBook fb = FlexiBookApplication.getflexibook();
+		FlexiBook flexibook=FlexiBookApplication.getflexibook();
+		String mString="";
+		FlexiBookApplication.setmessage(mString);
+		FlexiBookApplication.setmessage("");
+		FlexiBook fb = FlexiBookApplication.getflexibook();
 		String user = fb.getOwner().getUsername();
 		String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
-    	String tString="Vacation";
-    	
-    	Date currenDate=Date.valueOf(SystemTime.getdate(SystemTime.getSysTime()));
+		String tString="Vacation";
+
+		Date currenDate=Date.valueOf(SystemTime.getdate(SystemTime.getSysTime()));
 		Business business=flexibook.getBusiness();
-    	List<TimeSlot> timeSlots;
-    	List<TimeSlot> anotherTimeSlots;
-    	if(type.equals("vacation")){
-    		timeSlots=business.getVacation();
-    		anotherTimeSlots=business.getHolidays();
-    	}else {
-    		tString="Holiday";
+		List<TimeSlot> timeSlots;
+		List<TimeSlot> anotherTimeSlots;
+		if(type.equals("vacation")){
+			timeSlots=business.getVacation();
+			anotherTimeSlots=business.getHolidays();
+		}else {
+			tString="Holiday";
 			timeSlots=business.getHolidays();
 			anotherTimeSlots=business.getVacation();
 		}
-    	Date staDate=Date.valueOf(startDate);
-    	Time staTime=Time.valueOf(startTime+":00");
-    	Date enDate=Date.valueOf(endDate);
-    	Time enTime=Time.valueOf(endTime+":00");
+		Date staDate=Date.valueOf(startDate);
+		Time staTime=Time.valueOf(startTime+":00");
+		Date enDate=Date.valueOf(endDate);
+		Time enTime=Time.valueOf(endTime+":00");
 
 		if(user.equals(currentUserString)==false) {
 			throw new InvalidInputException("No permission to update business information");
-			}
+		}
 		if(currenDate.before(staDate)==false) {
 			throw new InvalidInputException(tString+" cannot start in the past");
 		}
 		if(staDate.before(enDate)==false) {
 			if((staDate.after(enDate))||(staDate.after(enDate)==false&&staTime.before(enTime)==false))
-			throw new InvalidInputException("Start time must be before end time");
+				throw new InvalidInputException("Start time must be before end time");
 		}
 
-    	//check whether this slot overlap other time slots
-    	Boolean overlapDifferBoolean=false;
-    	for(TimeSlot Slota:anotherTimeSlots) {
-    		if(!((Slota.getEndDate().after(staDate)==false)||(Slota.getStartDate().before(enDate)==false))){
-    			overlapDifferBoolean=true;	
-    		}
-    		
-    	}
-    	if(overlapDifferBoolean==true) {
-    		throw new InvalidInputException("Holiday and vacation times cannot overlap");
-    	}
-    	Boolean overlapSameBoolean=false;
-    	for(TimeSlot Slota:timeSlots) {
-    		System.out.println(Slota);
-    		if(!((Slota.getEndDate().after(staDate)==false)||(Slota.getStartDate().before(enDate)==false))){
-    			overlapSameBoolean=true;	
-    		}
-    		
-    	}
-    	if(overlapSameBoolean==true) {
-    		throw new InvalidInputException(tString+" times cannot overlap");
-    	}
-    	
-    		TimeSlot slot=new TimeSlot(staDate,staTime,enDate,enTime,flexibook);
-    		if(type.equals("vacation")) {
-    			business.addVacation(slot);
-    			}
-    		else {
-    			business.addHoliday(slot);
-    		}
-    		
-    	  	
+		//check whether this slot overlap other time slots
+		Boolean overlapDifferBoolean=false;
+		for(TimeSlot Slota:anotherTimeSlots) {
+			if(!((Slota.getEndDate().after(staDate)==false)||(Slota.getStartDate().before(enDate)==false))){
+				overlapDifferBoolean=true;	
+			}
+
+		}
+		if(overlapDifferBoolean==true) {
+			throw new InvalidInputException("Holiday and vacation times cannot overlap");
+		}
+		Boolean overlapSameBoolean=false;
+		for(TimeSlot Slota:timeSlots) {
+			System.out.println(Slota);
+			if(!((Slota.getEndDate().after(staDate)==false)||(Slota.getStartDate().before(enDate)==false))){
+				overlapSameBoolean=true;	
+			}
+
+		}
+		if(overlapSameBoolean==true) {
+			throw new InvalidInputException(tString+" times cannot overlap");
+		}
+
+		TimeSlot slot=new TimeSlot(staDate,staTime,enDate,enTime,flexibook);
+		if(type.equals("vacation")) {
+			business.addVacation(slot);
+		}
+		else {
+			business.addHoliday(slot);
+		}
+
+
 	}/*
 	 * This method takes all parameters to set the business information in the system.
 	 * 
@@ -1226,7 +1226,7 @@ public class FlexibookController {
 	 * @param  address
 	 * @param phone number
 	 * @param email
-	 
+
 	 */     
 	public static void UpdateBusinessInformation(String name,String address,String phoneNumber,String email)throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
@@ -1244,7 +1244,7 @@ public class FlexibookController {
 			String subString =email.substring(begin,end);
 			if(subString.equals(aString)==false) {
 				throw new InvalidInputException("Invalid email");
-		}
+			}
 		}
 		fb.getBusiness().setEmail(email);
 		fb.getBusiness().setName(name);
@@ -1252,14 +1252,14 @@ public class FlexibookController {
 		fb.getBusiness().setAddress(address);
 		FlexiBookApplication.setmessage("");
 
-}
+	}
 	public static void UpdateExistingBusinessHour(String ExistingDay, String ExistingStartTime, String newDay, String newstartTime, String newEndTime)throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		String user = fb.getOwner().getUsername();
 		String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
-	if(user.equals(currentUserString)==false) {
-		throw new InvalidInputException("No permission to update business information");
-	}
+		if(user.equals(currentUserString)==false) {
+			throw new InvalidInputException("No permission to update business information");
+		}
 		DayOfWeek inputDayOfWeek=DayOfWeek.valueOf(ExistingDay);
 		Time exiStTime=Time.valueOf(ExistingStartTime+":00");
 		DayOfWeek InputDay=DayOfWeek.valueOf(newDay);
@@ -1269,31 +1269,31 @@ public class FlexibookController {
 			throw new InvalidInputException("Start time must be before end time");
 		}
 		Business business= fb.getBusiness();
-    	List<BusinessHour> aHours=business.getBusinessHours();
-    	BusinessHour thisBusinessHour=null;Boolean existBoolean=false;
-    	for(BusinessHour aHour:aHours) {
-    	DayOfWeek dayOfWeek=aHour.getDayOfWeek();
-		Time startTime=aHour.getStartTime();
-		Time endTime=aHour.getEndTime();
-		if(dayOfWeek.equals(inputDayOfWeek)) {
-			if(exiStTime.after(startTime)==false&&exiStTime.before(startTime)==false) {
-				existBoolean=true;
-				thisBusinessHour=aHour;
-			
-			}else {
-				existBoolean=false;
+		List<BusinessHour> aHours=business.getBusinessHours();
+		BusinessHour thisBusinessHour=null;Boolean existBoolean=false;
+		for(BusinessHour aHour:aHours) {
+			DayOfWeek dayOfWeek=aHour.getDayOfWeek();
+			Time startTime=aHour.getStartTime();
+			Time endTime=aHour.getEndTime();
+			if(dayOfWeek.equals(inputDayOfWeek)) {
+				if(exiStTime.after(startTime)==false&&exiStTime.before(startTime)==false) {
+					existBoolean=true;
+					thisBusinessHour=aHour;
+
+				}else {
+					existBoolean=false;
+				}
+			}
+			if(InputDay.equals(dayOfWeek)) {
+				if(existBoolean==false) {
+					if(!(inputEdTime.before(startTime)||inputStTime.after(endTime))) {
+						throw new InvalidInputException("The business hours cannot overlap");
+					}}
+
 			}
 		}
-		if(InputDay.equals(dayOfWeek)) {
-			if(existBoolean==false) {
-			if(!(inputEdTime.before(startTime)||inputStTime.after(endTime))) {
-				throw new InvalidInputException("The business hours cannot overlap");
-			}}
-			
-		}
-    	}
-    	thisBusinessHour.setStartTime(inputStTime);
-    	thisBusinessHour.setEndTime(inputEdTime);
+		thisBusinessHour.setStartTime(inputStTime);
+		thisBusinessHour.setEndTime(inputEdTime);
 		FlexiBookApplication.setmessage("");	
 
 	}
@@ -1301,113 +1301,113 @@ public class FlexibookController {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		String user = fb.getOwner().getUsername();
 		String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
-	if(user.equals(currentUserString)==false) {
-		throw new InvalidInputException("No permission to update business information");
-	}
-	DayOfWeek inputDayOfWeek=DayOfWeek.valueOf(Day);
-	Time exiStTime=Time.valueOf(starTime+":00");
-	BusinessHour toBeRemovedBusinessHour=null;
-	Business business= fb.getBusiness();
-	Boolean exiBoolean=false;
-	List<BusinessHour> aHours=business.getBusinessHours();
+		if(user.equals(currentUserString)==false) {
+			throw new InvalidInputException("No permission to update business information");
+		}
+		DayOfWeek inputDayOfWeek=DayOfWeek.valueOf(Day);
+		Time exiStTime=Time.valueOf(starTime+":00");
+		BusinessHour toBeRemovedBusinessHour=null;
+		Business business= fb.getBusiness();
+		Boolean exiBoolean=false;
+		List<BusinessHour> aHours=business.getBusinessHours();
 
-	for(BusinessHour aHour:aHours) {
-    	DayOfWeek dayOfWeek=aHour.getDayOfWeek();
-		Time startTime=aHour.getStartTime();
-		if(inputDayOfWeek.equals(dayOfWeek)) {
-			if(startTime.after(exiStTime)==false&&startTime.after(exiStTime)==false) {
-				toBeRemovedBusinessHour=aHour;
-				exiBoolean=true;
-				break;
+		for(BusinessHour aHour:aHours) {
+			DayOfWeek dayOfWeek=aHour.getDayOfWeek();
+			Time startTime=aHour.getStartTime();
+			if(inputDayOfWeek.equals(dayOfWeek)) {
+				if(startTime.after(exiStTime)==false&&startTime.after(exiStTime)==false) {
+					toBeRemovedBusinessHour=aHour;
+					exiBoolean=true;
+					break;
+				}
 			}
 		}
-	}
-	if(exiBoolean) {
-		business.removeBusinessHour(toBeRemovedBusinessHour);
+		if(exiBoolean) {
+			business.removeBusinessHour(toBeRemovedBusinessHour);
 		}
 	}
 
-   public static void updateHolidayOrVacation(String type, String ExistingDate, String ExistingStartTime, String startDate, String startTime, String endDate,String endTime)throws InvalidInputException {
-	   	FlexiBook flexibook=FlexiBookApplication.getflexibook();
-    	String mString="";
-    	FlexiBookApplication.setmessage(mString);
-    	FlexiBookApplication.setmessage("");
-    	FlexiBook fb = FlexiBookApplication.getflexibook();
+	public static void updateHolidayOrVacation(String type, String ExistingDate, String ExistingStartTime, String startDate, String startTime, String endDate,String endTime)throws InvalidInputException {
+		FlexiBook flexibook=FlexiBookApplication.getflexibook();
+		String mString="";
+		FlexiBookApplication.setmessage(mString);
+		FlexiBookApplication.setmessage("");
+		FlexiBook fb = FlexiBookApplication.getflexibook();
 		String user = fb.getOwner().getUsername();
 		String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
-    	String tString="Vacation";
-    	
-    	Date currenDate=Date.valueOf(SystemTime.getdate(SystemTime.getSysTime()));
+		String tString="Vacation";
+
+		Date currenDate=Date.valueOf(SystemTime.getdate(SystemTime.getSysTime()));
 		Business business=flexibook.getBusiness();
-    	List<TimeSlot> timeSlots;
-    	List<TimeSlot> anotherTimeSlots;
-    	TimeSlot thiSlot=null;
-    	if(type.equals("vacation")){
-    		timeSlots=business.getVacation();
-    		anotherTimeSlots=business.getHolidays();
-    	}else {
-    		tString="Holiday";
+		List<TimeSlot> timeSlots;
+		List<TimeSlot> anotherTimeSlots;
+		TimeSlot thiSlot=null;
+		if(type.equals("vacation")){
+			timeSlots=business.getVacation();
+			anotherTimeSlots=business.getHolidays();
+		}else {
+			tString="Holiday";
 			timeSlots=business.getHolidays();
 			anotherTimeSlots=business.getVacation();
 		}
-    	Date staDate=Date.valueOf(startDate);
-    	Time staTime=Time.valueOf(startTime+":00");
-    	Date enDate=Date.valueOf(endDate);
-    	Time enTime=Time.valueOf(endTime+":00");
-    	Date existDate=Date.valueOf(ExistingDate);
-    	Time exisTime=Time.valueOf(ExistingStartTime+":00");
+		Date staDate=Date.valueOf(startDate);
+		Time staTime=Time.valueOf(startTime+":00");
+		Date enDate=Date.valueOf(endDate);
+		Time enTime=Time.valueOf(endTime+":00");
+		Date existDate=Date.valueOf(ExistingDate);
+		Time exisTime=Time.valueOf(ExistingStartTime+":00");
 
 		if(user.equals(currentUserString)==false) {
 			throw new InvalidInputException("No permission to update business information");
-			}
+		}
 		if(currenDate.before(staDate)==false) {
 			if(tString.equals("Holiday")) {
-			throw new InvalidInputException(tString+" cannot be in the past");
+				throw new InvalidInputException(tString+" cannot be in the past");
 			}else {
 				throw new InvalidInputException(tString+" cannot start in the past");
 			}
 		}
 		if(staDate.before(enDate)==false) {
 			if((staDate.after(enDate))||(staDate.after(enDate)==false&&staTime.before(enTime)==false)) 
-				
-			throw new InvalidInputException("Start time must be before end time");
+
+				throw new InvalidInputException("Start time must be before end time");
 		}
 
-    	//check whether this slot overlap other time slots
-    	Boolean overlapDifferBoolean=false;
-    	for(TimeSlot Slota:anotherTimeSlots) {
-    		if(!((Slota.getEndDate().after(staDate)==false)||(Slota.getStartDate().before(enDate)==false))){
-    			overlapDifferBoolean=true;	
-    		}
-    		
-    	}
-    	if(overlapDifferBoolean==true) {
-    		throw new InvalidInputException("Holiday and vacation times cannot overlap");
-    	}
-    	Boolean overlapSameBoolean=false;
-    	for(TimeSlot Slota:timeSlots) {
-    		
-    		if(!((Slota.getEndDate().after(staDate)==false)||(Slota.getStartDate().before(enDate)==false))){
-    			overlapSameBoolean=true;	
-    		}
-    		if(Slota.getStartDate().before(existDate)==false&&Slota.getStartDate().after(existDate)==false) {
-    			if(Slota.getStartTime().before(exisTime)==false&&Slota.getStartTime().after(exisTime)==false) {
-    				overlapSameBoolean=false;
-    				thiSlot=Slota;
-    			}
-    		}
-    		
-    	}
-    	if(overlapSameBoolean==true) {
-    		throw new InvalidInputException(tString+" times cannot overlap");
-    	}
-    	thiSlot.setStartDate(staDate);
-    	thiSlot.setStartTime(staTime);
-    	thiSlot.setEndDate(enDate);
-    	thiSlot.setEndTime(enTime);
-    	FlexiBookApplication.setmessage("");
-   }   
-   
+		//check whether this slot overlap other time slots
+		Boolean overlapDifferBoolean=false;
+		for(TimeSlot Slota:anotherTimeSlots) {
+			if(!((Slota.getEndDate().after(staDate)==false)||(Slota.getStartDate().before(enDate)==false))){
+				overlapDifferBoolean=true;	
+			}
+
+		}
+		if(overlapDifferBoolean==true) {
+			throw new InvalidInputException("Holiday and vacation times cannot overlap");
+		}
+		Boolean overlapSameBoolean=false;
+		for(TimeSlot Slota:timeSlots) {
+
+			if(!((Slota.getEndDate().after(staDate)==false)||(Slota.getStartDate().before(enDate)==false))){
+				overlapSameBoolean=true;	
+			}
+			if(Slota.getStartDate().before(existDate)==false&&Slota.getStartDate().after(existDate)==false) {
+				if(Slota.getStartTime().before(exisTime)==false&&Slota.getStartTime().after(exisTime)==false) {
+					overlapSameBoolean=false;
+					thiSlot=Slota;
+				}
+			}
+
+		}
+		if(overlapSameBoolean==true) {
+			throw new InvalidInputException(tString+" times cannot overlap");
+		}
+		thiSlot.setStartDate(staDate);
+		thiSlot.setStartTime(staTime);
+		thiSlot.setEndDate(enDate);
+		thiSlot.setEndTime(enTime);
+		FlexiBookApplication.setmessage("");
+	}   
+
 	/**
 	 * This method takes all parameters to set the business information in the system.
 	 * 
@@ -1419,8 +1419,8 @@ public class FlexibookController {
 	 */
 	public static void setBusinessInformation(String name, String address, String phoneNumber, String email)throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
-			String user = fb.getOwner().getUsername();
-			String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
+		String user = fb.getOwner().getUsername();
+		String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
 		if(user.equals(currentUserString)==false) {
 			throw new InvalidInputException("No permission to set up business information");
 		}
@@ -1433,88 +1433,88 @@ public class FlexibookController {
 			String subString =email.substring(begin,end);
 			if(subString.equals(aString)==false) {
 				throw new InvalidInputException("Invalid email");
+			}
 		}
-		}
-		
+
 		Business newBusiness=new Business(name, address, phoneNumber, email,fb );
 		fb.setBusiness(newBusiness);	
 		FlexiBookApplication.setmessage("");
 
-	
+
 	}
-	
+
 	public static void addNewBusinessHour(String string, String string2, String string3)throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
-			String user = fb.getOwner().getUsername();
-			String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
+		String user = fb.getOwner().getUsername();
+		String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
 		if(user.equals(currentUserString)==false) {
 			throw new InvalidInputException("No permission to update business information");
 		}
-			DayOfWeek inputDayOfWeek=DayOfWeek.valueOf(string);
-			Time inputStTime=Time.valueOf(string2+":00");
-			Time inputEdTime=Time.valueOf(string3+":00");
-			if(inputStTime.before(inputEdTime)==false) {
-				throw new InvalidInputException("Start time must be before end time");
+		DayOfWeek inputDayOfWeek=DayOfWeek.valueOf(string);
+		Time inputStTime=Time.valueOf(string2+":00");
+		Time inputEdTime=Time.valueOf(string3+":00");
+		if(inputStTime.before(inputEdTime)==false) {
+			throw new InvalidInputException("Start time must be before end time");
+		}
+		Business business= fb.getBusiness();
+		BusinessHour aHour=business.getBusinessHour(0);
+		DayOfWeek dayOfWeek=aHour.getDayOfWeek();
+		Time startTime=aHour.getStartTime();
+		Time endTime=aHour.getEndTime();
+		if(dayOfWeek.equals(inputDayOfWeek)) {
+			if(inputEdTime.before(endTime)&&inputEdTime.after(startTime)) {
+				throw new InvalidInputException("The business hours cannot overlap");
 			}
-			Business business= fb.getBusiness();
-	    	BusinessHour aHour=business.getBusinessHour(0);
-    		DayOfWeek dayOfWeek=aHour.getDayOfWeek();
-    		Time startTime=aHour.getStartTime();
-    		Time endTime=aHour.getEndTime();
-    		if(dayOfWeek.equals(inputDayOfWeek)) {
-    			if(inputEdTime.before(endTime)&&inputEdTime.after(startTime)) {
-    				throw new InvalidInputException("The business hours cannot overlap");
-    			}
-    		}
-    		BusinessHour newHour=new BusinessHour(inputDayOfWeek, inputStTime, inputEdTime, fb);
-    		business.addBusinessHour(newHour);
-    		fb.addHour(newHour);
-    		FlexiBookApplication.setmessage("");	
+		}
+		BusinessHour newHour=new BusinessHour(inputDayOfWeek, inputStTime, inputEdTime, fb);
+		business.addBusinessHour(newHour);
+		fb.addHour(newHour);
+		FlexiBookApplication.setmessage("");	
 
 	}
 	public static void removeExistingTimeSlot(String type, String startDate, String startTime, String endDate, String endTime) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		String user = fb.getOwner().getUsername();
 		String currentUserString=FlexiBookApplication.getCurrentuser().getUsername();
-	if(user.equals(currentUserString)==false) {
-		throw new InvalidInputException("No permission to update business information");
-	}
-	
-	FlexiBook flexibook=FlexiBookApplication.getflexibook();
+		if(user.equals(currentUserString)==false) {
+			throw new InvalidInputException("No permission to update business information");
+		}
 
-	Business business=flexibook.getBusiness();
-	List<TimeSlot> timeSlots;
-	Boolean isvaBoolean=true;
-	if(type.equals("vacation")){
-		timeSlots=business.getVacation();
-	}else {
-		isvaBoolean=false;
-		timeSlots=business.getHolidays();
-	}
-	Date staDate=Date.valueOf(startDate);
-	Time staTime=Time.valueOf(startTime+":00");
-	Date enDate=Date.valueOf(endDate);
-	Time enTime=Time.valueOf(endTime+":00");
-	
+		FlexiBook flexibook=FlexiBookApplication.getflexibook();
 
-	Boolean exiBoolean=false;
-	TimeSlot thisTimeSlot=null;
-	for(TimeSlot Slota:timeSlots) {
-		
-		if((Slota.getEndDate().after(enDate)==false)&&(Slota.getEndDate().before(enDate)==false)&&(Slota.getStartDate().before(staDate)==false)&&(Slota.getStartDate().after(staDate)==false)){
-			if(Slota.getStartTime().before(staTime)==false&&Slota.getStartTime().after(staTime)==false&&Slota.getEndTime().before(enTime)==false&&Slota.getEndTime().after(enTime)==false) {
-				thisTimeSlot=Slota;
-				exiBoolean=true;
+		Business business=flexibook.getBusiness();
+		List<TimeSlot> timeSlots;
+		Boolean isvaBoolean=true;
+		if(type.equals("vacation")){
+			timeSlots=business.getVacation();
+		}else {
+			isvaBoolean=false;
+			timeSlots=business.getHolidays();
+		}
+		Date staDate=Date.valueOf(startDate);
+		Time staTime=Time.valueOf(startTime+":00");
+		Date enDate=Date.valueOf(endDate);
+		Time enTime=Time.valueOf(endTime+":00");
+
+
+		Boolean exiBoolean=false;
+		TimeSlot thisTimeSlot=null;
+		for(TimeSlot Slota:timeSlots) {
+
+			if((Slota.getEndDate().after(enDate)==false)&&(Slota.getEndDate().before(enDate)==false)&&(Slota.getStartDate().before(staDate)==false)&&(Slota.getStartDate().after(staDate)==false)){
+				if(Slota.getStartTime().before(staTime)==false&&Slota.getStartTime().after(staTime)==false&&Slota.getEndTime().before(enTime)==false&&Slota.getEndTime().after(enTime)==false) {
+					thisTimeSlot=Slota;
+					exiBoolean=true;
+				}
 			}
 		}
-	}
-	if(exiBoolean) {
-		if(isvaBoolean) {
-			business.removeVacation(thisTimeSlot);
-		}else {
-			business.removeHoliday(thisTimeSlot);
+		if(exiBoolean) {
+			if(isvaBoolean) {
+				business.removeVacation(thisTimeSlot);
+			}else {
+				business.removeHoliday(thisTimeSlot);
+			}
 		}
-	}
 	}
 	public static String[] viewBusinessInfor () {
 		FlexiBook flexiBook=FlexiBookApplication.getflexibook();
@@ -1525,7 +1525,7 @@ public class FlexibookController {
 		busiStrings[2]=business.getPhoneNumber();
 		busiStrings[3]=business.getEmail();
 		return busiStrings;
-		
+
 	}
 
 

@@ -51,8 +51,8 @@ public class UpdateAppointmentStepDefinition {
 	@Then("the system shall report that the update was {string}")
 	public void the_system_shall_report_that_the_update_was(String string) {
 		String e = FlexiBookApplication.returnmessage();
-		//assertEquals(string, e);
-		assertEquals(true,true);
+		assertEquals(string, e);
+		//assertEquals(true,true);
 		FlexiBookApplication.setmessage(null);
 	}
 

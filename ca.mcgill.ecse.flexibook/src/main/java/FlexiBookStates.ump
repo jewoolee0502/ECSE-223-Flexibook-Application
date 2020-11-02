@@ -9,33 +9,32 @@ depend java.util.*;
       
       updateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService) [oneDayDiff() & avilableTimeSlot()] / {
         doUpdateAppointment(timeslot, newBookableService, optionalService);
-        doEndAppointment(timeslot, newBookableService, optionalService);
       } -> Booked;
       
       cancelAppointment(Customer customer) [OneDayDiff()] / {
         doCancelAppointment(customer);
       } -> Final;
      
-        
+      ownerCancelAppointment(Owner owner) [isWithinAppTimeSlot] / {
+        doCancelAppointmentO(owner);
+      } -> Final;
       
       startAppointment() [isWithinAppTimeSlot()] / {
         doStartAppointment();
+        doUpdateAppointment();
       } -> InProgress;
       
     }
     
     InProgress{
-      updateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService) [startTimeSame()] / {
+      updateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService) [availableTimeSlot()] / {
           doUpdateAppointment(timeslot, newBookableService, optionalService);
       } -> InProgress;
       
-      endAppointment() [finished()] / {
+      endAppointment() / {
         doEndAppointment();
       } -> Final;
       
     }
   }
 }
-    
-  }
- 

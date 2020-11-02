@@ -14,6 +14,9 @@ public class Customer extends User implements Serializable
   // MEMBER VARIABLES
   //------------------------
 
+  //Customer Attributes
+  private int noShowCount;
+
   //Customer Associations
   private FlexiBook flexiBook;
   private List<Appointment> appointments;
@@ -25,6 +28,7 @@ public class Customer extends User implements Serializable
   public Customer(String aUsername, String aPassword, FlexiBook aFlexiBook)
   {
     super(aUsername, aPassword);
+    noShowCount = 0;
     boolean didAddFlexiBook = setFlexiBook(aFlexiBook);
     if (!didAddFlexiBook)
     {
@@ -36,6 +40,19 @@ public class Customer extends User implements Serializable
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setNoShowCount(int aNoShowCount)
+  {
+    boolean wasSet = false;
+    noShowCount = aNoShowCount;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public int getNoShowCount()
+  {
+    return noShowCount;
+  }
   /* Code from template association_GetOne */
   public FlexiBook getFlexiBook()
   {
@@ -178,7 +195,14 @@ public class Customer extends User implements Serializable
     }
     super.delete();
   }
-  
+
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "noShowCount" + ":" + getNoShowCount()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "flexiBook = "+(getFlexiBook()!=null?Integer.toHexString(System.identityHashCode(getFlexiBook())):"null");
+  }  
   //------------------------
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------

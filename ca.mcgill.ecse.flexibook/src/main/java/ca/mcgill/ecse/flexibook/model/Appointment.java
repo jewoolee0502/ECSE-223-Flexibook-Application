@@ -6,13 +6,16 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 101 "../../../../../FlexiBookPersistence.ump"
-// line 86 "../../../../../FlexiBook.ump"
+// line 87 "../../../../../FlexiBook.ump"
 public class Appointment implements Serializable
 {
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
+
+  //Appointment Attributes
+  private boolean noShowCheck;
 
   //Appointment Associations
   private Customer customer;
@@ -27,6 +30,7 @@ public class Appointment implements Serializable
 
   public Appointment(Customer aCustomer, BookableService aBookableService, TimeSlot aTimeSlot, FlexiBook aFlexiBook)
   {
+    noShowCheck = false;
     boolean didAddCustomer = setCustomer(aCustomer);
     if (!didAddCustomer)
     {
@@ -52,6 +56,24 @@ public class Appointment implements Serializable
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setNoShowCheck(boolean aNoShowCheck)
+  {
+    boolean wasSet = false;
+    noShowCheck = aNoShowCheck;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean getNoShowCheck()
+  {
+    return noShowCheck;
+  }
+  /* Code from template attribute_IsBoolean */
+  public boolean isNoShowCheck()
+  {
+    return noShowCheck;
+  }
   /* Code from template association_GetOne */
   public Customer getCustomer()
   {
@@ -251,7 +273,17 @@ public class Appointment implements Serializable
       placeholderFlexiBook.removeAppointment(this);
     }
   }
-  
+
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "noShowCheck" + ":" + getNoShowCheck()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "customer = "+(getCustomer()!=null?Integer.toHexString(System.identityHashCode(getCustomer())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "bookableService = "+(getBookableService()!=null?Integer.toHexString(System.identityHashCode(getBookableService())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "timeSlot = "+(getTimeSlot()!=null?Integer.toHexString(System.identityHashCode(getTimeSlot())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "flexiBook = "+(getFlexiBook()!=null?Integer.toHexString(System.identityHashCode(getFlexiBook())):"null");
+  }  
   //------------------------
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------

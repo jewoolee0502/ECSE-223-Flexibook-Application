@@ -1,5 +1,5 @@
+namespace ca.mcgill.ecse.flexibook.model;
 
-use FlexiBookStates.ump;
 use FlexiBookPersistence.ump;
 
 class FlexiBook {
@@ -24,6 +24,7 @@ class Owner {
 
 class Customer {
   isA User;
+  Integer noShowCount = 0;
 }
 
 class Business {
@@ -88,4 +89,5 @@ class Appointment {
   * -- 1 BookableService bookableService;
   * -> * ComboItem chosenItems;
   0..1 -> 1 TimeSlot timeSlot;
+  Boolean noShowCheck = false;
 }

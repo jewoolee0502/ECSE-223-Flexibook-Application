@@ -305,7 +305,7 @@ public class FlexibookController {
 			
 		} else if(fb.getCustomers().size() > 0) {
 			
-			if(fb.getCustomer(0).getWithUsername(username) != null) {fb
+			if(fb.getCustomer(0).getWithUsername(username) != null) {
 			}
 		}
 		Customer thisc = new Customer(username, password, fb);

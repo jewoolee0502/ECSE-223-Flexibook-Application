@@ -1,6 +1,6 @@
-namespace ca.mcgill.ecse.flexibook.model;
 
-use bookingprocess.ump;
+use FlexiBookStates.ump;
+use FlexiBookPersistence.ump;
 
 class FlexiBook {
   1 <@>- 0..1 Business business;

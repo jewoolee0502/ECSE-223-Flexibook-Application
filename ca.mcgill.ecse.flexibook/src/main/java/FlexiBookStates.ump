@@ -1,0 +1,78 @@
+namespace ca.mcgill.ecse.flexibook.model;
+
+class AppointmentManagement {
+
+depend java.util.*;
+
+	AppointmentStatus {
+    
+    Booking {
+     	MakeAppointment(Customer customer, BookableService service, TimeSlot timeslot) / {
+     		doBookAppointment(customer, service, timeslot);
+     		
+     	} -> Booking;
+        MakeAppointmentFinish -> CheckArrival;
+        CheckCancel -> CancelAppointment;
+        CheckChange -> ChangeAppointment;
+    }
+    
+    
+      
+    ChangeAppointment {
+      	ChangeDatetime -> CheckArrival;
+      	ReChangeDatetime -> ChangeAppointment;
+      	ChangeCombo -> CheckArrival;
+      	ReChangeCombo -> ChangeAppointment;
+    }
+     
+    CancelAppointment {
+      	Cancel -> AppointmentVanish;
+      	ReBook -> Booking;
+    }
+    
+    
+    
+    CheckArrival {
+      	OwnerCheckArrival -> AppointmentStart;
+      	OwnerCheckNoArrival -> AppointmentVanish; 
+    }
+    
+    AppointmentStart {
+      	ChangeNeeded -> ChangeAppointmentDuring;
+      	NoChangeNeeded -> AppointmentEnded;
+    }
+    
+    ChangeAppointmentDuring {
+      	ChangeCombo -> AppointmentEnded;
+      	ReChangeCombo -> ChangeAppointmentDuring;
+    }
+    
+    AppointmentEnded {
+      	OwnerEnd -> AppointmentVanish;
+    }  
+    
+    AppointmentVanish {
+    
+    }
+     
+    
+  }
+ 
+ 
+ /**
+ *@author
+ *
+ *@Param customer - 
+ *@Param BookableService - 
+ *@Param timeslot -
+ *@Param flexibook - 
+ *
+ */
+  
+  private void doBookAppointment(Customer customer, BookableService service, TimeSlot timeslot) {
+  	flexibook.addAppointment(customer, service, timeslot);
+  }
+  
+  
+
+}

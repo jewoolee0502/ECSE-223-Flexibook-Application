@@ -8,6 +8,7 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalTime;
 
 import com.google.common.base.CharMatcher;
@@ -585,6 +586,21 @@ public class FlexibookController {
 		return true;
 	}
 
+	public static boolean isFullyCovered(TimeSlot t1, TimeSlot t2) {
+		if(t1.getStartDate().equals(t2.getStartDate())) {
+			if(t1.getEndTime().before(t2.getEndTime()) && t1.getStartTime().after(t2.getStartTime())) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+			return false;
+		}
+
+	}
+
 	/**The method update an appointment of a customer.
 	 * 
 	 * @param customer -- the customer to update the appointment 
@@ -632,7 +648,8 @@ public class FlexibookController {
 			TimeSlot oldslot = fb.getCustomer(cindex).getAppointment(aindex).getTimeSlot();
 			LocalTime localstart = newstarttime.toLocalTime();
 			int duration = localstart.compareTo(oldslot.getEndTime().toLocalTime());
-			Time endtime = Time.valueOf(localstart.plusMinutes(duration));
+			int d = service.getDuration();
+			Time endtime = Time.valueOf(localstart.plusMinutes(d));
 			int day = Date.valueOf(newDate).getDay();
 			if(day == 0 || day == 6) {
 				throw new InvalidInputException("unsuccessful");
@@ -648,7 +665,7 @@ public class FlexibookController {
 			if(fb.getBusiness().getBusinessHour(0).getEndTime().before(endtime)) {
 			}
 			FlexiBook fb2 = new FlexiBook();
-			TimeSlot newslot = new TimeSlot(Date.valueOf(newDate),newstarttime,Date.valueOf(newDate), endtime, fb2);
+			TimeSlot newslot = new TimeSlot(Date.valueOf(newDate),newstarttime,Date.valueOf(newDate), endtime, fb);
 
 			for(TimeSlot slot : fb.getBusiness().getHolidays()) {
 				if(!isNoOverlap(newslot,slot)) {
@@ -656,17 +673,89 @@ public class FlexibookController {
 				}
 			}
 			for(Appointment appointment : fb.getAppointments()) {
-				TimeSlot slot = appointment.getTimeSlot();
-				if(!isNoOverlap(newslot,slot)) {
-					throw new InvalidInputException("unsuccessful");
+				if(appointment != fb.getCustomer(cindex).getAppointment(aindex)) {
+					if(appointment.getBookableService() instanceof Service) {
+						Service s = (Service) appointment.getBookableService();
+						TimeSlot slot = appointment.getTimeSlot();
+
+						if(s.getDowntimeStart() == 0) {
+
+							if(!isNoOverlap(newslot,slot)) {
+								throw new InvalidInputException("unsuccessful");
+							}
+
+						}
+						else {
+							LocalTime ST = appointment.getTimeSlot().getStartTime().toLocalTime().plusMinutes(service.getDowntimeStart());
+							LocalTime endTime = ST.plusMinutes(service.getDowntimeDuration());
+							Time start = Time.valueOf(ST);
+							Time end = Time.valueOf(endTime);
+							TimeSlot TS = new TimeSlot(appointment.getTimeSlot().getStartDate(), start, appointment.getTimeSlot().getStartDate(), end, fb);
+
+							if(!isNoOverlap(newslot, slot)) {
+								if(isFullyCovered(newslot, TS)) {
+									fb.getCustomer(cindex).getAppointment(aindex).getTimeSlot().delete();
+									fb.getCustomer(cindex).getAppointment(aindex).setTimeSlot(newslot);
+									FlexiBookApplication.setmessage("successful");
+								}
+								else {
+									throw new InvalidInputException("unsuccessful");
+								}
+							}
+						}
+
+					}
 				}
+			}
+
+
+			for(Appointment app : fb.getAppointments()) {
+
+				if(app.getBookableService() instanceof ServiceCombo) {
+					boolean successful = false;
+					List<TimeSlot> dtTS = new ArrayList<TimeSlot>();
+					ServiceCombo combo = (ServiceCombo) app.getBookableService();
+					int min = 0;
+
+					for (ComboItem item : combo.getServices()) {
+						Service s = item.getService();
+						min += s.getDuration(); 
+						if (s.getDowntimeDuration() != 0) {
+							min -= s.getDuration();
+							LocalTime ST = app.getTimeSlot().getStartTime().toLocalTime().plusMinutes(s.getDowntimeStart() + min);
+							LocalTime endTime = ST.plusMinutes(s.getDowntimeDuration());
+							Time start = Time.valueOf(ST);
+							Time end = Time.valueOf(endTime);
+							TimeSlot TS = new TimeSlot(app.getTimeSlot().getStartDate(), start, app.getTimeSlot().getStartDate(), end, fb);
+							dtTS.add(TS);
+						}
+					}
+					for(TimeSlot t : dtTS) {
+						if(!isNoOverlap(newslot, t)) {
+							if(isFullyCovered(newslot, t)) {
+								fb.getCustomer(cindex).getAppointment(aindex).getTimeSlot().delete();
+								fb.getCustomer(cindex).getAppointment(aindex).setTimeSlot(newslot);
+								FlexiBookApplication.setmessage("successful");
+								successful = true;
+							}
+						}
+					}
+					if(fb.getCustomer(cindex).getAppointment(aindex).getTimeSlot().getStartTime().equals(startTime)) {
+						throw new InvalidInputException("unsuccessful");
+					}
+					if(!(isNoOverlap(app.getTimeSlot(), newslot)) && successful == false) {
+						throw new InvalidInputException("unsuccessful");
+					}
+				}
+
 			}
 			fb.getCustomer(cindex).getAppointment(aindex).getTimeSlot().delete();
 			fb.getCustomer(cindex).getAppointment(aindex).setTimeSlot(newslot);
 			FlexiBookApplication.setmessage("successful");
 
+		}
 
-		}else {
+		else {
 			ServiceCombo combo = (ServiceCombo)fb.getCustomer(cindex).getAppointment(aindex).getBookableService();
 			if(action.equals("remove")) {
 				if(combo.getMainService().getService().getName().equals(comboItem)) {
@@ -684,10 +773,33 @@ public class FlexibookController {
 					}
 				}
 			}
-
 			if(action.equals("add")) {
-				//TODO
+				Service svc = (Service) fb.getBookableService(0).getWithName(comboItem);
+				ComboItem CI = new ComboItem(false, svc, combo);
+				Appointment ap = fb.getCustomer(cindex).getAppointment(aindex);
+				//ap.addChosenItem(aChosenItem)
+				int d = svc.getDuration();
+				TimeSlot ts = ap.getTimeSlot();
+				String sts = ts.getStartTime().toString();
+				String ets = ts.getEndTime().toString();
+				LocalTime EndTime = ts.getEndTime().toLocalTime();
+				LocalTime newEndtime = EndTime.plusMinutes(d);
+				ts.setEndTime(Time.valueOf(newEndtime));
+				String endts = ts.getEndTime().toString();
 
+				for(Appointment appointment : fb.getAppointments()) {
+					if(appointment != fb.getCustomer(cindex).getAppointment(aindex)) {
+						TimeSlot slot = appointment.getTimeSlot();
+
+						if(!isNoOverlap(ts,slot)) {
+							CI.delete();
+							ts.setEndTime(Time.valueOf(EndTime));
+							throw new InvalidInputException("unsuccessful");
+						}
+					}
+				}
+				FlexiBookApplication.setmessage("successful");
+				
 			}
 
 		}

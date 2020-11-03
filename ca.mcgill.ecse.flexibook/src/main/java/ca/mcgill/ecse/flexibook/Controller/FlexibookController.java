@@ -2,7 +2,9 @@ package ca.mcgill.ecse.flexibook.Controller;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.sql.Date;
 import java.sql.Time;
 import java.text.DateFormat;
@@ -484,41 +486,111 @@ public class FlexibookController {
 	 */
 	public static void MakeAppointment(String customer, String date, String serviceName, String optionalServices, String startTime) throws InvalidInputException{
 		FlexiBook fb = FlexiBookApplication.getflexibook();
+		BookableService service=BookableService.getWithName(serviceName);
 
 
 		if(fb.getBusiness()==null) {
 			throw new InvalidInputException("The business should exist for making an appointment.");
 		}
-		if(customer.equals(fb.getOwner().getUsername())) {
+		//a owner tries to make an appointment
+		if(customer.equals("owner")) {
 			throw new InvalidInputException("An owner cannot make an appointment");
 		}
-
+		//a customer tries to make an appointment
 		int cindex = -1;
 		for(Customer c : fb.getCustomers()) {
 			if(c.getUsername().equals(customer)) {
 				cindex = fb.indexOfCustomer(c);
 			}
 		}
-
-		int sindex = -1;
-		for(BookableService s : fb.getBookableServices()) {
-			if(s.getName().equals(serviceName)) {
-				sindex = fb.indexOfBookableService(s);
+		//try to figure out it is service combo or not
+		int duration = 0;
+		if(service instanceof Service) {
+			duration=((Service) service).getDuration();
+		}else if(service  instanceof ServiceCombo) {
+			for(ComboItem item:((ServiceCombo) service).getServices()) {
+				duration+=item.getService().getDuration();
 			}
 		}
 
 		Date servicedate = Date.valueOf(date);
 		Time starttime = Time.valueOf(startTime+":00");
 		Time endtime = null;
-		int duration = 0;
-
-		int day = servicedate.getDay();
-		if(day == 0 || day == 6) {
+		LocalTime localtime = starttime.toLocalTime();
+		localtime.plusMinutes(duration);
+		endtime = Time.valueOf(localtime);
+		int day=servicedate.getDay();
+		Map<Integer ,DayOfWeek> mapforDayofWeekMap=new HashMap<>();
+		mapforDayofWeekMap.put(1, DayOfWeek.Monday);
+		mapforDayofWeekMap.put(2,DayOfWeek.Tuesday);
+		mapforDayofWeekMap.put(3,DayOfWeek.Wednesday);
+		mapforDayofWeekMap.put(4,DayOfWeek.Thursday);
+		mapforDayofWeekMap.put(5,DayOfWeek.Friday);
+		mapforDayofWeekMap.put(6,DayOfWeek.Saturday);
+		mapforDayofWeekMap.put(0,DayOfWeek.Sunday);
+		//ensure that the time slot is in business hour
+		DayOfWeek inputDayOfWeek=mapforDayofWeekMap.get(day);
+	
+		Business business= fb.getBusiness();
+		
+		List<BusinessHour> aHour=fb.getBusiness().getBusinessHours();
+		List<TimeSlot> allTimeSlots=fb.getTimeSlots();
+		List<DayOfWeek> aDayOfWeeks=new ArrayList<>();
+		boolean inBusinessHour=false;
+		for(BusinessHour ahour:aHour) {
+			DayOfWeek dayOfWeek=ahour.getDayOfWeek();
+			if(dayOfWeek.equals(inputDayOfWeek)) {
+				if(endtime.after(ahour.getEndTime())==false&&starttime.before(ahour.getStartTime())==false) {
+					inBusinessHour=true;
+				}
+		}}
+		//make sure that this timeslot does not overslap with other time slots
+		List<TimeSlot> newList = new ArrayList<>();
+		newList.addAll(business.getHolidays());
+		newList.addAll(business.getVacation());
+		
+		//make sure that it does not overlap with the holidays and vacation
+		Boolean overslapBoolean=false;
+		for(TimeSlot Slota:newList) {
+			if((Slota.getEndDate().before(servicedate)==false)&&(Slota.getStartDate().after(servicedate)==false)){
+				overslapBoolean=true;	
+				}
+		}
+		//make sure that it doesn't happen in the past
+		Date currenDate=Date.valueOf(SystemTime.getdate(SystemTime.getSysTime()));
+		
+		//make sure that is not occupied by existing appointment
+		/*boolean occupied=false;
+		for(Appointment appointment : fb.getAppointments()) {
+			TimeSlot slot = appointment.getTimeSlot();
+			if(slot!=null) {
+				if(slot.getStartDate().after(servicedate)==false&&slot.getStartDate().before(servicedate)==false) {
+					if(starttime.before(slot.getEndTime())&&starttime.after(slot.getStartTime())) {
+						occupied=true;
+						
+					}
+				}
+			}
+		}*/
+		if((!inBusinessHour)||overslapBoolean||currenDate.before(servicedate)==false) {
 			throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
 		}
+		
+	
+		
+			
 
-		String sysTime = SystemTime.getSysTime();
-		String[] sys = sysTime.split("\\+");
+		/*
+		 * 
+		 * if(endtime.after(ahour.getEndTime())==false&&starttime.before(ahour.getStartTime())==false) {
+					inBusinessHour=true;
+				}
+		 * if(endtime.after(Slota.getEndTime())==false&&starttime.before(Slota.getStartTime())==false) {
+					overslapBoolean=true;
+				}
+		 * String sysTime = SystemTime.getSysTime();
+		 */
+		/*String[] sys = sysTime.split("\\+");
 		Date localDate = Date.valueOf(sys[0]);
 		Time localTime = Time.valueOf(sys[1]+":00");
 		if(localDate.after(servicedate)) {
@@ -528,7 +600,7 @@ public class FlexibookController {
 				throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
 			}
 		}
-
+/*
 		if(fb.getBookableService(sindex) instanceof Service) {
 			Service service = (Service)fb.getBookableService(sindex);
 			duration = service.getDuration();
@@ -547,13 +619,11 @@ public class FlexibookController {
 			}
 		}
 
-		LocalTime localtime = starttime.toLocalTime();
-		localtime.plusMinutes(duration);
-		endtime = Time.valueOf(localtime);
+		
+		
 		TimeSlot timeslot = new TimeSlot(servicedate,starttime,servicedate,endtime, fb);
 
-		for(Appointment appointment : fb.getAppointments()) {
-			TimeSlot slot = appointment.getTimeSlot();
+		
 			if(!isNoOverlap(timeslot,slot)) {
 
 				throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
@@ -565,10 +635,11 @@ public class FlexibookController {
 				throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
 			}
 		}
+*/
+		TimeSlot timeslot = new TimeSlot(servicedate,starttime,servicedate,endtime, fb);
 
-
-
-		Appointment appointment = new Appointment(fb.getCustomer(cindex), fb.getBookableService(sindex), timeslot, fb);
+		Appointment appointment = new Appointment(fb.getCustomer(cindex), service, timeslot, fb);
+		
 
 	}
 

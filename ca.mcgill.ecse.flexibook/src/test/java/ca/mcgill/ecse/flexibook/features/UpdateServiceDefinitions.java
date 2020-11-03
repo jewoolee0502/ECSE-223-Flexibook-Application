@@ -14,7 +14,9 @@ import java.util.Map;
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
+import ca.mcgill.ecse.flexibook.model.BookableService;
 import ca.mcgill.ecse.flexibook.model.Business;
+import ca.mcgill.ecse.flexibook.model.ComboItem;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
 import ca.mcgill.ecse.flexibook.model.Owner;
 import ca.mcgill.ecse.flexibook.model.Service;
@@ -68,15 +70,28 @@ public class UpdateServiceDefinitions {
 		      
 		    }
 	  }
+
 	  @Then("the service combos {string} shall not exist in the system")
 	  public void the_service_combos_shall_not_exist_in_the_system(String string) {
-	      // Write code here that turns the phrase above into concrete actions
-	      throw new io.cucumber.java.PendingException();
+	      
+		  BookableService thiService=BookableService.getWithName(string);
+		  assertEquals(null, thiService);
 	  }
+	
 	  @Then("the service combos {string} shall not contain service {string}")
 	  public void the_service_combos_shall_not_contain_service(String string, String string2) {
-	      // Write code here that turns the phrase above into concrete actions
-	      throw new io.cucumber.java.PendingException();
+	      
+		  ServiceCombo thiService=(ServiceCombo)BookableService.getWithName(string);
+		  List<ComboItem> items=thiService.getServices();
+
+		  boolean hasService=false;
+		  for(ComboItem item:items) {
+			  String aString=item.getService().getName();
+			  if(item.getService().getName().equals(string2)) {
+				  hasService=true;
+			  }
+		  }
+		  assertEquals(false, hasService);
 	  }
 	  @After
 	  public void tearDown() {

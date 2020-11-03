@@ -829,58 +829,80 @@ public class FlexibookController {
 	}
 
 	/**
-	 * deleteService: This method takes an input of servicenames. The method will decide whether to initiate the deleting method
-	 * 
-	 * @author Tianyu Zhao
-	 * @param String servicename a string of services
-	 * @param owner
-	 * @throws InvalidInputException --- an error is encountered
-	 * @return void
-	 */
+     * deleteService: This method takes an input of servicenames. The method will decide whether to initiate the deleting method
+     * 
+     * @author Zhixin Xiong
+     * @param String servicename a string of services
+     * @param owner
+     * @throws InvalidInputException --- an error is encountered
+     * @return void
+     */
 
-	public static void deleteService(String owner, String servicename) throws InvalidInputException {
-		FlexiBook fb =FlexiBookApplication.getflexibook();
-		String time=SystemTime.gettime(SystemTime.getSysTime());
-		String date=SystemTime.getdate(SystemTime.getSysTime());
+  public static void deleteService(String owner, String servicename) throws InvalidInputException {
+        FlexiBook fb =FlexiBookApplication.getflexibook();
+        String time=SystemTime.gettime(SystemTime.getSysTime());
+        String date=SystemTime.getdate(SystemTime.getSysTime());
+        Service thiss;
+        String userString=fb.getOwner().getUsername();
+   
 
-		if(fb.getBookableServices().size()!=0) {
-			Service thiss=(Service) fb.getBookableService(0).getWithName(servicename);
-		}
-
-		if(owner.equals(fb.getOwner().getUsername())==true) {
-			if(fb.getBookableServices().size()!=0) {
-				if(fb.getBookableService(0).getWithName(servicename)!=null) {
-					if(fb.getBookableService(0).getWithName(servicename).getAppointments().size()>0) {
-						for(int i=0;i<fb.getAppointments().size();i++) {
-							String startdate=fb.getBookableService(0).getWithName(servicename).getAppointment(i).getTimeSlot().getStartDate().toString();
-							if(SystemTime.comparedate(date,startdate)==2) {
-								throw new InvalidInputException("Service "+servicename+ " contains future appointments"); 
-							}else if(SystemTime.comparedate(date,startdate)==1) {
-								fb.getBookableService(0).getWithName(servicename).delete();
-
-							}else if(SystemTime.comparedate(date,startdate)==0) {
-								String starttime=fb.getBookableService(0).getWithName(servicename).getAppointment(i).getTimeSlot().getStartTime().toString();
-								if(SystemTime.comparetime(time,starttime)==1) {
-									fb.getBookableService(0).getWithName(servicename).delete();
-
-								}else {
-									throw new InvalidInputException("Service "+servicename+ " contains future appointments");
-								}
-							}
-						}
-					}else{fb.getBookableService(0).getWithName(servicename).delete();}
-
+        if(owner.equals(fb.getOwner().getUsername())!=true) {
+        	throw new InvalidInputException("You are not authorized to perform this operation"); 
+        }
+        thiss=(Service) BookableService.getWithName(servicename);
+       
+        List<Appointment> allAppointments=fb.getAppointments();
+        String bString;
+        List<BookableService> allServices=fb.getBookableServices();
+        List<String> TobedeletedBookableServices = new ArrayList<>();
+        
+        //throw exception if have future appointment
+        Date currenDate=Date.valueOf(SystemTime.getdate(SystemTime.getSysTime()));
+        
+		if(BookableService.getWithName(servicename).getAppointments().size()>0) {
+			for(Appointment appointment:thiss.getAppointments()) {
+				Date staDate=appointment.getTimeSlot().getStartDate();
+				if(staDate.after(currenDate)) {
+					throw new InvalidInputException("The service contains future appointments");
 				}
+				
 			}
-		}else {
-			throw new InvalidInputException("You are not authorized to perform this operation"); 
 		}
+        //delete a service included in a serviceCombo
+
+        for(BookableService serviceCom:allServices) {
+        	if(serviceCom instanceof ServiceCombo) {
+        		serviceCom=(ServiceCombo)serviceCom;
+        		String seString=serviceCom.getName();
+        		seString=serviceCom.getName();
+        		ComboItem thisComboItem=null;
+        		List<ComboItem>CombosItems=((ServiceCombo) serviceCom).getServices();
+        		
+        		boolean isMainservice=((ServiceCombo) serviceCom).getMainService().getService().getName().equals(thiss.getName());
+        		if(isMainservice){
+        			TobedeletedBookableServices.add(serviceCom.getName());
+        		}else {
+        			for(ComboItem item:((ServiceCombo) serviceCom).getServices()) {
+        				if(item.getService().getName().equals(servicename)) {
+        				item.delete();
+        				break;}
+        				
+        			}
+        	
+        	}
+        }
+        }
+        
+
+        for(int i=0 ;i<TobedeletedBookableServices.size();i++) {
+        	BookableService.getWithName(TobedeletedBookableServices.get(i)).delete();
+        }
+        
+        thiss.delete();
+       
 
 
-	}
-
-
-
+    }
 
 	/**
 	 * This method takes all parameters to add a new service in the system.

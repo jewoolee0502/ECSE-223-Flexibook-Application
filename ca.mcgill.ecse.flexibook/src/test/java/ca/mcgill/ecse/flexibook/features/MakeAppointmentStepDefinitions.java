@@ -100,13 +100,9 @@ public class MakeAppointmentStepDefinitions {
 
 	@When("{string} schedules an appointment on {string} for {string} at {string}")
 	public void schedules_an_appointment_on_for_at(String customer, String date, String serviceName, String startTime){
-		try {
-			if(customer.equals("owner")) {
-				FlexibookController.MakeAppointment(flexibook.getOwner().getUsername(), date, serviceName, null, startTime);
+		try {			
+				FlexibookController.MakeAppointment(customer, date, serviceName, null, startTime);
 			    count=1;
-			}
-			FlexibookController.MakeAppointment(customer,date, serviceName,null ,startTime);
-
 		}catch(InvalidInputException e){
 			FlexiBookApplication.setmessage(e.getMessage());
 			count=0;
@@ -126,6 +122,7 @@ public class MakeAppointmentStepDefinitions {
 	}
 	@Then("there shall be {int} more appointment in the system")
 	public void there_shall_be_more_appointment_in_the_system(Integer int1) {
+		int b=count;
 		assertEquals(int1, (Integer)count);
 	   
 	}
@@ -149,8 +146,8 @@ public class MakeAppointmentStepDefinitions {
 	@Then("the system shall report {string}")
 	public void the_system_shall_report(String string) {
 		String e = FlexiBookApplication.returnmessage();
-		//assertEquals(string, e);
-		assertEquals(true,true);
+		assertEquals(string, e);
+		
 		FlexiBookApplication.setmessage(null);
 	}
 

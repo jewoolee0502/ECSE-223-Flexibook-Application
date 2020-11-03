@@ -13,10 +13,12 @@ import java.util.Map;
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
+import ca.mcgill.ecse.flexibook.model.BookableService;
 import ca.mcgill.ecse.flexibook.model.Business;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
 import ca.mcgill.ecse.flexibook.model.Owner;
 import ca.mcgill.ecse.flexibook.model.Service;
+import ca.mcgill.ecse.flexibook.model.ServiceCombo;
 
 public class AddServiceStepDefiniton {
 	private  FlexiBook flexibook=FlexiBookApplication.getflexibook();
@@ -43,12 +45,25 @@ assertEquals(string4,Integer.toString(thiss.getDowntimeDuration()));
   }
   @Then("the number of services in the system shall be {string}")
   public void the_number_of_services_in_the_system_shall_be(String string) {
-assertEquals(string,Integer.toString(flexibook.getBookableServices().size()));
+	  int size=0;
+	  List<BookableService>allServices=flexibook.getBookableServices();
+	  for(BookableService serviceCom:allServices) {
+		  if(serviceCom instanceof Service) {
+			  size++;
+		  }
+	  }
+     String string2=String.valueOf(size);
+	  assertEquals(string,string2);
 }
   @Then("the service {string} shall not exist in the system")
   public void the_service_shall_not_exist_in_the_system(String string) {
   if (flexibook.getBookableServices().size()!=0) {
-    assertEquals(null,flexibook.getBookableService(0).getWithName(string));   
+    flexibook.getBookableService(0);
+    boolean isNull=false;
+    if(BookableService.getWithName(string)==null) {
+    	isNull=true;
+    }
+	assertEquals(true,isNull);   
   }else {
     assertEquals(true,true);
   }

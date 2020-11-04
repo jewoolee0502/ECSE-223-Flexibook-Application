@@ -558,8 +558,10 @@ public class FlexibookController {
 		Time starttime = Time.valueOf(startTime+":00");
 		Time endtime = null;
 		LocalTime localtime = starttime.toLocalTime();
-		localtime.plusMinutes(duration);
-		endtime = Time.valueOf(localtime);
+		
+		endtime = Time.valueOf(localtime.plusMinutes(duration));
+		String a=starttime.toString();
+		String endtimet=endtime.toString();
 		int day=servicedate.getDay();
 		
 		

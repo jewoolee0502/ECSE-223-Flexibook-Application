@@ -1,6 +1,7 @@
 namespace ca.mcgill.ecse.flexibook.model;
 
 use FlexiBookPersistence.ump;
+use FlexiBookStates.ump;
 
 class FlexiBook {
   1 <@>- 0..1 Business business;
@@ -90,4 +91,5 @@ class Appointment {
   * -> * ComboItem chosenItems;
   0..1 -> 1 TimeSlot timeSlot;
   Boolean noShowCheck = false;
+  Boolean appointmentInProgress = false;
 }

@@ -51,7 +51,7 @@ public class FlexibookController {
 		boolean occupied=false;
 		boolean hasDowntime=false;
 		boolean overLapExist=false;
-		
+
 		Map<BookableService, Boolean>DowntimeMap=new HashMap<>();
 		for(BookableService service2:fb.getBookableServices()) {
 			if(service2 instanceof Service) {
@@ -71,6 +71,7 @@ public class FlexibookController {
 		}
 		return DowntimeMap;
 	}
+
 	public static void makecombo(String string, String string2, String string3, String string4, String string5) throws InvalidInputException {
 		Service mainservice = null;
 		ComboItem main=null;
@@ -215,6 +216,9 @@ public class FlexibookController {
 		}else {throw new InvalidInputException("You are not authorized to perform this operation");  
 		}
 	}
+
+
+
 	/**
 	 * AttemptLogIn: This method takes an input of username and a password. It will check if the person trying to log in is registered in the system with the right password
 	 * 
@@ -250,6 +254,8 @@ public class FlexibookController {
 		}
 	}
 
+
+
 	/**
 	 * LogOut: This method takes no inputs. It will check if the user is already logged in or not, and log him out.
 	 * 
@@ -276,6 +282,7 @@ public class FlexibookController {
 	}
 
 
+
 	/**
 	 * deletecombo: This method takes an input of username and a combo name. The method will decide whether to initiate the deleting method
 	 * 
@@ -286,6 +293,7 @@ public class FlexibookController {
 	 * @throws InvalidInputException an error is encountered
 	 * @return void
 	 */
+
 	public static void deletecombo(String name,String comboname) throws InvalidInputException {
 		FlexiBook fb =FlexiBookApplication.getflexibook();
 		String time=SystemTime.gettime(SystemTime.getSysTime());
@@ -321,6 +329,8 @@ public class FlexibookController {
 
 
 	}
+	
+	
 
 	/**
 	 * This method takes in all the parameters and creates a new user.
@@ -332,7 +342,6 @@ public class FlexibookController {
 	 * 
 	 * @throws InvalidInputException
 	 */
-
 
 	public static void CreateUser(String username, String password) throws InvalidInputException { 
 		FlexiBook fb = FlexiBookApplication.getflexibook();
@@ -506,10 +515,13 @@ public class FlexibookController {
 
 
 	}
+	
+	
 
 	/**
 	 * This method takes all parameters to make a new appointment in the system.
 	 * 
+	 * @author Zhixin Xiong
 	 * @author Yujing Yan
 	 * 
 	 * @param customer -- can be customer or owner. If it's owner, throw exception.
@@ -519,6 +531,7 @@ public class FlexibookController {
 	 * @param startTime
 	 * @throws InvalidInputException
 	 */
+	
 	public static void MakeAppointment(String customer, String date, String serviceName, String optionalServices, String startTime) throws InvalidInputException{
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		BookableService service=BookableService.getWithName(serviceName);
@@ -545,31 +558,31 @@ public class FlexibookController {
 		}else if(service  instanceof ServiceCombo) {
 			String[] arrOfStr = optionalServices.split(",", -1);
 			for(int i=0;i<arrOfStr.length;i++) {
-					BookableService aService=BookableService.getWithName(arrOfStr[i]);
-					if(aService instanceof Service) {
-						duration+=((Service) aService).getDuration();
+				BookableService aService=BookableService.getWithName(arrOfStr[i]);
+				if(aService instanceof Service) {
+					duration+=((Service) aService).getDuration();
 				}
 			}
-				duration+=((ServiceCombo) service).getMainService().getService().getDuration();
-			
+			duration+=((ServiceCombo) service).getMainService().getService().getDuration();
+
 		}
 
 		Date servicedate = Date.valueOf(date);
 		Time starttime = Time.valueOf(startTime+":00");
 		Time endtime = null;
 		LocalTime localtime = starttime.toLocalTime();
-		
+
 		endtime = Time.valueOf(localtime.plusMinutes(duration));
 		String a=starttime.toString();
 		String endtimet=endtime.toString();
 		int day=servicedate.getDay();
-		
-		
+
+
 		//ensure that the time slot is in business hour
 		DayOfWeek inputDayOfWeek=mapforDayofWeekMap.get(day);
-	
+
 		Business business= fb.getBusiness();
-		
+
 		List<BusinessHour> aHour=fb.getBusiness().getBusinessHours();
 		List<TimeSlot> allTimeSlots=fb.getTimeSlots();
 		List<DayOfWeek> aDayOfWeeks=new ArrayList<>();
@@ -580,22 +593,22 @@ public class FlexibookController {
 				if(endtime.after(ahour.getEndTime())==false&&starttime.before(ahour.getStartTime())==false) {
 					inBusinessHour=true;
 				}
-		}}
+			}}
 		//make sure that this timeslot does not overslap with other time slots
 		List<TimeSlot> newList = new ArrayList<>();
 		newList.addAll(business.getHolidays());
 		newList.addAll(business.getVacation());
-		
+
 		//make sure that it does not overlap with the holidays and vacation
 		Boolean overslapBoolean=false;
 		for(TimeSlot Slota:newList) {
 			if((Slota.getEndDate().before(servicedate)==false)&&(Slota.getStartDate().after(servicedate)==false)){
 				overslapBoolean=true;	
-				}
+			}
 		}
 		//make sure that it doesn't happen in the past
 		Date currenDate=Date.valueOf(SystemTime.getdate(SystemTime.getSysTime()));
-		
+
 		//make sure that is not occupied by existing appointment
 		boolean occupied=false;
 		boolean hasDowntime=false;
@@ -611,43 +624,50 @@ public class FlexibookController {
 				}
 			}
 			if(occupied==true) {
-			if((DowntimeMap.get(appointment.getBookableService())==false)) {
-				overLapExist=true;
-				break;
-			}else {
-				Time starttime2 = slot.getStartTime();
-				LocalTime localstarttime2 = starttime2.toLocalTime();
-				
-				starttime2=Time.valueOf(localstarttime2.plusMinutes(30));
-				Time endtime2 = slot.getEndTime();
-				LocalTime localedndtime2 = endtime.toLocalTime();
-				
-				endtime2 = Time.valueOf(localedndtime2.minusMinutes(30));
-				// slot corresponds to down time that is not long enough
-				if(duration>30) {
+				if((DowntimeMap.get(appointment.getBookableService())==false)) {
 					overLapExist=true;
-					/*if(!(((starttime.before(endtime2))&&(starttime.before(slot.getStartTime())==false))
-							&&((starttime.before(slot.getEndTime()))&&(starttime.before(starttime2)==false)))) {
-					overLapExist=false;
-					*/
-					if(overLapExist)
 					break;
+				}else {
+					Time starttime2 = slot.getStartTime();
+					LocalTime localstarttime2 = starttime2.toLocalTime();
+
+					starttime2=Time.valueOf(localstarttime2.plusMinutes(30));
+					Time endtime2 = slot.getEndTime();
+					LocalTime localedndtime2 = endtime.toLocalTime();
+
+					endtime2 = Time.valueOf(localedndtime2.minusMinutes(30));
+					// slot corresponds to down time that is not long enough
+					if(duration>30) {
+						overLapExist=true;
+						if(overLapExist)
+							break;
+					}
+
+					occupied=false;
 				}
-			
-			occupied=false;
-		}
 			}
 		}
 		if((!inBusinessHour)||overslapBoolean||currenDate.before(servicedate)==false||overLapExist) {
 			throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
 		}
-		
+
 		TimeSlot timeslot = new TimeSlot(servicedate,starttime,servicedate,endtime, fb);
 
 		Appointment appointment = new Appointment(fb.getCustomer(cindex), service, timeslot, fb);
-		
+
 
 	}
+
+
+	/**
+	 * This method checks whether the time slot overlaps or not.
+	 * 
+	 * @author Jewoo Lee
+	 * 
+	 * @param t1 - the first time slot 
+	 * @param t2 - the second time slot 
+	 * 
+	 */
 
 	public static boolean isNoOverlap(TimeSlot t1, TimeSlot t2) {
 		if(t1.getStartDate().equals(t2.getStartDate())) {
@@ -661,10 +681,24 @@ public class FlexibookController {
 		}
 		return true;
 	}
+	
+	
+
+	/**
+	 * This method checks whether one of the time slot is fully covered by the other time slot or not.
+	 * 
+	 * @author Jewoo Lee
+	 * @author Haipeng Yue
+	 * 
+	 * @param t1 - the first time slot 
+	 * @param t2 - the second time slot 
+	 * 
+	 */
 
 	public static boolean isFullyCovered(TimeSlot t1, TimeSlot t2) {
 		if(t1.getStartDate().equals(t2.getStartDate())) {
-			if(t1.getEndTime().before(t2.getEndTime()) && t1.getStartTime().after(t2.getStartTime())) {
+			if(t1.getEndTime().before(t2.getEndTime()) && 
+					t1.getStartTime().after(t2.getStartTime())) {
 				return true;
 			}
 			else {
@@ -676,8 +710,13 @@ public class FlexibookController {
 		}
 
 	}
+	
+	
 
-	/**The method update an appointment of a customer.
+	/**The method updates an appointment of a customer.
+	 * 
+	 * @author Jewoo Lee
+	 * @author Haipeng Yue
 	 * 
 	 * @param customer -- the customer to update the appointment 
 	 * @param customer2 -- the customer whose appointment to be updated
@@ -716,7 +755,6 @@ public class FlexibookController {
 				}
 			}
 		}
-
 
 		if( action==null && comboItem == null) {
 			Service service = (Service)fb.getCustomer(cindex).getAppointment(aindex).getBookableService();
@@ -853,7 +891,6 @@ public class FlexibookController {
 				Service svc = (Service) fb.getBookableService(0).getWithName(comboItem);
 				ComboItem CI = new ComboItem(false, svc, combo);
 				Appointment ap = fb.getCustomer(cindex).getAppointment(aindex);
-				//ap.addChosenItem(aChosenItem)
 				int d = svc.getDuration();
 				TimeSlot ts = ap.getTimeSlot();
 				String sts = ts.getStartTime().toString();
@@ -875,16 +912,19 @@ public class FlexibookController {
 					}
 				}
 				FlexiBookApplication.setmessage("successful");
-				
+
 			}
 
 		}
-
-
 	}
+	
+	
 
 	/**
 	 * The CancelAppointment method can cancel an appointment in the flexibook system.
+	 * 
+	 * @author Jewoo Lee
+	 * @author Haipeng Yue
 	 * 
 	 * @param customer -- the customer who want to cancel his/her appointment.
 	 * @param customer2 -- the customer whose appointment to be cancelled.
@@ -893,6 +933,7 @@ public class FlexibookController {
 	 * @param startTime -- the start time of the appointment
 	 * @throws InvalidInputException
 	 */
+	
 	public static void CancelAppointment(String customer, String customer2, String name, String serviceDate, String startTime) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		if(!(customer2==null)) {
@@ -928,16 +969,72 @@ public class FlexibookController {
 				}
 			}
 		}
-		fb.getCustomer(cindex).getAppointment(aindex).delete();
+		fb.getCustomer(cindex).getAppointment(aindex).cancelAppointment();
+
+	}
+	
+	
+
+	/**
+	 * The OwnerCancelAppointment method can cancel an appointment in the flexibook system.
+	 * 
+	 * @author Jewoo Lee
+	 * 
+	 * @param customer -- the customer who want to cancel his/her appointment.
+	 * @param owner -- the owner whose appointment to be cancelled.
+	 * @param name -- the service name in appointment
+	 * @param serviceDate -- the service date in appointment
+	 * @param startTime -- the start time of the appointment
+	 * @throws InvalidInputException
+	 */
+
+	public static void OwnerCancelAppointment(String customer, String owner, String name, String serviceDate, String startTime) throws InvalidInputException {
+		FlexiBook fb = FlexiBookApplication.getflexibook();
+		if(owner.equals("owner")) {
+
+			String sysTime = SystemTime.getSysTime();
+			String[] sys = sysTime.split("\\+");
+			Date localDate = Date.valueOf(sys[0]);
+			Time localTime = Time.valueOf(sys[1]+":00");
+
+			Date servicedate = Date.valueOf(serviceDate);
+			Time starttime = Time.valueOf(startTime+":00");
+			if(servicedate.equals(localDate)) {
+				throw new InvalidInputException("Cannot cancel an appointment on the appointment date");
+			}
+
+			int cindex = -1;
+			for(Customer c : fb.getCustomers()) {
+				if(c.getUsername().equals(customer)) {
+					cindex = fb.indexOfCustomer(c);
+				}
+			}
+			int aindex = -1;
+			for(Appointment a : fb.getCustomer(cindex).getAppointments()) {
+				if(a.getTimeSlot().getStartDate().equals(servicedate)) {
+					if(a.getTimeSlot().getStartTime().equals(starttime)) {
+						aindex = fb.getCustomer(cindex).indexOfAppointment(a);
+					}
+				}
+			}
+			if(fb.getCustomer(cindex).getAppointment(aindex).getAppointmentInProgress() == false) {
+				throw new InvalidInputException("The owner cannot delete the appointment before the start of the appointment");
+			}
+			fb.getCustomer(cindex).getAppointment(aindex).ownerCancelAppointment();
+
+		}
+		else {
+			throw new InvalidInputException("You are not the owner");
+		}
 
 	}
 
+	
 
 	/**
 	 * This method takes all parameters to update a service in the system.
 	 * 
 	 * @author Tianyu Zhao
-	 * @param  
 	 * 
 	 * @param ownername --- the name of current owner
 	 * @paramString --- ownername is string
@@ -954,6 +1051,7 @@ public class FlexibookController {
 	 * @throws InvalidInputException --- if the input is invalid
 	 * @return void
 	 */
+	
 	public static void updateservice(String string, String string2, String string3, String string4, String string5, String string6) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		Service thiss=(Service) fb.getBookableService(0).getWithName(string2);
@@ -1015,82 +1113,83 @@ public class FlexibookController {
 
 			throw new InvalidInputException("You are not authorized to perform this operation");}
 	}
+	
+	
 
 	/**
-     * deleteService: This method takes an input of servicenames. The method will decide whether to initiate the deleting method
-     * 
-     * @author Zhixin Xiong
-     * @param String servicename a string of services
-     * @param owner
-     * @throws InvalidInputException --- an error is encountered
-     * @return void
-     */
+	 * deleteService: This method takes an input of servicenames. The method will decide whether to initiate the deleting method
+	 * 
+	 * @author Zhixin Xiong
+	 * 
+	 * @param String servicename a string of services
+	 * @param owner
+	 * @throws InvalidInputException --- an error is encountered
+	 * @return void
+	 */
 
-  public static void deleteService(String owner, String servicename) throws InvalidInputException {
-        FlexiBook fb =FlexiBookApplication.getflexibook();
-        String time=SystemTime.gettime(SystemTime.getSysTime());
-        String date=SystemTime.getdate(SystemTime.getSysTime());
-        Service thiss;
-        String userString=fb.getOwner().getUsername();
-   
+	public static void deleteService(String owner, String servicename) throws InvalidInputException {
+		FlexiBook fb =FlexiBookApplication.getflexibook();
+		String time=SystemTime.gettime(SystemTime.getSysTime());
+		String date=SystemTime.getdate(SystemTime.getSysTime());
+		Service thiss;
+		String userString=fb.getOwner().getUsername();
 
-        if(owner.equals(fb.getOwner().getUsername())!=true) {
-        	throw new InvalidInputException("You are not authorized to perform this operation"); 
-        }
-        thiss=(Service) BookableService.getWithName(servicename);
-       
-        List<Appointment> allAppointments=fb.getAppointments();
-        String bString;
-        List<BookableService> allServices=fb.getBookableServices();
-        List<String> TobedeletedBookableServices = new ArrayList<>();
-        
-        //throw exception if have future appointment
-        Date currenDate=Date.valueOf(SystemTime.getdate(SystemTime.getSysTime()));
-        
+
+		if(owner.equals(fb.getOwner().getUsername())!=true) {
+			throw new InvalidInputException("You are not authorized to perform this operation"); 
+		}
+		thiss=(Service) BookableService.getWithName(servicename);
+
+		List<Appointment> allAppointments=fb.getAppointments();
+		String bString;
+		List<BookableService> allServices=fb.getBookableServices();
+		List<String> TobedeletedBookableServices = new ArrayList<>();
+
+		//throw exception if have future appointment
+		Date currenDate=Date.valueOf(SystemTime.getdate(SystemTime.getSysTime()));
+
 		if(BookableService.getWithName(servicename).getAppointments().size()>0) {
 			for(Appointment appointment:thiss.getAppointments()) {
 				Date staDate=appointment.getTimeSlot().getStartDate();
 				if(staDate.after(currenDate)) {
 					throw new InvalidInputException("The service contains future appointments");
 				}
-				
+
 			}
 		}
-        //delete a service included in a serviceCombo
+		//delete a service included in a serviceCombo
 
-        for(BookableService serviceCom:allServices) {
-        	if(serviceCom instanceof ServiceCombo) {
-        		serviceCom=(ServiceCombo)serviceCom;
-        		String seString=serviceCom.getName();
-        		seString=serviceCom.getName();
-        		ComboItem thisComboItem=null;
-        		List<ComboItem>CombosItems=((ServiceCombo) serviceCom).getServices();
-        		
-        		boolean isMainservice=((ServiceCombo) serviceCom).getMainService().getService().getName().equals(thiss.getName());
-        		if(isMainservice){
-        			TobedeletedBookableServices.add(serviceCom.getName());
-        		}else {
-        			for(ComboItem item:((ServiceCombo) serviceCom).getServices()) {
-        				if(item.getService().getName().equals(servicename)) {
-        				item.delete();
-        				break;}
-        				
-        			}
-        	
-        	}
-        }
-        }
-        
+		for(BookableService serviceCom:allServices) {
+			if(serviceCom instanceof ServiceCombo) {
+				serviceCom=(ServiceCombo)serviceCom;
+				String seString=serviceCom.getName();
+				seString=serviceCom.getName();
+				ComboItem thisComboItem=null;
+				List<ComboItem>CombosItems=((ServiceCombo) serviceCom).getServices();
 
-        for(int i=0 ;i<TobedeletedBookableServices.size();i++) {
-        	BookableService.getWithName(TobedeletedBookableServices.get(i)).delete();
-        }
-        
-        thiss.delete();
-       
+				boolean isMainservice=((ServiceCombo) serviceCom).getMainService().getService().getName().equals(thiss.getName());
+				if(isMainservice){
+					TobedeletedBookableServices.add(serviceCom.getName());
+				}else {
+					for(ComboItem item:((ServiceCombo) serviceCom).getServices()) {
+						if(item.getService().getName().equals(servicename)) {
+							item.delete();
+							break;}
 
+					}
 
-    }
+				}
+			}
+		}
+
+		for(int i=0 ;i<TobedeletedBookableServices.size();i++) {
+			BookableService.getWithName(TobedeletedBookableServices.get(i)).delete();
+		}
+
+		thiss.delete();
+	}
+	
+	
 
 	/**
 	 * This method takes all parameters to add a new service in the system.
@@ -1107,9 +1206,9 @@ public class FlexibookController {
 	 * @throws InvalidInputException  if input is invalid
 	 * @return void
 	 */
+	
 	public static void addService(String owner, String name, String string3, String string4,String string5) throws InvalidInputException {
 		Service service = null;
-
 
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		String servicename = null;
@@ -1171,49 +1270,7 @@ public class FlexibookController {
 			throw new InvalidInputException("You are not authorized to perform this operation");}
 	}
 
-	//	public static ArrayList<TimeSlot> getUnavailableTimeSlots (String username, String date)throws InvalidInputException{
-	//		String error;
-	//		FlexiBook flexibook=FlexiBookApplication.getflexibook();
-	//		ArrayList<TimeSlot> list = new ArrayList<TimeSlot>();
-	//		Date newDate = null;
-	//		try {
-	//		newDate=dateChecker(date);}
-	//		catch(ParseException e) {
-	//			throw new InvalidInputException(date+" is not a valid date");
-	//		}
 
-	//	}
-	//
-
-	//		for(Appointment appointment:flexibook.getAppointments()) {
-	//			if(appointment.getTimeSlot().getStartDate().equals(newDate)) {
-	//				list.add(appointment.getTimeSlot());
-	//				
-	//			}
-	//		}
-	//		return list;
-	//		}
-	//			BusinessHour aHour=business.getBusinessHour(0);
-	//			DayOfWeek dayOfWeek=aHour.getDayOfWeek();
-	//			Time startTime=aHour.getStartTime();
-	//			Time endTime=aHour.getEndTime();
-	//			if(dayOfWeek.equals(inputDayOfWeek)) {
-	//				if(inputEdTime.before(endTime)&&inputEdTime.after(startTime)) {
-	//					throw new InvalidInputException("The business hours cannot overlap");
-	//				}
-	//			}
-	//			BusinessHour newHour=new BusinessHour(inputDayOfWeek, inputStTime, inputEdTime, fb);
-	//			business.addBusinessHour(newHour);
-	//			fb.addHour(newHour);
-	//			FlexiBookApplication.setmessage("");	
-	//
-	//		} catch (Exception e) {
-	//			// TODO: handle exception
-	//			String ebString=e.getMessage();
-	//			FlexiBookApplication.setmessage(e.getMessage());
-	//			String ab=FlexiBookApplication.returnmessage();
-	//		}
-	//	}
 
 	/**
 	 * getUnavailableTimeSlots: This method takes as input a date and a username and returns the unavailable time slots for a day. 	 * 
@@ -1223,7 +1280,8 @@ public class FlexibookController {
 	 * @throws InvalidInputException an error is encountered
 	 * @return ArrayList<TimeSlot>
 	 */
-	public static ArrayList<TimeSlot> getUnavailableTimeSlots (String username, String date)throws InvalidInputException{
+	
+	public static ArrayList<TimeSlot> getUnavailableTimeSlots (String username, String date) throws InvalidInputException{
 		String error;
 		FlexiBook flexibook=FlexiBookApplication.getflexibook();
 		ArrayList<TimeSlot> list = new ArrayList<TimeSlot>();
@@ -1245,6 +1303,10 @@ public class FlexibookController {
 		}
 		return list;
 	}
+	
+	
+	
+	
 	/**
 	 * getAvailableTimeSlots: This method takes as input a date and a username and returns the available time slots for a day. 	 * 
 	 * @author James Willems
@@ -1253,7 +1315,6 @@ public class FlexibookController {
 	 * @throws InvalidInputException an error is encountered
 	 * @return ArrayList<TimeSlot>
 	 */
-
 
 	public static ArrayList<TimeSlot> getAvailableTimeSlots(String username, String date) throws InvalidInputException {
 		String error;
@@ -1281,6 +1342,9 @@ public class FlexibookController {
 		}		
 		return list;
 	}
+	
+	
+	
 	/**
 	 * date Checker: This method takes as input a date as a string and returns it as a Date object. 	 * 
 	 * @author James Willems
@@ -1294,8 +1358,12 @@ public class FlexibookController {
 		formatDate.parse(date);
 		return Date.valueOf(date);
 	}
+	
+	
+	
 	/**
-	 * getDaysOfWeek: This method takes as input a date and returns all the remaining days of the week. 	 * 
+	 * getDaysOfWeek: This method takes date as inputs and returns all the remaining days of the week.
+	 *  	  
 	 * @author James Willems
 	 * @param String date
 	 * @throws InvalidInputException an error is encountered
@@ -1357,9 +1425,26 @@ public class FlexibookController {
 		}
 		return list;
 	}
+	
+	
+	/**
+	 * addTimeSlot: This method adds new time slot.
+	 *  	  
+	 * @author James Willems
+	 * 
+	 * @param String type
+	 * @param String startDate
+	 * @param String startTime
+	 * @param String endDate
+	 * @param String endTime
+	 * 
+	 * @throws InvalidInputException an error is encountered
+	 * @return ArrayList<Date>
+	 */
+	
 	public static void addTimeSlot(String type, String startDate, String startTime, String endDate, String endTime) throws InvalidInputException{
-		FlexiBook flexibook=FlexiBookApplication.getflexibook();
-		String mString="";
+		FlexiBook flexibook = FlexiBookApplication.getflexibook();
+		String mString = "";
 		FlexiBookApplication.setmessage(mString);
 		FlexiBookApplication.setmessage("");
 		FlexiBook fb = FlexiBookApplication.getflexibook();
@@ -1427,17 +1512,22 @@ public class FlexibookController {
 		}
 
 
-	}/*
+	}
+	
+	
+	
+	/**
 	 * This method takes all parameters to set the business information in the system.
 	 * 
 	 * @author Zhixin Xiong
 	 * @param name
 	 * 
-	 * @param  address
+	 * @param address
 	 * @param phone number
 	 * @param email
 
-	 */     
+	 */
+	
 	public static void UpdateBusinessInformation(String name,String address,String phoneNumber,String email)throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		String user = fb.getOwner().getUsername();

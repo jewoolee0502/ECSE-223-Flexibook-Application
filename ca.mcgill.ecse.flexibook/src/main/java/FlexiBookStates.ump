@@ -1,27 +1,27 @@
-namespace ca.mcgill.ecse.flexibook.model;
 
 class Appointment {
 
 depend java.util.*;
+depend ca.mcgill.ecse.flexibook.util.SystemTime;
+depend java.time.LocalTime;
   
   appointmentStatus {
     Booked{
       
-      updateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService) [oneDayDiff() & avilableTimeSlot()] / {
+      updateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService) [OneDayDiff() & availableTimeSlot()] / {
         doUpdateAppointment(timeslot, newBookableService, optionalService);
       } -> Booked;
       
-      cancelAppointment(Customer customer) [OneDayDiff()] / {
-        doCancelAppointment(customer);
+      cancelAppointment() [OneDayDiff()] / {
+        doCancelAppointment();
       } -> Final;
      
-      ownerCancelAppointment(Owner owner) [isWithinAppTimeSlot] / {
-        doCancelAppointmentO(owner);
+      ownerCancelAppointment() [isWithinAppTimeSlot()] / {
+        doCancelAppointmentO();
       } -> Final;
       
-      startAppointment() [isWithinAppTimeSlot()] / {
-        doStartAppointment();
-        doUpdateAppointment();
+      startAppointment(Owner owner) [isWithinAppTimeSlot()] / {
+        doStartAppointment(owner);
       } -> InProgress;
       
     }
@@ -37,4 +37,110 @@ depend java.util.*;
       
     }
   }
+  
+  private void doUpdateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService) {
+  	this.setTimeSlot(timeslot);
+		if(this.getBookableService() instanceof ServiceCombo) {
+			if(this.getAppointmentInProgress() == false) {
+				this.setBookableService(newBookableService);
+				List<ComboItem> a = this.getChosenItems();
+				for(ComboItem c : a) {
+					c.delete();
+				}
+				for(ComboItem newC : optionalService) {
+					this.addChosenItem(newC);
+				}
+			}
+			else {
+				List<ComboItem> a = this.getChosenItems();
+				for(ComboItem c : a) {
+					c.delete();
+				}
+				for(ComboItem newC : optionalService) {
+					this.addChosenItem(newC);
+				}
+				if(newBookableService != null) {
+					throw new RuntimeException("You cannot change the Bookable Service during the service");
+				}
+			}
+		}
+		else if(this.getBookableService() instanceof ServiceCombo) {
+			if(this.getAppointmentInProgress() == true) {
+				throw new RuntimeException("You cannot change this service during the service");
+			}
+			if(optionalService != null) {
+				throw new RuntimeException("You cannot optional service to a single service");
+			}
+			else {
+				this.setBookableService(newBookableService);
+			}
+		}
+  }
+  
+  private Boolean availableTimeSlot() {
+  	return false;
+  }
+  
+  private Boolean OneDayDiff() {
+  
+  	String sDate = SystemTime.getdate(SystemTime.getSysTime());
+	String date = this.getTimeSlot().getStartDate().toString();
+	   
+	if(date.equals(sDate)) {
+		return true;
+	}
+	else {
+		return false;
+	}
+  }
+  
+  private Boolean isWithinAppTimeSlot() {
+  	
+  	String st = this.getTimeSlot().getStartTime().toLocalTime().toString();
+	String systemTimeRN = SystemTime.gettime(SystemTime.getSysTime());
+	String endTime = this.getTimeSlot().getEndTime().toLocalTime().toString();
+	   
+	int a = SystemTime.comparetime(st, systemTimeRN);
+	int b = SystemTime.comparetime(endTime, systemTimeRN);
+	   
+	if(a == 0 || b == 0) {
+		return true;
+	}
+	else if(a == 1) {
+		return false;
+	}
+	else if(a == 2 && b == 1) {
+		return true;
+	}
+	else {
+		return false;
+	}
+  } 
+  
+  private void doCancelAppointment() {
+  	
+  }
+  
+  private void doCancelAppointmentO() {
+		Customer a = this.getCustomer();
+		int noShowCountOld = a.getNoShowCount();
+		a.setNoShowCount(noShowCountOld + 1);
+		this.setNoShowCheck(true);
+  }
+  
+  private void doStartAppointment(Owner owner) {
+  	if(this.getFlexiBook().getOwner().equals(owner)) {
+		this.setAppointmentInProgress(true);
+	}
+	else {
+		throw new RuntimeException("You are not the owner of the Flexibook");
+	}
+  }
+          
+  private void doEndAppointment() {
+  	this.setAppointmentInProgress(false);
+  	this.delete();
+  
+  }
+  
 }

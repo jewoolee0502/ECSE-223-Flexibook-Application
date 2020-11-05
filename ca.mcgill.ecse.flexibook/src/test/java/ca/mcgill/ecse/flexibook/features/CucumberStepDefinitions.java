@@ -63,7 +63,11 @@ public class CucumberStepDefinitions {
 	
 	
 	//Add Service
-	
+
+	/**
+	 * @author Tianyu zhao
+	 * @author Zhixin Xiong
+	 */
 	@When("{string} initiates the addition of the service {string} with duration {string}, start of down time {string} and down time duration {string}")
 	public void initiates_the_addition_of_the_service_with_duration_start_of_down_time_and_down_time_duration(String string, String string2, String string3, String string4, String string5) {
 		try{
@@ -77,7 +81,7 @@ public class CucumberStepDefinitions {
 	public void the_service_shall_exist_in_the_system(String string) {
 		assertEquals(string,flexibook.getBookableService(0).getWithName(string).getName());
 	}
-	
+
 	@Then("the service {string} shall have duration {string}, start of down time {string} and down time duration {string}")
 	public void the_service_shall_have_duration_start_of_down_time_and_down_time_duration(String string, String string2, String string3, String string4) {
 		Service thiss=(Service) flexibook.getBookableService(0).getWithName(string);
@@ -86,7 +90,9 @@ public class CucumberStepDefinitions {
 		assertEquals(string4,Integer.toString(thiss.getDowntimeDuration()));
 
 	}
-	
+	/**
+	 * @author Zhixin Xiong
+	 */
 	@Then("the number of services in the system shall be {string}")
 	public void the_number_of_services_in_the_system_shall_be(String string) {
 		int size=0;
@@ -99,6 +105,9 @@ public class CucumberStepDefinitions {
 		String string2=String.valueOf(size);
 		assertEquals(string,string2);
 	}
+	/**
+	 * @author Zhixin Xiong
+	 */
 	@Then("the service {string} shall not exist in the system")
 	public void the_service_shall_not_exist_in_the_system(String string) {
 		if (flexibook.getBookableServices().size()!=0) {
@@ -154,20 +163,28 @@ public class CucumberStepDefinitions {
 	
 	
 	//Define Service Combo
-	
+	/**This is the step definition to check the makecombo controller method.
+	 *@author Haipeng Yue 
+	 * 
+	 * 
+	 */
 	@Given("a Flexibook system exists")
 	public void a_flexibook_system_exists() {
 		flexibook=new FlexiBook();
 		FlexiBookApplication.setflexibook(flexibook);
 	}
-
+/**
+ * @author Haipeng Yue 
+ */
 	@Given("an owner account exists in the system")
 	public void an_owner_account_exists_in_the_system() {
 		if(!flexibook.hasOwner()) {
 			Owner owner = new Owner("a", "123", flexibook); 
 		}
 	}
-
+	/**
+	 * @author Haiepng Yue 
+	 */
 	@Given("Customer with username {string} is logged in")
 	public void customer_with_username_is_logged_in(String string) {
 		if(flexibook.getCustomers().size()!=0) {
@@ -175,12 +192,18 @@ public class CucumberStepDefinitions {
 			FlexiBookApplication.setCurrentuser(thisc);
 		}
 	}
+	/**
+	 * @author Haipeng Yue 
+	 */
 	@Given("a business exists in the system")
 	public void a_business_exists_in_the_system() {
 		if(!flexibook.hasBusiness()) {
 			new Business("b", "ab", "1111111111", "123@mail.com", flexibook);
 		}
 	}
+	/**
+	 * @author Haipeng Yue
+	 */
 	@Given("the following services exist in the system:")
 	public void the_following_services_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
 
@@ -197,6 +220,9 @@ public class CucumberStepDefinitions {
 
 		}
 	}
+	/**
+	 * @author Haipeng Yue
+	 */
 	@Given("the following service combos exist in the system:")
 	public void the_following_service_combos_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) throws InvalidInputException {
 		String owner=flexibook.getOwner().getUsername();
@@ -209,12 +235,17 @@ public class CucumberStepDefinitions {
 			FlexibookController.makecombo(owner, name, mainservice, services, mandatory);
 		}
 	}
-
+	/**
+	 * @author Haipeng Yue 
+	 */
 	@Given("the Owner with username {string} is logged in")
 	public void the_owner_with_username_is_logged_in(String string) {
 		flexibook.getOwner().setUsername(string);
 		FlexiBookApplication.setCurrentuser(flexibook.getOwner());
 	}
+	/**
+	 * @author Haipeng Yue 
+	 */
 	@When("{string} initiates the definition of a service combo {string} with main service {string}, services {string} and mandatory setting {string}")
 	public void initiates_the_definition_of_a_service_combo_with_main_service_services_and_mandatory_setting(String string, String string2, String string3, String string4, String string5) throws InvalidInputException {
 		try {  
@@ -225,6 +256,9 @@ public class CucumberStepDefinitions {
 			System.out.println(error);
 		}
 	}
+	/**
+	 * @author Haipeng Yue
+	 */
 	@Then("the service combo {string} shall exist in the system")
 	public void the_service_combo_shall_exist_in_the_system(String string) {
 		String comboname = null;
@@ -234,6 +268,9 @@ public class CucumberStepDefinitions {
 			}}
 		assertEquals(string,comboname);
 	}
+	/**
+	 * @author Haipeng Yue 
+	 */
 	@Then("the service combo {string} shall contain the services {string} with mandatory setting {string}")
 	public void the_service_combo_shall_contain_the_services_with_mandatory_setting(String string, String string2, String string3) {
 		String comboname=null;
@@ -251,6 +288,9 @@ public class CucumberStepDefinitions {
 			}}
 		assertEquals(comboname,string);
 	}
+	/**
+	 * @author Haipeng Yue
+	 */
 	@Then("the main service of the service combo {string} shall be {string}")
 	public void the_main_service_of_the_service_combo_shall_be(String string, String string2) {
 		for (int i =0;i<flexibook.getBookableServices().size();i++) {
@@ -260,6 +300,9 @@ public class CucumberStepDefinitions {
 				assertEquals(name,string2);
 			}}
 	}
+	/**
+	 * @author Haipeng Yue
+	 */
 	@Then("the service {string} in service combo {string} shall be mandatory")
 	public void the_service_in_service_combo_shall_be_mandatory(String string, String string2) {
 		String comboname=null;
@@ -274,6 +317,9 @@ public class CucumberStepDefinitions {
 				}
 			}}
 	}
+	/**
+	 * @author Haipeng Yue 
+	 */
 	@Then("the number of service combos in the system shall be {string}")
 	public void the_number_of_service_combos_in_the_system_shall_be(String string) {
 		int count = 0;
@@ -286,7 +332,9 @@ public class CucumberStepDefinitions {
 		}
 		assertEquals(string,Integer.toString(count));
 	}
-
+	/**
+	 * @author Haipeng Yue 
+	 */
 	@Then("the service combo {string} shall preserve the following properties:")
 	public void the_service_combo_shall_preserve_the_following_properties(String string, io.cucumber.datatable.DataTable dataTable) {
 		List<Map<String, String>> valueMaps = dataTable.asMaps();
@@ -302,13 +350,18 @@ public class CucumberStepDefinitions {
 
 		}
 	}
-	
+	/**
+	 * @author Haipeng Yue 
+	 */
 	@Then("an error message with content {string} shall be raised")
 	public void an_error_message_with_content_shall_be_raised(String string) {
 		String e = FlexiBookApplication.returnmessage();
 		assertEquals(string,e);
 		FlexiBookApplication.setmessage(null);
 	}
+	/**
+	 * @author Haipeng Yue
+	 */
 	@Then("the service combo {string} shall not exist in the system")
 	public void the_service_combo_shall_not_exist_in_the_system(String string) throws InvalidInputException {
 		if(flexibook.getBookableServices()!=null) {
@@ -402,7 +455,9 @@ public class CucumberStepDefinitions {
 	
 	
 	//Delete Service Combo
-	
+	/**This is the step definition to check the deletecombo controller method.
+     *@author Haipeng Yue 
+     */
 	@When("{string} initiates the deletion of service combo {string}")
 	public void initiates_the_deletion_of_service_combo(String string, String string2) throws InvalidInputException {
 		try{
@@ -411,6 +466,9 @@ public class CucumberStepDefinitions {
 			FlexiBookApplication.setmessage(e.getMessage());
 		}
 	}
+	/**
+	 * @author Haipeng Yue 
+	 */
 	@Then("the number of appointments in the system with service {string} shall be {string}")
 	public void the_number_of_appointments_in_the_system_with_service_shall_be(String string, String string2) {
 		int count =0;
@@ -421,6 +479,9 @@ public class CucumberStepDefinitions {
 		}
 		assertEquals(Integer.decode(string2),count);
 	}
+	/**
+	 * @author Haipeng Yue
+	 */
 	@Then("the number of appointments in the system shall be {string}")
 	public void the_number_of_appointments_in_the_system_shall_be(String string) {
 		List<Appointment> thi=flexibook.getAppointments();  
@@ -431,7 +492,9 @@ public class CucumberStepDefinitions {
 	
 	
 	//Delete Service
-	
+	/**
+	 * @author Zhixin Xiong
+	 */
 	@When("{string} initiates the deletion of service {string}")
 	public void initiates_the_deletion_of_service(String string, String string2) throws InvalidInputException {
 		try{
@@ -512,6 +575,12 @@ public class CucumberStepDefinitions {
 
 	
 	//Make Appointment
+	/**This is the step definition to check the make appointment controller method.
+	 *@author Yujing Yan
+	 *@author Zhixin Xiong 
+	 * 
+	 * 
+	 */
 	
 	@Given("the system's time and date is {string}")
 	public void the_system_s_time_and_date_is(String string) {
@@ -587,7 +656,10 @@ public class CucumberStepDefinitions {
 			FlexiBookApplication.setCurrentuser(flexibook.getCustomer(cindex));
 		}
 	}
-
+	/**
+	 * @author Yujing Yan
+	 * @author Zhixin Xiong
+	 */
 	@When("{string} schedules an appointment on {string} for {string} at {string}")
 	public void schedules_an_appointment_on_for_at(String customer, String date, String serviceName, String startTime){
 		try {			
@@ -598,7 +670,11 @@ public class CucumberStepDefinitions {
 			count = 0;
 		}
 	}
-
+	
+	/**
+	 * @author Yujing Yan
+	 * @author Zhixin Xiong
+	 */
 	@When("{string} schedules an appointment on {string} for {string} with {string} at {string}")
 	public void schedules_an_appointment_on_for_with_at(String customer, String date, String serviceName, String optionalServices, String startTime){
 		try {
@@ -610,6 +686,10 @@ public class CucumberStepDefinitions {
 			FlexiBookApplication.setmessage(e.getMessage());
 		}
 	}
+
+	/**
+	 * @author Zhixin Xiong
+	 */
 	
 	@Then("there shall be {int} more appointment in the system")
 	public void there_shall_be_more_appointment_in_the_system(Integer int1) {
@@ -629,6 +709,10 @@ public class CucumberStepDefinitions {
 		}
 	}
 
+	/**
+	 * @author Zhixin Xiong
+	 */
+
 	@Then("the system shall report {string}")
 	public void the_system_shall_report(String string) {
 		String e = FlexiBookApplication.returnmessage();
@@ -640,13 +724,24 @@ public class CucumberStepDefinitions {
 
 	
 	//Setup Business Information
+	/**This is the step definition to check the setup business information controller method.
+	 *@author Zhixin Xiong 
+	 * 
+	 * 
+	 */
 
+	/**
+	 * @author Zhixin Xiong
+	 */
 	@Given("no business exists")
 	public void no_business_exists() {
 		if(flexibook.getBusiness() != null) {
 			flexibook.setBusiness(null);
 		}
 	}
+	/**
+	 * @author Zhixin Xiong
+	 */
 	@When("the user tries to set up the business information with new {string} and {string} and {string} and {string}")
 	public void the_user_tries_to_set_up_the_business_information_with_new_and_and_and(String string, String string2, String string3, String string4)throws InvalidInputException {
 		try {  
@@ -660,6 +755,9 @@ public class CucumberStepDefinitions {
 		}
 
 	}
+	/**
+	 * @author Zhixin Xiong
+	 */
 	@Then("a new business with new {string} and {string} and {string} and {string} shall {string} created")
 	public void a_new_business_with_new_and_and_and_shall_created(String string, String string2, String string3, String string4, String string5) {
 		Business cuBusiness=FlexiBookApplication.getflexibook().getBusiness();
@@ -678,7 +776,10 @@ public class CucumberStepDefinitions {
 			assertEquals(string4, email);
 			assertEquals(string5, resultString);
 		}
-	}	
+	}
+	/**
+	 * @author Zhixin Xiong
+	 */	
 
 	@Then("an error message {string} shall {string} raised")
 	public void an_error_message_shall_raised(String string, String string2) {
@@ -691,6 +792,9 @@ public class CucumberStepDefinitions {
 		FlexiBookApplication.setmessage(null);
 
 	}
+	/**
+	 * @author Zhixin Xiong
+	 */
 
 	@Given("a business exists with the following information:")
 	public void a_business_exists_with_the_following_information(io.cucumber.datatable.DataTable dataTable) throws InvalidInputException {
@@ -705,6 +809,9 @@ public class CucumberStepDefinitions {
 			Business aNewBusiness=new Business(name, address, phonenumber, email, flexibook);
 		}
 	}
+	/**
+	 * @author Zhixin Xiong
+	 */
 
 	@When("the user tries to add a new business hour on {string} with start time {string} and end time {string}")
 	public void the_user_tries_to_add_a_new_business_hour_on_with_start_time_and_end_time(String string, String string2, String string3) throws InvalidInputException{
@@ -719,15 +826,24 @@ public class CucumberStepDefinitions {
 			resultError="be";
 		}
 	}
+	/**
+	 * @author Zhixin Xiong
+	 */
 	@Then("a new business hour shall {string} created")
 	public void a_new_business_hour_shall_created(String string) {
 
 		assertEquals(string, resultString);
 	}
+	/**
+	 * @author Zhixin Xiong
+	 */
 	@When("the user tries to access the business information")
 	public void the_user_tries_to_access_the_business_information() {
 		businessInfor=FlexibookController.viewBusinessInfor();
 	}
+	/**
+	 * @author Zhixin Xiong
+	 */
 
 
 	@Then("the {string} and {string} and {string} and {string} shall be provided to the user")
@@ -737,6 +853,9 @@ public class CucumberStepDefinitions {
 		assertEquals(businessInfor[2], string3);
 		assertEquals(businessInfor[3], string4);
 	}
+	/**
+	 * @author Zhixin Xiong
+	 */
 	@Given("a {string} time slot exists with start time {string} at {string} and end time {string} at {string}")
 	public void a_time_slot_exists_with_start_time_at_and_end_time_at(String string, String string2, String string3, String string4, String string5) {
 		Business business=flexibook.getBusiness();
@@ -781,6 +900,9 @@ public class CucumberStepDefinitions {
 			}
 		}
 	}
+	/**
+	 * @author Zhixin Xiong
+	 */
 
 	@When("the user tries to add a new {string} with start date {string} at {string} and end date {string} at {string}")
 	public void the_user_tries_to_add_a_new_with_start_date_at_and_end_date_at(String string, String string2, String string3, String string4, String string5) {
@@ -796,6 +918,9 @@ public class CucumberStepDefinitions {
 			FlexiBookApplication.setmessage(e.getMessage());	    		
 		}
 	}
+	/**
+	 * @author Zhixin Xiong
+	 */
 
 	@Then("a new {string} shall {string} be added with start date {string} at {string} and end date {string} at {string}")
 	public void a_new_shall_be_added_with_start_date_at_and_end_date_at(String string, String string2, String string3, String string4, String string5, String string6) {
@@ -983,6 +1108,11 @@ public class CucumberStepDefinitions {
 	
 	
 	//Update Business Information
+
+	/**
+	 * This is the step definition to check the makecombo controller method.
+	 * @author Zhixin Xiong
+	 */
 	
 	@Given("the business has a business hour on {string} with start time {string} and end time {string}")
 	public void the_business_has_a_business_hour_on_with_start_time_and_end_time(String string,String string2,String string3) {
@@ -1005,6 +1135,10 @@ public class CucumberStepDefinitions {
 			business.addBusinessHour(nHour);
 		}
 	}
+	/*
+	 * @author Zhixin Xiong
+	 */
+	
 	
 	@When("the user tries to update the business information with new {string} and {string} and {string} and {string}")
 	public void the_user_tries_to_update_the_business_information_with_new_and_and_and(String string, String string2, String string3, String string4) {
@@ -1020,7 +1154,9 @@ public class CucumberStepDefinitions {
 			FlexiBookApplication.setmessage(e.getMessage());	
 		}
 	}
-	
+	/*
+	 * @author Zhixin Xiong
+	 */
 	@Then("the business information shall {string} updated with new {string} and {string} and {string} and {string}")
 	public void the_business_information_shall_updated_with_new_and_and_and(String string, String string2, String string3, String string4, String string5) {
 		if(resultString.equals("be")) {
@@ -1032,7 +1168,9 @@ public class CucumberStepDefinitions {
 			assertEquals(aBusiness.getEmail(), string5);
 		}
 	}
-	
+	/*
+	 * @author Zhixin Xiong
+	 */
 	@When("the user tries to change the business hour {string} at {string} to be on {string} starting at {string} and ending at {string}")
 	public void the_user_tries_to_change_the_business_hour_at_to_be_on_starting_at_and_ending_at(String string, String string2, String string3, String string4, String string5) {
 		try {  
@@ -1047,12 +1185,16 @@ public class CucumberStepDefinitions {
 			FlexiBookApplication.setmessage(e.getMessage());
 		}
 	}
-	
+	/*
+	 * @author Zhixin Xiong
+	 */
 	@Then("the business hour shall {string} be updated")
 	public void the_business_hour_shall_be_updated(String string) {
 		assertEquals(string, resultString);
 	}
-	
+	/*
+	 * @author Zhixin Xiong
+	 */
 	@When("the user tries to remove the business hour starting {string} at {string}")
 	public void the_user_tries_to_remove_the_business_hour_starting_at(String string, String string2)  {  
 
@@ -1067,14 +1209,18 @@ public class CucumberStepDefinitions {
 			FlexiBookApplication.setmessage(e.getMessage());	
 		}
 	}
-
+	/*
+	 * @author Zhixin Xiong
+	 */
 	@Then("the business hour starting {string} at {string} shall {string} exist")
 	public void the_business_hour_starting_at_shall_exist(String string, String string2, String string3) {
 
 		assertEquals(string3, removeResult);
 
 	}
-	
+	/*
+	 * @author Zhixin Xiong
+	 */
 	@Then("an error message {string} shall {string} be raised")
 	public void an_error_message_shall_be_raised(String string, String string2) {
 		String e = FlexiBookApplication.returnmessage();
@@ -1084,7 +1230,9 @@ public class CucumberStepDefinitions {
 			assertEquals(string, e);
 		}
 	}
-	
+	/*
+	 * @author Zhixin Xiong
+	 */
 	@When("the user tries to change the {string} on {string} at {string} to be with start date {string} at {string} and end date {string} at {string}")
 	public void the_user_tries_to_change_the_on_at_to_be_with_start_date_at_and_end_date_at(String string, String string2, String string3, String string4, String string5, String string6, String string7) {
 		try {
@@ -1100,7 +1248,9 @@ public class CucumberStepDefinitions {
 			FlexiBookApplication.setmessage(e.getMessage());	    		
 		}
 	}
-
+	/*
+	 * @author Zhixin Xiong
+	 */
 	@Then("the {string} shall {string} updated with start date {string} at {string} and end date {string} at {string}")
 	public void the_shall_updated_with_start_date_at_and_end_date_at(String string, String string2, String string3, String string4, String string5, String string6) {
 
@@ -1134,7 +1284,9 @@ public class CucumberStepDefinitions {
 
 		}
 	}
-
+	/*
+	 * @author Zhixin Xiong
+	 */
 	@When("the user tries to remove an existing {string} with start date {string} at {string} and end date {string} at {string}")
 	public void the_user_tries_to_remove_an_existing_with_start_date_at_and_end_date_at(String string, String string2, String string3, String string4, String string5) {
 		try{FlexibookController.removeExistingTimeSlot(string, string2,string3,string4,string5);
@@ -1147,7 +1299,9 @@ public class CucumberStepDefinitions {
 			FlexiBookApplication.setmessage(e.getMessage());	
 		}
 	}
-
+	/*
+	 * @author Zhixin Xiong
+	 */
 	@Then("the {string} with start date {string} at {string} shall {string} exist")
 	public void the_with_start_date_at_shall_exist(String string, String string2, String string3, String string4) {
 		assertEquals(string4, removeResult);
@@ -1194,7 +1348,11 @@ public class CucumberStepDefinitions {
 
 	
 	//Update Service Combo
-	
+	/**This is the step definition to check the updatecombo controller method.
+     *@author Haipeng Yue
+     * 
+     * 
+     */
 	@When("{string} initiates the update of service combo {string} to name {string}, main service {string} and services {string} and mandatory setting {string}")
 	public void initiates_the_update_of_service_combo_to_name_main_service_and_services_and_mandatory_setting(String string, String string2, String string3, String string4, String string5, String string6) throws InvalidInputException {
 		try{
@@ -1204,7 +1362,9 @@ public class CucumberStepDefinitions {
 			FlexiBookApplication.setmessage(error);
 		}
 	}
-
+	/**
+	 * @author Haipeng Yue
+	 */
 	@Then("the service combo {string} shall be updated to name {string}")
 	public void the_service_combo_shall_be_updated_to_name(String string, String string2) {
 

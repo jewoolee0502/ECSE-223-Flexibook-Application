@@ -1120,12 +1120,10 @@ public class FlexibookController {
 	 * 
 	 * @author Zhixin Xiong
 	 * 
-	 * @param String servicename a string of services
 	 * @param owner
-	 * @throws InvalidInputException --- an error is encountered
-	 * @return void
+	 * @param servicename
+	 * @throws InvalidInputException
 	 */
-
 	public static void deleteService(String owner, String servicename) throws InvalidInputException {
 		FlexiBook fb =FlexiBookApplication.getflexibook();
 		String time=SystemTime.gettime(SystemTime.getSysTime());
@@ -1552,6 +1550,17 @@ public class FlexibookController {
 		FlexiBookApplication.setmessage("");
 
 	}
+	/**
+	 * This method takes all parameters to set the business information in the system.
+	 * 
+	 * @author Zhixin Xiong
+	 * @param ExistingDay
+	 * @param ExistingStartTime
+	 * @param newDay
+	 * @param newstartTime
+	 * @param newEndTime
+	 * @throws InvalidInputException
+	 */
 	public static void UpdateExistingBusinessHour(String ExistingDay, String ExistingStartTime, String newDay, String newstartTime, String newEndTime)throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		String user = fb.getOwner().getUsername();
@@ -1596,6 +1605,17 @@ public class FlexibookController {
 		FlexiBookApplication.setmessage("");	
 
 	}
+	/**
+	 * This method takes all parameters to set the business information in the system.
+	 * 
+	 * @author Zhixin Xiong
+	 * 
+	 *
+	 **
+	 * @param Day
+	 * @param starTime
+	 * @throws InvalidInputException
+	 */
 	public static void removerBusinessHour(String Day,String starTime) throws InvalidInputException{
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		String user = fb.getOwner().getUsername();
@@ -1625,7 +1645,22 @@ public class FlexibookController {
 			business.removeBusinessHour(toBeRemovedBusinessHour);
 		}
 	}
-
+	/**
+	 * This method takes all parameters to set the business information in the system.
+	 * 
+	 * @author Zhixin Xiong
+	 * 
+	 */
+	/**
+	 * @param type
+	 * @param ExistingDate
+	 * @param ExistingStartTime
+	 * @param startDate
+	 * @param startTime
+	 * @param endDate
+	 * @param endTime
+	 * @throws InvalidInputException
+	 */
 	public static void updateHolidayOrVacation(String type, String ExistingDate, String ExistingStartTime, String startDate, String startTime, String endDate,String endTime)throws InvalidInputException {
 		FlexiBook flexibook=FlexiBookApplication.getflexibook();
 		String mString="";
@@ -1711,10 +1746,11 @@ public class FlexibookController {
 	 * This method takes all parameters to set the business information in the system.
 	 * 
 	 * @author Zhixin Xiong
-	 * @param name 
-	 * @param  address
-	 * @param phone number
+	 * @param name
+	 * @param address
+	 * @param phoneNumber
 	 * @param email
+	 * @throws InvalidInputException
 	 */
 	public static void setBusinessInformation(String name, String address, String phoneNumber, String email)throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
@@ -1741,7 +1777,19 @@ public class FlexibookController {
 
 
 	}
+	/**
+	 * This method takes all parameters to set the business information in the system.
+	 * 
+	 * @author Zhixin Xiong
+	 * 
+	 */
 
+	/**
+	 * @param string
+	 * @param string2
+	 * @param string3
+	 * @throws InvalidInputException
+	 */
 	public static void addNewBusinessHour(String string, String string2, String string3)throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		String user = fb.getOwner().getUsername();
@@ -1771,6 +1819,28 @@ public class FlexibookController {
 		FlexiBookApplication.setmessage("");	
 
 	}
+	/**
+	 * This method takes all parameters to set the business information in the system.
+	 * 
+	 * @author Zhixin Xiong
+	 * 
+	 */
+	/**
+	 * @param type
+	 * @param startDate
+	 * @param startTime
+	 * @param endDate
+	 * @param endTime
+	 * @throws InvalidInputException
+	 */
+	/**
+	 * @param type
+	 * @param startDate
+	 * @param startTime
+	 * @param endDate
+	 * @param endTime
+	 * @throws InvalidInputException
+	 */
 	public static void removeExistingTimeSlot(String type, String startDate, String startTime, String endDate, String endTime) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		String user = fb.getOwner().getUsername();
@@ -1815,6 +1885,13 @@ public class FlexibookController {
 			}
 		}
 	}
+	/**
+	 * This method takes all parameters to set the business information in the system.
+	 * 
+	 * 
+	 * @author Zhixin Xiong
+	 * @return
+	 */
 	public static String[] viewBusinessInfor () {
 		FlexiBook flexiBook=FlexiBookApplication.getflexibook();
 		Business business=flexiBook.getBusiness();

@@ -970,7 +970,6 @@ public class FlexibookController {
 			}
 		}
 		fb.getCustomer(cindex).getAppointment(aindex).cancelAppointment();
-
 	}
 	
 	

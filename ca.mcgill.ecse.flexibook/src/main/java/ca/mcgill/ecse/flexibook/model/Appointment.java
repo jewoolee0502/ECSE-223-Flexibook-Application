@@ -533,20 +533,21 @@ public class Appointment implements Serializable
 	}
   }
 
-  // line 122 "../../../../../FlexiBookStates.ump"
+  // line 121 "../../../../../FlexiBookStates.ump"
    private void doCancelAppointment(){
-    
+    this.delete();
   }
 
   // line 125 "../../../../../FlexiBookStates.ump"
    private void doCancelAppointmentO(){
     Customer a = this.getCustomer();
-		int noShowCountOld = a.getNoShowCount();
-		a.setNoShowCount(noShowCountOld + 1);
-		this.setNoShowCheck(true);
+	int noShowCountOld = a.getNoShowCount();
+	a.setNoShowCount(noShowCountOld + 1);
+	this.setNoShowCheck(true);
+	this.delete();
   }
 
-  // line 132 "../../../../../FlexiBookStates.ump"
+  // line 133 "../../../../../FlexiBookStates.ump"
    private void doStartAppointment(Owner owner){
     if(this.getFlexiBook().getOwner().equals(owner)) {
 		this.setAppointmentInProgress(true);
@@ -556,7 +557,7 @@ public class Appointment implements Serializable
 	}
   }
 
-  // line 141 "../../../../../FlexiBookStates.ump"
+  // line 142 "../../../../../FlexiBookStates.ump"
    private void doEndAppointment(){
     this.setAppointmentInProgress(false);
   	this.delete();

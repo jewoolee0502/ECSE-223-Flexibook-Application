@@ -5,8 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
+import ca.mcgill.ecse.flexibook.model.Appointment;
+import ca.mcgill.ecse.flexibook.model.BookableService;
 import ca.mcgill.ecse.flexibook.model.Customer;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
+import ca.mcgill.ecse.flexibook.model.Service;
 import ca.mcgill.ecse.flexibook.util.SystemTime;
 import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
@@ -16,6 +19,8 @@ import io.cucumber.java.en.When;
 public class AppointmentManagementStepDefinition {
 	private FlexiBook flexibook = FlexiBookApplication.getflexibook();
 	private String error;
+	private Appointment appointment;
+	private Service service;
 	@Given("{string} has {int} no-show records")
 	public void has_no_show_records(String string, Integer int1) {
 		int cindex = -1;
@@ -37,11 +42,21 @@ public class AppointmentManagementStepDefinition {
 			error = e.getMessage();
 			FlexiBookApplication.setmessage(error);
 		}
+		for(Appointment a:flexibook.getAppointments()) {
+			if(a.getCustomer().getUsername().equals(string)&&a.getTimeSlot().getStartDate().toString().equals(string3)&&a.getTimeSlot().getStartTime().toString().equals(string4) ){
+				appointment=a;
+			}
+		}
 	}
 	@When("{string} attempts to change the service in the appointment to {string} at {string}")
 	public void attempts_to_change_the_service_in_the_appointment_to_at(String string, String string2, String string3) {
-		// Write code here that turns the phrase above into concrete actions
-		throw new io.cucumber.java.PendingException();
+		SystemTime.SystemTime(string3, true);
+		for (BookableService s: flexibook.getBookableServices())
+			{if (s.getName().equals(string2) && s instanceof Service) {
+				service =(Service) s;
+			}
+				}
+			appointment.updateAppointment(appointment.getTimeSlot(), service, null);
 	}
 	
 	@When("{string} attempts to update the date to {string} and time to {string} at {string}")

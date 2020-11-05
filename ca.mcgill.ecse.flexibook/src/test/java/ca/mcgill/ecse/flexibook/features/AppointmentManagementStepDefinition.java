@@ -1,21 +1,39 @@
 package ca.mcgill.ecse.flexibook.features;
 
+import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
+import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
+import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
+import ca.mcgill.ecse.flexibook.model.Customer;
+import ca.mcgill.ecse.flexibook.model.FlexiBook;
+import ca.mcgill.ecse.flexibook.util.SystemTime;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class AppointmentManagementStepDefinition {
-
+	private FlexiBook flexibook = FlexiBookApplication.getflexibook();
+	private String error;
 	@Given("{string} has {int} no-show records")
 	public void has_no_show_records(String string, Integer int1) {
-		// Write code here that turns the phrase above into concrete actions
-		throw new io.cucumber.java.PendingException();
+		int cindex = -1;
+
+		for(Customer c : flexibook.getCustomers()) {
+			if(c.getUsername().equals(string)) {
+				cindex = flexibook.indexOfCustomer(c);
+			}
+		}
+		flexibook.getCustomer(cindex).setNoShowCount(int1);
 	}
 
 	@When("{string} makes a {string} appointment for the date {string} and time {string} at {string}")
 	public void makes_a_appointment_for_the_date_and_time_at(String string, String string2, String string3, String string4, String string5) {
-		// Write code here that turns the phrase above into concrete actions
-		throw new io.cucumber.java.PendingException();
+		SystemTime.SystemTime(string5, true);
+		try {
+		FlexibookController.MakeAppointment(string, string3, string2, null, string4);}
+		catch(InvalidInputException e) {
+			error = e.getMessage();
+			FlexiBookApplication.setmessage(error);
+		}
 	}
 	@When("{string} attempts to change the service in the appointment to {string} at {string}")
 	public void attempts_to_change_the_service_in_the_appointment_to_at(String string, String string2, String string3) {

@@ -1,5 +1,7 @@
 package ca.mcgill.ecse.flexibook.features;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
@@ -67,7 +69,6 @@ public class AppointmentManagementStepDefinition {
 	}
 	@Then("the system shall have {int} appointments")
 	public void the_system_shall_have_appointments(Integer int1) {
-		// Write code here that turns the phrase above into concrete actions
-		throw new io.cucumber.java.PendingException();
+		assertEquals(int1,flexibook.getAppointments().size());
 	}
 }

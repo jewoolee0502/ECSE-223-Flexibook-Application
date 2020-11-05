@@ -1080,7 +1080,7 @@ public class CucumberStepDefinitions {
 	@When("{string} attempts to update their {string} appointment on {string} at {string} to {string} at {string}")
 	public void attempts_to_update_their_appointment_on_at_to_at(String customer, String serviceName, String serviceDate, String startTime, String newDate, String newStartTime) {
 		try {
-			FlexibookController.UpdateAppointment(customer, null, null, null, serviceName, serviceDate, newDate, startTime, newStartTime);
+ 			FlexibookController.UpdateAppointment(customer, null, null, null, serviceName, serviceDate, newDate, startTime, newStartTime);
 		}catch(InvalidInputException e) {
 			FlexiBookApplication.setmessage(e.getMessage());
 		}

@@ -179,10 +179,10 @@ depend java.sql.Time;
 	String date = this.getTimeSlot().getStartDate().toString();
 	   
 	if(date.equals(sDate)) {
-		return true;
+		return false;
 	}
 	else {
-		return false;
+		return true;
 	}
   }
   

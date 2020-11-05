@@ -586,11 +586,9 @@ public class Appointment implements Serializable
 			}
 		}
 	}
-<<<<<<< HEAD
 
-=======
+
 	check = true;
->>>>>>> 48fd3a5f14f7b4ea392fa4d4ee8f382555868f9c
 	return check;
   }
 

@@ -169,7 +169,7 @@ depend java.sql.Time;
 			}
 		}
 	}
-
+	check = true;
 	return check;
   }
   

@@ -729,6 +729,7 @@ public class FlexibookController {
 	 * @param newStartTime -- the new start time of appointment 
 	 * @throws InvalidInputException
 	 */
+	
 	public static void UpdateAppointment(String customer, String customer2, String action, String comboItem, String serviceName, 
 			String serviceDate, String newDate, String startTime, String newStartTime) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
@@ -739,9 +740,7 @@ public class FlexibookController {
 				throw new InvalidInputException("Error: A customer can only update their own appointments");
 			}
 		}
-/*/
- * 
- */
+
 		int cindex = -1;
 		for(Customer c : fb.getCustomers()) {
 			if(c.getUsername().equals(customer)) {

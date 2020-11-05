@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.*;
 import ca.mcgill.ecse.flexibook.util.SystemTime;
 import java.time.LocalTime;
+import java.sql.Time;
 
 // line 101 "../../../../../FlexiBookPersistence.ump"
 // line 2 "../../../../../FlexiBookStates.ump"
@@ -124,7 +125,7 @@ public class Appointment implements Serializable
       case Booked:
         if (OneDayDiff())
         {
-        // line 11 "../../../../../FlexiBookStates.ump"
+        // line 12 "../../../../../FlexiBookStates.ump"
           doUpdateAppointment(timeslot, newBookableService, optionalService);
           setAppointmentStatus(AppointmentStatus.Booked);
           wasEventProcessed = true;
@@ -134,7 +135,7 @@ public class Appointment implements Serializable
       case InProgress:
         if (isWithinAppTimeSlot())
         {
-        // line 30 "../../../../../FlexiBookStates.ump"
+        // line 31 "../../../../../FlexiBookStates.ump"
           doUpdateAppointment(timeslot, newBookableService, optionalService);
           setAppointmentStatus(AppointmentStatus.InProgress);
           wasEventProcessed = true;
@@ -158,7 +159,7 @@ public class Appointment implements Serializable
       case Booked:
         if (OneDayDiff())
         {
-        // line 15 "../../../../../FlexiBookStates.ump"
+        // line 16 "../../../../../FlexiBookStates.ump"
           doCancelAppointment();
           setAppointmentStatus(AppointmentStatus.Final);
           wasEventProcessed = true;
@@ -182,7 +183,7 @@ public class Appointment implements Serializable
       case Booked:
         if (isWithinAppTimeSlot())
         {
-        // line 19 "../../../../../FlexiBookStates.ump"
+        // line 20 "../../../../../FlexiBookStates.ump"
           doCancelAppointmentO();
           setAppointmentStatus(AppointmentStatus.Final);
           wasEventProcessed = true;
@@ -206,7 +207,7 @@ public class Appointment implements Serializable
       case Booked:
         if (isWithinAppTimeSlot())
         {
-        // line 23 "../../../../../FlexiBookStates.ump"
+        // line 24 "../../../../../FlexiBookStates.ump"
           doStartAppointment(owner);
           setAppointmentStatus(AppointmentStatus.InProgress);
           wasEventProcessed = true;
@@ -228,7 +229,7 @@ public class Appointment implements Serializable
     switch (aAppointmentStatus)
     {
       case InProgress:
-        // line 34 "../../../../../FlexiBookStates.ump"
+        // line 35 "../../../../../FlexiBookStates.ump"
         doEndAppointment();
         setAppointmentStatus(AppointmentStatus.Final);
         wasEventProcessed = true;
@@ -452,14 +453,21 @@ public class Appointment implements Serializable
     }
   }
 
-  // line 42 "../../../../../FlexiBookStates.ump"
+  // line 43 "../../../../../FlexiBookStates.ump"
    private void doUpdateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService){
-    if(availableTimeSlot(timeslot) == true) {
-  		this.setTimeSlot(timeslot);
-  	}
-  	else {
-  		throw new RuntimeException("Unavailable time slot for this new updated appointment");
-  	}
+    Boolean check = false;
+	try {
+    	check = availableTimeSlot(timeslot);
+    }
+    catch(RuntimeException e) {
+    	if(e != null) {
+    		throw new RuntimeException("No available time slot for this updated appointment");
+    	}
+    }
+	
+    if(check == false) {
+    	throw new RuntimeException("No available time slot for this updated appointment");
+    }
 	
 	if(this.getBookableService() instanceof ServiceCombo) {
 		if(this.getAppointmentInProgress() == false) {
@@ -502,12 +510,87 @@ public class Appointment implements Serializable
   /**
    * Author: Haipeng Yue
    */
-  // line 87 "../../../../../FlexiBookStates.ump"
-   private Boolean availableTimeSlot(TimeSlot TS){
-    return true;
+  // line 98 "../../../../../FlexiBookStates.ump"
+   private Boolean availableTimeSlot(TimeSlot newslot){
+    Boolean check = false;
+	FlexiBook fb = this.getFlexiBook();
+	Service service = (Service) this.getBookableService();
+	Time startTime = this.getTimeSlot().getStartTime();
+
+	for(TimeSlot slot : fb.getBusiness().getHolidays()) {
+		if(!isNoOverlap(newslot,slot)) {
+			throw new RuntimeException("unsuccessful");
+		}
+	}
+	for(Appointment appointment : fb.getAppointments()) {
+		if(appointment != this) {
+			if(appointment.getBookableService() instanceof Service) {
+				Service s = (Service) appointment.getBookableService();
+				TimeSlot slot = appointment.getTimeSlot();
+				if(s.getDowntimeStart() == 0) {
+					if(!isNoOverlap(newslot,slot)) {
+						throw new RuntimeException("unsuccessful");
+					}
+				}
+				else {
+					LocalTime ST = appointment.getTimeSlot().getStartTime().toLocalTime().plusMinutes(service.getDowntimeStart());
+					LocalTime endTime = ST.plusMinutes(service.getDowntimeDuration());
+					Time start = Time.valueOf(ST);
+					Time end = Time.valueOf(endTime);
+					TimeSlot TS = new TimeSlot(appointment.getTimeSlot().getStartDate(), start, appointment.getTimeSlot().getStartDate(), end, fb);
+					if(!isNoOverlap(newslot, slot)) {
+						if(isFullyCovered(newslot, TS)) {
+							check = true;
+						}
+						else {
+							throw new RuntimeException("unsuccessful");
+						}
+					}
+				}
+
+			}
+		}
+	}
+	for(Appointment app : fb.getAppointments()) {
+		if(app.getBookableService() instanceof ServiceCombo) {
+			boolean successful = false;
+			List<TimeSlot> dtTS = new ArrayList<TimeSlot>();
+			ServiceCombo combo = (ServiceCombo) app.getBookableService();
+			int min = 0;
+			for (ComboItem item : combo.getServices()) {
+				Service s = item.getService();
+				min += s.getDuration(); 
+				if(s.getDowntimeDuration() != 0) {
+					min -= s.getDuration();
+					LocalTime ST = app.getTimeSlot().getStartTime().toLocalTime().plusMinutes(s.getDowntimeStart() + min);
+					LocalTime endTime = ST.plusMinutes(s.getDowntimeDuration());
+					Time start = Time.valueOf(ST);
+					Time end = Time.valueOf(endTime);
+					TimeSlot TS = new TimeSlot(app.getTimeSlot().getStartDate(), start, app.getTimeSlot().getStartDate(), end, fb);
+					dtTS.add(TS);
+				}
+			}
+			for(TimeSlot t : dtTS) {
+				if(!isNoOverlap(newslot, t)) {
+					if(isFullyCovered(newslot, t)) {
+						check = true;
+						successful = true;
+					}
+				}
+			}
+			if(this.getTimeSlot().getStartTime().equals(startTime)) {
+				throw new RuntimeException("unsuccessful");
+			}
+			if(!(isNoOverlap(app.getTimeSlot(), newslot)) && successful == false) {
+				throw new RuntimeException("unsuccessful");
+			}
+		}
+	}
+
+	return check;
   }
 
-  // line 92 "../../../../../FlexiBookStates.ump"
+  // line 178 "../../../../../FlexiBookStates.ump"
    private Boolean OneDayDiff(){
     String sDate = SystemTime.getdate(SystemTime.getSysTime());
 	String date = this.getTimeSlot().getStartDate().toString();
@@ -520,7 +603,7 @@ public class Appointment implements Serializable
 	}
   }
 
-  // line 105 "../../../../../FlexiBookStates.ump"
+  // line 191 "../../../../../FlexiBookStates.ump"
    private Boolean isWithinAppTimeSlot(){
     String st = this.getTimeSlot().getStartTime().toLocalTime().toString();
 	String systemTimeRN = SystemTime.gettime(SystemTime.getSysTime());
@@ -543,12 +626,12 @@ public class Appointment implements Serializable
 	}
   }
 
-  // line 127 "../../../../../FlexiBookStates.ump"
+  // line 213 "../../../../../FlexiBookStates.ump"
    private void doCancelAppointment(){
     this.delete();
   }
 
-  // line 131 "../../../../../FlexiBookStates.ump"
+  // line 217 "../../../../../FlexiBookStates.ump"
    private void doCancelAppointmentO(){
     Customer a = this.getCustomer();
 	int noShowCountOld = a.getNoShowCount();
@@ -557,7 +640,7 @@ public class Appointment implements Serializable
 	this.delete();
   }
 
-  // line 139 "../../../../../FlexiBookStates.ump"
+  // line 225 "../../../../../FlexiBookStates.ump"
    private void doStartAppointment(Owner owner){
     if(this.getFlexiBook().getOwner().equals(owner)) {
 		this.setAppointmentInProgress(true);
@@ -567,10 +650,40 @@ public class Appointment implements Serializable
 	}
   }
 
-  // line 148 "../../../../../FlexiBookStates.ump"
+  // line 234 "../../../../../FlexiBookStates.ump"
    private void doEndAppointment(){
     this.setAppointmentInProgress(false);
   	this.delete();
+  }
+
+  // line 240 "../../../../../FlexiBookStates.ump"
+   public static  boolean isNoOverlap(TimeSlot t1, TimeSlot t2){
+    if(t1.getStartDate().equals(t2.getStartDate())) {
+			if(t1.getEndTime().before(t2.getStartTime()) || 
+					t2.getEndTime().before(t1.getStartTime())) {
+				//is not overlap
+				return true;
+			}else {
+				return false;
+			}
+		}
+		return true;
+  }
+
+  // line 253 "../../../../../FlexiBookStates.ump"
+   public static  boolean isFullyCovered(TimeSlot t1, TimeSlot t2){
+    if(t1.getStartDate().equals(t2.getStartDate())) {
+			if(t1.getEndTime().before(t2.getEndTime()) && 
+					t1.getStartTime().after(t2.getStartTime())) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+			return false;
+		}
   }
 
 

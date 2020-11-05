@@ -8,7 +8,7 @@ depend java.time.LocalTime;
   appointmentStatus {
     Booked{
       
-      updateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService) [OneDayDiff() & availableTimeSlot()] / {
+      updateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService) [OneDayDiff()] / {
         doUpdateAppointment(timeslot, newBookableService, optionalService);
       } -> Booked;
       
@@ -27,7 +27,7 @@ depend java.time.LocalTime;
     }
     
     InProgress{
-      updateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService) [availableTimeSlot()] / {
+      updateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService) [isWithinAppTimeSlot()] / {
           doUpdateAppointment(timeslot, newBookableService, optionalService);
       } -> InProgress;
       
@@ -39,9 +39,15 @@ depend java.time.LocalTime;
   }
   
   private void doUpdateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService) {
-  	this.setTimeSlot(timeslot);
-		if(this.getBookableService() instanceof ServiceCombo) {
-			if(this.getAppointmentInProgress() == false) {
+  	if(availableTimeSlot(timeslot) == true) {
+  		this.setTimeSlot(timeslot);
+  	}
+  	else {
+  		throw new RuntimeException("Unavailable time slot for this new updated appointment");
+  	}
+	
+	if(this.getBookableService() instanceof ServiceCombo) {
+		if(this.getAppointmentInProgress() == false) {
 				this.setBookableService(newBookableService);
 				List<ComboItem> a = this.getChosenItems();
 				for(ComboItem c : a) {
@@ -76,9 +82,9 @@ depend java.time.LocalTime;
 			}
 		}
   }
-  
-  private Boolean availableTimeSlot() {
-  	return false;
+  //Author: Haipeng Yue
+  private Boolean availableTimeSlot(TimeSlot TS) {
+  	return true;
   }
   
   private Boolean OneDayDiff() {

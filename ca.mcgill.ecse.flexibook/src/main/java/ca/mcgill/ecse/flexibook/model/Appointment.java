@@ -122,7 +122,7 @@ public class Appointment implements Serializable
     switch (aAppointmentStatus)
     {
       case Booked:
-        if (OneDayDiff()&&availableTimeSlot())
+        if (OneDayDiff())
         {
         // line 11 "../../../../../FlexiBookStates.ump"
           doUpdateAppointment(timeslot, newBookableService, optionalService);
@@ -132,7 +132,7 @@ public class Appointment implements Serializable
         }
         break;
       case InProgress:
-        if (availableTimeSlot())
+        if (isWithinAppTimeSlot())
         {
         // line 30 "../../../../../FlexiBookStates.ump"
           doUpdateAppointment(timeslot, newBookableService, optionalService);
@@ -454,9 +454,15 @@ public class Appointment implements Serializable
 
   // line 42 "../../../../../FlexiBookStates.ump"
    private void doUpdateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService){
-    this.setTimeSlot(timeslot);
-		if(this.getBookableService() instanceof ServiceCombo) {
-			if(this.getAppointmentInProgress() == false) {
+    if(availableTimeSlot(timeslot) == true) {
+  		this.setTimeSlot(timeslot);
+  	}
+  	else {
+  		throw new RuntimeException("Unavailable time slot for this new updated appointment");
+  	}
+	
+	if(this.getBookableService() instanceof ServiceCombo) {
+		if(this.getAppointmentInProgress() == false) {
 				this.setBookableService(newBookableService);
 				List<ComboItem> a = this.getChosenItems();
 				for(ComboItem c : a) {
@@ -492,12 +498,16 @@ public class Appointment implements Serializable
 		}
   }
 
-  // line 81 "../../../../../FlexiBookStates.ump"
-   private Boolean availableTimeSlot(){
-    return false;
+
+  /**
+   * Author: Haipeng Yue
+   */
+  // line 87 "../../../../../FlexiBookStates.ump"
+   private Boolean availableTimeSlot(TimeSlot TS){
+    return true;
   }
 
-  // line 86 "../../../../../FlexiBookStates.ump"
+  // line 92 "../../../../../FlexiBookStates.ump"
    private Boolean OneDayDiff(){
     String sDate = SystemTime.getdate(SystemTime.getSysTime());
 	String date = this.getTimeSlot().getStartDate().toString();
@@ -510,7 +520,7 @@ public class Appointment implements Serializable
 	}
   }
 
-  // line 99 "../../../../../FlexiBookStates.ump"
+  // line 105 "../../../../../FlexiBookStates.ump"
    private Boolean isWithinAppTimeSlot(){
     String st = this.getTimeSlot().getStartTime().toLocalTime().toString();
 	String systemTimeRN = SystemTime.gettime(SystemTime.getSysTime());
@@ -533,12 +543,12 @@ public class Appointment implements Serializable
 	}
   }
 
-  // line 121 "../../../../../FlexiBookStates.ump"
+  // line 127 "../../../../../FlexiBookStates.ump"
    private void doCancelAppointment(){
     this.delete();
   }
 
-  // line 125 "../../../../../FlexiBookStates.ump"
+  // line 131 "../../../../../FlexiBookStates.ump"
    private void doCancelAppointmentO(){
     Customer a = this.getCustomer();
 	int noShowCountOld = a.getNoShowCount();
@@ -547,7 +557,7 @@ public class Appointment implements Serializable
 	this.delete();
   }
 
-  // line 133 "../../../../../FlexiBookStates.ump"
+  // line 139 "../../../../../FlexiBookStates.ump"
    private void doStartAppointment(Owner owner){
     if(this.getFlexiBook().getOwner().equals(owner)) {
 		this.setAppointmentInProgress(true);
@@ -557,7 +567,7 @@ public class Appointment implements Serializable
 	}
   }
 
-  // line 142 "../../../../../FlexiBookStates.ump"
+  // line 148 "../../../../../FlexiBookStates.ump"
    private void doEndAppointment(){
     this.setAppointmentInProgress(false);
   	this.delete();

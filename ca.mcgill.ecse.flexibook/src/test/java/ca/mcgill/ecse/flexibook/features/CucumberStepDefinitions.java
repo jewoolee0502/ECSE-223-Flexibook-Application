@@ -155,7 +155,7 @@ public class CucumberStepDefinitions {
 	
 	//Define Service Combo
 	/**This is the step definition to check the makecombo controller method.
-	 *@author Haiepng Yue 
+	 *@author Haipeng Yue 
 	 * 
 	 * 
 	 */
@@ -165,7 +165,7 @@ public class CucumberStepDefinitions {
 		FlexiBookApplication.setflexibook(flexibook);
 	}
 /**
- * @author Haiepng Yue 
+ * @author Haipeng Yue 
  */
 	@Given("an owner account exists in the system")
 	public void an_owner_account_exists_in_the_system() {
@@ -184,7 +184,7 @@ public class CucumberStepDefinitions {
 		}
 	}
 	/**
-	 * @author Haiepng Yue 
+	 * @author Haipeng Yue 
 	 */
 	@Given("a business exists in the system")
 	public void a_business_exists_in_the_system() {
@@ -193,7 +193,7 @@ public class CucumberStepDefinitions {
 		}
 	}
 	/**
-	 * @author Haiepng Yue 
+	 * @author Haipeng Yue
 	 */
 	@Given("the following services exist in the system:")
 	public void the_following_services_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
@@ -212,7 +212,7 @@ public class CucumberStepDefinitions {
 		}
 	}
 	/**
-	 * @author Haiepng Yue 
+	 * @author Haipeng Yue
 	 */
 	@Given("the following service combos exist in the system:")
 	public void the_following_service_combos_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) throws InvalidInputException {
@@ -227,7 +227,7 @@ public class CucumberStepDefinitions {
 		}
 	}
 	/**
-	 * @author Haiepng Yue 
+	 * @author Haipeng Yue 
 	 */
 	@Given("the Owner with username {string} is logged in")
 	public void the_owner_with_username_is_logged_in(String string) {
@@ -235,7 +235,7 @@ public class CucumberStepDefinitions {
 		FlexiBookApplication.setCurrentuser(flexibook.getOwner());
 	}
 	/**
-	 * @author Haiepng Yue 
+	 * @author Haipeng Yue 
 	 */
 	@When("{string} initiates the definition of a service combo {string} with main service {string}, services {string} and mandatory setting {string}")
 	public void initiates_the_definition_of_a_service_combo_with_main_service_services_and_mandatory_setting(String string, String string2, String string3, String string4, String string5) throws InvalidInputException {
@@ -248,7 +248,7 @@ public class CucumberStepDefinitions {
 		}
 	}
 	/**
-	 * @author Haiepng Yue 
+	 * @author Haipeng Yue
 	 */
 	@Then("the service combo {string} shall exist in the system")
 	public void the_service_combo_shall_exist_in_the_system(String string) {
@@ -260,7 +260,7 @@ public class CucumberStepDefinitions {
 		assertEquals(string,comboname);
 	}
 	/**
-	 * @author Haiepng Yue 
+	 * @author Haipeng Yue 
 	 */
 	@Then("the service combo {string} shall contain the services {string} with mandatory setting {string}")
 	public void the_service_combo_shall_contain_the_services_with_mandatory_setting(String string, String string2, String string3) {
@@ -280,7 +280,7 @@ public class CucumberStepDefinitions {
 		assertEquals(comboname,string);
 	}
 	/**
-	 * @author Haiepng Yue 
+	 * @author Haipeng Yue
 	 */
 	@Then("the main service of the service combo {string} shall be {string}")
 	public void the_main_service_of_the_service_combo_shall_be(String string, String string2) {
@@ -292,7 +292,7 @@ public class CucumberStepDefinitions {
 			}}
 	}
 	/**
-	 * @author Haiepng Yue 
+	 * @author Haipeng Yue
 	 */
 	@Then("the service {string} in service combo {string} shall be mandatory")
 	public void the_service_in_service_combo_shall_be_mandatory(String string, String string2) {
@@ -309,7 +309,7 @@ public class CucumberStepDefinitions {
 			}}
 	}
 	/**
-	 * @author Haiepng Yue 
+	 * @author Haipeng Yue 
 	 */
 	@Then("the number of service combos in the system shall be {string}")
 	public void the_number_of_service_combos_in_the_system_shall_be(String string) {
@@ -324,7 +324,7 @@ public class CucumberStepDefinitions {
 		assertEquals(string,Integer.toString(count));
 	}
 	/**
-	 * @author Haiepng Yue 
+	 * @author Haipeng Yue 
 	 */
 	@Then("the service combo {string} shall preserve the following properties:")
 	public void the_service_combo_shall_preserve_the_following_properties(String string, io.cucumber.datatable.DataTable dataTable) {
@@ -342,7 +342,7 @@ public class CucumberStepDefinitions {
 		}
 	}
 	/**
-	 * @author Haiepng Yue 
+	 * @author Haipeng Yue 
 	 */
 	@Then("an error message with content {string} shall be raised")
 	public void an_error_message_with_content_shall_be_raised(String string) {
@@ -351,7 +351,7 @@ public class CucumberStepDefinitions {
 		FlexiBookApplication.setmessage(null);
 	}
 	/**
-	 * @author Haiepng Yue 
+	 * @author Haipeng Yue
 	 */
 	@Then("the service combo {string} shall not exist in the system")
 	public void the_service_combo_shall_not_exist_in_the_system(String string) throws InvalidInputException {
@@ -447,7 +447,7 @@ public class CucumberStepDefinitions {
 	
 	//Delete Service Combo
 	/**This is the step definition to check the deletecombo controller method.
-     *@author Haiepng Yue 
+     *@author Haipeng Yue 
      */
 	@When("{string} initiates the deletion of service combo {string}")
 	public void initiates_the_deletion_of_service_combo(String string, String string2) throws InvalidInputException {
@@ -458,7 +458,7 @@ public class CucumberStepDefinitions {
 		}
 	}
 	/**
-	 * @author Haiepng Yue 
+	 * @author Haipeng Yue 
 	 */
 	@Then("the number of appointments in the system with service {string} shall be {string}")
 	public void the_number_of_appointments_in_the_system_with_service_shall_be(String string, String string2) {
@@ -471,7 +471,7 @@ public class CucumberStepDefinitions {
 		assertEquals(Integer.decode(string2),count);
 	}
 	/**
-	 * @author Haiepng Yue 
+	 * @author Haipeng Yue
 	 */
 	@Then("the number of appointments in the system shall be {string}")
 	public void the_number_of_appointments_in_the_system_shall_be(String string) {
@@ -1247,7 +1247,7 @@ public class CucumberStepDefinitions {
 	
 	//Update Service Combo
 	/**This is the step definition to check the updatecombo controller method.
-     *@author Haiepng Yue 
+     *@author Haipeng Yue
      * 
      * 
      */
@@ -1261,7 +1261,7 @@ public class CucumberStepDefinitions {
 		}
 	}
 	/**
-	 * @author Haiepng Yue 
+	 * @author Haipeng Yue
 	 */
 	@Then("the service combo {string} shall be updated to name {string}")
 	public void the_service_combo_shall_be_updated_to_name(String string, String string2) {

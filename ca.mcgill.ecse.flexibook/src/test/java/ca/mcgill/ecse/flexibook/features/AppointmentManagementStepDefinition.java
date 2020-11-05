@@ -1,11 +1,14 @@
 package ca.mcgill.ecse.flexibook.features;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.Customer;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
 import ca.mcgill.ecse.flexibook.util.SystemTime;
+import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -61,13 +64,25 @@ public class AppointmentManagementStepDefinition {
 		throw new io.cucumber.java.PendingException();
 	}
 	@Then("the user {string} shall have {int} no-show records")
-	public void the_user_shall_have_no_show_records(String string, Integer int1) {
-		// Write code here that turns the phrase above into concrete actions
-		throw new io.cucumber.java.PendingException();
+	public void the_user_shall_have_no_show_records(String customer, Integer int1) {
+		int cindex = -1;
+
+		for(Customer c : flexibook.getCustomers()) {
+			if(c.getUsername().equals(customer)) {
+				cindex = flexibook.indexOfCustomer(c);
+			}
+		}
+		flexibook.getCustomer(cindex).setNoShowCount(int1);
+		assertEquals(int1,flexibook.getCustomer(cindex).setNoShowCount(int1));
 	}
+
 	@Then("the system shall have {int} appointments")
 	public void the_system_shall_have_appointments(Integer int1) {
-		// Write code here that turns the phrase above into concrete actions
-		throw new io.cucumber.java.PendingException();
+		assertEquals(int1,flexibook.getAppointments().size());
+	}
+	
+	@After
+	public void tearDown() {
+		flexibook.delete();
 	}
 }

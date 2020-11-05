@@ -40,19 +40,21 @@ depend java.sql.Time;
   }
   
   private void doUpdateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService) {
-  	Boolean check = false;
+  	 if(!(this.getTimeSlot().getStartTime().equals(timeslot.getStartTime()))){
+     Boolean check = false;
 	try {
     	check = availableTimeSlot(timeslot);
     }
     catch(RuntimeException e) {
     	if(e != null) {
-    		throw new RuntimeException("No available time slot for this updated appointment");
+    		throw new RuntimeException("unsuccessful");
     	}
     }
 	
     if(check == false) {
-    	throw new RuntimeException("No available time slot for this updated appointment");
-    }
+    	throw new RuntimeException("unsuccessful");
+    }}
+	
 	
 	if(this.getBookableService() instanceof ServiceCombo) {
 		if(this.getAppointmentInProgress() == false) {
@@ -161,9 +163,7 @@ depend java.sql.Time;
 					}
 				}
 			}
-			if(this.getTimeSlot().getStartTime().equals(startTime)) {
-				throw new RuntimeException("unsuccessful");
-			}
+			
 			if(!(isNoOverlap(app.getTimeSlot(), newslot)) && successful == false) {
 				throw new RuntimeException("unsuccessful");
 			}
@@ -179,10 +179,10 @@ depend java.sql.Time;
 	String date = this.getTimeSlot().getStartDate().toString();
 	   
 	if(date.equals(sDate)) {
-		return true;
+		return false;
 	}
 	else {
-		return false;
+		return true;
 	}
   }
   

@@ -739,7 +739,9 @@ public class FlexibookController {
 				throw new InvalidInputException("Error: A customer can only update their own appointments");
 			}
 		}
-
+/*/
+ * 
+ */
 		int cindex = -1;
 		for(Customer c : fb.getCustomers()) {
 			if(c.getUsername().equals(customer)) {
@@ -755,6 +757,9 @@ public class FlexibookController {
 				}
 			}
 		}
+		
+		
+		
 		if(action == null && comboItem == null) {
 			Service service = (Service)fb.getCustomer(cindex).getAppointment(aindex).getBookableService();
 			Time newstarttime = Time.valueOf(newStartTime+":00");

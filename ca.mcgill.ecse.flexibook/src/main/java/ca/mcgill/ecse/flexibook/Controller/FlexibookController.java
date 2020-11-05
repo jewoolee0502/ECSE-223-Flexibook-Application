@@ -755,9 +755,7 @@ public class FlexibookController {
 				}
 			}
 		}
-		
-		
-		
+
 		if(action == null && comboItem == null) {
 			Service service = (Service)fb.getCustomer(cindex).getAppointment(aindex).getBookableService();
 			Time newstarttime = Time.valueOf(newStartTime+":00");
@@ -923,9 +921,10 @@ public class FlexibookController {
 
 
 	/**
-	 * The OwnerCancelAppointment method can cancel an appointment in the flexibook system.
+	 * The noShowCheck method checks whether the customer has arrived in time and if not, the owner ends the appointment.
 	 * 
 	 * @author Jewoo Lee
+	 * @author Haipeng Yue
 	 * 
 	 * @param customer -- the customer who want to cancel his/her appointment.
 	 * @param owner -- the owner whose appointment to be cancelled.
@@ -935,7 +934,7 @@ public class FlexibookController {
 	 * @throws InvalidInputException
 	 */
 
-	public static void OwnerCancelAppointment(String customer, String owner, String name, String serviceDate, String startTime) throws InvalidInputException {
+	public static void noShowCheck(String customer, String owner, String name, String serviceDate, String startTime) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		if(owner.equals("owner")) {
 
@@ -974,6 +973,49 @@ public class FlexibookController {
 			throw new InvalidInputException("You are not the owner");
 		}
 
+	}
+	
+	
+	/**
+	 * startAppointment - this method changes the appointment boolean status to true to indicate whether the appointment is in progress or not.
+	 * 
+	 * @author Haipeng Yue
+	 * @author Jewoo Lee
+	 * 
+	 * @param owner
+	 * @param appointment
+	 * @throws InvalidInputException
+	 */
+	
+	public static void startAppointment(String owner, Appointment appointment) throws InvalidInputException {
+		FlexiBook fb = FlexiBookApplication.getflexibook();
+		if(fb.getOwner().getUsername().equals(owner)) {
+			appointment.startAppointment(fb.getOwner());
+		}
+		else {
+			throw new InvalidInputException("You don't have the permission to start this appointment");
+		}
+	}
+	
+	/**
+	 * endAppointment - this method changes the appointment boolean status to false to indicate that the appointment has ended, and it deletes the appointment after.
+	 * 
+	 * @author Jewoo Lee
+	 * @author Haipeng Yue
+	 * 
+	 * @param owner
+	 * @param appointment
+	 * @throws InvalidInputException
+	 */
+	
+	public static void endAppointment(String owner, Appointment appointment) throws InvalidInputException {
+		FlexiBook fb = FlexiBookApplication.getflexibook();
+		if(fb.getOwner().getUsername().equals(owner)) {
+			appointment.endAppointment();
+		}
+		else {
+			throw new InvalidInputException("You don't have the permission to end this appointment");
+		}
 	}
 
 

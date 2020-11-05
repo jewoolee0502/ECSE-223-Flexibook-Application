@@ -619,10 +619,10 @@ public class Appointment implements Serializable
 		return false;
 	}
 	else if(a == 2 && b == 1) {
-		return true;
+		return false;
 	}
 	else {
-		return false;
+		return true;
 	}
   }
 

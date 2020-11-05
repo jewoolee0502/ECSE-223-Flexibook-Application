@@ -118,14 +118,15 @@ depend java.time.LocalTime;
   } 
   
   private void doCancelAppointment() {
-  	
+  	this.delete();
   }
   
   private void doCancelAppointmentO() {
-		Customer a = this.getCustomer();
-		int noShowCountOld = a.getNoShowCount();
-		a.setNoShowCount(noShowCountOld + 1);
-		this.setNoShowCheck(true);
+	Customer a = this.getCustomer();
+	int noShowCountOld = a.getNoShowCount();
+	a.setNoShowCount(noShowCountOld + 1);
+	this.setNoShowCheck(true);
+	this.delete();
   }
   
   private void doStartAppointment(Owner owner) {

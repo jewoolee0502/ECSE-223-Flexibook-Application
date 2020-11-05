@@ -65,6 +65,7 @@ public class CucumberStepDefinitions {
 	//Add Service
 
 	/**
+	 * This stepdefinition takes all parameters to add a new service in the system.
 	 * @author Tianyu zhao
 	 * @author Zhixin Xiong
 	 */
@@ -76,12 +77,16 @@ public class CucumberStepDefinitions {
 			FlexiBookApplication.setmessage(e.getMessage());
 		}
 	}
-	
+	/**
+	 * @author Tianyu Zhao
+	 */
 	@Then("the service {string} shall exist in the system")
 	public void the_service_shall_exist_in_the_system(String string) {
 		assertEquals(string,flexibook.getBookableService(0).getWithName(string).getName());
 	}
-
+	/**
+	 * @author Tianyu Zhao
+	 */
 	@Then("the service {string} shall have duration {string}, start of down time {string} and down time duration {string}")
 	public void the_service_shall_have_duration_start_of_down_time_and_down_time_duration(String string, String string2, String string3, String string4) {
 		Service thiss=(Service) flexibook.getBookableService(0).getWithName(string);
@@ -492,7 +497,8 @@ public class CucumberStepDefinitions {
 	
 	
 	//Delete Service
-	/**
+	/**This stepdefinition takes an input of servicenames. The method will decide whether to initiate the deleting method
+	 * @auther Tianyu Zhao
 	 * @author Zhixin Xiong
 	 */
 	@When("{string} initiates the deletion of service {string}")
@@ -1380,7 +1386,9 @@ public class CucumberStepDefinitions {
 	
 	
 	//Update Service
-
+	/**This method takes all parameters to update a service in the system.
+	 * @author Tianyu Zhao
+	 */
 	@Given("the following service combos exist in the system:`")
 	public void the_following_service_combos_exist_in_the_system2(io.cucumber.datatable.DataTable dataTable) throws InvalidInputException {
 		String owner=flexibook.getOwner().getUsername();
@@ -1393,7 +1401,9 @@ public class CucumberStepDefinitions {
 			FlexibookController.makecombo(owner, name, mainservice, services, mandatory);
 		}
 	}
-
+	/**
+	 * @author Tianyu Zhao
+	 */
 	@When("{string} initiates the update of the service {string} to name {string}, duration {string}, start of down time {string} and down time duration {string}")
 	public void initiates_the_update_of_the_service_to_name_duration_start_of_down_time_and_down_time_duration(String string, String string2, String string3, String string4, String string5, String string6) {
 		try{
@@ -1403,7 +1413,9 @@ public class CucumberStepDefinitions {
 			FlexiBookApplication.setmessage(error);
 		}
 	}
-
+	/**
+	 * @author Tianyu Zhao
+	 */
 	@Then("the service {string} shall be updated to name {string}, duration {string}, start of down time {string} and down time duration {string}")
 	public void the_service_shall_be_updated_to_name_duration_start_of_down_time_and_down_time_duration(String string, String string2, String string3, String string4, String string5) {
 		Service thiss=(Service) flexibook.getBookableService(0).getWithName(string2);
@@ -1411,7 +1423,9 @@ public class CucumberStepDefinitions {
 		assertEquals(string4,Integer.toString(thiss.getDowntimeStart()));
 		assertEquals(string5,Integer.toString(thiss.getDowntimeDuration()));
 	}
-
+	/**
+	 * @author Tianyu Zhao
+	 */
 	@Then("the service {string} shall still preserve the following properties:")
 	public void the_service_shall_still_preserve_the_following_properties(String string, io.cucumber.datatable.DataTable dataTable) {
 		List<Map<String, String>> valueMaps = dataTable.asMaps();
@@ -1423,14 +1437,18 @@ public class CucumberStepDefinitions {
 
 		}
 	}
-
+	/**
+	 * @author Tianyu Zhao
+	 */
 	@Then("the service combos {string} shall not exist in the system")
 	public void the_service_combos_shall_not_exist_in_the_system(String string) {
 
 		BookableService thiService=BookableService.getWithName(string);
 		assertEquals(null, thiService);
 	}
-
+	/**
+	 * @author Tianyu Zhao
+	 */
 	@Then("the service combos {string} shall not contain service {string}")
 	public void the_service_combos_shall_not_contain_service(String string, String string2) {
 

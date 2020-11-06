@@ -654,7 +654,7 @@ public class FlexibookController {
 		TimeSlot timeslot = new TimeSlot(servicedate,starttime,servicedate,endtime, fb);
 
 		Appointment appointment = new Appointment(fb.getCustomer(cindex), service, timeslot, fb);
-
+		fb.addAppointment(appointment);
 
 	}
 

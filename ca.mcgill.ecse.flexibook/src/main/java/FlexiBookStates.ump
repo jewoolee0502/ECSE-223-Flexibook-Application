@@ -210,7 +210,9 @@ depend java.sql.Time;
   } 
   
   private void doCancelAppointment() {
-  	this.delete();
+  	if(OneDayDiff() == true) {
+		this.delete();
+	}
   }
   
   private void doCancelAppointmentO() {

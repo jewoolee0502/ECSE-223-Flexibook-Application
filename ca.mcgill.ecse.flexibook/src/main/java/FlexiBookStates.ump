@@ -53,9 +53,10 @@ depend java.sql.Time;
 	
     if(check == false) {
     	throw new RuntimeException("unsuccessful");
-    }}
+    }
+    }
 	
-	
+	this.setTimeSlot(timeslot);
 	if(this.getBookableService() instanceof ServiceCombo) {
 		if(this.getAppointmentInProgress() == false) {
 				this.setBookableService(newBookableService);
@@ -76,16 +77,13 @@ depend java.sql.Time;
 					this.addChosenItem(newC);
 				}
 				if(newBookableService != null) {
-					throw new RuntimeException("You cannot change the Bookable Service during the service");
 				}
 			}
 		}
 		else if(this.getBookableService() instanceof ServiceCombo) {
 			if(this.getAppointmentInProgress() == true) {
-				throw new RuntimeException("You cannot change this service during the service");
 			}
 			if(optionalService != null) {
-				throw new RuntimeException("You cannot optional service to a single service");
 			}
 			else {
 				this.setBookableService(newBookableService);
@@ -224,7 +222,7 @@ depend java.sql.Time;
   }
   
   private void doStartAppointment(Owner owner) {
-  	if(this.getFlexiBook().getOwner().equals(owner)) {
+  	if(owner != null) {
 		this.setAppointmentInProgress(true);
 	}
 	else {

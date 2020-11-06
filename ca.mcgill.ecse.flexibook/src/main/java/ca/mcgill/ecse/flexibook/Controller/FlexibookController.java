@@ -570,7 +570,7 @@ public class FlexibookController {
 		}
 
 		Date servicedate = Date.valueOf(date);
-		Time starttime = Time.valueOf(startTime+":00");
+		Time starttime = Time.valueOf(startTime + ":00");
 		Time endtime = null;
 		LocalTime localtime = starttime.toLocalTime();
 
@@ -605,7 +605,9 @@ public class FlexibookController {
 		Boolean overslapBoolean=false;
 		for(TimeSlot Slota:newList) {
 			if((Slota.getEndDate().before(servicedate)==false)&&(Slota.getStartDate().after(servicedate)==false)){
-				overslapBoolean=true;	
+				if((starttime.before(Slota.getEndTime()))&&(starttime.before(Slota.getStartTime())==false)) {
+					overslapBoolean=true;
+				}
 			}
 		}
 		//make sure that it doesn't happen in the past
@@ -650,7 +652,7 @@ public class FlexibookController {
 			}
 		}
 		if((!inBusinessHour)||overslapBoolean||currenDate.before(servicedate)==false||overLapExist) {
-			throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
+
 		}
 
 		TimeSlot timeslot = new TimeSlot(servicedate,starttime,servicedate,endtime, fb);
@@ -940,7 +942,7 @@ public class FlexibookController {
 
 	public static void noShowCheck(String customer, String owner, String name, String serviceDate, String startTime) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
-		if(owner.equals("owner")) {
+		if(owner.equals(fb.getOwner().getUsername())) {
 
 			String sysTime = SystemTime.getSysTime();
 			String[] sys = sysTime.split("\\+");
@@ -948,10 +950,7 @@ public class FlexibookController {
 			Time localTime = Time.valueOf(sys[1]+":00");
 
 			Date servicedate = Date.valueOf(serviceDate);
-			Time starttime = Time.valueOf(startTime+":00");
-			if(servicedate.equals(localDate)) {
-				throw new InvalidInputException("Cannot cancel an appointment on the appointment date");
-			}
+			Time starttime = Time.valueOf(startTime);
 
 			int cindex = -1;
 			for(Customer c : fb.getCustomers()) {
@@ -966,9 +965,6 @@ public class FlexibookController {
 						aindex = fb.getCustomer(cindex).indexOfAppointment(a);
 					}
 				}
-			}
-			if(fb.getCustomer(cindex).getAppointment(aindex).getAppointmentInProgress() == false) {
-				throw new InvalidInputException("The owner cannot delete the appointment before the start of the appointment");
 			}
 			fb.getCustomer(cindex).getAppointment(aindex).ownerCancelAppointment();
 

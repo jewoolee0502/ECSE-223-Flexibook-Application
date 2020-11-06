@@ -556,11 +556,13 @@ public class FlexibookController {
 		if(service instanceof Service) {
 			duration=((Service) service).getDuration();
 		}else if(service  instanceof ServiceCombo) {
-			String[] arrOfStr = optionalServices.split(",", -1);
-			for(int i=0;i<arrOfStr.length;i++) {
-				BookableService aService=BookableService.getWithName(arrOfStr[i]);
-				if(aService instanceof Service) {
-					duration+=((Service) aService).getDuration();
+			if(optionalServices!=null) {
+				String[] arrOfStr = optionalServices.split(",", -1);
+				for(int i=0;i<arrOfStr.length;i++) {
+					BookableService aService=BookableService.getWithName(arrOfStr[i]);
+					if(aService instanceof Service) {
+						duration+=((Service) aService).getDuration();
+					}
 				}
 			}
 			duration+=((ServiceCombo) service).getMainService().getService().getDuration();
@@ -568,7 +570,7 @@ public class FlexibookController {
 		}
 
 		Date servicedate = Date.valueOf(date);
-		Time starttime = Time.valueOf(startTime+":00");
+		Time starttime = Time.valueOf(startTime + ":00");
 		Time endtime = null;
 		LocalTime localtime = starttime.toLocalTime();
 
@@ -603,7 +605,9 @@ public class FlexibookController {
 		Boolean overslapBoolean=false;
 		for(TimeSlot Slota:newList) {
 			if((Slota.getEndDate().before(servicedate)==false)&&(Slota.getStartDate().after(servicedate)==false)){
-				overslapBoolean=true;	
+				if((starttime.before(Slota.getEndTime()))&&(starttime.before(Slota.getStartTime())==false)) {
+					overslapBoolean=true;
+				}
 			}
 		}
 		//make sure that it doesn't happen in the past
@@ -648,7 +652,7 @@ public class FlexibookController {
 			}
 		}
 		if((!inBusinessHour)||overslapBoolean||currenDate.before(servicedate)==false||overLapExist) {
-			throw new InvalidInputException("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
+
 		}
 
 		TimeSlot timeslot = new TimeSlot(servicedate,starttime,servicedate,endtime, fb);
@@ -729,6 +733,10 @@ public class FlexibookController {
 	 * @param newStartTime -- the new start time of appointment 
 	 * @throws InvalidInputException
 	 */
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2727b7423c0ce8405698c9a997f44c1b3ab21bca
 	public static void UpdateAppointment(String customer, String customer2, String action, String comboItem, String serviceName, 
 			String serviceDate, String newDate, String startTime, String newStartTime) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
@@ -880,7 +888,7 @@ public class FlexibookController {
 	 * @throws InvalidInputException
 	 */
 
-	public static void CancelAppointment(String customer, String customer2, String name, String serviceDate, String startTime) throws InvalidInputException {
+	public static void CancelAppointment(String customer, String customer2, String serviceDate, String startTime) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		if(!(customer2==null)) {
 			if(customer.equals("owner")) {
@@ -896,26 +904,27 @@ public class FlexibookController {
 		Time localTime = Time.valueOf(sys[1]+":00");
 
 		Date servicedate = Date.valueOf(serviceDate);
-		Time starttime = Time.valueOf(startTime+":00");
+		Time starttime = Time.valueOf(startTime);
 		if(servicedate.equals(localDate)) {
-			throw new InvalidInputException("Cannot cancel an appointment on the appointment date");
+			//throw new InvalidInputException("Cannot cancel an appointment on the appointment date");
 		}
-
-		int cindex = -1;
-		for(Customer c : fb.getCustomers()) {
-			if(c.getUsername().equals(customer)) {
-				cindex = fb.indexOfCustomer(c);
-			}
-		}
-		int aindex = -1;
-		for(Appointment a : fb.getCustomer(cindex).getAppointments()) {
-			if(a.getTimeSlot().getStartDate().equals(servicedate)) {
-				if(a.getTimeSlot().getStartTime().equals(starttime)) {
-					aindex = fb.getCustomer(cindex).indexOfAppointment(a);
+		else {
+			int cindex = -1;
+			for(Customer c : fb.getCustomers()) {
+				if(c.getUsername().equals(customer)) {
+					cindex = fb.indexOfCustomer(c);
 				}
 			}
+			int aindex = -1;
+			for(Appointment a : fb.getCustomer(cindex).getAppointments()) {
+				if(a.getTimeSlot().getStartDate().equals(servicedate)) {
+					if(a.getTimeSlot().getStartTime().equals(starttime)) {
+						aindex = fb.getCustomer(cindex).indexOfAppointment(a);
+					}
+				}
+			}
+			fb.getCustomer(cindex).getAppointment(aindex).cancelAppointment();
 		}
-		fb.getCustomer(cindex).getAppointment(aindex).cancelAppointment();
 	}
 
 
@@ -936,18 +945,15 @@ public class FlexibookController {
 
 	public static void noShowCheck(String customer, String owner, String name, String serviceDate, String startTime) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
-		if(owner.equals("owner")) {
+		if(owner.equals(fb.getOwner().getUsername())) {
 
 			String sysTime = SystemTime.getSysTime();
 			String[] sys = sysTime.split("\\+");
 			Date localDate = Date.valueOf(sys[0]);
 			Time localTime = Time.valueOf(sys[1]+":00");
-
+			int noShow;
 			Date servicedate = Date.valueOf(serviceDate);
-			Time starttime = Time.valueOf(startTime+":00");
-			if(servicedate.equals(localDate)) {
-				throw new InvalidInputException("Cannot cancel an appointment on the appointment date");
-			}
+			Time starttime = Time.valueOf(startTime);
 
 			int cindex = -1;
 			for(Customer c : fb.getCustomers()) {
@@ -963,10 +969,8 @@ public class FlexibookController {
 					}
 				}
 			}
-			if(fb.getCustomer(cindex).getAppointment(aindex).getAppointmentInProgress() == false) {
-				throw new InvalidInputException("The owner cannot delete the appointment before the start of the appointment");
-			}
 			fb.getCustomer(cindex).getAppointment(aindex).ownerCancelAppointment();
+			fb.getCustomer(cindex).setNoShowCount(fb.getCustomer(cindex).getNoShowCount());
 
 		}
 		else {
@@ -974,8 +978,8 @@ public class FlexibookController {
 		}
 
 	}
-	
-	
+
+
 	/**
 	 * startAppointment - this method changes the appointment boolean status to true to indicate whether the appointment is in progress or not.
 	 * 
@@ -986,7 +990,7 @@ public class FlexibookController {
 	 * @param appointment
 	 * @throws InvalidInputException
 	 */
-	
+
 	public static void startAppointment(String owner, Appointment appointment) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		if(fb.getOwner().getUsername().equals(owner)) {
@@ -996,7 +1000,7 @@ public class FlexibookController {
 			throw new InvalidInputException("You don't have the permission to start this appointment");
 		}
 	}
-	
+
 	/**
 	 * endAppointment - this method changes the appointment boolean status to false to indicate that the appointment has ended, and it deletes the appointment after.
 	 * 
@@ -1007,7 +1011,7 @@ public class FlexibookController {
 	 * @param appointment
 	 * @throws InvalidInputException
 	 */
-	
+
 	public static void endAppointment(String owner, Appointment appointment) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		if(fb.getOwner().getUsername().equals(owner)) {

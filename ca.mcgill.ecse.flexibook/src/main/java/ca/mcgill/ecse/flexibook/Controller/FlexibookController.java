@@ -948,7 +948,7 @@ public class FlexibookController {
 			String[] sys = sysTime.split("\\+");
 			Date localDate = Date.valueOf(sys[0]);
 			Time localTime = Time.valueOf(sys[1]+":00");
-
+			int noShow;
 			Date servicedate = Date.valueOf(serviceDate);
 			Time starttime = Time.valueOf(startTime);
 
@@ -967,6 +967,7 @@ public class FlexibookController {
 				}
 			}
 			fb.getCustomer(cindex).getAppointment(aindex).ownerCancelAppointment();
+			fb.getCustomer(cindex).setNoShowCount(fb.getCustomer(cindex).getNoShowCount());
 
 		}
 		else {

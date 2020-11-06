@@ -17,7 +17,7 @@ depend java.sql.Time;
         doCancelAppointment();
       } -> Final;
      
-      ownerCancelAppointment() [isWithinAppTimeSlot()] / {
+      ownerCancelAppointment() [isWithinAppTimeSlot()||isAfterAppTimeSlot()] / {
         doCancelAppointmentO();
       } -> Final;
       
@@ -206,6 +206,17 @@ depend java.sql.Time;
 		return false;
 	}
   } 
+  private Boolean isAfterAppTimeSlot(){
+	String systemTimeRN = SystemTime.gettime(SystemTime.getSysTime());
+	String endTime = this.getTimeSlot().getEndTime().toLocalTime().toString();
+	int b = SystemTime.comparetime(endTime, systemTimeRN);
+	if(b==2){
+	return true;
+	}
+	else{ 
+	return false;
+	}
+  }
   
   private void doCancelAppointment() {
   	if(OneDayDiff() == true) {

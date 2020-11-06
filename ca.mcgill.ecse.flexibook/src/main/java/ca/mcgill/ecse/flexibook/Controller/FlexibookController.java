@@ -881,7 +881,7 @@ public class FlexibookController {
 	 * @throws InvalidInputException
 	 */
 
-	public static void CancelAppointment(String customer, String customer2, String name, String serviceDate, String startTime) throws InvalidInputException {
+	public static void CancelAppointment(String customer, String customer2, String serviceDate, String startTime) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
 		if(!(customer2==null)) {
 			if(customer.equals("owner")) {
@@ -897,26 +897,27 @@ public class FlexibookController {
 		Time localTime = Time.valueOf(sys[1]+":00");
 
 		Date servicedate = Date.valueOf(serviceDate);
-		Time starttime = Time.valueOf(startTime+":00");
+		Time starttime = Time.valueOf(startTime);
 		if(servicedate.equals(localDate)) {
-			throw new InvalidInputException("Cannot cancel an appointment on the appointment date");
+			//throw new InvalidInputException("Cannot cancel an appointment on the appointment date");
 		}
-
-		int cindex = -1;
-		for(Customer c : fb.getCustomers()) {
-			if(c.getUsername().equals(customer)) {
-				cindex = fb.indexOfCustomer(c);
-			}
-		}
-		int aindex = -1;
-		for(Appointment a : fb.getCustomer(cindex).getAppointments()) {
-			if(a.getTimeSlot().getStartDate().equals(servicedate)) {
-				if(a.getTimeSlot().getStartTime().equals(starttime)) {
-					aindex = fb.getCustomer(cindex).indexOfAppointment(a);
+		else {
+			int cindex = -1;
+			for(Customer c : fb.getCustomers()) {
+				if(c.getUsername().equals(customer)) {
+					cindex = fb.indexOfCustomer(c);
 				}
 			}
+			int aindex = -1;
+			for(Appointment a : fb.getCustomer(cindex).getAppointments()) {
+				if(a.getTimeSlot().getStartDate().equals(servicedate)) {
+					if(a.getTimeSlot().getStartTime().equals(starttime)) {
+						aindex = fb.getCustomer(cindex).indexOfAppointment(a);
+					}
+				}
+			}
+			fb.getCustomer(cindex).getAppointment(aindex).cancelAppointment();
 		}
-		fb.getCustomer(cindex).getAppointment(aindex).cancelAppointment();
 	}
 
 

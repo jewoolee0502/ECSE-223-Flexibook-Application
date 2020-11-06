@@ -19,6 +19,7 @@ import ca.mcgill.ecse.flexibook.model.Customer;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
 import ca.mcgill.ecse.flexibook.model.Owner;
 import ca.mcgill.ecse.flexibook.model.Service;
+import ca.mcgill.ecse.flexibook.model.ServiceCombo;
 import ca.mcgill.ecse.flexibook.model.TimeSlot;
 import ca.mcgill.ecse.flexibook.util.SystemTime;
 import io.cucumber.java.After;
@@ -27,6 +28,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class AppointmentManagementStepDefinition {
+
 	private FlexiBook flexibook = FlexiBookApplication.getflexibook();
 	private String error;
 	private Appointment appointment;
@@ -34,7 +36,7 @@ public class AppointmentManagementStepDefinition {
 	private TimeSlot timeslot;
 	private List<ComboItem> list;
 	private int index;
-	
+
 	@Given("{string} has {int} no-show records")
 	public void has_no_show_records(String string, Integer int1) {
 		int cindex = -1;
@@ -58,8 +60,10 @@ public class AppointmentManagementStepDefinition {
 		}
 		appointment = flexibook.getAppointment(1);
 	}
+
 	@When("{string} attempts to change the service in the appointment to {string} at {string}")
 	public void attempts_to_change_the_service_in_the_appointment_to_at(String string, String string2, String string3) {
+
 		SystemTime.SystemTime(string3, true);
 
 		for (BookableService s: flexibook.getBookableServices())
@@ -76,59 +80,134 @@ public class AppointmentManagementStepDefinition {
 	@When("{string} attempts to update the date to {string} and time to {string} at {string}")
 	public void attempts_to_update_the_date_to_and_time_to_at(String string, String string2, String string3, String string4) {
 		SystemTime.SystemTime(string4, true);
+		appointment = flexibook.getAppointment(1);
 		timeslot = appointment.getTimeSlot();
-		Date date = Date.valueOf(string2);
-		Time time = Time.valueOf(string3);
-		timeslot.setStartDate(date);
-		timeslot.setStartTime(time);
-		appointment.updateAppointment(timeslot, null, null);
+		SystemTime.SystemTime(string3, true);
+		timeslot = appointment.getTimeSlot();
+		Date date = timeslot.getStartDate();
+		Time start = timeslot.getStartTime();
+		String optionalServices=null;
+		BookableService thiService=appointment.getBookableService();
+		String serviceDate=date.toString();
+		String startTimeFomat=start.toString();
+		String startTime=startTimeFomat.substring(0,startTimeFomat.length()-3);
+		String newStartDateString=string2;
+		String newStartTime=string3;
+		String serviceName=appointment.getBookableService().getName();
+		if(thiService instanceof ServiceCombo) {
+
+			List<ComboItem>items= ((ServiceCombo) thiService).getServices();
+			if(items.size()>1) {
+				for(int i=1;i<items.size();i++) {
+					optionalServices+=items.get(i).getService().getName();
+					if(i<items.size()-1) {
+						optionalServices+=",";
+					}
+				}
+			}
+
+		}
+		try {
+			//String customer, String customer2, String name, String serviceDate, String startTime
+			FlexibookController.CancelAppointment(string, null, serviceDate, startTime);
+			FlexibookController.MakeAppointment( string, newStartDateString, serviceName, optionalServices, newStartTime);
+		} catch (Exception e)
+		{
+			error = e.getMessage();
+			FlexiBookApplication.setmessage(error);
+		}
 	}
 
 	@When("{string} attempts to cancel the appointment at {string}")
 	public void attempts_to_cancel_the_appointment_at(String string, String string2) throws InvalidInputException {
+		SystemTime.setSysTime(string2);
+		String a = appointment.getTimeSlot().getStartTime().toString();
 		try {
-			appointment.cancelAppointment();
+			FlexibookController.CancelAppointment(string, null, appointment.getTimeSlot().getStartDate().toString(), appointment.getTimeSlot().getStartTime().toString());
+			//appointment.cancelAppointment();
 		}
 		catch(RuntimeException e) {
-			throw new InvalidInputException(e.getMessage());
+
 		}
 	}
+
 	@When("{string} makes a {string} appointment without choosing optional services for the date {string} and time {string} at {string}")
-	public void makes_a_appointment_without_choosing_optional_services_for_the_date_and_time_at(String string, String string2, String string3, String string4, String string5) {
-		// Write code here that turns the phrase above into concrete actions
-		throw new io.cucumber.java.PendingException();
+	public void makes_a_appointment_without_choosing_optional_services_for_the_date_and_time_at(String string, 
+			String string2, String string3, String string4, String string5) {
+
+		SystemTime.SystemTime(string5, true);
+		try {
+
+			FlexibookController.MakeAppointment(string, string3, string2, null, string4);
+			appointment = flexibook.getAppointment(1);
+		}
+		catch(InvalidInputException e) {
+			error = e.getMessage();
+			FlexiBookApplication.setmessage(error);
+		}
 	}
+
 	@When("{string} attempts to add the optional service {string} to the service combo in the appointment at {string}")
 	public void attempts_to_add_the_optional_service_to_the_service_combo_in_the_appointment_at(String string, String string2, String string3) {
-		// Write code here that turns the phrase above into concrete actions
-		throw new io.cucumber.java.PendingException();
+
+		SystemTime.SystemTime(string3, true);
+		timeslot = appointment.getTimeSlot();
+		Date date = timeslot.getStartDate();
+		Time start = timeslot.getStartTime();
+		String serviceDate=date.toString();
+		String newDate=serviceDate;
+		String startTimeFomat=start.toString();
+		String startTime=startTimeFomat.substring(0,startTimeFomat.length()-3);
+		String newStartTime=startTime;
+		String serviceName=appointment.getBookableService().getName();
+
+		try {
+			FlexibookController.UpdateAppointment(string, null, "add", string2, serviceName, serviceDate, newDate, startTime, newStartTime);
+			appointment = flexibook.getAppointment(1);
+		}
+		catch(InvalidInputException e) {
+			error = e.getMessage();
+			FlexiBookApplication.setmessage(error);
+		}
 	}
 
 	@When("the owner starts the appointment at {string}")
 	public void the_owner_starts_the_appointment_at(String string) throws InvalidInputException {
 		Owner owner = flexibook.getOwner();
-		appointment.startAppointment(owner);
+		appointment.startAppointment(owner); //FlexibookController
 		//FlexibookController.startAppointment(owner, appointment);
 	}
 
 	@When("the owner ends the appointment at {string}")
 	public void the_owner_ends_the_appointment_at(String string) {
 		Owner owner = flexibook.getOwner();
-		appointment.endAppointment();
-		
-		
+		appointment.endAppointment(); //FlexibookController
+
+
 	}
 	@When("the owner attempts to end the appointment at {string}")
 	public void the_owner_attempts_to_end_the_appointment_at(String string) throws InvalidInputException {
 		Owner owner = flexibook.getOwner();
-		appointment.endAppointment();
+		appointment.endAppointment(); //FlexibookController
 		SystemTime.SystemTime(string, true);
 		try {
-			appointment.endAppointment();
+			appointment.endAppointment(); //FlexibookController
 		}
 		catch(RuntimeException e) {
 			throw new InvalidInputException(e.getMessage());
 		}
+	}
+
+	@When("the owner attempts to register a no-show for the appointment at {string}")
+	public void the_owner_attempts_to_register_a_no_show_for_the_appointment_at(String string) {
+		// Write code here that turns the phrase above into concrete actions
+		throw new io.cucumber.java.PendingException();
+	}
+
+	@Then("the appointment shall be in progress")
+	public void the_appointment_shall_be_in_progress() {
+		// Write code here that turns the phrase above into concrete actions
+		throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("the service combo in the appointment shall be {string}")
@@ -136,10 +215,22 @@ public class AppointmentManagementStepDefinition {
 		// Write code here that turns the phrase above into concrete actions
 		throw new io.cucumber.java.PendingException();
 	}
+
 	@Then("the service combo shall have {string} selected services")
 	public void the_service_combo_shall_have_selected_services(String string) {
-		// Write code here that turns the phrase above into concrete actions
-		throw new io.cucumber.java.PendingException();
+		BookableService serviceCombo=appointment.getBookableService();
+		String allServiceString="";
+
+		if(serviceCombo instanceof ServiceCombo) {
+			List<ComboItem>items=((ServiceCombo) serviceCombo).getServices();
+			for(int i=0;i<items.size();i++) {
+				allServiceString+=items.get(i).getService().getName();
+				if(i<items.size()-1) {
+					allServiceString+=",";
+				}
+			}
+		}
+		assertEquals(string, allServiceString);
 	}
 
 	@Then("the system shall have {int} appointment")
@@ -153,11 +244,13 @@ public class AppointmentManagementStepDefinition {
 		String appointmentStatus = appointment.getAppointmentStatus().toString();
 		assertEquals("Booked", appointmentStatus);
 	}
+	
 	@Then("the service in the appointment shall be {string}")
 	public void the_service_in_the_appointment_shall_be(String string) {
 		String serviceIn = appointment.getBookableService().getName();
 		assertEquals(string, serviceIn);
 	}
+	
 	@Then("the appointment shall be for the date {string} with start time {string} and end time {string}")
 	public void the_appointment_shall_be_for_the_date_with_start_time_and_end_time(String string, String string2, String string3) {
 		TimeSlot currentTimeSlot = appointment.getTimeSlot();
@@ -168,11 +261,13 @@ public class AppointmentManagementStepDefinition {
 		assertEquals(string2+":00", start);
 		assertEquals(string3+":00", end);
 	}
+	
 	@Then("the username associated with the appointment shall be {string}")
 	public void the_username_associated_with_the_appointment_shall_be(String string) {
 		String username = appointment.getCustomer().getUsername();
 		assertEquals(string, username);
 	}
+	
 	@Then("the user {string} shall have {int} no-show records")
 	public void the_user_shall_have_no_show_records(String customer, Integer int1) {
 		int cindex = -1;
@@ -183,7 +278,7 @@ public class AppointmentManagementStepDefinition {
 			}
 		}
 		noShowCount=flexibook.getCustomer(cindex).getNoShowCount();
-		assertEquals(int1,noShowCount);
+		assertEquals(int1, noShowCount);
 	}
 
 	@Then("the system shall have {int} appointments")

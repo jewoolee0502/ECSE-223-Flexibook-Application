@@ -139,7 +139,7 @@ public class CucumberStepDefinitions {
 	@When("{string} attempts to cancel their {string} appointment on {string} at {string}")
 	public void attempts_to_cancel_their_appointment_on_at(String customer, String name, String serviceDate, String startTime) {
 	    try {
-			FlexibookController.CancelAppointment(customer, null, name, serviceDate, startTime);
+			FlexibookController.CancelAppointment(customer, null, serviceDate, startTime);
 		} catch (InvalidInputException e) {
 			FlexiBookApplication.setmessage(e.getMessage());
 		}
@@ -148,7 +148,7 @@ public class CucumberStepDefinitions {
 	@When("{string} attempts to cancel {string}'s {string} appointment on {string} at {string}")
 	public void attempts_to_cancel_s_appointment_on_at(String customer, String customer2, String name, String serviceDate, String startTime) {
 		try {
-			FlexibookController.CancelAppointment(customer, customer2, name, serviceDate, startTime);
+			FlexibookController.CancelAppointment(customer, customer2, serviceDate, startTime);
 		} catch (InvalidInputException e) {
 			FlexiBookApplication.setmessage(e.getMessage());
 

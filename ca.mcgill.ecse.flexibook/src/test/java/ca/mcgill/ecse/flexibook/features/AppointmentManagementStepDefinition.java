@@ -17,6 +17,7 @@ import ca.mcgill.ecse.flexibook.model.BookableService;
 import ca.mcgill.ecse.flexibook.model.ComboItem;
 import ca.mcgill.ecse.flexibook.model.Customer;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
+import ca.mcgill.ecse.flexibook.model.Owner;
 import ca.mcgill.ecse.flexibook.model.Service;
 import ca.mcgill.ecse.flexibook.model.TimeSlot;
 import ca.mcgill.ecse.flexibook.util.SystemTime;
@@ -104,9 +105,10 @@ public class AppointmentManagementStepDefinition {
 	}
 
 	@When("the owner starts the appointment at {string}")
-	public void the_owner_starts_the_appointment_at(String string) {
-		// Write code here that turns the phrase above into concrete actions
-		throw new io.cucumber.java.PendingException();
+	public void the_owner_starts_the_appointment_at(String string) throws InvalidInputException {
+		Owner owner = flexibook.getOwner();
+		appointment.startAppointment(owner);
+		//FlexibookController.startAppointment(owner, appointment);
 	}
 
 	@When("the owner ends the appointment at {string}")

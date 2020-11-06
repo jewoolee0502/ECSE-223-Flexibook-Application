@@ -12,7 +12,6 @@ import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.Appointment;
-import ca.mcgill.ecse.flexibook.model.AppointmentManagement.AppointmentStatus;
 import ca.mcgill.ecse.flexibook.model.BookableService;
 import ca.mcgill.ecse.flexibook.model.ComboItem;
 import ca.mcgill.ecse.flexibook.model.Customer;

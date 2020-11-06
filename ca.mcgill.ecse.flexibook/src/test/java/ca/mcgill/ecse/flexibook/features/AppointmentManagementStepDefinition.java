@@ -212,8 +212,8 @@ public class AppointmentManagementStepDefinition {
 
 	@Then("the service combo in the appointment shall be {string}")
 	public void the_service_combo_in_the_appointment_shall_be(String string) {
-		// Write code here that turns the phrase above into concrete actions
-		throw new io.cucumber.java.PendingException();
+		String service = appointment.getBookableService().getName();
+		assertEquals(string, service);
 	}
 
 	@Then("the service combo shall have {string} selected services")

@@ -628,10 +628,12 @@ public class Appointment implements Serializable
 
   // line 213 "../../../../../FlexiBookStates.ump"
    private void doCancelAppointment(){
-    this.delete();
+    if(OneDayDiff() == true) {
+		this.delete();
+	}
   }
 
-  // line 217 "../../../../../FlexiBookStates.ump"
+  // line 219 "../../../../../FlexiBookStates.ump"
    private void doCancelAppointmentO(){
     Customer a = this.getCustomer();
 	int noShowCountOld = a.getNoShowCount();
@@ -640,7 +642,7 @@ public class Appointment implements Serializable
 	this.delete();
   }
 
-  // line 225 "../../../../../FlexiBookStates.ump"
+  // line 227 "../../../../../FlexiBookStates.ump"
    private void doStartAppointment(Owner owner){
     if(this.getFlexiBook().getOwner().equals(owner)) {
 		this.setAppointmentInProgress(true);
@@ -650,13 +652,13 @@ public class Appointment implements Serializable
 	}
   }
 
-  // line 234 "../../../../../FlexiBookStates.ump"
+  // line 236 "../../../../../FlexiBookStates.ump"
    private void doEndAppointment(){
     this.setAppointmentInProgress(false);
   	this.delete();
   }
 
-  // line 240 "../../../../../FlexiBookStates.ump"
+  // line 242 "../../../../../FlexiBookStates.ump"
    public static  boolean isNoOverlap(TimeSlot t1, TimeSlot t2){
     if(t1.getStartDate().equals(t2.getStartDate())) {
 			if(t1.getEndTime().before(t2.getStartTime()) || 
@@ -670,7 +672,7 @@ public class Appointment implements Serializable
 		return true;
   }
 
-  // line 253 "../../../../../FlexiBookStates.ump"
+  // line 255 "../../../../../FlexiBookStates.ump"
    public static  boolean isFullyCovered(TimeSlot t1, TimeSlot t2){
     if(t1.getStartDate().equals(t2.getStartDate())) {
 			if(t1.getEndTime().before(t2.getEndTime()) && 

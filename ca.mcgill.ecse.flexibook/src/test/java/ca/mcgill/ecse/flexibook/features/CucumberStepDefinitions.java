@@ -512,7 +512,9 @@ public class CucumberStepDefinitions {
 
 	
 	//Log in
-	
+	/**
+	 * @author James Willems
+	 */
 	@Given("the following customers exist in the system:")
 	public void the_following_customers_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
 		flexibook=FlexiBookApplication.getflexibook();
@@ -526,6 +528,9 @@ public class CucumberStepDefinitions {
 
 
 	}
+	/**
+	 * @author James Willems
+	 */
 	@When("the user tries to log in with username {string} and password {string}")
 	public void the_user_tries_to_log_in_with_username_and_password(String string, String string2) throws InvalidInputException {
 		try {
@@ -536,18 +541,30 @@ public class CucumberStepDefinitions {
 			FlexiBookApplication.setmessage(error);
 		}
 	}
+	/**
+	 * @author James Willems
+	 */
 	@Then("the user should be successfully logged in")
 	public void the_user_should_be_successfully_logged_in() {
 		assertEquals(FlexiBookApplication.getCurrentuser(),flexibook.getCustomer(0));
 	}
+	/**
+	 * @author James Willems
+	 */
 	@Then("the user should not be logged in")
 	public void the_user_should_not_be_logged_in() {
 		assertTrue(FlexiBookApplication.getCurrentuser()==null);
 	}
+	/**
+	 * @author James Willems
+	 */
 	@Then("a new account shall be created")
 	public void a_new_account_shall_be_created() {
 		assertTrue(flexibook.getOwner()!=null);
 	}
+	/**
+	 * @author James Willems
+	 */
 	@Then("the user shall be successfully logged in")
 	public void the_user_shall_be_successfully_logged_in() {
 		assertEquals(FlexiBookApplication.getCurrentuser(),flexibook.getOwner());
@@ -557,12 +574,17 @@ public class CucumberStepDefinitions {
 	
 	//Log out
 	
+	/**
+	 * @author James Willems
+	 */
 	@Given("the user is logged out")
 	public void the_user_is_logged_out() {
 		FlexiBookApplication.setCurrentuser(null);
 	}
 
-
+	/**
+	 * @author James Willems
+	 */
 	@When("the user tries to log out")
 	public void the_user_tries_to_log_out() throws InvalidInputException {
 		try { FlexibookController.LogOut();
@@ -572,7 +594,9 @@ public class CucumberStepDefinitions {
 			FlexiBookApplication.setmessage(error);}
 	}
 
-
+	/**
+	 * @author James Willems
+	 */
 	@Then("the user shall be logged out")
 	public void the_user_shall_be_logged_out() {
 		assertNull(FlexiBookApplication.getCurrentuser());
@@ -1469,7 +1493,9 @@ public class CucumberStepDefinitions {
 	
 	
 	//View Appointment Calendar
-
+	/**
+	 * @author James Willems
+	 */
 	@Given("the business has the following opening hours:")
 	public void the_business_has_the_following_opening_hours2(io.cucumber.datatable.DataTable dataTable) {
 		List<Map<String,String>> list = dataTable.asMaps();
@@ -1484,7 +1510,9 @@ public class CucumberStepDefinitions {
 			flexibook.getBusiness().addBusinessHour(aBusinessHour);
 		}
 	}
-
+	/**
+	 * @author James Willems
+	 */
 	@Given("the business has the following holidays:")
 	public void the_business_has_the_following_holidays2(io.cucumber.datatable.DataTable dataTable) {
 		List<Map<String,String>> list = dataTable.asMaps();
@@ -1497,7 +1525,9 @@ public class CucumberStepDefinitions {
 			flexibook.getBusiness().addHoliday(timeslot);
 		}
 	}
-
+	/**
+	 * @author James Willems
+	 */
 	@When("{string} requests the appointment calendar for the week starting on {string}")
 	public void requests_the_appointment_calendar_for_the_week_starting_on(String string, String string2) {
 		try{ArrayList<Date> weekDays=FlexibookController.getDaysofWeek(string2);
@@ -1511,7 +1541,9 @@ public class CucumberStepDefinitions {
 		}
 
 	}
-	
+	/**
+	 * @author James Willems
+	 */
 	@Then("the following slots shall be unavailable:")
 	public void the_following_slots_shall_be_unavailable(io.cucumber.datatable.DataTable dataTable) {
 		List<TimeSlot> unavailable = new ArrayList<TimeSlot>();
@@ -1528,7 +1560,9 @@ public class CucumberStepDefinitions {
 			assertTrue(true);
 		}
 	}
-	
+	/**
+	 * @author James Willems
+	 */
 	@Then("the following slots shall be available:")
 	public void the_following_slots_shall_be_available(io.cucumber.datatable.DataTable dataTable) {
 		List<TimeSlot> availableTS = new ArrayList<TimeSlot>();
@@ -1546,7 +1580,9 @@ public class CucumberStepDefinitions {
 		}
 
 	}
-	
+	/**
+	 * @author James Willems
+	 */
 	@When("{string} requests the appointment calendar for the day of {string}")
 	public void requests_the_appointment_calendar_for_the_day_of(String string, String string2)  {
 		try { 

@@ -113,13 +113,22 @@ public class AppointmentManagementStepDefinition {
 
 	@When("the owner ends the appointment at {string}")
 	public void the_owner_ends_the_appointment_at(String string) {
-		// Write code here that turns the phrase above into concrete actions
-		throw new io.cucumber.java.PendingException();
+		Owner owner = flexibook.getOwner();
+		appointment.endAppointment();
+		
+		
 	}
 	@When("the owner attempts to end the appointment at {string}")
-	public void the_owner_attempts_to_end_the_appointment_at(String string) {
-		// Write code here that turns the phrase above into concrete actions
-		throw new io.cucumber.java.PendingException();
+	public void the_owner_attempts_to_end_the_appointment_at(String string) throws InvalidInputException {
+		Owner owner = flexibook.getOwner();
+		appointment.endAppointment();
+		SystemTime.SystemTime(string, true);
+		try {
+			appointment.endAppointment();
+		}
+		catch(RuntimeException e) {
+			throw new InvalidInputException(e.getMessage());
+		}
 	}
 
 	@Then("the service combo in the appointment shall be {string}")

@@ -27,7 +27,7 @@ Feature: Appointment management process
       | dry   |       10 |             0 |                0 |
     Given the following service combos exist in the system:
       | name         | mainService | services           | mandatory             |
-      | color-deluxe | color       | wash,color,dry,cut | false,true,true,false |
+      | color-deluxe | color       | wash,color,dry,cut | false,true,true,false |sAWE 21
     Given the following appointments exist in the system:
       | customer  | serviceName  | selectedComboItems | date       | startTime | endTime |
       | customer1 | color-deluxe | wash,color,cut,dry | 2020-12-08 | 13:00     | 14:55   |

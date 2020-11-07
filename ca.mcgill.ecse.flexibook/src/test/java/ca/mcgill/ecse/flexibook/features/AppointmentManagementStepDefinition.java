@@ -238,6 +238,7 @@ public class AppointmentManagementStepDefinition {
 			      
 				}
 			}
+			
 		}
 		assertEquals(string+",", allServiceString);
 	}

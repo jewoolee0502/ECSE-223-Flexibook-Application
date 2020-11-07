@@ -36,7 +36,7 @@ Feature: Make appointment
       | customer1 | color-basic | wash,dry    | 2020-12-28 | 9:00      | 10:35   |
       | customer2 | cut-basic   | wash,dry    | 2020-12-28 | 13:00     | 13:40   |
       | customer3 | cut-basic   | wash,dry    | 2020-12-29 | 9:00      | 9:40    |
-
+ 
   Scenario Outline: A customer attempts to make various valid appointments for services
     Given "customer1" is logged in to their account
     When "customer1" schedules an appointment on "<date>" for "<serviceName>" at "<startTime>"

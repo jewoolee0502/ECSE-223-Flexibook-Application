@@ -125,7 +125,7 @@ public class Appointment implements Serializable
       case Booked:
         if (OneDayDiff())
         {
-        // line 12 "../../../../../FlexiBookStates.ump"
+        // line 13 "../../../../../FlexiBookStates.ump"
           doUpdateAppointment(timeslot, newBookableService, optionalService);
           setAppointmentStatus(AppointmentStatus.Booked);
           wasEventProcessed = true;
@@ -135,7 +135,7 @@ public class Appointment implements Serializable
       case InProgress:
         if (isWithinAppTimeSlot())
         {
-        // line 31 "../../../../../FlexiBookStates.ump"
+        // line 32 "../../../../../FlexiBookStates.ump"
           doUpdateAppointment(timeslot, newBookableService, optionalService);
           setAppointmentStatus(AppointmentStatus.InProgress);
           wasEventProcessed = true;
@@ -159,7 +159,7 @@ public class Appointment implements Serializable
       case Booked:
         if (OneDayDiff())
         {
-        // line 16 "../../../../../FlexiBookStates.ump"
+        // line 17 "../../../../../FlexiBookStates.ump"
           doCancelAppointment();
           setAppointmentStatus(AppointmentStatus.Final);
           wasEventProcessed = true;
@@ -183,7 +183,7 @@ public class Appointment implements Serializable
       case Booked:
         if (isWithinAppTimeSlot()||isAfterAppTimeSlot())
         {
-        // line 20 "../../../../../FlexiBookStates.ump"
+        // line 21 "../../../../../FlexiBookStates.ump"
           doCancelAppointmentO();
           setAppointmentStatus(AppointmentStatus.Final);
           wasEventProcessed = true;
@@ -207,7 +207,7 @@ public class Appointment implements Serializable
       case Booked:
         if (isWithinAppTimeSlot())
         {
-        // line 24 "../../../../../FlexiBookStates.ump"
+        // line 25 "../../../../../FlexiBookStates.ump"
           doStartAppointment(owner);
           setAppointmentStatus(AppointmentStatus.InProgress);
           wasEventProcessed = true;
@@ -229,7 +229,7 @@ public class Appointment implements Serializable
     switch (aAppointmentStatus)
     {
       case InProgress:
-        // line 35 "../../../../../FlexiBookStates.ump"
+        // line 36 "../../../../../FlexiBookStates.ump"
         doEndAppointment();
         setAppointmentStatus(AppointmentStatus.Final);
         wasEventProcessed = true;
@@ -453,10 +453,14 @@ public class Appointment implements Serializable
     }
   }
 
-  // line 43 "../../../../../FlexiBookStates.ump"
+
+  /**
+   * Author: Haipeng Yue
+   */
+  // line 45 "../../../../../FlexiBookStates.ump"
    private void doUpdateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService){
     if(!(this.getTimeSlot().getStartTime().equals(timeslot.getStartTime()))){
-     Boolean check = false;
+    Boolean check = false;
 	try {
     	check = availableTimeSlot(timeslot);
     }
@@ -510,7 +514,7 @@ public class Appointment implements Serializable
   /**
    * Author: Haipeng Yue
    */
-  // line 98 "../../../../../FlexiBookStates.ump"
+  // line 100 "../../../../../FlexiBookStates.ump"
    private Boolean availableTimeSlot(TimeSlot newslot){
     Boolean check = false;
 	FlexiBook fb = this.getFlexiBook();
@@ -588,7 +592,11 @@ public class Appointment implements Serializable
 	return check;
   }
 
-  // line 176 "../../../../../FlexiBookStates.ump"
+
+  /**
+   * Author: Jewoo Lee
+   */
+  // line 179 "../../../../../FlexiBookStates.ump"
    private Boolean OneDayDiff(){
     String sDate = SystemTime.getdate(SystemTime.getSysTime());
 	String date = this.getTimeSlot().getStartDate().toString();
@@ -601,7 +609,11 @@ public class Appointment implements Serializable
 	}
   }
 
-  // line 189 "../../../../../FlexiBookStates.ump"
+
+  /**
+   * Author: Jewoo Lee
+   */
+  // line 193 "../../../../../FlexiBookStates.ump"
    private Boolean isWithinAppTimeSlot(){
     String st = this.getTimeSlot().getStartTime().toLocalTime().toString();
 	String systemTimeRN = SystemTime.gettime(SystemTime.getSysTime());
@@ -624,7 +636,11 @@ public class Appointment implements Serializable
 	}
   }
 
-  // line 210 "../../../../../FlexiBookStates.ump"
+
+  /**
+   * Author: James Willems
+   */
+  // line 216 "../../../../../FlexiBookStates.ump"
    private Boolean isAfterAppTimeSlot(){
     String systemTimeRN = SystemTime.gettime(SystemTime.getSysTime());
 	String endTime = this.getTimeSlot().getEndTime().toLocalTime().toString();
@@ -637,14 +653,22 @@ public class Appointment implements Serializable
 	}
   }
 
-  // line 222 "../../../../../FlexiBookStates.ump"
+
+  /**
+   * Author: Jewoo Lee
+   */
+  // line 229 "../../../../../FlexiBookStates.ump"
    private void doCancelAppointment(){
     if(OneDayDiff() == true) {
 		this.delete();
 	}
   }
 
-  // line 228 "../../../../../FlexiBookStates.ump"
+
+  /**
+   * Author: Jewoo Lee
+   */
+  // line 236 "../../../../../FlexiBookStates.ump"
    private void doCancelAppointmentO(){
     Customer a = this.getCustomer();
 	int noShowCountOld = a.getNoShowCount();
@@ -653,7 +677,11 @@ public class Appointment implements Serializable
 	this.delete();
   }
 
-  // line 236 "../../../../../FlexiBookStates.ump"
+
+  /**
+   * Author: Jewoo Lee
+   */
+  // line 245 "../../../../../FlexiBookStates.ump"
    private void doStartAppointment(Owner owner){
     if(owner != null) {
 		this.setAppointmentInProgress(true);
@@ -663,13 +691,21 @@ public class Appointment implements Serializable
 	}
   }
 
-  // line 245 "../../../../../FlexiBookStates.ump"
+
+  /**
+   * Author: Haipeng Yue
+   */
+  // line 255 "../../../../../FlexiBookStates.ump"
    private void doEndAppointment(){
     this.setAppointmentInProgress(false);
   	this.delete();
   }
 
-  // line 251 "../../../../../FlexiBookStates.ump"
+
+  /**
+   * Author: Haipeng Yue
+   */
+  // line 262 "../../../../../FlexiBookStates.ump"
    public static  boolean isNoOverlap(TimeSlot t1, TimeSlot t2){
     if(t1.getStartDate().equals(t2.getStartDate())) {
 			if(t1.getEndTime().before(t2.getStartTime()) || 
@@ -683,7 +719,11 @@ public class Appointment implements Serializable
 		return true;
   }
 
-  // line 264 "../../../../../FlexiBookStates.ump"
+
+  /**
+   * Author: Jewoo Lee
+   */
+  // line 276 "../../../../../FlexiBookStates.ump"
    public static  boolean isFullyCovered(TimeSlot t1, TimeSlot t2){
     if(t1.getStartDate().equals(t2.getStartDate())) {
 			if(t1.getEndTime().before(t2.getEndTime()) && 

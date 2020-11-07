@@ -19,6 +19,7 @@ import java.io.*;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.*;
 import ca.mcgill.ecse.flexibook.model.BusinessHour.DayOfWeek;
+import ca.mcgill.ecse.flexibook.persistence.FlexibookPersistence;
 import ca.mcgill.ecse.flexibook.util.SystemTime;
 
 
@@ -71,7 +72,6 @@ public class FlexibookController {
 		}
 		return DowntimeMap;
 	}
-
 	public static void makecombo(String string, String string2, String string3, String string4, String string5) throws InvalidInputException {
 		Service mainservice = null;
 		ComboItem main=null;
@@ -129,7 +129,10 @@ public class FlexibookController {
 			thiscombo.setFlexiBook(fb);
 
 		} else {
-			throw new InvalidInputException("You are not authorized to perform this operation");}
+			throw new InvalidInputException("You are not authorized to perform this operation");
+		}
+
+		FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 	}
 
 
@@ -213,8 +216,11 @@ public class FlexibookController {
 
 				}
 			}
-		}else {throw new InvalidInputException("You are not authorized to perform this operation");  
+		}else {
+			throw new InvalidInputException("You are not authorized to perform this operation");  
 		}
+
+		FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 	}
 
 
@@ -238,7 +244,8 @@ public class FlexibookController {
 					FlexiBookApplication.setCurrentuser(c);
 					return true;
 
-				}}
+				}
+			}
 			if(userID.equals("owner")&&passcode.equals("owner")) {
 				Owner owner=new Owner(userID,passcode,flexi);
 				flexi.setOwner(owner);
@@ -327,7 +334,7 @@ public class FlexibookController {
 			throw new InvalidInputException("You are not authorized to perform this operation"); 
 		}
 
-
+		FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 	}
 
 
@@ -355,6 +362,8 @@ public class FlexibookController {
 			}
 		}
 		Customer thisc = new Customer(username, password, fb);
+
+		FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 	}
 
 
@@ -419,6 +428,7 @@ public class FlexibookController {
 					}
 				}
 			}
+			FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 		} 
 
 		catch(InvalidInputException e) {
@@ -471,10 +481,11 @@ public class FlexibookController {
 				}
 			}
 
+			FlexibookPersistence.save(FlexiBookApplication.getflexibook());
+
 		} catch (InvalidInputException e) {
 			throw new InvalidInputException(e.getMessage());
 		}
-
 	}
 
 
@@ -508,12 +519,10 @@ public class FlexibookController {
 				FlexiBookApplication.setCurrentuser(null);
 			}
 
-
+			FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 		} catch (InvalidInputException e) {
 			throw new InvalidInputException(e.getMessage());
 		}
-
-
 	}
 
 
@@ -660,6 +669,8 @@ public class FlexibookController {
 		Appointment appointment = new Appointment(fb.getCustomer(cindex), service, timeslot, fb);
 		fb.addAppointment(appointment);
 
+		FlexibookPersistence.save(FlexiBookApplication.getflexibook());
+
 	}
 
 
@@ -712,7 +723,6 @@ public class FlexibookController {
 		else {
 			return false;
 		}
-
 	}
 
 
@@ -867,6 +877,8 @@ public class FlexibookController {
 			}
 
 		}
+
+		FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 	}
 
 
@@ -901,7 +913,7 @@ public class FlexibookController {
 		Time localTime = Time.valueOf(sys[1]+":00");
 
 		Date servicedate = Date.valueOf(serviceDate);
-		Time starttime = Time.valueOf(startTime);
+		Time starttime = Time.valueOf(startTime+":00");
 		if(servicedate.equals(localDate)) {
 			//throw new InvalidInputException("Cannot cancel an appointment on the appointment date");
 		}
@@ -922,6 +934,8 @@ public class FlexibookController {
 			}
 			fb.getCustomer(cindex).getAppointment(aindex).cancelAppointment();
 		}
+
+		FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 	}
 
 
@@ -948,7 +962,6 @@ public class FlexibookController {
 			String[] sys = sysTime.split("\\+");
 			Date localDate = Date.valueOf(sys[0]);
 			Time localTime = Time.valueOf(sys[1]+":00");
-			int noShow;
 			Date servicedate = Date.valueOf(serviceDate);
 			Time starttime = Time.valueOf(startTime);
 
@@ -967,12 +980,12 @@ public class FlexibookController {
 				}
 			}
 			fb.getCustomer(cindex).getAppointment(aindex).ownerCancelAppointment();
-			fb.getCustomer(cindex).setNoShowCount(fb.getCustomer(cindex).getNoShowCount());
-
 		}
 		else {
 			throw new InvalidInputException("You are not the owner");
 		}
+
+		FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 
 	}
 
@@ -996,6 +1009,8 @@ public class FlexibookController {
 		else {
 			throw new InvalidInputException("You don't have the permission to start this appointment");
 		}
+
+		FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 	}
 
 	/**
@@ -1010,12 +1025,18 @@ public class FlexibookController {
 	 */
 
 	public static void endAppointment(String owner, Appointment appointment) throws InvalidInputException {
-		FlexiBook fb = FlexiBookApplication.getflexibook();
-		if(fb.getOwner().getUsername().equals(owner)) {
-			appointment.endAppointment();
-		}
-		else {
-			throw new InvalidInputException("You don't have the permission to end this appointment");
+		try {
+			FlexiBook fb = FlexiBookApplication.getflexibook();
+			if(fb.getOwner().getUsername().equals(owner)) {
+				appointment.endAppointment();
+			}
+			else {
+				throw new InvalidInputException("You don't have the permission to end this appointment");
+			}
+
+			FlexibookPersistence.save(FlexiBookApplication.getflexibook());
+		} catch (InvalidInputException e) {
+			throw new InvalidInputException(e.getMessage());
 		}
 	}
 
@@ -1043,65 +1064,70 @@ public class FlexibookController {
 	 */
 
 	public static void updateservice(String string, String string2, String string3, String string4, String string5, String string6) throws InvalidInputException {
-		FlexiBook fb = FlexiBookApplication.getflexibook();
-		Service thiss=(Service) fb.getBookableService(0).getWithName(string2);
-		int duration=Integer.parseInt(string4);
-		int downstart=Integer.parseInt(string5);
-		int downduration=Integer.parseInt(string6);
-		if(fb.getOwner().getUsername().equals(string)) {
-			if(fb.getBookableService(0).getWithName(string3)==null) {
-				if(duration<0||duration==0) {
+		try {
+			FlexiBook fb = FlexiBookApplication.getflexibook();
+			Service thiss=(Service) fb.getBookableService(0).getWithName(string2);
+			int duration=Integer.parseInt(string4);
+			int downstart=Integer.parseInt(string5);
+			int downduration=Integer.parseInt(string6);
+			if(fb.getOwner().getUsername().equals(string)) {
+				if(fb.getBookableService(0).getWithName(string3)==null) {
+					if(duration<0||duration==0) {
 
-					throw new InvalidInputException("Duration must be positive"); 
-				}else if(downstart>0 && downduration<=0) {
+						throw new InvalidInputException("Duration must be positive"); 
+					}else if(downstart>0 && downduration<=0) {
 
-					throw new InvalidInputException("Downtime duration must be positive"); 
-				}else if (downstart==0&& downduration<0) {
+						throw new InvalidInputException("Downtime duration must be positive"); 
+					}else if (downstart==0&& downduration<0) {
 
-					throw new InvalidInputException("Downtime duration must be "+downstart); 
-				}else if (downstart==0&& downduration>0) {
-					throw new InvalidInputException("Downtime must not start at the beginning of the service"); 
-				}else if (downstart<0) {
-					throw new InvalidInputException("Downtime must not start before the beginning of the service"); 
-				}else if (downstart>duration) {
-					throw new InvalidInputException("Downtime must not start after the end of the service"); 
-				}else if (downduration>duration-downstart) {
-					throw new InvalidInputException("Downtime must not end after the service"); 
-				}else {
-					thiss.setName(string3); 
-					thiss.setDowntimeStart(downstart);
-					thiss.setDowntimeDuration(downduration);
-					thiss.setDuration(duration); 
-				}
-			}else if(string2.equals(string3)) {
-				if(duration<0||duration==0) {
+						throw new InvalidInputException("Downtime duration must be "+downstart); 
+					}else if (downstart==0&& downduration>0) {
+						throw new InvalidInputException("Downtime must not start at the beginning of the service"); 
+					}else if (downstart<0) {
+						throw new InvalidInputException("Downtime must not start before the beginning of the service"); 
+					}else if (downstart>duration) {
+						throw new InvalidInputException("Downtime must not start after the end of the service"); 
+					}else if (downduration>duration-downstart) {
+						throw new InvalidInputException("Downtime must not end after the service"); 
+					}else {
+						thiss.setName(string3); 
+						thiss.setDowntimeStart(downstart);
+						thiss.setDowntimeDuration(downduration);
+						thiss.setDuration(duration); 
+					}
+				}else if(string2.equals(string3)) {
+					if(duration<0||duration==0) {
 
-					throw new InvalidInputException("Duration must be positive"); 
-				}else if(downstart>0 && downduration<=0) {
+						throw new InvalidInputException("Duration must be positive"); 
+					}else if(downstart>0 && downduration<=0) {
 
-					throw new InvalidInputException("Downtime duration must be positive"); 
-				}else if (downstart==0&& downduration<0) {
+						throw new InvalidInputException("Downtime duration must be positive"); 
+					}else if (downstart==0&& downduration<0) {
 
-					throw new InvalidInputException("Downtime duration must be "+downstart); 
-				}else if (downstart==0&& downduration>0) {
-					throw new InvalidInputException("Downtime must not start at the beginning of the service"); 
-				}else if (downstart<0) {
-					throw new InvalidInputException("Downtime must not start before the beginning of the service"); 
-				}else if (downstart>duration) {
-					throw new InvalidInputException("Downtime must not start after the end of the service"); 
-				}else if (downduration>duration-downstart) {
-					throw new InvalidInputException("Downtime must not end after the service"); 
-				}else {
-					thiss.setDowntimeStart(downstart);
-					thiss.setDowntimeDuration(downduration);
-					thiss.setDuration(duration);
-				}}else if(fb.getBookableService(0).getWithName(string3)!=null) {
-					throw new InvalidInputException("Service "+string3+" already exists");
-				}
+						throw new InvalidInputException("Downtime duration must be "+downstart); 
+					}else if (downstart==0&& downduration>0) {
+						throw new InvalidInputException("Downtime must not start at the beginning of the service"); 
+					}else if (downstart<0) {
+						throw new InvalidInputException("Downtime must not start before the beginning of the service"); 
+					}else if (downstart>duration) {
+						throw new InvalidInputException("Downtime must not start after the end of the service"); 
+					}else if (downduration>duration-downstart) {
+						throw new InvalidInputException("Downtime must not end after the service"); 
+					}else {
+						thiss.setDowntimeStart(downstart);
+						thiss.setDowntimeDuration(downduration);
+						thiss.setDuration(duration);
+					}}else if(fb.getBookableService(0).getWithName(string3)!=null) {
+						throw new InvalidInputException("Service "+string3+" already exists");
+					}
 
-		} else {
-
-			throw new InvalidInputException("You are not authorized to perform this operation");}
+			} else {
+				throw new InvalidInputException("You are not authorized to perform this operation");
+			}
+			FlexibookPersistence.save(FlexiBookApplication.getflexibook());
+		} catch (InvalidInputException e) {
+			throw e;
+		}
 	}
 
 
@@ -1116,65 +1142,71 @@ public class FlexibookController {
 	 * @throws InvalidInputException
 	 */
 	public static void deleteService(String owner, String servicename) throws InvalidInputException {
-		FlexiBook fb =FlexiBookApplication.getflexibook();
-		String time=SystemTime.gettime(SystemTime.getSysTime());
-		String date=SystemTime.getdate(SystemTime.getSysTime());
-		Service thiss;
-		String userString=fb.getOwner().getUsername();
+		try {
+			FlexiBook fb =FlexiBookApplication.getflexibook();
+			String time=SystemTime.gettime(SystemTime.getSysTime());
+			String date=SystemTime.getdate(SystemTime.getSysTime());
+			Service thiss;
+			String userString=fb.getOwner().getUsername();
 
 
-		if(owner.equals(fb.getOwner().getUsername())!=true) {
-			throw new InvalidInputException("You are not authorized to perform this operation"); 
-		}
-		thiss=(Service) BookableService.getWithName(servicename);
-
-		List<Appointment> allAppointments=fb.getAppointments();
-		String bString;
-		List<BookableService> allServices=fb.getBookableServices();
-		List<String> TobedeletedBookableServices = new ArrayList<>();
-
-		//throw exception if have future appointment
-		Date currenDate=Date.valueOf(SystemTime.getdate(SystemTime.getSysTime()));
-
-		if(BookableService.getWithName(servicename).getAppointments().size()>0) {
-			for(Appointment appointment:thiss.getAppointments()) {
-				Date staDate=appointment.getTimeSlot().getStartDate();
-				if(staDate.after(currenDate)) {
-					throw new InvalidInputException("The service contains future appointments");
-				}
-
+			if(owner.equals(fb.getOwner().getUsername())!=true) {
+				throw new InvalidInputException("You are not authorized to perform this operation"); 
 			}
-		}
-		//delete a service included in a serviceCombo
+			thiss=(Service) BookableService.getWithName(servicename);
 
-		for(BookableService serviceCom:allServices) {
-			if(serviceCom instanceof ServiceCombo) {
-				serviceCom=(ServiceCombo)serviceCom;
-				String seString=serviceCom.getName();
-				seString=serviceCom.getName();
-				ComboItem thisComboItem=null;
-				List<ComboItem>CombosItems=((ServiceCombo) serviceCom).getServices();
+			List<Appointment> allAppointments=fb.getAppointments();
+			String bString;
+			List<BookableService> allServices=fb.getBookableServices();
+			List<String> TobedeletedBookableServices = new ArrayList<>();
 
-				boolean isMainservice=((ServiceCombo) serviceCom).getMainService().getService().getName().equals(thiss.getName());
-				if(isMainservice){
-					TobedeletedBookableServices.add(serviceCom.getName());
-				}else {
-					for(ComboItem item:((ServiceCombo) serviceCom).getServices()) {
-						if(item.getService().getName().equals(servicename)) {
-							item.delete();
-							break;}
+			//throw exception if have future appointment
+			Date currenDate=Date.valueOf(SystemTime.getdate(SystemTime.getSysTime()));
 
+			if(BookableService.getWithName(servicename).getAppointments().size()>0) {
+				for(Appointment appointment:thiss.getAppointments()) {
+					Date staDate=appointment.getTimeSlot().getStartDate();
+					if(staDate.after(currenDate)) {
+						throw new InvalidInputException("The service contains future appointments");
 					}
 
 				}
 			}
-		}
+			//delete a service included in a serviceCombo
 
-		for(int i=0 ;i<TobedeletedBookableServices.size();i++) {
-			BookableService.getWithName(TobedeletedBookableServices.get(i)).delete();
-		}
+			for(BookableService serviceCom:allServices) {
+				if(serviceCom instanceof ServiceCombo) {
+					serviceCom=(ServiceCombo)serviceCom;
+					String seString=serviceCom.getName();
+					seString=serviceCom.getName();
+					ComboItem thisComboItem=null;
+					List<ComboItem>CombosItems=((ServiceCombo) serviceCom).getServices();
 
-		thiss.delete();
+					boolean isMainservice=((ServiceCombo) serviceCom).getMainService().getService().getName().equals(thiss.getName());
+					if(isMainservice){
+						TobedeletedBookableServices.add(serviceCom.getName());
+					}else {
+						for(ComboItem item:((ServiceCombo) serviceCom).getServices()) {
+							if(item.getService().getName().equals(servicename)) {
+								item.delete();
+								break;}
+
+						}
+
+					}
+				}
+			}
+
+			for(int i=0 ;i<TobedeletedBookableServices.size();i++) {
+				BookableService.getWithName(TobedeletedBookableServices.get(i)).delete();
+			}
+
+			thiss.delete();
+
+			FlexibookPersistence.save(FlexiBookApplication.getflexibook());
+		} catch (InvalidInputException e) {
+			throw e;
+		}
 	}
 
 
@@ -1196,66 +1228,73 @@ public class FlexibookController {
 	 */
 
 	public static void addService(String owner, String name, String string3, String string4,String string5) throws InvalidInputException {
-		Service service = null;
+		try {
+			Service service = null;
 
-		FlexiBook fb = FlexiBookApplication.getflexibook();
-		String servicename = null;
-		//convert integer to string
-		int duration=Integer.parseInt(string3);
-		int downstart=Integer.parseInt(string4);
-		int downduration=Integer.parseInt(string5);
-		if(fb.getOwner().getUsername().equals(owner)) {
-			if(fb.getBookableServices().size()==0) {
+			FlexiBook fb = FlexiBookApplication.getflexibook();
+			String servicename = null;
+			//convert integer to string
+			int duration=Integer.parseInt(string3);
+			int downstart=Integer.parseInt(string4);
+			int downduration=Integer.parseInt(string5);
+			if(fb.getOwner().getUsername().equals(owner)) {
+				if(fb.getBookableServices().size()==0) {
 
-				if(duration<0||duration==0) {
+					if(duration<0||duration==0) {
 
-					throw new InvalidInputException("Duration must be positive"); 
-				}else if(downstart>0 && downduration<=0) {
+						throw new InvalidInputException("Duration must be positive"); 
+					}else if(downstart>0 && downduration<=0) {
 
-					throw new InvalidInputException("Downtime duration must be positive"); 
-				}else if (downstart==0&& downduration<0) {
+						throw new InvalidInputException("Downtime duration must be positive"); 
+					}else if (downstart==0&& downduration<0) {
 
-					throw new InvalidInputException("Downtime duration must be "+downstart); 
-				}else if (downstart==0&& downduration>0) {
-					throw new InvalidInputException("Downtime must not start at the beginning of the service"); 
-				}else if (downstart<0) {
-					throw new InvalidInputException("Downtime must not start before the beginning of the service"); 
-				}else if (downstart>duration) {
-					throw new InvalidInputException("Downtime must not start after the end of the service"); 
-				}else if (downduration>duration-downstart) {
-					throw new InvalidInputException("Downtime must not end after the service"); 
-				}else {
+						throw new InvalidInputException("Downtime duration must be "+downstart); 
+					}else if (downstart==0&& downduration>0) {
+						throw new InvalidInputException("Downtime must not start at the beginning of the service"); 
+					}else if (downstart<0) {
+						throw new InvalidInputException("Downtime must not start before the beginning of the service"); 
+					}else if (downstart>duration) {
+						throw new InvalidInputException("Downtime must not start after the end of the service"); 
+					}else if (downduration>duration-downstart) {
+						throw new InvalidInputException("Downtime must not end after the service"); 
+					}else {
 
-					Service thisservice=new Service(name, fb, duration,downduration , downstart);
+						Service thisservice=new Service(name, fb, duration,downduration , downstart);
+					}
+				}else if(fb.getBookableService(0).getWithName(name)!=null) {
+					throw new InvalidInputException("Service "+name+ " already exists");
+				}else if(fb.getBookableService(0).getWithName(name)==null) {
+					if(duration<0||duration==0) {
+
+						throw new InvalidInputException("Duration must be positive"); 
+					}else if(downstart>0 && downduration<=0) {
+
+						throw new InvalidInputException("Downtime duration must be positive"); 
+					}else if (downstart==0&& downduration<0) {
+
+						throw new InvalidInputException("Downtime duration must be "+downstart); 
+					}else if (downstart==0&& downduration>0) {
+						throw new InvalidInputException("Downtime must not start at the beginning of the service"); 
+					}else if (downstart<0) {
+						throw new InvalidInputException("Downtime must not start before the beginning of the service"); 
+					}else if (downstart>duration) {
+						throw new InvalidInputException("Downtime must not start after the end of the service"); 
+					}else if (downduration>duration-downstart) {
+						throw new InvalidInputException("Downtime must not end after the service"); 
+					}else {
+						Service thisservice=new Service(name, fb, duration, downduration, downstart);
+					}
 				}
-			}else if(fb.getBookableService(0).getWithName(name)!=null) {
-				throw new InvalidInputException("Service "+name+ " already exists");
-			}else if(fb.getBookableService(0).getWithName(name)==null) {
-				if(duration<0||duration==0) {
 
-					throw new InvalidInputException("Duration must be positive"); 
-				}else if(downstart>0 && downduration<=0) {
+			} else {
 
-					throw new InvalidInputException("Downtime duration must be positive"); 
-				}else if (downstart==0&& downduration<0) {
-
-					throw new InvalidInputException("Downtime duration must be "+downstart); 
-				}else if (downstart==0&& downduration>0) {
-					throw new InvalidInputException("Downtime must not start at the beginning of the service"); 
-				}else if (downstart<0) {
-					throw new InvalidInputException("Downtime must not start before the beginning of the service"); 
-				}else if (downstart>duration) {
-					throw new InvalidInputException("Downtime must not start after the end of the service"); 
-				}else if (downduration>duration-downstart) {
-					throw new InvalidInputException("Downtime must not end after the service"); 
-				}else {
-					Service thisservice=new Service(name, fb, duration, downduration, downstart);
-				}
+				throw new InvalidInputException("You are not authorized to perform this operation");
 			}
 
-		} else {
-
-			throw new InvalidInputException("You are not authorized to perform this operation");}
+			FlexibookPersistence.save(FlexiBookApplication.getflexibook());
+		} catch (InvalidInputException e) {
+			throw e;
+		}
 	}
 
 
@@ -1499,7 +1538,7 @@ public class FlexibookController {
 			business.addHoliday(slot);
 		}
 
-
+		FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 	}
 
 
@@ -1539,6 +1578,8 @@ public class FlexibookController {
 		fb.getBusiness().setPhoneNumber(phoneNumber);
 		fb.getBusiness().setAddress(address);
 		FlexiBookApplication.setmessage("");
+
+		FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 
 	}
 	/**
@@ -1593,7 +1634,9 @@ public class FlexibookController {
 		}
 		thisBusinessHour.setStartTime(inputStTime);
 		thisBusinessHour.setEndTime(inputEdTime);
-		FlexiBookApplication.setmessage("");	
+		FlexiBookApplication.setmessage("");
+
+		FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 
 	}
 	/**
@@ -1635,6 +1678,8 @@ public class FlexibookController {
 		if(exiBoolean) {
 			business.removeBusinessHour(toBeRemovedBusinessHour);
 		}
+
+		FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 	}
 	/**
 	 * This method takes all parameters to set the business information in the system.
@@ -1731,6 +1776,8 @@ public class FlexibookController {
 		thiSlot.setEndDate(enDate);
 		thiSlot.setEndTime(enTime);
 		FlexiBookApplication.setmessage("");
+
+		FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 	}   
 
 	/**
@@ -1766,7 +1813,7 @@ public class FlexibookController {
 		fb.setBusiness(newBusiness);	
 		FlexiBookApplication.setmessage("");
 
-
+		FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 	}
 	/**
 	 * This method takes all parameters to set the business information in the system.
@@ -1809,6 +1856,7 @@ public class FlexibookController {
 		fb.addHour(newHour);
 		FlexiBookApplication.setmessage("");	
 
+		FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 	}
 	/**
 	 * This method takes all parameters to set the business information in the system.
@@ -1875,6 +1923,7 @@ public class FlexibookController {
 				business.removeHoliday(thisTimeSlot);
 			}
 		}
+		FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 	}
 	/**
 	 * This method takes all parameters to set the business information in the system.

@@ -62,7 +62,7 @@ public class CucumberStepDefinitions {
 	
 	
 	
-	//Add Service
+	//Add Service----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	/**
 	 * This stepdefinition takes all parameters to add a new service in the system.
@@ -126,6 +126,9 @@ public class CucumberStepDefinitions {
 			assertEquals(true,true);
 		}
 	}
+	/**
+	 * @author Jewoo Lee
+	 */
 	@After
 	public void tearDown() {
 		flexibook = FlexiBookApplication.getflexibook();
@@ -134,8 +137,12 @@ public class CucumberStepDefinitions {
 	
 
 	
-	//Cancel Appointment
+	//Cancel Appointment------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
+	/**
+	 * This step definition takes all the parameters to cancel the appointment
+	 * @author Jewoo Lee
+	 */
 	@When("{string} attempts to cancel their {string} appointment on {string} at {string}")
 	public void attempts_to_cancel_their_appointment_on_at(String customer, String name, String serviceDate, String startTime) {
 	    try {
@@ -145,6 +152,9 @@ public class CucumberStepDefinitions {
 		}
 	}
 	
+	/**
+	 * @author Jewoo Lee
+	 */
 	@When("{string} attempts to cancel {string}'s {string} appointment on {string} at {string}")
 	public void attempts_to_cancel_s_appointment_on_at(String customer, String customer2, String name, String serviceDate, String startTime) {
 		try {
@@ -155,11 +165,17 @@ public class CucumberStepDefinitions {
 		}
 	}
 
+	/**
+	 * @author Jewoo Lee
+	 */
 	@Then("{string}'s {string} appointment on {string} at {string} shall be removed from the system")
 	public void s_appointment_on_at_shall_be_removed_from_the_system(String string, String string2, String string3, String string4) {
 	    
 	}
 	
+	/**
+	 * @author Jewoo Lee
+	 */
 	@Then("there shall be {int} less appointment in the system")
 	public void there_shall_be_less_appointment_in_the_system(Integer int1) {
 		
@@ -167,10 +183,11 @@ public class CucumberStepDefinitions {
 	
 	
 	
-	//Define Service Combo
+	//Define Service Combo ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	
 	/**This is the step definition to check the makecombo controller method.
 	 *@author Haipeng Yue 
-	 * 
 	 * 
 	 */
 	@Given("a Flexibook system exists")
@@ -178,9 +195,9 @@ public class CucumberStepDefinitions {
 		flexibook=new FlexiBook();
 		FlexiBookApplication.setflexibook(flexibook);
 	}
-/**
- * @author Haipeng Yue 
- */
+	/**
+	 * @author Haipeng Yue 
+	 */
 	@Given("an owner account exists in the system")
 	public void an_owner_account_exists_in_the_system() {
 		if(!flexibook.hasOwner()) {
@@ -378,8 +395,12 @@ public class CucumberStepDefinitions {
 
 	
 	
-	//Delete Customer Account
-
+	//Delete Customer Account------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * This feature takes in all the parameters and deletes customer account
+	 * @author Jewoo Lee
+	 */
 	@Given("the account with username {string} has pending appointments")
 	public void the_account_with_username_has_pending_appointments(String username) {
 
@@ -388,6 +409,9 @@ public class CucumberStepDefinitions {
 		}
 	}
 
+	/**
+	 * @author Jewoo Lee
+	 */
 	@When("the user tries to delete account with the username {string}")
 	public void the_user_tries_to_delete_account_with_the_username(String username) throws InvalidInputException {
 
@@ -405,6 +429,9 @@ public class CucumberStepDefinitions {
 		errorCount ++;
 	}
 
+	/**
+	 * @author Jewoo Lee
+	 */
 	@Then("the account with the username {string} does not exist")
 	public void the_account_with_the_username_does_not_exist(String username) {
 
@@ -416,6 +443,9 @@ public class CucumberStepDefinitions {
 		}
 	}
 
+	/**
+	 * @author Jewoo Lee
+	 */
 	@Then("all associated appointments of the account with the username {string} shall not exist")
 	public void all_associated_appointments_of_the_account_with_the_username_shall_not_exist(String username) {
 
@@ -429,6 +459,9 @@ public class CucumberStepDefinitions {
 
 	}
 
+	/**
+	 * @author Jewoo Lee
+	 */
 	@Then("the account with the username {string} exists")
 	public void the_account_with_the_username_exists(String username) {
 
@@ -447,6 +480,9 @@ public class CucumberStepDefinitions {
 			
 	}
 
+	/**
+	 * @author Jewoo Lee
+	 */
 	private static Customer getCustomer(String username) {
 		Customer foundCustomer = null;
 		for(Customer customer : FlexiBookApplication.getflexibook().getCustomers()) {
@@ -459,7 +495,10 @@ public class CucumberStepDefinitions {
 	
 	
 	
-	//Delete Service Combo
+	
+	//Delete Service Combo------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	
 	/**This is the step definition to check the deletecombo controller method.
      *@author Haipeng Yue 
      */
@@ -496,7 +535,9 @@ public class CucumberStepDefinitions {
 	
 	
 	
-	//Delete Service
+	//Delete Service------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	
 	/**This stepdefinition takes an input of servicenames. The method will decide whether to initiate the deleting method
 	 * @auther Tianyu Zhao
 	 * @author Zhixin Xiong
@@ -511,7 +552,8 @@ public class CucumberStepDefinitions {
 	}
 
 	
-	//Log in
+	//Log in------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
 	/**
 	 * @author James Willems
 	 */
@@ -572,7 +614,7 @@ public class CucumberStepDefinitions {
 	}
 
 	
-	//Log out
+	//Log out------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	/**
 	 * @author James Willems
@@ -604,11 +646,11 @@ public class CucumberStepDefinitions {
 	
 
 	
-	//Make Appointment
+	//Make Appointment------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
 	/**This is the step definition to check the make appointment controller method.
 	 *@author Yujing Yan
 	 *@author Zhixin Xiong 
-	 * 
 	 * 
 	 */
 	
@@ -617,6 +659,9 @@ public class CucumberStepDefinitions {
 		SystemTime.SystemTime(string, true);
 	}
 
+	/**
+	 * @author Yujing Yan
+	 */
 	@Given("the business has the following opening hours")
 	public void the_business_has_the_following_opening_hours(io.cucumber.datatable.DataTable dataTable) {
 		List<Map<String,String>> list = dataTable.asMaps();
@@ -633,6 +678,9 @@ public class CucumberStepDefinitions {
 		}
 	}
 
+	/**
+	 * @author Yujing Yan
+	 */
 	@Given("the business has the following holidays")
 	public void the_business_has_the_following_holidays(io.cucumber.datatable.DataTable dataTable) {
 		List<Map<String,String>> list = dataTable.asMaps();
@@ -647,6 +695,9 @@ public class CucumberStepDefinitions {
 		}
 	}
 
+	/**
+	 * @author Yujing Yan
+	 */
 	@Given("the following appointments exist in the system:")
 	public void the_following_appointments_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) throws InvalidInputException {
 		flexibook = FlexiBookApplication.getflexibook();
@@ -671,6 +722,9 @@ public class CucumberStepDefinitions {
 		}
 	}
 
+	/**
+	 * @author Yujing Yan
+	 */
 	@Given("{string} is logged in to their account")
 	public void is_logged_in_to_their_account(String customer1) {
 		int cindex = -1;
@@ -727,6 +781,9 @@ public class CucumberStepDefinitions {
 		assertEquals(int1, (Integer)count);
 
 	}
+	/**
+	 * @author Zhixin Xiong
+	 */
 
 	@Then("{string} shall have a {string} appointment on {string} from {string} to {string}")
 	public void shall_have_a_appointment_on_from_to(String customer, String serviceName, String date, String startTime, String endTime) {
@@ -753,16 +810,13 @@ public class CucumberStepDefinitions {
 	
 
 	
-	//Setup Business Information
+	//Setup Business Information------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
 	/**This is the step definition to check the setup business information controller method.
 	 *@author Zhixin Xiong 
 	 * 
-	 * 
 	 */
 
-	/**
-	 * @author Zhixin Xiong
-	 */
 	@Given("no business exists")
 	public void no_business_exists() {
 		if(flexibook.getBusiness() != null) {
@@ -871,11 +925,10 @@ public class CucumberStepDefinitions {
 	public void the_user_tries_to_access_the_business_information() {
 		businessInfor=FlexibookController.viewBusinessInfor();
 	}
+	
 	/**
 	 * @author Zhixin Xiong
 	 */
-
-
 	@Then("the {string} and {string} and {string} and {string} shall be provided to the user")
 	public void the_and_and_and_shall_be_provided_to_the_user(String string, String string2, String string3, String string4) {
 		assertEquals(businessInfor[0], string);
@@ -988,8 +1041,12 @@ public class CucumberStepDefinitions {
 	
 	
 	
-	//Signup for Customer Account
+	//Signup for Customer Account------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+	/**
+	 * This feature takes in all the parameters to sign up a new customer account
+	 * @author Jewoo Lee
+	 */
 	@Before
 	public static void setUp() {
 		FlexiBookApplication.setCurrentuser(null);
@@ -997,6 +1054,9 @@ public class CucumberStepDefinitions {
 		userCntrBeforeCreation = 0;
 	}
 
+	/**
+	 * @author Jewoo Lee
+	 */
 	@Given("there is no existing username {string}")
 	public void there_is_no_existing_username(String username) {
 
@@ -1005,6 +1065,9 @@ public class CucumberStepDefinitions {
 		}
 	}
 
+	/**
+	 * @author Jewoo Lee
+	 */
 	@Given("there is an existing username {string}")
 	public void there_is_an_existing_username(String username) throws InvalidInputException {
 
@@ -1021,6 +1084,9 @@ public class CucumberStepDefinitions {
 
 	}
 
+	/**
+	 * @author Jewoo Lee
+	 */
 	@Given("the user is logged in to an account with username {string}")
 	public void the_user_is_logged_in_to_an_account_with_username(String username) {
 
@@ -1044,6 +1110,9 @@ public class CucumberStepDefinitions {
 		tempUser = user;
 	}
 
+	/**
+	 * @author Jewoo Lee
+	 */
 	@When("the user provides a new username {string} and a password {string}")
 	public void the_user_provides_a_new_username_and_a_password(String username, String password) throws InvalidInputException {
 		userCntrBeforeCreation = flexibook.getCustomers().size();
@@ -1057,6 +1126,9 @@ public class CucumberStepDefinitions {
 		tempUser = getCustomer(username);
 	}
 
+	/**
+	 * @author Jewoo Lee
+	 */
 	@Then("a new customer account shall be created")
 	public void a_new_customer_account_shall_be_created() {
 		flexibook.getCustomers().size();
@@ -1064,19 +1136,26 @@ public class CucumberStepDefinitions {
 
 	}
 
+	/**
+	 * @author Jewoo Lee
+	 */
 	@Then("the account shall have username {string} and password {string}")
 	public void the_account_shall_have_username_and_password(String username, String password) {
 		assertEquals(username, flexibook.getCustomer(0).getWithUsername(username).getUsername());
 		assertEquals(password, flexibook.getCustomer(0).getWithUsername(username).getPassword());
 
 	}
-
+	/**
+	 * @author Jewoo Lee
+	 */
 	@Then("no new account shall be created")
 	public void no_new_account_shall_be_created() throws Throwable {
 		assertEquals(userCntrBeforeCreation, flexibook.getCustomers().size());
 
 	}
-
+	/**
+	 * @author Jewoo Lee
+	 */
 	@Then("an error message {string} shall be raised")
 	public void an_error_message_shall_be_raised(String errorMsg) {
 		String e = FlexiBookApplication.returnmessage();
@@ -1087,8 +1166,12 @@ public class CucumberStepDefinitions {
 	
 	
 	
-	//Update Appointment
+	//Update Appointment------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+	/**
+	 * This feature takes in all the parameters and updates an appointment
+	 * @author Jewoo Lee
+	 */
 	@Given("{string} has a {string} appointment with optional sevices {string} on {string} at {string}")
 	public void has_a_appointment_with_optional_sevices_on_at(String customer, String serviceName, String optService, String date, String startTime) throws InvalidInputException {
 
@@ -1100,7 +1183,10 @@ public class CucumberStepDefinitions {
 		BookableService b = flexibook.getBookableService(0).getWithName(serviceName);
 		Appointment a = new Appointment((Customer) flexibook.getCustomer(0).getWithUsername(customer), b, t, flexibook);
 	}
-
+	
+	/**
+	 * @author Jewoo Lee
+	 */
 	@When("{string} attempts to update their {string} appointment on {string} at {string} to {string} at {string}")
 	public void attempts_to_update_their_appointment_on_at_to_at(String customer, String serviceName, String serviceDate, String startTime, String newDate, String newStartTime) {
 		try {
@@ -1110,6 +1196,9 @@ public class CucumberStepDefinitions {
 		}
 	}
 
+	/**
+	 * @author Jewoo Lee
+	 */
 	@When("{string} attempts to {string} {string} from their {string} appointment on {string} at {string}")
 	public void attempts_to_from_their_appointment_on_at(String customer, String action, String comboItem, String serviceName, String serviceDate, String startTime) {
 		try {
@@ -1119,6 +1208,9 @@ public class CucumberStepDefinitions {
 		}
 	}
 
+	/**
+	 * @author Jewoo Lee
+	 */
 	@When("{string} attempts to update {string}'s {string} appointment on {string} at {string} to {string} at {string}")
 	public void attempts_to_update_s_appointment_on_at_to_at(String customer, String customer2, String serviceName, String serviceDate, String startTime, String newDate, String newStartTime) {
 		try {
@@ -1128,6 +1220,9 @@ public class CucumberStepDefinitions {
 		}
 	}
 
+	/**
+	 * @author Jewoo Lee
+	 */
 	@Then("the system shall report that the update was {string}")
 	public void the_system_shall_report_that_the_update_was(String string) {
 		String e = FlexiBookApplication.returnmessage();
@@ -1137,7 +1232,7 @@ public class CucumberStepDefinitions {
 	
 	
 	
-	//Update Business Information
+	//Update Business Information ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	/**
 	 * This is the step definition to check the makecombo controller method.
@@ -1165,7 +1260,7 @@ public class CucumberStepDefinitions {
 			business.addBusinessHour(nHour);
 		}
 	}
-	/*
+	/**
 	 * @author Zhixin Xiong
 	 */
 	
@@ -1184,7 +1279,7 @@ public class CucumberStepDefinitions {
 			FlexiBookApplication.setmessage(e.getMessage());	
 		}
 	}
-	/*
+	/**
 	 * @author Zhixin Xiong
 	 */
 	@Then("the business information shall {string} updated with new {string} and {string} and {string} and {string}")
@@ -1198,7 +1293,7 @@ public class CucumberStepDefinitions {
 			assertEquals(aBusiness.getEmail(), string5);
 		}
 	}
-	/*
+	/**
 	 * @author Zhixin Xiong
 	 */
 	@When("the user tries to change the business hour {string} at {string} to be on {string} starting at {string} and ending at {string}")
@@ -1215,14 +1310,14 @@ public class CucumberStepDefinitions {
 			FlexiBookApplication.setmessage(e.getMessage());
 		}
 	}
-	/*
+	/**
 	 * @author Zhixin Xiong
 	 */
 	@Then("the business hour shall {string} be updated")
 	public void the_business_hour_shall_be_updated(String string) {
 		assertEquals(string, resultString);
 	}
-	/*
+	/**
 	 * @author Zhixin Xiong
 	 */
 	@When("the user tries to remove the business hour starting {string} at {string}")
@@ -1239,7 +1334,7 @@ public class CucumberStepDefinitions {
 			FlexiBookApplication.setmessage(e.getMessage());	
 		}
 	}
-	/*
+	/**
 	 * @author Zhixin Xiong
 	 */
 	@Then("the business hour starting {string} at {string} shall {string} exist")
@@ -1248,7 +1343,7 @@ public class CucumberStepDefinitions {
 		assertEquals(string3, removeResult);
 
 	}
-	/*
+	/**
 	 * @author Zhixin Xiong
 	 */
 	@Then("an error message {string} shall {string} be raised")
@@ -1260,7 +1355,7 @@ public class CucumberStepDefinitions {
 			assertEquals(string, e);
 		}
 	}
-	/*
+	/**
 	 * @author Zhixin Xiong
 	 */
 	@When("the user tries to change the {string} on {string} at {string} to be with start date {string} at {string} and end date {string} at {string}")
@@ -1278,7 +1373,7 @@ public class CucumberStepDefinitions {
 			FlexiBookApplication.setmessage(e.getMessage());	    		
 		}
 	}
-	/*
+	/**
 	 * @author Zhixin Xiong
 	 */
 	@Then("the {string} shall {string} updated with start date {string} at {string} and end date {string} at {string}")
@@ -1314,7 +1409,7 @@ public class CucumberStepDefinitions {
 
 		}
 	}
-	/*
+	/**
 	 * @author Zhixin Xiong
 	 */
 	@When("the user tries to remove an existing {string} with start date {string} at {string} and end date {string} at {string}")
@@ -1329,7 +1424,7 @@ public class CucumberStepDefinitions {
 			FlexiBookApplication.setmessage(e.getMessage());	
 		}
 	}
-	/*
+	/**
 	 * @author Zhixin Xiong
 	 */
 	@Then("the {string} with start date {string} at {string} shall {string} exist")
@@ -1340,8 +1435,12 @@ public class CucumberStepDefinitions {
 	
 	
 	
-	//Update Customer Or Owner Account
+	//Update Customer Or Owner Account------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+	/**
+	 * This feature takes in all the parameters and update both customer and owner account
+	 * @author Jewoo Lee
+	 */
 	@Given("an owner account exists in the system with username {string} and password {string}")
 	public void an_owner_account_exists_in_the_system_with_username_and_password(String ownerUser, String ownerPass) {
 
@@ -1350,6 +1449,9 @@ public class CucumberStepDefinitions {
 		}
 	}
 
+	/**
+	 * @author Jewoo Lee
+	 */
 	@When("the user tries to update account with a new username {string} and password {string}")
 	public void the_user_tries_to_update_account_with_a_new_username_and_password(String newUsername, String newPassword) throws InvalidInputException {
 
@@ -1368,6 +1470,9 @@ public class CucumberStepDefinitions {
 		}
 	}
 
+	/**
+	 * @author Jewoo Lee
+	 */
 	@Then("the account shall not be updated")
 	public void the_account_shall_not_be_updated() {
 
@@ -1377,7 +1482,8 @@ public class CucumberStepDefinitions {
 	
 
 	
-	//Update Service Combo
+	//Update Service Combo------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
 	/**This is the step definition to check the updatecombo controller method.
      *@author Haipeng Yue
      * 
@@ -1409,7 +1515,8 @@ public class CucumberStepDefinitions {
 	
 	
 	
-	//Update Service
+	//Update Service------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
 	/**This method takes all parameters to update a service in the system.
 	 * @author Tianyu Zhao
 	 */
@@ -1492,7 +1599,8 @@ public class CucumberStepDefinitions {
 	
 	
 	
-	//View Appointment Calendar
+	//View Appointment Calendar------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
 	/**
 	 * @author James Willems
 	 */

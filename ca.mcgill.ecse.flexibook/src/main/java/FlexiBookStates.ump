@@ -6,42 +6,44 @@ depend ca.mcgill.ecse.flexibook.util.SystemTime;
 depend java.time.LocalTime;
 depend java.sql.Time;
   
+  //Author: Jewoo Lee
   appointmentStatus {
     Booked{
       
       updateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService) [OneDayDiff()] / {
         doUpdateAppointment(timeslot, newBookableService, optionalService);
-      } -> Booked;
+      } -> Booked;  //When the appointment is updated, it stays in the Booked state
       
       cancelAppointment() [OneDayDiff()] / {
         doCancelAppointment();
-      } -> Final;
+      } -> Final; //If the appointment is more than one day difference, and the customer wants to cancel, it successfully cancels the appointment and moves to the final state
      
       ownerCancelAppointment() [isWithinAppTimeSlot()||isAfterAppTimeSlot()] / {
         doCancelAppointmentO();
-      } -> Final;
+      } -> Final; //The owner has the right to cancel the appointment after checkign the conditions, which forces it to move to the final state where the appontment is deleted/cancelled
       
       startAppointment(Owner owner) [isWithinAppTimeSlot()] / {
         doStartAppointment(owner);
-      } -> InProgress;
+      } -> InProgress; //The customer shows up in time and the appointment starts, causing it to move to InProgress state
       
     }
     
     InProgress{
       updateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService) [isWithinAppTimeSlot()] / {
           doUpdateAppointment(timeslot, newBookableService, optionalService);
-      } -> InProgress;
+      } -> InProgress; //The customer can update the appointment during the appointment. No change in the state
       
       endAppointment() / {
         doEndAppointment();
-      } -> Final;
+      } -> Final; //The appointment has ended
       
     }
   }
   
+  //Author: Haipeng Yue
   private void doUpdateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService) {
-  	 if(!(this.getTimeSlot().getStartTime().equals(timeslot.getStartTime()))){
-     Boolean check = false;
+  	if(!(this.getTimeSlot().getStartTime().equals(timeslot.getStartTime()))){
+    Boolean check = false;
 	try {
     	check = availableTimeSlot(timeslot);
     }
@@ -171,6 +173,7 @@ depend java.sql.Time;
 	return check;
   }
   
+  //Author: Jewoo Lee
   private Boolean OneDayDiff() {
   
   	String sDate = SystemTime.getdate(SystemTime.getSysTime());
@@ -184,6 +187,7 @@ depend java.sql.Time;
 	}
   }
   
+  //Author: Jewoo Lee
   private Boolean isWithinAppTimeSlot() {
   	
   	String st = this.getTimeSlot().getStartTime().toLocalTime().toString();
@@ -206,6 +210,8 @@ depend java.sql.Time;
 		return false;
 	}
   } 
+  
+  //Author: James Willems
   private Boolean isAfterAppTimeSlot(){
 	String systemTimeRN = SystemTime.gettime(SystemTime.getSysTime());
 	String endTime = this.getTimeSlot().getEndTime().toLocalTime().toString();
@@ -218,12 +224,14 @@ depend java.sql.Time;
 	}
   }
   
+  //Author: Jewoo Lee
   private void doCancelAppointment() {
   	if(OneDayDiff() == true) {
 		this.delete();
 	}
   }
   
+  //Author: Jewoo Lee
   private void doCancelAppointmentO() {
 	Customer a = this.getCustomer();
 	int noShowCountOld = a.getNoShowCount();
@@ -232,6 +240,7 @@ depend java.sql.Time;
 	this.delete();
   }
   
+  //Author: Jewoo Lee
   private void doStartAppointment(Owner owner) {
   	if(owner != null) {
 		this.setAppointmentInProgress(true);
@@ -240,13 +249,15 @@ depend java.sql.Time;
 		throw new RuntimeException("You are not the owner of the Flexibook");
 	}
   }
-          
+  
+  //Author: Haipeng Yue        
   private void doEndAppointment() {
   	this.setAppointmentInProgress(false);
   	this.delete();
   
   }
   
+  //Author: Haipeng Yue
   public static boolean isNoOverlap(TimeSlot t1, TimeSlot t2) {
 		if(t1.getStartDate().equals(t2.getStartDate())) {
 			if(t1.getEndTime().before(t2.getStartTime()) || 
@@ -260,6 +271,7 @@ depend java.sql.Time;
 		return true;
 	}
 	
+	//Author: Jewoo Lee
 	public static boolean isFullyCovered(TimeSlot t1, TimeSlot t2) {
 		if(t1.getStartDate().equals(t2.getStartDate())) {
 			if(t1.getEndTime().before(t2.getEndTime()) && 

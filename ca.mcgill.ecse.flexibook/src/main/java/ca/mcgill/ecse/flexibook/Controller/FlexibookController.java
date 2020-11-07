@@ -733,10 +733,6 @@ public class FlexibookController {
 	 * @param newStartTime -- the new start time of appointment 
 	 * @throws InvalidInputException
 	 */
-<<<<<<< HEAD
-=======
-
->>>>>>> 2727b7423c0ce8405698c9a997f44c1b3ab21bca
 	public static void UpdateAppointment(String customer, String customer2, String action, String comboItem, String serviceName, 
 			String serviceDate, String newDate, String startTime, String newStartTime) throws InvalidInputException {
 		FlexiBook fb = FlexiBookApplication.getflexibook();
@@ -834,7 +830,7 @@ public class FlexibookController {
 			}
 			if(action.equals("add")) {
 				Service svc = (Service) fb.getBookableService(0).getWithName(comboItem);
-				ComboItem CI = new ComboItem(false, svc, combo);
+				ComboItem CI = new ComboItem(true, svc, combo);
 				Appointment ap = fb.getCustomer(cindex).getAppointment(aindex);
 				int d = svc.getDuration();
 				TimeSlot ts = ap.getTimeSlot();
@@ -901,11 +897,15 @@ public class FlexibookController {
 		String sysTime = SystemTime.getSysTime();
 		String[] sys = sysTime.split("\\+");
 		Date localDate = Date.valueOf(sys[0]);
+		String datel=localDate.toString();
 		Time localTime = Time.valueOf(sys[1]+":00");
-
+		
 		Date servicedate = Date.valueOf(serviceDate);
-		Time starttime = Time.valueOf(startTime);
-		if(servicedate.equals(localDate)) {
+		String dates=servicedate.toString();
+		String news=startTime.substring(0,startTime.length()-3);
+		Time starttime = Time.valueOf(news+":00");
+		String times=starttime.toString();
+		if(datel.equals(dates)) {
 			//throw new InvalidInputException("Cannot cancel an appointment on the appointment date");
 		}
 		else {

@@ -76,8 +76,9 @@ public class AppointmentManagementStepDefinition {
 		String startTime = appointment.getTimeSlot().getStartTime().toString();
 		String startDate = appointment.getTimeSlot().getStartDate().toString();
 		String newStartTime = startTime.substring(0, startTime.length()-3);
+		String s =appointment.getTimeSlot().getStartTime().toString();
 		FlexibookController.CancelAppointment(string, null, 
-				appointment.getTimeSlot().getStartDate().toString(), appointment.getTimeSlot().getStartTime().toString());
+				appointment.getTimeSlot().getStartDate().toString(), s);
 		if(appointment.getAppointmentStatus().toString().equals("Final")) {
 			FlexibookController.MakeAppointment(string, startDate, string2, null, newStartTime);
 		}
@@ -225,17 +226,20 @@ public class AppointmentManagementStepDefinition {
 	public void the_service_combo_shall_have_selected_services(String string) {
 		BookableService serviceCombo=appointment.getBookableService();
 		String allServiceString="";
-
+        int count =0;
 		if(serviceCombo instanceof ServiceCombo) {
 			List<ComboItem>items=((ServiceCombo) serviceCombo).getServices();
+			//List<ComboItem>optitems=
 			for(int i=0;i<items.size();i++) {
-				allServiceString+=items.get(i).getService().getName();
-				if(i<items.size()-1) {
+				if(items.get(i).getMandatory()==true) {
+		          String backup=allServiceString;
+				  allServiceString+=items.get(i).getService().getName();
 					allServiceString+=",";
+			      
 				}
 			}
 		}
-		assertEquals(string, allServiceString);
+		assertEquals(string+",", allServiceString);
 	}
 
 	@Then("the system shall have {int} appointment")

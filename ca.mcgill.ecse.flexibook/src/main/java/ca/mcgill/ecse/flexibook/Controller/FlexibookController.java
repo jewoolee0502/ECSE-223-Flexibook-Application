@@ -590,7 +590,7 @@ public class FlexibookController {
 						}
 					}
 				}
-				duration+=((ServiceCombo) service).getMainService().getService().getDuration();
+				//duration+=((ServiceCombo) service).getMainService().getService().getDuration();
 
 				ServiceCombo a=(ServiceCombo)service;
 				for(ComboItem c:a.getServices()) {

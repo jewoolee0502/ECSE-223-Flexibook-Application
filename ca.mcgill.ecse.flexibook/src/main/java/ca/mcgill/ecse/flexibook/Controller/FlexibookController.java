@@ -936,26 +936,20 @@ public class FlexibookController {
 					throw new InvalidInputException("A customer can only cancel their own appointments");
 				}
 			}
+
 			String sysTime = SystemTime.getSysTime();
 			String[] sys = sysTime.split("\\+");
 			Date localDate = Date.valueOf(sys[0]);
 			String datel=localDate.toString();
 			Time localTime = Time.valueOf(sys[1]+":00");
-
+			String thiss=startTime;
 			Date servicedate = Date.valueOf(serviceDate);
-
 			String dates=servicedate.toString();
-			String news=startTime.substring(0,startTime.length()-3);
-			Time starttime = Time.valueOf(news+":00");
+			//String news=startTime.substring(0,startTime.length()-3);
+			Time starttime = Time.valueOf(startTime+":00");
 			String times=starttime.toString();
 			if(datel.equals(dates)) {
 				//throw new InvalidInputException("Cannot cancel an appointment on the appointment date");
-				int cindex = -1;
-				for(Customer c : fb.getCustomers()) {
-					if(c.getUsername().equals(customer)) {
-						cindex = fb.indexOfCustomer(c);
-					}
-				}
 			}
 			else {
 				int cindex = -1;

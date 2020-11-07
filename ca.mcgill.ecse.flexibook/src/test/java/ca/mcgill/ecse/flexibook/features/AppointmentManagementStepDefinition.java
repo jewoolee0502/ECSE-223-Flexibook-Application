@@ -78,7 +78,7 @@ public class AppointmentManagementStepDefinition {
 		String newStartTime = startTime.substring(0, startTime.length()-3);
 		String s =appointment.getTimeSlot().getStartTime().toString();
 		FlexibookController.CancelAppointment(string, null, 
-				appointment.getTimeSlot().getStartDate().toString(), s);
+				appointment.getTimeSlot().getStartDate().toString(), newStartTime);
 		if(appointment.getAppointmentStatus().toString().equals("Final")) {
 			FlexibookController.MakeAppointment(string, startDate, string2, null, newStartTime);
 		}
@@ -127,8 +127,9 @@ public class AppointmentManagementStepDefinition {
 	public void attempts_to_cancel_the_appointment_at(String string, String string2) throws InvalidInputException {
 		SystemTime.setSysTime(string2);
 		String a = appointment.getTimeSlot().getStartTime().toString();
+		String news=a.substring(0,a.length()-3);
 		try {
-			FlexibookController.CancelAppointment(string, null, appointment.getTimeSlot().getStartDate().toString(), appointment.getTimeSlot().getStartTime().toString());
+			FlexibookController.CancelAppointment(string, null, appointment.getTimeSlot().getStartDate().toString(), news);
 			//appointment.cancelAppointment();
 		}
 		catch(RuntimeException e) {

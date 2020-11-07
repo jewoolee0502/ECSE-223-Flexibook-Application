@@ -592,6 +592,13 @@ public class FlexibookController {
 				}
 				duration+=((ServiceCombo) service).getMainService().getService().getDuration();
 
+				ServiceCombo a=(ServiceCombo)service;
+				for(ComboItem c:a.getServices()) {
+					if(c.getMandatory()==true) {
+						duration+=c.getService().getDuration();
+					}
+				}
+
 			}
 
 			Date servicedate = Date.valueOf(date);
@@ -929,7 +936,6 @@ public class FlexibookController {
 					throw new InvalidInputException("A customer can only cancel their own appointments");
 				}
 			}
-
 			String sysTime = SystemTime.getSysTime();
 			String[] sys = sysTime.split("\\+");
 			Date localDate = Date.valueOf(sys[0]);
@@ -944,6 +950,12 @@ public class FlexibookController {
 			String times=starttime.toString();
 			if(datel.equals(dates)) {
 				//throw new InvalidInputException("Cannot cancel an appointment on the appointment date");
+				int cindex = -1;
+				for(Customer c : fb.getCustomers()) {
+					if(c.getUsername().equals(customer)) {
+						cindex = fb.indexOfCustomer(c);
+					}
+				}
 			}
 			else {
 				int cindex = -1;

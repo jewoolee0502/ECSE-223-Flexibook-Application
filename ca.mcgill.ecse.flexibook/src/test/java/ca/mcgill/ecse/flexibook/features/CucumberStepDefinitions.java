@@ -1796,7 +1796,6 @@ public class CucumberStepDefinitions {
 
 		}
 		try {
-			//String customer, String customer2, String name, String serviceDate, String startTime
 			FlexibookController.UpdateAppointment(string, null, null, null, serviceName, serviceDate, newStartDateString, startTime, newStartTime);
 		} catch (Exception e)
 		{
@@ -1812,7 +1811,6 @@ public class CucumberStepDefinitions {
 		String news=a.substring(0,a.length()-3);
 		try {
 			FlexibookController.CancelAppointment(string, null, appointment.getTimeSlot().getStartDate().toString(), news);
-			//appointment.cancelAppointment();
 		}
 		catch(RuntimeException e) {
 
@@ -1912,7 +1910,6 @@ public class CucumberStepDefinitions {
 		int count =0;
 		if(serviceCombo instanceof ServiceCombo) {
 			List<ComboItem>items=((ServiceCombo) serviceCombo).getServices();
-			//List<ComboItem>optitems=
 			for(int i=0;i<items.size();i++) {
 				if(items.get(i).getMandatory()==true) {
 					String backup=allServiceString;
@@ -1923,7 +1920,6 @@ public class CucumberStepDefinitions {
 			}
 
 		}
-		//assertEquals(string+",", allServiceString);
 	}
 
 	@Then("the system shall have {int} appointment")
@@ -1941,7 +1937,6 @@ public class CucumberStepDefinitions {
 	@Then("the service in the appointment shall be {string}")
 	public void the_service_in_the_appointment_shall_be(String string) {
 		String serviceIn = appointment.getBookableService().getName();
-		//assertEquals(string, serviceIn);
 	}
 
 	@Then("the appointment shall be for the date {string} with start time {string} and end time {string}")
@@ -1950,9 +1945,6 @@ public class CucumberStepDefinitions {
 		String date = currentTimeSlot.getStartDate().toString();
 		String start = currentTimeSlot.getStartTime().toString();
 		String end = currentTimeSlot.getEndTime().toString();
-		//assertEquals(string, date);
-		//assertEquals(string2+":00", start);
-		//assertEquals(string3+":00", end);
 	}
 
 	@Then("the username associated with the appointment shall be {string}")

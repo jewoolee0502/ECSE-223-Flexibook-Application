@@ -1963,8 +1963,83 @@ public class FlexibookController {
 		return busiStrings;
 
 	}
+	
+	
+	public static List<TOOwner> getOwners() {
+		ArrayList<TOOwner> owners = new ArrayList<TOOwner>();
+		for (Owner onwner : FlexiBookApplication.getflexibook().getOwners()) { //BtmsApplication.getBtms().getDrivers()) {
+			TOOwner toOwner = new TOOwner(owner.getUsername(), owner.getPassword()); //(driver.getName(), driver.getId());
+			owners.add(toOwner);
+		}
+		return owners;
+	}
+	
+	
+	public static List<TOCustomer> getCustomers() {
+		ArrayList<TOCustomer> customers = new ArrayList<TOCustomer>();
+		for (Customer customer : FlexiBookApplication.getflexibook().getCustomers()) {
+			TOCustomer toCustomer = new TOCustomer(customer.getUsername(), customer.getPassword());
+			customers.add(toCustomer);
+		}
+		return customers;
+	}
+	
 
-
+	public static List<TOBusiness> getBusinesses() {
+		ArrayList<TOBusiness> businesses = new ArrayList<TOBusiness>();
+		for (Business business : FlexiBookApplication.getflexibook().getBusiness()) { 
+			TOBusiness toBusiness = new TOBusiness(business.getBusinessHours());
+			businesses.add(toBusiness);
+		}
+		return businesses;
+	}
+	
+	public static List<TOBusinessHour> getBusinessHours() {
+		ArrayList<TOBusinessHour> businessHours = new ArrayList<TOBusinessHour>();
+		for (BusinessHour businessHour : FlexiBookApplication.getflexibook().getHours()) { 
+			if (businessHour.getBusinessHours.equals(BusinessHours.Available)) {
+				TOBusinessHour toBusVehicle = new TOBusinessHour(businessHours.getBusinessHours());
+				businessHours.add(toBusinessHours);				
+			}
+		}
+		return businessHours;
+	}
+	
+	public static List<TOTimeSlot> getTimeSlots() {
+		ArrayList<TOTimeSlot> timeSlots = new ArrayList<TOTimeSlot>();
+		for (TimeSlot timeSlot : FlexiBookApplication.getflexibook().getTimeSlots()) {
+			TOTimeSlot timeSlot = new TOTimeSlot(getTimeSlots());
+			timeSlots.add(toTimeSlot);				
+		}
+		return timeSlots;
+	}
+	
+	public static List<TOService> getService() {
+		ArrayList<TOService> services = new ArrayList<TOService>();
+		for (Service service : FlexiBookApplication.getflexibook().getServices()) { 
+			TOService toService = new TOService(service.Available);
+			services.add(toService);				
+		}
+		return services;
+	}
+	
+	public static List<TOServiceCombo> getServiceCombo() {
+		ArrayList<TOServiceCombo> serviceCombos = new ArrayList<TOServiceCombo>();
+		for (ServiceCombo serviceCombo : FlexiBookApplication.getflexibook().getServiceCombos()) { 
+			TOServiceCombo toServiceCombo = new TOServiceCombo(serviceCombo.Available);
+			serviceCombos.add(toServiceCombo);				
+		}
+		return serviceCombos;
+	}
+	
+	public static List<TOComboItem> getComboItem() {
+		ArrayList<TOComboItem> comboItems = new ArrayList<TOComboItem>();
+		for (ComboItem comboItem : FlexiBookApplication.getflexibook().getComboItems()) { 
+			TOComboItem toComboItem = new TOComboItem(comboItem.Available);
+			comboItems.add(toComboItem);				
+		}
+		return comboItems;
+	}
 }
 
 

@@ -1338,10 +1338,11 @@ public class FlexibookController {
 	 * @return ArrayList<TimeSlot>
 	 */
 
-	public static ArrayList<TimeSlot> getUnavailableTimeSlots (String username, String date) throws InvalidInputException{
+	public static ArrayList<TOTimeSlot> getUnavailableTimeSlots (String username, String date) throws InvalidInputException{
 		String error;
+		TOTimeSlot timeslot;
 		FlexiBook flexibook=FlexiBookApplication.getflexibook();
-		ArrayList<TimeSlot> list = new ArrayList<TimeSlot>();
+		ArrayList<TOTimeSlot> list = new ArrayList<TOTimeSlot>();
 		Date newDate = null;
 		try {
 			newDate=dateChecker(date);}
@@ -1354,8 +1355,8 @@ public class FlexibookController {
 
 		for(Appointment appointment:flexibook.getAppointments()) {
 			if(appointment.getTimeSlot().getStartDate().equals(newDate)) {
-				list.add(appointment.getTimeSlot());
-
+				timeslot= new TOTimeSlot(appointment.getTimeSlot().getStartDate(),appointment.getTimeSlot().getStartTime(),appointment.getTimeSlot().getEndDate(),appointment.getTimeSlot().getEndTime(),false);
+				list.add(timeslot);
 			}
 		}
 		return list;
@@ -1373,11 +1374,10 @@ public class FlexibookController {
 	 * @return ArrayList<TimeSlot>
 	 */
 
-	public static ArrayList<TimeSlot> getAvailableTimeSlots(String username, String date) throws InvalidInputException {
-		String error;
-		int count=0;
+	public static ArrayList<TOTimeSlot> getAvailableTimeSlots(String username, String date) throws InvalidInputException {
+		ArrayList<TOTimeSlot> unavailable = new ArrayList<TOTimeSlot>();
 		FlexiBook flexibook=FlexiBookApplication.getflexibook();
-		ArrayList<TimeSlot> list = new ArrayList<TimeSlot>();
+		ArrayList<TOTimeSlot> list = new ArrayList<TOTimeSlot>();
 		Date newDate = null;
 		try {
 			newDate=dateChecker(date);}
@@ -1387,16 +1387,29 @@ public class FlexibookController {
 		catch(IllegalArgumentException f) {
 			throw new InvalidInputException(date+" is not a valid date");
 		}
-		for(TimeSlot ts:flexibook.getTimeSlots()) {
-			for (Appointment a:flexibook.getAppointments()) {
-				if(!(a.getTimeSlot().equals(ts))&&a.getTimeSlot().getStartDate().equals(newDate)) {
-					count++;
-				}
+		unavailable=getUnavailableTimeSlots(username,date);
+		if(unavailable.size()!=0) {
+		if(!(unavailable.get(0).getStartTime().equals(getStartTime(newDate.getDay())))) {
+			TOTimeSlot av = new TOTimeSlot(newDate,getStartTime(newDate.getDay()),newDate,unavailable.get(0).getStartTime(),true);
+			list.add(av);
+		}
+		
+		for(int i=0;i<=unavailable.size()-1;i++) {
+			if(i==unavailable.size()-1) {
+				Time closure = getClosingTime(newDate.getDay());
+				TOTimeSlot av = new TOTimeSlot(newDate,unavailable.get(i).getEndTime(),newDate,closure,true);
+				list.add(av);
+				break;
 			}
-			if (count==flexibook.getAppointments().size()) {
-				list.add(ts);
-			}
-		}		
+			TOTimeSlot av = new TOTimeSlot(newDate,unavailable.get(i).getEndTime(),newDate,unavailable.get(i+1).getStartTime(),true);
+			list.add(av);
+		}
+		}
+		else {
+			TOTimeSlot av = new TOTimeSlot(newDate,getStartTime(newDate.getDay()),newDate,getClosingTime(newDate.getDay()),true);
+			list.add(av);
+		}
+				
 		return list;
 	}
 
@@ -1482,7 +1495,103 @@ public class FlexibookController {
 		}
 		return list;
 	}
-
+	
+	private static Time getClosingTime(int i) {
+		FlexiBook flexibook = FlexiBookApplication.getflexibook();
+		switch (i) {
+		case 0 :
+			for(BusinessHour b: flexibook.getBusiness().getBusinessHours()) {
+				if(b.getDayOfWeek().toString()=="Sunday") {
+					return b.getEndTime();
+				}
+			}
+		case 1 :
+			for(BusinessHour b: flexibook.getBusiness().getBusinessHours()) {
+				if(b.getDayOfWeek().toString()=="Monday") {
+					return b.getEndTime();
+				}
+			}
+		case 2:
+			for(BusinessHour b: flexibook.getBusiness().getBusinessHours()) {
+				if(b.getDayOfWeek().toString()=="Tuesday") {
+					return b.getEndTime();
+				}
+			}
+		case 3:
+			for(BusinessHour b: flexibook.getBusiness().getBusinessHours()) {
+				if(b.getDayOfWeek().toString()=="Wednesday") {
+					return b.getEndTime();
+				}
+			}
+		case 4:
+			for(BusinessHour b: flexibook.getBusiness().getBusinessHours()) {
+				if(b.getDayOfWeek().toString()=="Thursday") {
+					return b.getEndTime();
+				}
+			}
+		case 5:
+			for(BusinessHour b: flexibook.getBusiness().getBusinessHours()) {
+				if(b.getDayOfWeek().toString()=="Friday") {
+					return b.getEndTime();
+				}
+			}
+		case 6:
+			for(BusinessHour b: flexibook.getBusiness().getBusinessHours()) {
+				if(b.getDayOfWeek().toString()=="Saturday") {
+					return b.getEndTime();
+				}
+			}
+		}
+		return null;
+	}
+	private static Time getStartTime(int i) {
+		FlexiBook flexibook = FlexiBookApplication.getflexibook();
+		switch (i) {
+		case 0 :
+			for(BusinessHour b: flexibook.getBusiness().getBusinessHours()) {
+				if(b.getDayOfWeek().toString()=="Sunday") {
+					return b.getStartTime();
+				}
+			}
+		case 1 :
+			for(BusinessHour b: flexibook.getBusiness().getBusinessHours()) {
+				if(b.getDayOfWeek().toString()=="Monday") {
+					return b.getStartTime();
+				}
+			}
+		case 2:
+			for(BusinessHour b: flexibook.getBusiness().getBusinessHours()) {
+				if(b.getDayOfWeek().toString()=="Tuesday") {
+					return b.getStartTime();
+				}
+			}
+		case 3:
+			for(BusinessHour b: flexibook.getBusiness().getBusinessHours()) {
+				if(b.getDayOfWeek().toString()=="Wednesday") {
+					return b.getStartTime();
+				}
+			}
+		case 4:
+			for(BusinessHour b: flexibook.getBusiness().getBusinessHours()) {
+				if(b.getDayOfWeek().toString()=="Thursday") {
+					return b.getStartTime();
+				}
+			}
+		case 5:
+			for(BusinessHour b: flexibook.getBusiness().getBusinessHours()) {
+				if(b.getDayOfWeek().toString()=="Friday") {
+					return b.getStartTime();
+				}
+			}
+		case 6:
+			for(BusinessHour b: flexibook.getBusiness().getBusinessHours()) {
+				if(b.getDayOfWeek().toString()=="Saturday") {
+					return b.getStartTime();
+				}
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * addTimeSlot: This method adds new time slot.

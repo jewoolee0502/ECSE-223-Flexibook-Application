@@ -18,17 +18,19 @@ public class TOTimeSlot
   private Time startTime;
   private Date endDate;
   private Time endTime;
+  private boolean isAvailable;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public TOTimeSlot(Date aStartDate, Time aStartTime, Date aEndDate, Time aEndTime)
+  public TOTimeSlot(Date aStartDate, Time aStartTime, Date aEndDate, Time aEndTime, boolean available)
   {
     startDate = aStartDate;
     startTime = aStartTime;
     endDate = aEndDate;
     endTime = aEndTime;
+    isAvailable = available;
   }
 
   //------------------------
@@ -66,7 +68,10 @@ public class TOTimeSlot
     wasSet = true;
     return wasSet;
   }
-
+  public boolean setAvailable(boolean available) {
+	  isAvailable = available;
+	  return true;
+  }
   public Date getStartDate()
   {
     return startDate;
@@ -86,7 +91,9 @@ public class TOTimeSlot
   {
     return endTime;
   }
-
+  public boolean getAvailable(){
+	  return isAvailable;
+  }
   public void delete()
   {}
 

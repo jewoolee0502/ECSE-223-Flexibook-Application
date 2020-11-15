@@ -63,21 +63,11 @@ depend java.sql.Time;
 		if(this.getAppointmentInProgress() == false) {
 				this.setBookableService(newBookableService);
 				List<ComboItem> a = this.getChosenItems();
-				for(ComboItem c : a) {
-					c.delete();
-				}
-				for(ComboItem newC : optionalService) {
-					this.addChosenItem(newC);
-				}
+				
 			}
 			else {
 				List<ComboItem> a = this.getChosenItems();
-				for(ComboItem c : a) {
-					c.delete();
-				}
-				for(ComboItem newC : optionalService) {
-					this.addChosenItem(newC);
-				}
+				
 				if(newBookableService != null) {
 				}
 			}

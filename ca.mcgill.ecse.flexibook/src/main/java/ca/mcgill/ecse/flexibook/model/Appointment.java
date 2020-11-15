@@ -480,21 +480,11 @@ public class Appointment implements Serializable
 		if(this.getAppointmentInProgress() == false) {
 				this.setBookableService(newBookableService);
 				List<ComboItem> a = this.getChosenItems();
-				for(ComboItem c : a) {
-					c.delete();
-				}
-				for(ComboItem newC : optionalService) {
-					this.addChosenItem(newC);
-				}
+				
 			}
 			else {
 				List<ComboItem> a = this.getChosenItems();
-				for(ComboItem c : a) {
-					c.delete();
-				}
-				for(ComboItem newC : optionalService) {
-					this.addChosenItem(newC);
-				}
+				
 				if(newBookableService != null) {
 				}
 			}
@@ -514,7 +504,7 @@ public class Appointment implements Serializable
   /**
    * Author: Haipeng Yue
    */
-  // line 100 "../../../../../FlexiBookStates.ump"
+  // line 90 "../../../../../FlexiBookStates.ump"
    private Boolean availableTimeSlot(TimeSlot newslot){
     Boolean check = false;
 	FlexiBook fb = this.getFlexiBook();
@@ -596,7 +586,7 @@ public class Appointment implements Serializable
   /**
    * Author: Jewoo Lee
    */
-  // line 179 "../../../../../FlexiBookStates.ump"
+  // line 169 "../../../../../FlexiBookStates.ump"
    private Boolean OneDayDiff(){
     String sDate = SystemTime.getdate(SystemTime.getSysTime());
 	String date = this.getTimeSlot().getStartDate().toString();
@@ -613,7 +603,7 @@ public class Appointment implements Serializable
   /**
    * Author: Jewoo Lee
    */
-  // line 193 "../../../../../FlexiBookStates.ump"
+  // line 183 "../../../../../FlexiBookStates.ump"
    private Boolean isWithinAppTimeSlot(){
     String st = this.getTimeSlot().getStartTime().toLocalTime().toString();
 	String systemTimeRN = SystemTime.gettime(SystemTime.getSysTime());
@@ -640,7 +630,7 @@ public class Appointment implements Serializable
   /**
    * Author: James Willems
    */
-  // line 216 "../../../../../FlexiBookStates.ump"
+  // line 206 "../../../../../FlexiBookStates.ump"
    private Boolean isAfterAppTimeSlot(){
     String systemTimeRN = SystemTime.gettime(SystemTime.getSysTime());
 	String endTime = this.getTimeSlot().getEndTime().toLocalTime().toString();
@@ -657,7 +647,7 @@ public class Appointment implements Serializable
   /**
    * Author: Jewoo Lee
    */
-  // line 229 "../../../../../FlexiBookStates.ump"
+  // line 219 "../../../../../FlexiBookStates.ump"
    private void doCancelAppointment(){
     if(OneDayDiff() == true) {
 		this.delete();
@@ -668,7 +658,7 @@ public class Appointment implements Serializable
   /**
    * Author: Jewoo Lee
    */
-  // line 236 "../../../../../FlexiBookStates.ump"
+  // line 226 "../../../../../FlexiBookStates.ump"
    private void doCancelAppointmentO(){
     Customer a = this.getCustomer();
 	int noShowCountOld = a.getNoShowCount();
@@ -681,7 +671,7 @@ public class Appointment implements Serializable
   /**
    * Author: Jewoo Lee
    */
-  // line 245 "../../../../../FlexiBookStates.ump"
+  // line 235 "../../../../../FlexiBookStates.ump"
    private void doStartAppointment(Owner owner){
     if(owner != null) {
 		this.setAppointmentInProgress(true);
@@ -695,7 +685,7 @@ public class Appointment implements Serializable
   /**
    * Author: Haipeng Yue
    */
-  // line 255 "../../../../../FlexiBookStates.ump"
+  // line 245 "../../../../../FlexiBookStates.ump"
    private void doEndAppointment(){
     this.setAppointmentInProgress(false);
   	this.delete();
@@ -705,7 +695,7 @@ public class Appointment implements Serializable
   /**
    * Author: Haipeng Yue
    */
-  // line 262 "../../../../../FlexiBookStates.ump"
+  // line 252 "../../../../../FlexiBookStates.ump"
    public static  boolean isNoOverlap(TimeSlot t1, TimeSlot t2){
     if(t1.getStartDate().equals(t2.getStartDate())) {
 			if(t1.getEndTime().before(t2.getStartTime()) || 
@@ -723,7 +713,7 @@ public class Appointment implements Serializable
   /**
    * Author: Jewoo Lee
    */
-  // line 276 "../../../../../FlexiBookStates.ump"
+  // line 266 "../../../../../FlexiBookStates.ump"
    public static  boolean isFullyCovered(TimeSlot t1, TimeSlot t2){
     if(t1.getStartDate().equals(t2.getStartDate())) {
 			if(t1.getEndTime().before(t2.getEndTime()) && 

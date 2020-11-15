@@ -555,22 +555,28 @@ public class FlexibookController {
 		int duration = 0;
 		if(service instanceof Service) {
 			duration=((Service) service).getDuration();
-		}else if(service  instanceof ServiceCombo) {
+		}
+		else if(service  instanceof ServiceCombo) {
+			ServiceCombo a=(ServiceCombo)service;
 			if(optionalServices!=null) {
 				String[] arrOfStr = optionalServices.split(",", -1);
 				for(int i=0;i<arrOfStr.length;i++) {
-					BookableService aService=BookableService.getWithName(arrOfStr[i]);
-					if(aService instanceof Service) {
-						duration+=((Service) aService).getDuration();
+					for(int j=0; j<a.getServices().size();j++) {
+						if(arrOfStr[i].equals(a.getService(j).getService().getName())) {
+							ComboItem ci=a.getService(j);
+							ci.setMandatory(true);
+						}
 					}
+					
 				}
 			}
 
-			ServiceCombo a=(ServiceCombo)service;
+			
 			for(ComboItem c:a.getServices()) {
 				if(c.getMandatory()==true) {
 					duration+=c.getService().getDuration();
 				}
+				
 			}
 
 		}
@@ -871,10 +877,13 @@ public class FlexibookController {
 				}
 			}
 			if(action.equals("add")) {
-				Service svc = (Service) fb.getBookableService(0).getWithName(comboItem);
-				ComboItem CI = new ComboItem(true, svc, combo);
+				ComboItem CI=null;
+				for(int j=0; j<combo.getServices().size();j++) {
+					if(comboItem.equals(combo.getService(j).getService().getName())) {
+						CI=combo.getService(j);
+						CI.setMandatory(true);}}
 				Appointment ap = fb.getCustomer(cindex).getAppointment(aindex);
-				int d = svc.getDuration();
+				int d = CI.getService().getDuration();
 				TimeSlot ts = ap.getTimeSlot();
 				String sts = ts.getStartTime().toString();
 				String ets = ts.getEndTime().toString();
@@ -919,10 +928,13 @@ public class FlexibookController {
 							throw new InvalidInputException("unsuccessful");
 						}
 					}}
-				fb.getCustomer(cindex).getAppointment(aindex).addChosenItem(CI);
+				for(ComboItem c:combo.getServices()) {
+					fb.getCustomer(cindex).getAppointment(aindex).addChosenItem(c);
+				}
+				List<ComboItem> LCI = fb.getCustomer(cindex).getAppointment(aindex).getChosenItems();
 				try {
 					fb.getCustomer(cindex).getAppointment(aindex).updateAppointment(ts, 
-							fb.getCustomer(cindex).getAppointment(aindex).getBookableService(), fb.getCustomer(cindex).getAppointment(aindex).getChosenItems());
+							fb.getCustomer(cindex).getAppointment(aindex).getBookableService(), LCI);
 				}
 				catch (RuntimeException e) {
 					if(e != null) {
@@ -2076,7 +2088,7 @@ public class FlexibookController {
 	
 	public static List<TOOwner> getOwners() {
 		ArrayList<TOOwner> owners = new ArrayList<TOOwner>();
-		for (Owner onwner : FlexiBookApplication.getflexibook().getOwners()) { //BtmsApplication.getBtms().getDrivers()) {
+		for (Owner owner : FlexiBookApplication.getflexibook().getOwners()) { //BtmsApplication.getBtms().getDrivers()) {
 			TOOwner toOwner = new TOOwner(owner.getUsername(), owner.getPassword()); //(driver.getName(), driver.getId());
 			owners.add(toOwner);
 		}

@@ -1917,9 +1917,11 @@ public class CucumberStepDefinitions {
 					allServiceString+=",";
 
 				}
+				
 			}
-
+			allServiceString = allServiceString.substring(0, allServiceString.length()-1);
 		}
+		assertEquals(string,allServiceString);
 	}
 
 	@Then("the system shall have {int} appointment")

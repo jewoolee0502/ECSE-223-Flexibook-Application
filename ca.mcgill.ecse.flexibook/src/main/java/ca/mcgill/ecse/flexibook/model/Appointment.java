@@ -115,7 +115,7 @@ public class Appointment implements Serializable
     return appointmentStatus;
   }
 
-  public boolean updateAppointment(TimeSlot timeslot,BookableService newBookableService,List<ComboItem> optionalService)
+  public boolean updateAppointment(TimeSlot timeslot,BookableService newBookableService,ComboItem optionalService)
   {
     boolean wasEventProcessed = false;
     
@@ -458,7 +458,7 @@ public class Appointment implements Serializable
    * Author: Haipeng Yue
    */
   // line 45 "../../../../../FlexiBookStates.ump"
-   private void doUpdateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService){
+   private void doUpdateAppointment(TimeSlot timeslot, BookableService newBookableService, ComboItem optionalService){
     if(!(this.getTimeSlot().getStartTime().equals(timeslot.getStartTime()))){
     Boolean check = false;
 	try {
@@ -478,25 +478,12 @@ public class Appointment implements Serializable
 	this.setTimeSlot(timeslot);
 	if(this.getBookableService() instanceof ServiceCombo) {
 		if(this.getAppointmentInProgress() == false) {
-				this.setBookableService(newBookableService);
-				List<ComboItem> a = this.getChosenItems();
-				
-			}
-			else {
-				List<ComboItem> a = this.getChosenItems();
-				
-				if(newBookableService != null) {
-				}
-			}
+		this.setBookableService(newBookableService);
+		optionalService.setMandatory(true);
 		}
-		else if(this.getBookableService() instanceof ServiceCombo) {
-			if(this.getAppointmentInProgress() == true) {
-			}
-			if(optionalService != null) {
-			}
-			else {
-				this.setBookableService(newBookableService);
-			}
+		else {
+			optionalService.setMandatory(true);
+		}
 		}
   }
 
@@ -504,11 +491,12 @@ public class Appointment implements Serializable
   /**
    * Author: Haipeng Yue
    */
-  // line 90 "../../../../../FlexiBookStates.ump"
+  // line 78 "../../../../../FlexiBookStates.ump"
    private Boolean availableTimeSlot(TimeSlot newslot){
     Boolean check = false;
 	FlexiBook fb = this.getFlexiBook();
-	Service service = (Service) this.getBookableService();
+	if(this.getBookableService() instanceof Service){
+	Service service = (Service) this.getBookableService();}
 	Time startTime = this.getTimeSlot().getStartTime();
 
 	for(TimeSlot slot : fb.getBusiness().getHolidays()) {
@@ -527,8 +515,8 @@ public class Appointment implements Serializable
 					}
 				}
 				else {
-					LocalTime ST = appointment.getTimeSlot().getStartTime().toLocalTime().plusMinutes(service.getDowntimeStart());
-					LocalTime endTime = ST.plusMinutes(service.getDowntimeDuration());
+					LocalTime ST = appointment.getTimeSlot().getStartTime().toLocalTime().plusMinutes(s.getDowntimeStart());
+					LocalTime endTime = ST.plusMinutes(s.getDowntimeDuration());
 					Time start = Time.valueOf(ST);
 					Time end = Time.valueOf(endTime);
 					TimeSlot TS = new TimeSlot(appointment.getTimeSlot().getStartDate(), start, appointment.getTimeSlot().getStartDate(), end, fb);
@@ -586,7 +574,7 @@ public class Appointment implements Serializable
   /**
    * Author: Jewoo Lee
    */
-  // line 169 "../../../../../FlexiBookStates.ump"
+  // line 158 "../../../../../FlexiBookStates.ump"
    private Boolean OneDayDiff(){
     String sDate = SystemTime.getdate(SystemTime.getSysTime());
 	String date = this.getTimeSlot().getStartDate().toString();
@@ -603,7 +591,7 @@ public class Appointment implements Serializable
   /**
    * Author: Jewoo Lee
    */
-  // line 183 "../../../../../FlexiBookStates.ump"
+  // line 172 "../../../../../FlexiBookStates.ump"
    private Boolean isWithinAppTimeSlot(){
     String st = this.getTimeSlot().getStartTime().toLocalTime().toString();
 	String systemTimeRN = SystemTime.gettime(SystemTime.getSysTime());
@@ -630,7 +618,7 @@ public class Appointment implements Serializable
   /**
    * Author: James Willems
    */
-  // line 206 "../../../../../FlexiBookStates.ump"
+  // line 195 "../../../../../FlexiBookStates.ump"
    private Boolean isAfterAppTimeSlot(){
     String systemTimeRN = SystemTime.gettime(SystemTime.getSysTime());
 	String endTime = this.getTimeSlot().getEndTime().toLocalTime().toString();
@@ -647,7 +635,7 @@ public class Appointment implements Serializable
   /**
    * Author: Jewoo Lee
    */
-  // line 219 "../../../../../FlexiBookStates.ump"
+  // line 208 "../../../../../FlexiBookStates.ump"
    private void doCancelAppointment(){
     if(OneDayDiff() == true) {
 		this.delete();
@@ -658,7 +646,7 @@ public class Appointment implements Serializable
   /**
    * Author: Jewoo Lee
    */
-  // line 226 "../../../../../FlexiBookStates.ump"
+  // line 215 "../../../../../FlexiBookStates.ump"
    private void doCancelAppointmentO(){
     Customer a = this.getCustomer();
 	int noShowCountOld = a.getNoShowCount();
@@ -671,7 +659,7 @@ public class Appointment implements Serializable
   /**
    * Author: Jewoo Lee
    */
-  // line 235 "../../../../../FlexiBookStates.ump"
+  // line 224 "../../../../../FlexiBookStates.ump"
    private void doStartAppointment(Owner owner){
     if(owner != null) {
 		this.setAppointmentInProgress(true);
@@ -685,7 +673,7 @@ public class Appointment implements Serializable
   /**
    * Author: Haipeng Yue
    */
-  // line 245 "../../../../../FlexiBookStates.ump"
+  // line 234 "../../../../../FlexiBookStates.ump"
    private void doEndAppointment(){
     this.setAppointmentInProgress(false);
   	this.delete();
@@ -695,7 +683,7 @@ public class Appointment implements Serializable
   /**
    * Author: Haipeng Yue
    */
-  // line 252 "../../../../../FlexiBookStates.ump"
+  // line 241 "../../../../../FlexiBookStates.ump"
    public static  boolean isNoOverlap(TimeSlot t1, TimeSlot t2){
     if(t1.getStartDate().equals(t2.getStartDate())) {
 			if(t1.getEndTime().before(t2.getStartTime()) || 
@@ -713,7 +701,7 @@ public class Appointment implements Serializable
   /**
    * Author: Jewoo Lee
    */
-  // line 266 "../../../../../FlexiBookStates.ump"
+  // line 255 "../../../../../FlexiBookStates.ump"
    public static  boolean isFullyCovered(TimeSlot t1, TimeSlot t2){
     if(t1.getStartDate().equals(t2.getStartDate())) {
 			if(t1.getEndTime().before(t2.getEndTime()) && 

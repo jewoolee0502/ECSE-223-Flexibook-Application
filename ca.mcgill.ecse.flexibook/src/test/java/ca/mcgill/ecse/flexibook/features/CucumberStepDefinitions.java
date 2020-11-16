@@ -1939,6 +1939,7 @@ public class CucumberStepDefinitions {
 	@Then("the service in the appointment shall be {string}")
 	public void the_service_in_the_appointment_shall_be(String string) {
 		String serviceIn = appointment.getBookableService().getName();
+		assertEquals(string,serviceIn);
 	}
 
 	@Then("the appointment shall be for the date {string} with start time {string} and end time {string}")
@@ -1947,6 +1948,9 @@ public class CucumberStepDefinitions {
 		String date = currentTimeSlot.getStartDate().toString();
 		String start = currentTimeSlot.getStartTime().toString();
 		String end = currentTimeSlot.getEndTime().toString();
+		assertEquals(string,date);
+		assertEquals(start,string2+":00");
+		assertEquals(string3+":00",end);
 	}
 
 	@Then("the username associated with the appointment shall be {string}")

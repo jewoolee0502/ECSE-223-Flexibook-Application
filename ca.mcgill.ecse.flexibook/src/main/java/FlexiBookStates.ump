@@ -10,7 +10,7 @@ depend java.sql.Time;
   appointmentStatus {
     Booked{
       
-      updateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService) [OneDayDiff()] / {
+      updateAppointment(TimeSlot timeslot, BookableService newBookableService, ComboItem optionalService) [OneDayDiff()] / {
         doUpdateAppointment(timeslot, newBookableService, optionalService);
       } -> Booked;  //When the appointment is updated, it stays in the Booked state
       
@@ -29,7 +29,7 @@ depend java.sql.Time;
     }
     
     InProgress{
-      updateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService) [isWithinAppTimeSlot()] / {
+      updateAppointment(TimeSlot timeslot, BookableService newBookableService, ComboItem optionalService) [isWithinAppTimeSlot()] / {
           doUpdateAppointment(timeslot, newBookableService, optionalService);
       } -> InProgress; //The customer can update the appointment during the appointment. No change in the state
       
@@ -41,7 +41,7 @@ depend java.sql.Time;
   }
   
   //Author: Haipeng Yue
-  private void doUpdateAppointment(TimeSlot timeslot, BookableService newBookableService, List<ComboItem> optionalService) {
+  private void doUpdateAppointment(TimeSlot timeslot, BookableService newBookableService, ComboItem optionalService) {
   	if(!(this.getTimeSlot().getStartTime().equals(timeslot.getStartTime()))){
     Boolean check = false;
 	try {
@@ -61,26 +61,14 @@ depend java.sql.Time;
 	this.setTimeSlot(timeslot);
 	if(this.getBookableService() instanceof ServiceCombo) {
 		if(this.getAppointmentInProgress() == false) {
-				this.setBookableService(newBookableService);
-				List<ComboItem> a = this.getChosenItems();
-				
-			}
-			else {
-				List<ComboItem> a = this.getChosenItems();
-				
-				if(newBookableService != null) {
-				}
-			}
+		this.setBookableService(newBookableService);
+		optionalService.setMandatory(true);
 		}
-		else if(this.getBookableService() instanceof ServiceCombo) {
-			if(this.getAppointmentInProgress() == true) {
-			}
-			if(optionalService != null) {
-			}
-			else {
-				this.setBookableService(newBookableService);
-			}
+		else {
+			optionalService.setMandatory(true);
 		}
+		}
+
   }
   
   
@@ -89,7 +77,8 @@ depend java.sql.Time;
   	
   	Boolean check = false;
 	FlexiBook fb = this.getFlexiBook();
-	Service service = (Service) this.getBookableService();
+	if(this.getBookableService() instanceof Service){
+	Service service = (Service) this.getBookableService();}
 	Time startTime = this.getTimeSlot().getStartTime();
 
 	for(TimeSlot slot : fb.getBusiness().getHolidays()) {
@@ -108,8 +97,8 @@ depend java.sql.Time;
 					}
 				}
 				else {
-					LocalTime ST = appointment.getTimeSlot().getStartTime().toLocalTime().plusMinutes(service.getDowntimeStart());
-					LocalTime endTime = ST.plusMinutes(service.getDowntimeDuration());
+					LocalTime ST = appointment.getTimeSlot().getStartTime().toLocalTime().plusMinutes(s.getDowntimeStart());
+					LocalTime endTime = ST.plusMinutes(s.getDowntimeDuration());
 					Time start = Time.valueOf(ST);
 					Time end = Time.valueOf(endTime);
 					TimeSlot TS = new TimeSlot(appointment.getTimeSlot().getStartDate(), start, appointment.getTimeSlot().getStartDate(), end, fb);

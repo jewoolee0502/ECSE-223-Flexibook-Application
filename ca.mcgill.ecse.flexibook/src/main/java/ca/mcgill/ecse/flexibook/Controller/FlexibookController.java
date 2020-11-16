@@ -798,7 +798,7 @@ public class FlexibookController {
 				TimeSlot newslot = new TimeSlot(Date.valueOf(newDate), newstarttime, Date.valueOf(newDate), endtime, fb);
 				try {
 					fb.getCustomer(cindex).getAppointment(aindex).updateAppointment(newslot, 
-							fb.getCustomer(cindex).getAppointment(aindex).getBookableService(), fb.getCustomer(cindex).getAppointment(aindex).getChosenItems());
+							fb.getCustomer(cindex).getAppointment(aindex).getBookableService(), null);
 				}
 				catch (RuntimeException e) {
 					if(e != null) {
@@ -813,8 +813,8 @@ public class FlexibookController {
 				Time newstarttime = Time.valueOf(newStartTime+":00");
 				TimeSlot oldslot = fb.getCustomer(cindex).getAppointment(aindex).getTimeSlot();
 				LocalTime localstart = fb.getCustomer(cindex).getAppointment(aindex).getTimeSlot().getStartTime().toLocalTime();
-				int duration = localstart.compareTo(oldslot.getEndTime().toLocalTime());
-				Time endtime = Time.valueOf(localstart.plusMinutes(duration));
+				int duration = (int)Duration.between(oldslot.getStartTime().toLocalTime(), oldslot.getEndTime().toLocalTime()).toMinutes();
+				Time endtime = Time.valueOf(newstarttime.toLocalTime().plusMinutes(duration));
 				int day = Date.valueOf(newDate).getDay();
 				if(day == 0 || day == 6) {
 					throw new InvalidInputException("unsuccessful");
@@ -829,11 +829,17 @@ public class FlexibookController {
 				}
 				if(fb.getBusiness().getBusinessHour(0).getEndTime().before(endtime)) {
 				}
-				FlexiBook fb2 = new FlexiBook();
-				TimeSlot newslot = new TimeSlot(Date.valueOf(newDate), newstarttime, Date.valueOf(newDate), endtime, fb);
+				int firstDash = newDate.indexOf('-');
+		        int secondDash = newDate.indexOf('-', firstDash + 1);
+		        int len = newDate.length();
+		        int year = Integer.parseInt(newDate, 0, firstDash, 10);
+                int month = Integer.parseInt(newDate, firstDash + 1, secondDash, 10);
+                int day2 = Integer.parseInt(newDate, secondDash + 1, len, 10);
+                Date d = new Date(year - 1900, month - 1, day2);
+				TimeSlot newslot = new TimeSlot(d, newstarttime, d, endtime, fb);
 				try {
 					fb.getCustomer(cindex).getAppointment(aindex).updateAppointment(newslot, 
-							fb.getCustomer(cindex).getAppointment(aindex).getBookableService(), fb.getCustomer(cindex).getAppointment(aindex).getChosenItems());
+							fb.getCustomer(cindex).getAppointment(aindex).getBookableService(), null);
 				}
 				catch (RuntimeException e) {
 					if(e != null) {
@@ -848,6 +854,11 @@ public class FlexibookController {
 		else {
 			ServiceCombo combo = (ServiceCombo)fb.getCustomer(cindex).getAppointment(aindex).getBookableService();
 			if(action.equals("remove")) {
+				ComboItem CI=null;
+				for(int j=0; j<combo.getServices().size();j++) {
+					if(comboItem.equals(combo.getService(j).getService().getName())) {
+						CI=combo.getService(j);
+						}}
 				if(combo.getMainService().getService().getName().equals(comboItem)) {
 					throw new InvalidInputException("unsuccessful");
 				}
@@ -865,7 +876,9 @@ public class FlexibookController {
 						endTime = endTime.minusMinutes(item.getService().getDuration());
 						ts.setEndTime(Time.valueOf(endTime));
 						try {
-							fb.getCustomer(cindex).getAppointment(aindex).updateAppointment(ts, fb.getCustomer(cindex).getAppointment(aindex).getBookableService(), newChosenItems);
+							if(CI.getMandatory()==true) {
+							CI.setMandatory(false);
+							}
 						}
 						catch (RuntimeException e) {
 							if(e != null) {
@@ -881,10 +894,13 @@ public class FlexibookController {
 				for(int j=0; j<combo.getServices().size();j++) {
 					if(comboItem.equals(combo.getService(j).getService().getName())) {
 						CI=combo.getService(j);
-						CI.setMandatory(true);}}
+						}}
 				Appointment ap = fb.getCustomer(cindex).getAppointment(aindex);
+				String sDate = SystemTime.getdate(SystemTime.getSysTime());
+				String date = ap.getTimeSlot().getStartDate().toString();
 				int d = CI.getService().getDuration();
 				TimeSlot ts = ap.getTimeSlot();
+				TimeSlot backup=new TimeSlot(ts.getStartDate(),ts.getStartTime(),ts.getEndDate(),ts.getEndTime(),fb);
 				String sts = ts.getStartTime().toString();
 				String ets = ts.getEndTime().toString();
 				LocalTime EndTime = ts.getEndTime().toLocalTime();
@@ -917,24 +933,27 @@ public class FlexibookController {
 						throw new InvalidInputException("unsuccessful");
 					}
 				}
-				int day=fb.getCustomer(cindex).getAppointment(aindex).getTimeSlot().getStartDate().getDay();
-				DayOfWeek inputDayOfWeek=mapforDayofWeekMap.get(day);
-				List<BusinessHour> aHour=fb.getBusiness().getBusinessHours();
-				for(BusinessHour ahour:aHour) {
-					DayOfWeek dayOfWeek=ahour.getDayOfWeek();
-					if(dayOfWeek.equals(inputDayOfWeek)) {
-						if(ts.getEndTime().after(ahour.getEndTime())==true
-								||ts.getStartTime().before(ahour.getStartTime())==true) {
-							throw new InvalidInputException("unsuccessful");
-						}
-					}}
-				for(ComboItem c:combo.getServices()) {
-					fb.getCustomer(cindex).getAppointment(aindex).addChosenItem(c);
+//				int day=fb.getCustomer(cindex).getAppointment(aindex).getTimeSlot().getStartDate().getDay();
+//				DayOfWeek inputDayOfWeek=mapforDayofWeekMap.get(day);
+//				List<BusinessHour> aHour=fb.getBusiness().getBusinessHours();
+//				for(BusinessHour ahour:aHour) {
+//					DayOfWeek dayOfWeek=ahour.getDayOfWeek();
+//					if(dayOfWeek.equals(inputDayOfWeek)) {
+//						if(ts.getEndTime().after(ahour.getEndTime())==true
+//								||ts.getStartTime().before(ahour.getStartTime())==true) {
+//							throw new InvalidInputException("unsuccessful");
+//						}
+//					}}
+				if(date.equals(sDate)) {
+					if(ap.getAppointmentInProgress()==false) {
+						ts.setEndTime(backup.getEndTime());	
+					}
+					
 				}
-				List<ComboItem> LCI = fb.getCustomer(cindex).getAppointment(aindex).getChosenItems();
+				
 				try {
-					fb.getCustomer(cindex).getAppointment(aindex).updateAppointment(ts, 
-							fb.getCustomer(cindex).getAppointment(aindex).getBookableService(), LCI);
+					Boolean processed=fb.getCustomer(cindex).getAppointment(aindex).updateAppointment(ts, 
+							fb.getCustomer(cindex).getAppointment(aindex).getBookableService(), CI);
 				}
 				catch (RuntimeException e) {
 					if(e != null) {

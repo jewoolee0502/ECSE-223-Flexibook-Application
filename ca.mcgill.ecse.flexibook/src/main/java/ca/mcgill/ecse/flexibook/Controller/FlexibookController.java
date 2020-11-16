@@ -532,8 +532,9 @@ public class FlexibookController {
 	 * @throws InvalidInputException
 	 */
 
-	public static void MakeAppointment(String customer, String date, String serviceName, String optionalServices, String startTime) throws InvalidInputException{
-		FlexiBook fb = FlexiBookApplication.getflexibook();
+	public static Boolean MakeAppointment(String customer, String date, String serviceName, String optionalServices, String startTime) throws InvalidInputException{
+		Boolean check=false;
+	    FlexiBook fb = FlexiBookApplication.getflexibook();
 		BookableService service=BookableService.getWithName(serviceName);
 		fill_the_DayOfWeek();
 
@@ -608,6 +609,14 @@ public class FlexibookController {
 					inBusinessHour=true;
 				}
 			}}
+		Boolean invorh=false;
+		List<TimeSlot> vhour=fb.getBusiness().getVacation();
+		 for(TimeSlot vslot:vhour) {
+           if((vslot.getEndDate().before(servicedate)==false)&&(vslot.getStartDate().after(servicedate)==false)){
+               if(((starttime.before(vslot.getEndTime()))&&(starttime.before(vslot.getStartTime())==false))||(endtime.after(vslot.getStartTime())&&(endtime.after(vslot.getEndTime())==false))) {
+                 invorh=true;
+               }
+           }}
 		//make sure that this timeslot does not overslap with other time slots
 		List<TimeSlot> newList = new ArrayList<>();
 		newList.addAll(business.getHolidays());
@@ -634,8 +643,9 @@ public class FlexibookController {
 			TimeSlot slot = appointment.getTimeSlot();
 			if(slot!=null) {
 				if(slot.getStartDate().after(servicedate)==false&&slot.getStartDate().before(servicedate)==false) {
-					if((starttime.before(slot.getEndTime()))&&(starttime.before(slot.getStartTime())==false)) {
-						occupied=true;			
+					if(((starttime.before(slot.getEndTime()))&&(starttime.before(slot.getStartTime())==false))||(endtime.after(slot.getStartTime())&&(endtime.after(slot.getEndTime())==false))) {
+						
+					  occupied=true;			
 					}
 				}
 			}
@@ -644,34 +654,77 @@ public class FlexibookController {
 					overLapExist=true;
 					break;
 				}else {
-					Time starttime2 = slot.getStartTime();
-					LocalTime localstarttime2 = starttime2.toLocalTime();
-
-					starttime2=Time.valueOf(localstarttime2.plusMinutes(30));
-					Time endtime2 = slot.getEndTime();
-					LocalTime localedndtime2 = endtime.toLocalTime();
-
-					endtime2 = Time.valueOf(localedndtime2.minusMinutes(30));
-					// slot corresponds to down time that is not long enough
-					if(duration>30) {
-						overLapExist=true;
-						if(overLapExist)
-							break;
-					}
-
+				  if(appointment.getBookableService() instanceof Service) {
+	                Service s = (Service) appointment.getBookableService();
+	                TimeSlot newslot= new TimeSlot(servicedate,starttime,servicedate,endtime, fb);
+	                if(s.getDowntimeStart() == 0) {
+	                    if(!isNoOverlap(newslot,slot)) {
+	                        throw new RuntimeException("unsuccessful");
+	                    }
+	                }
+	                else {
+	                  
+	                    LocalTime ST = appointment.getTimeSlot().getStartTime().toLocalTime().plusMinutes(s.getDowntimeStart());
+	                    LocalTime endTime = ST.plusMinutes(s.getDowntimeDuration());
+	                    Time start = Time.valueOf(ST);
+	                    Time end = Time.valueOf(endTime);
+	                    TimeSlot TS = new TimeSlot(appointment.getTimeSlot().getStartDate(), start, appointment.getTimeSlot().getStartDate(), end, fb);
+	                    if(!isNoOverlap(newslot, slot)) {
+	                        if(isFullyCovered(newslot, TS)) {
+	                            overLapExist=false;
+	                        }
+	                        else {
+	                          overLapExist=true; 
+	                        }
+	                    }
+	                }
+				  }else         if(appointment.getBookableService() instanceof ServiceCombo) {
+		            boolean successful = false;
+		            TimeSlot newslot= new TimeSlot(servicedate,starttime,servicedate,endtime, fb);
+		            List<TimeSlot> dtTS = new ArrayList<TimeSlot>();
+		            ServiceCombo combo = (ServiceCombo) appointment.getBookableService();
+		            int min = 0;
+		            for (ComboItem item : combo.getServices()) {
+		                Service s = item.getService();
+		                min += s.getDuration(); 
+		                if(s.getDowntimeDuration() != 0) {
+		                    min -= s.getDuration();
+		                    LocalTime ST = appointment.getTimeSlot().getStartTime().toLocalTime().plusMinutes(s.getDowntimeStart() + min);
+		                    LocalTime endTime = ST.plusMinutes(s.getDowntimeDuration());
+		                    Time start = Time.valueOf(ST);
+		                    Time end = Time.valueOf(endTime);
+		                    TimeSlot TS = new TimeSlot(appointment.getTimeSlot().getStartDate(), start, appointment.getTimeSlot().getStartDate(), end, fb);
+		                    dtTS.add(TS);
+		                }
+		            }
+		            for(TimeSlot t : dtTS) {
+		                if(!isNoOverlap(newslot, t)) {
+		                    if(isFullyCovered(newslot, t)) {
+		                      overLapExist=false;
+		                      successful = true;
+		                    }
+		                }
+		            }
+		            
+		            if(!(isNoOverlap(appointment.getTimeSlot(), newslot)) && successful == false) {
+		              overLapExist=true; 
+		            }
+		        }
 					occupied=false;
 				}
 			}
 		}
-		if((!inBusinessHour)||overslapBoolean||currenDate.before(servicedate)==false||overLapExist) {
+		if((!inBusinessHour)||overslapBoolean||currenDate.before(servicedate)==false||overLapExist||invorh) {
 
 		}
-
+		else {
 		TimeSlot timeslot = new TimeSlot(servicedate,starttime,servicedate,endtime, fb);
 
 		Appointment appointment = new Appointment(fb.getCustomer(cindex), service, timeslot, fb);
 		fb.addAppointment(appointment);
-
+		check=true;
+		}
+return check;
 	}
 
 

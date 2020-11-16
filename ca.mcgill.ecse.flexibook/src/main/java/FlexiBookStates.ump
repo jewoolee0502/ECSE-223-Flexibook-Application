@@ -57,8 +57,10 @@ depend java.sql.Time;
     	throw new RuntimeException("unsuccessful");
     }
     }
-	
-	this.setTimeSlot(timeslot);
+	if(this.getAppointmentInProgress() == false) {
+		
+		this.setTimeSlot(timeslot);
+		}
 	if(this.getBookableService() instanceof ServiceCombo) {
 		if(this.getAppointmentInProgress() == false) {
 		this.setBookableService(newBookableService);

@@ -18,19 +18,19 @@ public class TOTimeSlot
   private Time startTime;
   private Date endDate;
   private Time endTime;
-  private boolean isAvailable;
+  private boolean availablity;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public TOTimeSlot(Date aStartDate, Time aStartTime, Date aEndDate, Time aEndTime, boolean available)
+  public TOTimeSlot(Date aStartDate, Time aStartTime, Date aEndDate, Time aEndTime, boolean aAvailablity)
   {
     startDate = aStartDate;
     startTime = aStartTime;
     endDate = aEndDate;
     endTime = aEndTime;
-    isAvailable = available;
+    availablity = aAvailablity;
   }
 
   //------------------------
@@ -68,10 +68,15 @@ public class TOTimeSlot
     wasSet = true;
     return wasSet;
   }
-  public boolean setAvailable(boolean available) {
-	  isAvailable = available;
-	  return true;
+
+  public boolean setAvailablity(boolean aAvailablity)
+  {
+    boolean wasSet = false;
+    availablity = aAvailablity;
+    wasSet = true;
+    return wasSet;
   }
+
   public Date getStartDate()
   {
     return startDate;
@@ -91,16 +96,25 @@ public class TOTimeSlot
   {
     return endTime;
   }
-  public boolean getAvailable(){
-	  return isAvailable;
+
+  public boolean getAvailablity()
+  {
+    return availablity;
   }
+  /* Code from template attribute_IsBoolean */
+  public boolean isAvailablity()
+  {
+    return availablity;
+  }
+
   public void delete()
   {}
 
 
   public String toString()
   {
-    return super.toString() + "["+ "]" + System.getProperties().getProperty("line.separator") +
+    return super.toString() + "["+
+            "availablity" + ":" + getAvailablity()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "startDate" + "=" + (getStartDate() != null ? !getStartDate().equals(this)  ? getStartDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "startTime" + "=" + (getStartTime() != null ? !getStartTime().equals(this)  ? getStartTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "endDate" + "=" + (getEndDate() != null ? !getEndDate().equals(this)  ? getEndDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +

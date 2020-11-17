@@ -16,7 +16,6 @@ import java.time.LocalTime;
 import com.google.common.base.CharMatcher;
 import java.io.*;
 
-import ca.mcgill.ecse.btms.model.Driver.SickStatus;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.*;
 import ca.mcgill.ecse.flexibook.model.BusinessHour.DayOfWeek;
@@ -2180,10 +2179,11 @@ public class FlexibookController {
 
 	}
 
+	
 
 	public static List<TOOwner> getOwners() {
 		ArrayList<TOOwner> owners = new ArrayList<TOOwner>();
-		Owner owner = FlexiBookApplication.getflexibook().getOwner();
+		Owner owner = FlexiBookApplication.getflexibook().getOwner();//BtmsApplication.getBtms().getDrivers()) {
 		TOOwner toOwner = new TOOwner(owner.getUsername(), owner.getPassword()); //(driver.getName(), driver.getId());
 		owners.add(toOwner);
 		return owners;
@@ -2221,7 +2221,7 @@ public class FlexibookController {
 	public static List<TOTimeSlot> getTimeSlots() {
 		ArrayList<TOTimeSlot> timeSlots = new ArrayList<TOTimeSlot>();
 		for (TimeSlot timeSlot : FlexiBookApplication.getflexibook().getTimeSlots()) {
-			TOTimeSlot toTimeSlot = new TOTimeSlot(timeSlot.getStartDate(), timeSlot.getStartTime(), timeSlot.getEndDate(), timeSlot.getEndTime(), timeSlot.equals(timeSlots.Available));
+			TOTimeSlot toTimeSlot = new TOTimeSlot(timeSlot.getStartDate(), timeSlot.getStartTime(), timeSlot.getEndDate(), timeSlot.getEndTime(), false);
 			timeSlots.add(toTimeSlot);				
 		}
 		return timeSlots;
@@ -2229,30 +2229,28 @@ public class FlexibookController {
 
 	public static List<TOService> getService() {
 		ArrayList<TOService> services = new ArrayList<TOService>();
-		for (Service service : FlexiBookApplication.getflexibook().) { 
-			TOService toService = new TOService();
-			services.add(toService);				
+		for (BookableService service : FlexiBookApplication.getflexibook().getBookableServices()) { 
+			if(service instanceof Service) {
+				Service s = (Service) service;
+				TOService toService = new TOService(s.getName(), s.getDuration(), s.getDowntimeDuration(), s.getDowntimeStart());
+				services.add(toService);				
+			}
 		}
 		return services;
 	}
 
 	public static List<TOServiceCombo> getServiceCombo() {
 		ArrayList<TOServiceCombo> serviceCombos = new ArrayList<TOServiceCombo>();
-		for (ServiceCombo serviceCombo : FlexiBookApplication.getflexibook().getServiceCombos()) { 
-			TOServiceCombo toServiceCombo = new TOServiceCombo(serviceCombo.Available);
-			serviceCombos.add(toServiceCombo);				
+		for (BookableService service : FlexiBookApplication.getflexibook().getBookableServices()) { 
+			if(service instanceof ServiceCombo) {
+				ServiceCombo sc = (ServiceCombo) service;
+				TOServiceCombo toServicecombo = new TOServiceCombo(sc.getName());
+				serviceCombos.add(toServicecombo);                
+			}
 		}
 		return serviceCombos;
 	}
 
-	public static List<TOComboItem> getComboItem() {
-		ArrayList<TOComboItem> comboItems = new ArrayList<TOComboItem>();
-		for (ComboItem comboItem : FlexiBookApplication.getflexibook().com) { 
-			TOComboItem toComboItem = new TOComboItem(comboItem.Available);
-			comboItems.add(toComboItem);				
-		}
-		return comboItems;
-	}
 }
 
 

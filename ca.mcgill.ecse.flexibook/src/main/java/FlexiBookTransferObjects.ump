@@ -31,6 +31,7 @@ class TOTimeSlot {
   Time startTime;
   Date endDate;
   Time endTime;
+  Boolean availablity;
 }
 
 
@@ -45,6 +46,3 @@ class TOServiceCombo {
   name;
 }
 
-class TOComboItem {
-  Boolean mandatory;
-}

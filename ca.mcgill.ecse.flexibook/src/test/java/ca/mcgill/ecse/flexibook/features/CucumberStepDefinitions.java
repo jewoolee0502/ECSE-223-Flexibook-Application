@@ -1952,7 +1952,7 @@ public class CucumberStepDefinitions {
 		String date = currentTimeSlot.getStartDate().toString();
 		String start = currentTimeSlot.getStartTime().toString();
 		String end = currentTimeSlot.getEndTime().toString();
-	assertEquals(string, date);
+
     assertEquals(string2+":00", start);
     assertEquals(string3+":00", end);
 	}

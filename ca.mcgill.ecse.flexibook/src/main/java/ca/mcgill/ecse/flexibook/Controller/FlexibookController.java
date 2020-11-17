@@ -986,6 +986,22 @@ return check;
 						throw new InvalidInputException("unsuccessful");
 					}
 				}
+				int day = ap.getTimeSlot().getStartDate().getDay();
+			    Time endtime=ts.getEndTime();
+			    Time starttime=ts.getStartTime();
+				DayOfWeek inputDayOfWeek=mapforDayofWeekMap.get(day);
+		        List<BusinessHour> aHour=fb.getBusiness().getBusinessHours();
+		        List<TimeSlot> allTimeSlots=fb.getTimeSlots();
+		        List<DayOfWeek> aDayOfWeeks=new ArrayList<>();
+		        boolean inBusinessHour=false;
+		        for(BusinessHour ahour:aHour) {
+		            DayOfWeek dayOfWeek=ahour.getDayOfWeek();
+		            if(dayOfWeek.equals(inputDayOfWeek)) {
+		                if(endtime.after(ahour.getEndTime())==false&&starttime.before(ahour.getStartTime())==false) {
+		                    inBusinessHour=true;
+		                    
+		                }
+		            }}
 //				int day=fb.getCustomer(cindex).getAppointment(aindex).getTimeSlot().getStartDate().getDay();
 //				DayOfWeek inputDayOfWeek=mapforDayofWeekMap.get(day);
 //				List<BusinessHour> aHour=fb.getBusiness().getBusinessHours();
@@ -1005,9 +1021,15 @@ return check;
 				}
 				
 				try {
+				  if(inBusinessHour==true) {
 					Boolean processed=fb.getCustomer(cindex).getAppointment(aindex).updateAppointment(ts, 
 							fb.getCustomer(cindex).getAppointment(aindex).getBookableService(), CI);
+				}else {
+				  CI.delete();
+                  ts.setEndTime(Time.valueOf(EndTime));
+                  throw new InvalidInputException("unsuccessful");
 				}
+				  }
 				catch (RuntimeException e) {
 					if(e != null) {
 						throw new RuntimeException(e.getMessage());

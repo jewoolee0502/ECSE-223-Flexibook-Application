@@ -88,6 +88,11 @@ depend java.sql.Time;
 			throw new RuntimeException("unsuccessful");
 		}
 	}
+	for(TimeSlot vslot : fb.getBusiness().getVacation()) {
+      if(!isNoOverlap(newslot,vslot)) {
+        throw new RuntimeException("unsuccessful");
+    }
+}
 	for(Appointment appointment : fb.getAppointments()) {
 		if(appointment != this) {
 			if(appointment.getBookableService() instanceof Service) {
@@ -240,7 +245,7 @@ depend java.sql.Time;
   
   //Author: Haipeng Yue
   public static boolean isNoOverlap(TimeSlot t1, TimeSlot t2) {
-		if(t1.getStartDate().equals(t2.getStartDate())) {
+    if(t1.getStartDate().equals(t2.getStartDate())&&t1.getEndDate().equals(t2.getEndDate())) {
 			if(t1.getEndTime().before(t2.getStartTime()) || 
 					t2.getEndTime().before(t1.getStartTime())) {
 				//is not overlap
@@ -248,6 +253,10 @@ depend java.sql.Time;
 			}else {
 				return false;
 			}
+		}else if((t1.getStartDate().equals(t2.getStartDate())&&t1.getEndDate().before(t2.getEndDate()))||(t1.getStartDate().after(t2.getStartDate()))&&(t1.getEndDate().equals(t2.getEndDate()))
+		    ||(t1.getStartDate().after(t2.getStartDate())&&t1.getEndDate().before(t2.getEndDate()))||(t1.getStartDate().before(t2.getStartDate())&&t1.getEndDate().after(t2.getStartDate())&&t1.getEndDate().before(t2.getEndDate())
+		    ||(t1.getStartDate().after(t2.getStartDate())&&t1.getStartDate().before(t2.getEndDate())))){
+		  return false;
 		}
 		return true;
 	}

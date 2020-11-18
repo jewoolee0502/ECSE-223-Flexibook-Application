@@ -35,10 +35,10 @@ Feature: Update appointment
       | 2020-12-31 | 2021-01-01 | 0:00      | 23:59   |
     Given the following appointments exist in the system:
       | customer  | serviceName | optServices | date       | startTime | endTime |
-      | customer3 | cut         | none        | 2020-12-29 | 9:00      | 9:20    |
+      | customer3 | cut         | none        | 2020-12-29 | 09:00     | 09:20   |
       | customer2 | cut-basic   | wash,dry    | 2020-12-28 | 13:00     | 13:40   |
       | customer1 | cut         | none        | 2020-12-29 | 12:00     | 12:20   |
-      | customer1 | color-basic | wash,dry    | 2020-12-28 | 9:00      | 10:35   |
+      | customer1 | color-basic | wash,dry    | 2020-12-28 | 09:00     | 10:35   |
 
   Scenario Outline: A customer updates his appointment to various time slots
     Given "customer3" is logged in to their account
@@ -55,11 +55,11 @@ Feature: Update appointment
       # row 5: regular slot is available
       # row 6: downtime slot is available
       | date       | startTime | result       | newDate    | newStartTime | newEndTime |
-      | 2020-12-31 | 10:00     | unsuccessful | 2020-12-29 | 9:00         | 9:20       |
-      | 2021-01-02 | 10:00     | unsuccessful | 2020-12-29 | 9:00         | 9:20       |
-      | 2020-12-28 | 13:00     | unsuccessful | 2020-12-29 | 9:00         | 9:20       |
-      | 2020-12-29 | 16:50     | unsuccessful | 2020-12-29 | 9:00         | 9:20       |
-      | 2020-12-29 | 9:10      | successful   | 2020-12-29 | 9:10         | 9:30       |
+      | 2020-12-31 | 10:00     | unsuccessful | 2020-12-29 | 09:00        | 09:20      |
+      | 2021-01-02 | 10:00     | unsuccessful | 2020-12-29 | 09:00        | 09:20      |
+      | 2020-12-28 | 13:00     | unsuccessful | 2020-12-29 | 09:00        | 09:20      |
+      | 2020-12-29 | 16:50     | unsuccessful | 2020-12-29 | 09:00        | 09:20      |
+      | 2020-12-29 | 9:10      | successful   | 2020-12-29 | 09:10        | 09:30      |
       | 2020-12-28 | 10:00     | successful   | 2020-12-28 | 10:00        | 10:20      |
 
   Scenario Outline: A customer updates his service combo appointment to add or remove combo items

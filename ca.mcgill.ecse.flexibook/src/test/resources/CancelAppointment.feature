@@ -28,14 +28,14 @@ Feature: Cancel appointment
     Given "customer1" is logged in to their account
     When "customer1" attempts to cancel their "cut" appointment on "2020-12-02" at "9:00"
     Then the system shall report "Cannot cancel an appointment on the appointment date"
-    Then "customer1" shall have a "cut" appointment on "2020-12-02" from "9:00" to "9:20"
+    Then "customer1" shall have a "cut" appointment on "2020-12-02" from "09:00" to "09:20"
     Then there shall be 0 more appointment in the system
 
   Scenario Outline: A user attempts to cancel another user's appointment
     Given "<user>" is logged in to their account
     When "<user>" attempts to cancel "customer1"'s "cut" appointment on "2020-12-02" at "9:00"
     Then the system shall report "<error>"
-    Then "customer1" shall have a "cut" appointment on "2020-12-02" from "9:00" to "9:20"
+    Then "customer1" shall have a "cut" appointment on "2020-12-02" from "09:00" to "09:20"
     Then there shall be 0 more appointment in the system
 
     Examples: 

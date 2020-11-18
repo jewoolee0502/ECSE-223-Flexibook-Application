@@ -755,7 +755,7 @@ public class FlexibookController {
 				}
 			}
 			if((!inBusinessHour)||overslapBoolean||currenDate.before(servicedate)==false||overLapExist||invorh) {
-
+             FlexiBookApplication.setmessage("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
 			}
 			else {
 				TimeSlot timeslot = new TimeSlot(servicedate,starttime,servicedate,endtime, fb);
@@ -786,7 +786,7 @@ public class FlexibookController {
 
 	public static boolean isNoOverlap(TimeSlot t1, TimeSlot t2) {
 		if(t1.getStartDate().equals(t2.getStartDate())) {
-			if(t1.getEndTime().before(t2.getStartTime()) || 
+			if((t1.getEndTime().before(t2.getStartTime())) || 
 					t2.getEndTime().before(t1.getStartTime())) {
 				//is not overlap
 				return true;
@@ -812,8 +812,8 @@ public class FlexibookController {
 
 	public static boolean isFullyCovered(TimeSlot t1, TimeSlot t2) {
 		if(t1.getStartDate().equals(t2.getStartDate())) {
-			if(t1.getEndTime().before(t2.getEndTime()) && 
-					t1.getStartTime().after(t2.getStartTime())) {
+			if(((t1.getEndTime().before(t2.getEndTime()))||(t1.getEndTime().equals(t2.getEndTime())))&& 
+					(t1.getStartTime().after(t2.getStartTime())||t1.getStartTime().equals(t2.getStartTime()))) {
 				return true;
 			}
 			else {
@@ -846,7 +846,8 @@ public class FlexibookController {
 	 */
 	public static void UpdateAppointment(String customer, String customer2, String action, String comboItem, String serviceName, 
 			String serviceDate, String newDate, String startTime, String newStartTime) throws InvalidInputException {
-		try {
+	  fill_the_DayOfWeek();
+	  try {
 			FlexiBook fb = FlexiBookApplication.getflexibook();
 			if(customer2!=null) {
 				if(customer.equals("owner")) {
@@ -1076,7 +1077,8 @@ public class FlexibookController {
 
 			FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 		} catch(InvalidInputException e) {
-			throw e;
+
+		  throw e;
 		}
 	}
 
@@ -1106,6 +1108,7 @@ public class FlexibookController {
 					throw new InvalidInputException("A customer can only cancel their own appointments");
 				}
 			}
+			
 			String sysTime = SystemTime.getSysTime();
 			String[] sys = sysTime.split("\\+");
 			Date localDate = Date.valueOf(sys[0]);
@@ -1118,7 +1121,7 @@ public class FlexibookController {
 			Time starttime = Time.valueOf(startTime+":00");
 			String times=starttime.toString();
 			if(datel.equals(dates)) {
-				//throw new InvalidInputException("Cannot cancel an appointment on the appointment date");
+				FlexiBookApplication.setmessage("Cannot cancel an appointment on the appointment date");
 			}
 			else {
 				int cindex = -1;
@@ -1137,7 +1140,6 @@ public class FlexibookController {
 				}
 				fb.getCustomer(cindex).getAppointment(aindex).cancelAppointment();
 			}
-
 			FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 		} catch(InvalidInputException e) {
 			throw e;

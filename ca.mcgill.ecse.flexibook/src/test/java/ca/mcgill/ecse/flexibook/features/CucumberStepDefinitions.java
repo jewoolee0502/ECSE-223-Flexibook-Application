@@ -151,9 +151,10 @@ public class CucumberStepDefinitions {
 	 */
 	@When("{string} attempts to cancel their {string} appointment on {string} at {string}")
 	public void attempts_to_cancel_their_appointment_on_at(String customer, String name, String serviceDate, String startTime) {
-		try {
+		try {count = flexibook.getAppointments().size();
 			FlexibookController.CancelAppointment(customer, null, serviceDate, startTime);
 		} catch (InvalidInputException e) {
+		  count = flexibook.getAppointments().size();
 			FlexiBookApplication.setmessage(e.getMessage());
 		}
 	}
@@ -163,9 +164,10 @@ public class CucumberStepDefinitions {
 	 */
 	@When("{string} attempts to cancel {string}'s {string} appointment on {string} at {string}")
 	public void attempts_to_cancel_s_appointment_on_at(String customer, String customer2, String name, String serviceDate, String startTime) {
-		try {
+		try {count = flexibook.getAppointments().size();
 			FlexibookController.CancelAppointment(customer, customer2, serviceDate, startTime);
 		} catch (InvalidInputException e) {
+		  count = flexibook.getAppointments().size();
 			FlexiBookApplication.setmessage(e.getMessage());
 
 		}
@@ -176,7 +178,22 @@ public class CucumberStepDefinitions {
 	 */
 	@Then("{string}'s {string} appointment on {string} at {string} shall be removed from the system")
 	public void s_appointment_on_at_shall_be_removed_from_the_system(String string, String string2, String string3, String string4) {
-
+	  Boolean check=false;
+      Customer a = (Customer) Customer.getWithUsername(string);
+    for(Appointment ca:a.getAppointments()) {
+      if(ca.getBookableService().getName().equals(string2)) {
+        TimeSlot ts=ca.getTimeSlot();
+        String adate=ts.getStartDate().toString();
+        String starttime=ts.getStartTime().toString().substring(0,ts.getStartTime().toString().length()-3);
+        String endtime=ts.getEndTime().toString().substring(0,ts.getEndTime().toString().length()-3);
+        if (adate.equals(string3)) {
+          if(string4.equals(starttime)) {
+            check=true;
+          }
+         }
+      }
+    }
+    assertEquals(false,check);
 	}
 
 	/**
@@ -184,7 +201,8 @@ public class CucumberStepDefinitions {
 	 */
 	@Then("there shall be {int} less appointment in the system")
 	public void there_shall_be_less_appointment_in_the_system(Integer int1) {
-
+    count=count-flexibook.getAppointments().size();
+    assertEquals(int1,count);
 	}
 
 
@@ -752,12 +770,15 @@ public class CucumberStepDefinitions {
 	 */
 	@When("{string} schedules an appointment on {string} for {string} at {string}")
 	public void schedules_an_appointment_on_for_at(String customer, String date, String serviceName, String startTime){
-		try {			
-			FlexibookController.MakeAppointment(customer, date, serviceName, null, startTime);
-			count = 1;
+	
+	  try {
+	    count = flexibook.getAppointments().size();
+       FlexibookController.MakeAppointment(customer, date, serviceName, null, startTime);
+			
 		}catch(InvalidInputException e){
-			FlexiBookApplication.setmessage(e.getMessage());
-			count = 0;
+		 count = flexibook.getAppointments().size();
+		FlexiBookApplication.setmessage(e.getMessage());
+			
 		}
 	}
 
@@ -767,12 +788,13 @@ public class CucumberStepDefinitions {
 	 */
 	@When("{string} schedules an appointment on {string} for {string} with {string} at {string}")
 	public void schedules_an_appointment_on_for_with_at(String customer, String date, String serviceName, String optionalServices, String startTime){
-		try {
-			count = 1;
+		
+	  try {
+			count = flexibook.getAppointments().size();
 			FlexibookController.MakeAppointment(customer, date, serviceName, optionalServices, startTime);
 
 		}catch(InvalidInputException e) {
-			count = 0;
+			count = flexibook.getAppointments().size();
 			FlexiBookApplication.setmessage(e.getMessage());
 		}
 	}
@@ -783,8 +805,8 @@ public class CucumberStepDefinitions {
 
 	@Then("there shall be {int} more appointment in the system")
 	public void there_shall_be_more_appointment_in_the_system(Integer int1) {
-		int b=count;
-		//assertEquals(int1, (Integer)count);
+		int b=flexibook.getAppointments().size()-count;
+		assertEquals(int1, b);
 
 	}
 	/**
@@ -793,13 +815,28 @@ public class CucumberStepDefinitions {
 
 	@Then("{string} shall have a {string} appointment on {string} from {string} to {string}")
 	public void shall_have_a_appointment_on_from_to(String customer, String serviceName, String date, String startTime, String endTime) {
-		int cindex = -1;
-
-		for(Customer c : flexibook.getCustomers()) {
-			if(c.getUsername().equals(customer)) {
-				cindex = flexibook.indexOfCustomer(c);
-			}
-		}
+   Boolean check=false;
+	  Customer a = (Customer) Customer.getWithUsername(customer);
+    for(Appointment ca:a.getAppointments()) {
+      if(ca.getBookableService().getName().equals(serviceName)) {
+        assertEquals(serviceName,ca.getBookableService().getName());
+        TimeSlot ts=ca.getTimeSlot();
+        String adate=ts.getStartDate().toString();
+        String starttime=ts.getStartTime().toString().substring(0,ts.getStartTime().toString().length()-3);
+        String endtime=ts.getEndTime().toString().substring(0,ts.getEndTime().toString().length()-3);
+        if (adate.equals(date)) {
+          if(startTime.equals(starttime)) {
+            if(endTime.equals(endtime)) {
+            assertEquals(date,adate);
+            assertEquals(startTime,starttime);
+            assertEquals(endTime,endtime);
+            check=true;
+          }
+         }
+        }
+      }
+    }
+    assertEquals(true,check);
 	}
 
 	/**
@@ -809,7 +846,7 @@ public class CucumberStepDefinitions {
 	@Then("the system shall report {string}")
 	public void the_system_shall_report(String string) {
 		String e = FlexiBookApplication.returnmessage();
-		//assertEquals(string, e);
+		assertEquals(string, e);
 
 		FlexiBookApplication.setmessage(null);
 	}
@@ -1196,8 +1233,10 @@ public class CucumberStepDefinitions {
 	@When("{string} attempts to update their {string} appointment on {string} at {string} to {string} at {string}")
 	public void attempts_to_update_their_appointment_on_at_to_at(String customer, String serviceName, String serviceDate, String startTime, String newDate, String newStartTime) {
 		try {
+		  count=flexibook.getAppointments().size();
 			FlexibookController.UpdateAppointment(customer, null, null, null, serviceName, serviceDate, newDate, startTime, newStartTime);
 		}catch(InvalidInputException e) {
+		  count=flexibook.getAppointments().size();
 			FlexiBookApplication.setmessage(e.getMessage());
 		}
 	}
@@ -1208,8 +1247,10 @@ public class CucumberStepDefinitions {
 	@When("{string} attempts to {string} {string} from their {string} appointment on {string} at {string}")
 	public void attempts_to_from_their_appointment_on_at(String customer, String action, String comboItem, String serviceName, String serviceDate, String startTime) {
 		try {
+		  count=flexibook.getAppointments().size();
 			FlexibookController.UpdateAppointment(customer, null, action, comboItem, serviceName, serviceDate, null, startTime, null);
 		}catch(InvalidInputException e) {
+		  count=flexibook.getAppointments().size();
 			FlexiBookApplication.setmessage(e.getMessage());
 		}
 	}
@@ -1220,8 +1261,10 @@ public class CucumberStepDefinitions {
 	@When("{string} attempts to update {string}'s {string} appointment on {string} at {string} to {string} at {string}")
 	public void attempts_to_update_s_appointment_on_at_to_at(String customer, String customer2, String serviceName, String serviceDate, String startTime, String newDate, String newStartTime) {
 		try {
+		  count=flexibook.getAppointments().size();
 			FlexibookController.UpdateAppointment(customer, customer2, null, null, serviceName, serviceDate, newDate, startTime, newStartTime);
 		}catch(InvalidInputException e) {
+		  count=flexibook.getAppointments().size();
 			FlexiBookApplication.setmessage(e.getMessage());
 		}
 	}

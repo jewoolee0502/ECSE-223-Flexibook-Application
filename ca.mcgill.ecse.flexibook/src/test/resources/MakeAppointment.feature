@@ -47,7 +47,7 @@ Feature: Make appointment
       # row 1: appointment in regular available slot
       # row 2: appointment during downtime of color-basic
       | serviceName | date       | startTime | endTime |
-      | cut         | 2020-12-29 | 9:40      | 10:00   |
+      | cut         | 2020-12-29 | 09:40     | 10:00   |
       | cut         | 2020-12-28 | 10:00     | 10:20   |
 
   Scenario Outline: A customer attempts to make various valid appointments for service combos
@@ -61,7 +61,7 @@ Feature: Make appointment
       # row 2: appointment during downtime of color-basic
       | serviceName | optionalServices | date       | startTime | endTime |
       | cut-basic   | wash,dry         | 2020-12-30 | 10:00     | 10:40   |
-      | cut-basic   | dry              | 2020-12-28 | 9:55      | 10:25   |
+      | cut-basic   | dry              | 2020-12-28 | 09:55     | 10:25   |
 
   Scenario Outline: A customer attempts to make various invalid appointments for services
     Given "customer1" is logged in to their account

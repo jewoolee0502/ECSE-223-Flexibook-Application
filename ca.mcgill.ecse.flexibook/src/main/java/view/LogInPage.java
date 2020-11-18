@@ -72,8 +72,8 @@ public class LogInPage extends JFrame {
 		
 	}
 	public static void main(String[] args) {
-		int Width = 300;
-		int Length = 300;
+		int Width = 700;
+		int Length = 700;
 		JFrame frame = new JFrame();
 		JLabel User = new JLabel();
 		JLabel Password = new JLabel();

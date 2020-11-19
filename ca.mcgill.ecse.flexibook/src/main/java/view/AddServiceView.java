@@ -14,10 +14,20 @@ import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 
 public class AddServiceView {
+	
+	private static JFrame frame = new JFrame();
+	private static JPanel panel;
+	private static JLabel service;
+	private static JLabel duration;
+	private static JTextField newservice;
+	private static JButton create;
+	private static JButton cancel;
+	
+	
 	public static void main(String[] args) {
-	JPanel panel = new JPanel();
-	JFrame frame = new JFrame();
-	JLabel Title = new JLabel();
+		JPanel panel = new JPanel();
+		JFrame frame = new JFrame();
+		JLabel Title = new JLabel();
 	frame.setSize(550, 400);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame.add(panel);
@@ -25,26 +35,41 @@ public class AddServiceView {
 	
 	panel.setLayout(null);
 	
-	JLabel slabel = new JLabel("Service Name");
-	slabel.setBounds(70, 70, 80, 25);
-	panel.add(slabel);
+	service = new JLabel("Service Name");
+	service.setBounds(70, 70, 80, 25);
+	panel.add(service);
 	
-	JTextField sTest = new JTextField(70);
-	sTest.setBounds(70,110,165,25);
-	panel.add(sTest);
+	newservice = new JTextField(70);
+	newservice.setBounds(70,110,165,25);
+	panel.add(newservice);
 	
-	JLabel dlabel = new JLabel("Service duration");
-	dlabel.setBounds(70,150,120,25);
-	panel.add(dlabel);
+	duration = new JLabel("Service duration");
+	duration.setBounds(70,150,120,25);
+	panel.add(duration);
 	
-	JButton cbutton = new JButton("Create new Service");
-	cbutton.setBounds(70, 250, 150, 25);
-	panel.add(cbutton);
+    create = new JButton("Create new Service");
+	create.setBounds(70, 250, 150, 25);
+	create.addActionListener(new java.awt.event.ActionListener() {
+		public void actionPerformed(java.awt.event.ActionEvent evt) {
+			createActionPerformed(evt);
+		}});
+	panel.add(create);
 	
-	JButton button = new JButton("Cancel");
-	button.setBounds(330, 250, 80, 25);
-	panel.add(button);
+	cancel = new JButton("Cancel");
+	cancel.setBounds(330, 250, 80, 25);
+	cancel.addActionListener(new java.awt.event.ActionListener() {
+		public void actionPerformed(java.awt.event.ActionEvent evt) {
+			cancelActionPerformed(evt);
+		}});
+	panel.add(cancel);
+	
 	frame.setVisible(true);
 	
+	}
+	private static void createActionPerformed(java.awt.event.ActionEvent evt) {
+		
+	}
+	private static void cancelActionPerformed(java.awt.event.ActionEvent evt) {
+		
 	}
 }

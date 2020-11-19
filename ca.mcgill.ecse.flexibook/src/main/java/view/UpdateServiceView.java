@@ -3,6 +3,8 @@ package view;
 import java.awt.Color;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,6 +17,18 @@ import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 
 public class UpdateServiceView {
+	private static JLabel Title;
+	private static JFrame frame;
+	private static JPanel panel;
+	private static String error;
+	private static JLabel errorMessage = new JLabel("");
+	private static JLabel newlabel; 
+	private static JTextField serviceTest;
+	private static JLabel durationlabel;
+	private static JButton delete;
+	private static JButton update;
+	private static JButton cancel;
+	
 	public static void main(String[] args) {
 		JPanel panel = new JPanel();
 		JFrame frame = new JFrame();
@@ -30,30 +44,60 @@ public class UpdateServiceView {
 		panel.add(Title);
 		
 		
-		JLabel newlabel = new JLabel("New Name");
+		newlabel = new JLabel("New Name");
 		newlabel.setBounds(70, 70, 80, 25);
 		panel.add(newlabel);
 		
-		JTextField sTest = new JTextField(70);
-		sTest.setBounds(70,110,165,25);
-		panel.add(sTest);
+		serviceTest = new JTextField(70);
+		serviceTest.setBounds(70,110,165,25);
+		panel.add(serviceTest);
 		
-		JLabel dlabel = new JLabel("New duration");
-		dlabel.setBounds(70,150,120,25);
-		panel.add(dlabel);
+		durationlabel = new JLabel("New duration");
+		durationlabel.setBounds(70,150,120,25);
+		panel.add(durationlabel);
 		
-		JButton updatebutton = new JButton("Update Service");
-		updatebutton.setBounds(70, 250, 130, 25);
-		panel.add(updatebutton);
+		update = new JButton("Update Service");
+		update.setBounds(70, 250, 130, 25);
+		update.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				updateActionPerformed(evt);
+			}});
+		panel.add(update);
 		
-		JButton deletebutton = new JButton("Delete Service");
-		deletebutton.setBounds(230, 250, 130, 25);
-		panel.add(deletebutton);
+		delete = new JButton("Delete Service");
+		delete.setBounds(230, 250, 130, 25);
+		delete.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				deleteActionPerformed(evt);
+			}});
+		panel.add(delete);
 		
-		JButton button = new JButton("Cancel");
-		button.setBounds(390, 250, 80, 25);
-		panel.add(button);
+	    cancel = new JButton("Cancel");
+		cancel.setBounds(390, 250, 80, 25);
+		cancel.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				cancelActionPerformed(evt);
+			}});
+		panel.add(cancel);
+		
+		
+		errorMessage.setBounds(200, 350, 300, 25);
+		errorMessage.setForeground(Color.red);
+		panel.add(errorMessage);
+		
+		
 		frame.setVisible(true);
-		
 	}
+
+		private static void updateActionPerformed(java.awt.event.ActionEvent evt) {
+			
+		}
+		
+		private static void deleteActionPerformed(java.awt.event.ActionEvent evt) {
+		
+		}
+	    
+		private static void cancelActionPerformed(java.awt.event.ActionEvent evt) {
+			
+		}
 }

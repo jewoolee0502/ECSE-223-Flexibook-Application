@@ -17,6 +17,7 @@ public class AddServiceView {
 	public static void main(String[] args) {
 	JPanel panel = new JPanel();
 	JFrame frame = new JFrame();
+	JLabel Title = new JLabel();
 	frame.setSize(550, 400);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame.add(panel);

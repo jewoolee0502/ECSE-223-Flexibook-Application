@@ -27,6 +27,10 @@ public class UpdateServiceView {
 	private static JTextField serviceTest;
 	private static JLabel durationlabel;
 	private static JComboBox<String> timeduration;
+	private static JLabel downtimestart;
+	private static JComboBox<String> downstart;
+	private static JLabel downtimeduration;
+	private static JComboBox<String> downduration;
 	private static JButton delete;
 	private static JButton update;
 	private static JButton cancel;
@@ -35,7 +39,7 @@ public class UpdateServiceView {
 		JPanel panel = new JPanel();
 		JFrame frame = new JFrame();
 		JLabel Title = new JLabel();
-		frame.setSize(550, 400);
+		frame.setSize(550, 550);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
 
@@ -86,8 +90,52 @@ public class UpdateServiceView {
 		timeduration.setBounds(70,190,120,25);
 		panel.add(timeduration);
 		
+		downtimestart = new JLabel("DowntimeStart");
+		downtimestart.setBounds(70,230,120,25);
+		panel.add(downtimestart);
+		
+		downstart = new JComboBox<String>();
+		downstart.addItem("");
+		downstart.addItem("0");
+		downstart.addItem("5");
+		downstart.addItem("10");
+		downstart.addItem("15");
+		downstart.addItem("20");
+		downstart.addItem("25");
+		downstart.addItem("30");
+		downstart.addItem("35");
+		downstart.addItem("40");
+		downstart.addItem("45");
+		downstart.addItem("50");
+		downstart.setEditable(true);
+	    System.out.println("#items=" + downstart.getItemCount());
+	    downstart.setBounds(70, 270, 120, 25);
+	    panel.add(downstart);
+	    
+	    downtimeduration = new JLabel("Downtime Duration");
+	    downtimeduration.setBounds(300, 230, 120, 25);
+	    panel.add(downtimeduration);
+	    
+	    downduration = new JComboBox<String>();
+	    downduration.addItem("");
+	    downduration.addItem("0");
+	    downduration.addItem("5");
+	    downduration.addItem("10");
+	    downduration.addItem("15");
+	    downduration.addItem("20");
+	    downduration.addItem("25");
+	    downduration.addItem("30");
+	    downduration.addItem("35");
+	    downduration.addItem("40");
+	    downduration.addItem("45");
+	    downduration.addItem("50");
+	    downduration.setEditable(true);
+	    System.out.println("#items=" + downduration.getItemCount());
+	    downduration.setBounds(300,270,120,25);
+	    panel.add(downduration);
+	    
 		update = new JButton("Update Service");
-		update.setBounds(70, 250, 130, 25);
+		update.setBounds(70, 350, 130, 25);
 		update.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				updateActionPerformed(evt);
@@ -95,7 +143,7 @@ public class UpdateServiceView {
 		panel.add(update);
 		
 		delete = new JButton("Delete Service");
-		delete.setBounds(230, 250, 130, 25);
+		delete.setBounds(230, 350, 130, 25);
 		delete.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				deleteActionPerformed(evt);
@@ -103,7 +151,7 @@ public class UpdateServiceView {
 		panel.add(delete);
 		
 	    cancel = new JButton("Cancel");
-		cancel.setBounds(390, 250, 80, 25);
+		cancel.setBounds(390, 350, 80, 25);
 		cancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				cancelActionPerformed(evt);

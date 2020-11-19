@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,6 +26,7 @@ public class UpdateServiceView {
 	private static JLabel newlabel; 
 	private static JTextField serviceTest;
 	private static JLabel durationlabel;
+	private static JComboBox<String> timeduration;
 	private static JButton delete;
 	private static JButton update;
 	private static JButton cancel;
@@ -55,6 +57,34 @@ public class UpdateServiceView {
 		durationlabel = new JLabel("New duration");
 		durationlabel.setBounds(70,150,120,25);
 		panel.add(durationlabel);
+		
+		timeduration = new JComboBox<String>();
+		timeduration.addItem("");
+		timeduration.addItem("5");
+		timeduration.addItem("10");
+		timeduration.addItem("15");
+		timeduration.addItem("20");
+		timeduration.addItem("25");
+		timeduration.addItem("30");
+		timeduration.addItem("35");
+		timeduration.addItem("40");
+		timeduration.addItem("45");
+		timeduration.addItem("50");
+		timeduration.addItem("55");
+		timeduration.addItem("60");
+		timeduration.addItem("65");
+		timeduration.addItem("70");
+		timeduration.addItem("75");
+		timeduration.addItem("80");
+		timeduration.addItem("85");
+		timeduration.addItem("90");
+		timeduration.addItem("95");
+		timeduration.addItem("100");
+		timeduration.setEditable(true);
+	    System.out.println("#items=" + timeduration.getItemCount());
+		
+		timeduration.setBounds(70,190,120,25);
+		panel.add(timeduration);
 		
 		update = new JButton("Update Service");
 		update.setBounds(70, 250, 130, 25);

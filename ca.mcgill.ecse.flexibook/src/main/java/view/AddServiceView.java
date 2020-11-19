@@ -143,8 +143,10 @@ public class AddServiceView {
 	
 	success = new JLabel("");
 	success.setBounds(70, 380, 200, 25);
+	success.setForeground(Color.BLUE);
 	panel.add(success);
 	
+	errorMessage = new JLabel("");
 	errorMessage.setBounds(330, 380, 300, 25);
 	errorMessage.setForeground(Color.red);
 	panel.add(errorMessage);
@@ -162,6 +164,6 @@ public class AddServiceView {
 		}
 	}
 	private static void cancelActionPerformed(java.awt.event.ActionEvent evt) {
-	   //add code to go back to main page
+	   //add code to go back to ownerview page
 	}
 }

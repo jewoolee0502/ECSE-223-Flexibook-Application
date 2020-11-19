@@ -11,7 +11,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
@@ -158,7 +157,7 @@ public class UpdateServiceView {
 			}});
 		panel.add(cancel);
 		
-		
+		errorMessage = new JLabel();
 		errorMessage.setBounds(200, 350, 300, 25);
 		errorMessage.setForeground(Color.red);
 		panel.add(errorMessage);
@@ -168,14 +167,34 @@ public class UpdateServiceView {
 	}
 
 		private static void updateActionPerformed(java.awt.event.ActionEvent evt) {
-			
+			error=null;
+			try {
+				
+				Boolean yes=FlexibookController.updateservice(string1, string2, string3, string4, string5, string6);
+				if(yes) {
+				errorMessage.setText("Succesfully update the service");}
+			}
+			catch(InvalidInputException e){
+				error=e.getMessage();
+				errorMessage.setText(error);
+			}
 		}
 		
 		private static void deleteActionPerformed(java.awt.event.ActionEvent evt) {
+			try {
+				
+				FlexibookController.deleteService(owner, servicename);
+				errorMessage.setText("Successfully deleted service");
+			}
+			catch(InvalidInputException e) {
+				error = e.getMessage();
+				errorMessage.setText(error);
+				
+			}
 		
 		}
 	    
 		private static void cancelActionPerformed(java.awt.event.ActionEvent evt) {
-			
+			//add code to go back to the ownerview page
 		}
 }

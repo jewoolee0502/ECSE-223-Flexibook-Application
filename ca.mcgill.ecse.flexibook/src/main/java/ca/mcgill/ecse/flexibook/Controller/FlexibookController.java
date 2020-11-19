@@ -1269,10 +1269,10 @@ public class FlexibookController {
 	 * 
 	 * @param ownername --- the name of current owner
 	 * @paramString --- ownername is string
-	 * @param color     
-	 * @paramString --- color is string2
-	 * @param servicename  --- a string of services, separated with ",".
-	 * @paramString --- servicename is string3
+	 * @param oldname     
+	 * @paramString --- oldname is string2
+	 * @param newname  --- a string of services, separated with ",".
+	 * @paramString --- newname is string3
 	 * @param duration     --- the total amount of time needed for a service
 	 * @paramString --- duration is string4
 	 * @param downtimeStart

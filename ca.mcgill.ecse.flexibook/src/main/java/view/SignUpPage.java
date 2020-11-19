@@ -33,7 +33,7 @@ public class SignUpPage {
 	public static void main(String[] args) {
 
 		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
-		
+
 		panel.setLayout(null); //change the layout!
 		frame.add(panel);
 		frame.setSize(Width, Length);
@@ -69,30 +69,22 @@ public class SignUpPage {
 		frame.setVisible(true);
 		cancel.setText("Cancel");
 		cancel.setBounds(350, 300, 100, 25);
-		cancel.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				cancelActionPerformed(evt);
-			}});
 		panel.add(cancel);
 		frame.setVisible(true);
 	}
-	
+
 	private static void signUpActionPerformed(java.awt.event.ActionEvent evt) {
 		if(passwrd_input.getText().equals(confirm_input.getText())) {
 			try {
 				FlexibookController.SignUpForCustomerAccount(usr_input.getText(), passwrd_input.getText()); //the confirm password is not checking if the password is equal to the confirm password.
-				errorMessage.setText("Successfully created an account");
+				errorMessage.setText("Successfully created an account"); //if successful, create a button, for log in and make the customer log in to the created account
 			}
 			catch(InvalidInputException e) {
 				error = e.getMessage();
 				errorMessage.setText("**" + error);
-				
+
 			}
 		}
-	}
-	
-	private static void cancelActionPerformed(java.awt.event.ActionEvent evt) {
-		//add the code to go back to the main page (transition to the main page.)
 	}
 
 }

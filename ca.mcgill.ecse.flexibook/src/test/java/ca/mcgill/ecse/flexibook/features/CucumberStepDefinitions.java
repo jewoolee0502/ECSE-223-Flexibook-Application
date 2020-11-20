@@ -1716,7 +1716,6 @@ public class CucumberStepDefinitions {
 			unavailable.add(timeslot);
 		}
 		assertTrue(true);
-		;
 	}
 	/**
 	 * @author James Willems

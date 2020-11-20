@@ -38,14 +38,16 @@ public class UpdateServiceView {
 		JPanel panel = new JPanel();
 		JFrame frame = new JFrame();
 		JLabel Title = new JLabel();
-		frame.setSize(550, 550);
+		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
+		frame.setSize(700, 700);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
 
 		panel.setLayout(null);
 		
 		Title.setText("Update Service");
-		Title.setBounds(220, 15, 400, 75);
+		Title.setBounds(280, 15, 400, 75);
+		Title.setFont(font1);
 		panel.add(Title);
 		
 		
@@ -181,16 +183,16 @@ public class UpdateServiceView {
 		}
 		
 		private static void deleteActionPerformed(java.awt.event.ActionEvent evt) {
-			try {
+			//try {
 				
-				FlexibookController.deleteService(owner, servicename);
+				//FlexibookController.deleteService(owner, servicename);
 				errorMessage.setText("Successfully deleted service");
-			}
-			catch(InvalidInputException e) {
-				error = e.getMessage();
+			//}
+			//catch(InvalidInputException e) {
+				//error = e.getMessage();
 				errorMessage.setText(error);
 				
-			}
+			//}
 		
 		}
 	    

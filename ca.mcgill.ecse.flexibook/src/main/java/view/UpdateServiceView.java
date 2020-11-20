@@ -38,6 +38,7 @@ public class UpdateServiceView {
 		JPanel panel = new JPanel();
 		JFrame frame = new JFrame();
 		JLabel Title = new JLabel();
+		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
 		frame.setSize(700, 700);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
@@ -45,7 +46,8 @@ public class UpdateServiceView {
 		panel.setLayout(null);
 		
 		Title.setText("Update Service");
-		Title.setBounds(220, 15, 400, 75);
+		Title.setBounds(280, 15, 400, 75);
+		Title.setFont(font1);
 		panel.add(Title);
 		
 		

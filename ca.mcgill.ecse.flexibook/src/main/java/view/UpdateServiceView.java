@@ -183,16 +183,16 @@ public class UpdateServiceView {
 		}
 		
 		private static void deleteActionPerformed(java.awt.event.ActionEvent evt) {
-			try {
+			//try {
 				
-				FlexibookController.deleteService(owner, servicename);
+				//FlexibookController.deleteService(owner, servicename);
 				errorMessage.setText("Successfully deleted service");
-			}
-			catch(InvalidInputException e) {
-				error = e.getMessage();
+			//}
+			//catch(InvalidInputException e) {
+				//error = e.getMessage();
 				errorMessage.setText(error);
 				
-			}
+			//}
 		
 		}
 	    

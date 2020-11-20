@@ -57,23 +57,23 @@ public class EditCustomerInfo {
 		panel.add(newuser);
 		
 		newpwd = new JLabel("New Password");
-		newpwd.setBounds(280, 190, 150, 25);
+		newpwd.setBounds(280, 180, 150, 25);
 		panel.add(newpwd);
 		
 		np = new JPasswordField(70);
-		np.setBounds(280,230,165,25);
+		np.setBounds(280,220,165,25);
 		panel.add(np);
 		
 		confirmpwd = new JLabel("Confirm New Password");
-		confirmpwd.setBounds(280,270, 200, 25);
+		confirmpwd.setBounds(280,260, 200, 25);
 		panel.add(confirmpwd);
 		
 		cpwd = new JPasswordField(70);
-		cpwd.setBounds(280,310,165,25);
+		cpwd.setBounds(280,300,165,25);
 		panel.add(cpwd);
 		
 		confirm = new JButton("Confirm");
-		confirm.setBounds(250, 370, 80, 25);
+		confirm.setBounds(250, 360, 80, 25);
 		confirm.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				confirmActionPerformed(evt);
@@ -81,7 +81,7 @@ public class EditCustomerInfo {
 		panel.add(confirm);
 		
 		cancel = new JButton("Cancel");
-			cancel.setBounds(390, 370, 80, 25);
+			cancel.setBounds(390, 360, 80, 25);
 			cancel.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent evt) {
 					cancelActionPerformed(evt);
@@ -89,7 +89,7 @@ public class EditCustomerInfo {
 			panel.add(cancel);
 			
 			errorMessage = new JLabel();
-			errorMessage.setBounds(410, 390, 300, 25);
+			errorMessage.setBounds(410, 380, 300, 25);
 			errorMessage.setForeground(Color.red);
 			panel.add(errorMessage);
 		

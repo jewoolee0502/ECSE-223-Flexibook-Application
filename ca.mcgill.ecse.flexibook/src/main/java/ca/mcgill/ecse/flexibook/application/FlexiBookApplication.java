@@ -13,7 +13,7 @@ public class FlexiBookApplication {
   private static String message;
   private static User currentuser;
   private static Appointment currentappointment;
-  private static AddServiceView addserviceview;
+  private static CreateServiceView addserviceview;
   private static CustomerView customerview;
   private static EditBusinessInfo editbusinessinfo;
   private static EditCustomerInfo editcustomerinfo;

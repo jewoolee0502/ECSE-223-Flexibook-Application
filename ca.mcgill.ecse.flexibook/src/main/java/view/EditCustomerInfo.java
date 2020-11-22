@@ -43,12 +43,12 @@ public class EditCustomerInfo {
 		
 		panel.setLayout(null);
 		
-		Title.setText("Edit Information");
-		Title.setBounds(280, 15, 400, 75);
+		Title.setText("Editing Information:");
+		Title.setBounds(250, 15, 400, 75);
 		Title.setFont(font1);
 		panel.add(Title);
 		
-		newusr = new JLabel("New UserName");
+		newusr = new JLabel("New Username:");
 		newusr.setBounds(280, 100, 150, 25);
 		panel.add(newusr);
 		
@@ -56,7 +56,7 @@ public class EditCustomerInfo {
 		newuser.setBounds(280,140,165,25);
 		panel.add(newuser);
 		
-		newpwd = new JLabel("New Password");
+		newpwd = new JLabel("New Password:");
 		newpwd.setBounds(280, 180, 150, 25);
 		panel.add(newpwd);
 		
@@ -64,7 +64,7 @@ public class EditCustomerInfo {
 		np.setBounds(280,220,165,25);
 		panel.add(np);
 		
-		confirmpwd = new JLabel("Confirm New Password");
+		confirmpwd = new JLabel("Confirm New Password: ");
 		confirmpwd.setBounds(280,260, 200, 25);
 		panel.add(confirmpwd);
 		

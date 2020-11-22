@@ -52,12 +52,12 @@ public class EditBusinessInfo {
 		
 		panel.setLayout(null);
 		
-		Title.setText("Edit Business Info");
-		Title.setBounds(280, 15, 400, 75);
+		Title.setText("Editing Business Information:");
+		Title.setBounds(170, 15, 400, 75);
 		Title.setFont(font1);
 		panel.add(Title);
 		
-		newusr = new JLabel("New UserName");
+		newusr = new JLabel("New Username:");
 		newusr.setBounds(100, 100, 150, 25);
 		panel.add(newusr);
 		
@@ -65,7 +65,7 @@ public class EditBusinessInfo {
 		newuser.setBounds(100,140,165,25);
 		panel.add(newuser);
 		
-		newpwd = new JLabel("New Password");
+		newpwd = new JLabel("New Password:");
 		newpwd.setBounds(100, 180, 150, 25);
 		panel.add(newpwd);
 		
@@ -73,7 +73,7 @@ public class EditBusinessInfo {
 		np.setBounds(100,220,165,25);
 		panel.add(np);
 		
-		confirmpwd = new JLabel("Confirm New Password");
+		confirmpwd = new JLabel("Confirm New Password:");
 		confirmpwd.setBounds(100,260, 200, 25);
 		panel.add(confirmpwd);
 		
@@ -81,7 +81,7 @@ public class EditBusinessInfo {
 		cpwd.setBounds(100,300,165,25);
 		panel.add(cpwd);
 		
-		change = new JLabel("Change Business Hour");
+		change = new JLabel("Change Business Hour:");
 		change.setBounds(320, 100, 150, 25);
 		panel.add(change);
 		
@@ -98,7 +98,7 @@ public class EditBusinessInfo {
 		day.setBounds(320,140,150,25);
 		panel.add(day);
 		
-		oldh = new JLabel("OldTime");
+		oldh = new JLabel("Old-Time:");
 		oldh.setBounds(320,200, 150, 25);
 		panel.add(oldh);
 		
@@ -120,7 +120,7 @@ public class EditBusinessInfo {
 		oldhour.addItem("22");
 		oldhour.setEditable(true);
 		System.out.println("#items=" + oldhour.getItemCount());
-		oldhour.setBounds(380,200,70,25);
+		oldhour.setBounds(400,200,70,25);
 		panel.add(oldhour);
 		
 		oldmin = new JComboBox<String>();
@@ -134,11 +134,11 @@ public class EditBusinessInfo {
 	
 		oldmin.setEditable(true);
 		System.out.println("#items=" + oldmin.getItemCount());
-		oldmin.setBounds(450,200,70,25);
+		oldmin.setBounds(470,200,70,25);
 		panel.add(oldmin);
 		
-		newh = new JLabel("NewTime");
-		newh.setBounds(320,280, 150, 25);
+		newh = new JLabel("New-Time:");
+		newh.setBounds(320, 280, 150, 25);
 		panel.add(newh);
 		
 		newhour = new JComboBox<String>();
@@ -159,7 +159,7 @@ public class EditBusinessInfo {
 		newhour.addItem("22");
 		newhour.setEditable(true);
 		System.out.println("#items=" + newhour.getItemCount());
-		newhour.setBounds(380,280,70,25);
+		newhour.setBounds(400, 280,70,25);
 		panel.add(newhour);
 		
 		newmin = new JComboBox<String>();
@@ -173,7 +173,7 @@ public class EditBusinessInfo {
 	
 		newmin.setEditable(true);
 		System.out.println("#items=" + newmin.getItemCount());
-		newmin.setBounds(450,280,70,25);
+		newmin.setBounds(470,280,70,25);
 		panel.add(newmin);
 		
 		update = new JButton("Confirm");

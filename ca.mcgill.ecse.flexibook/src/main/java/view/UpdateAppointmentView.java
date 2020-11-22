@@ -15,7 +15,7 @@ import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.Appointment;
 import ca.mcgill.ecse.flexibook.model.BookableService;
 
-public class UpdateAppointmentView {
+public class UpdateAppointmentView extends JFrame{
   private static JFrame frame = new JFrame();
   private static JLabel Title = new JLabel();
   private static JLabel User = new JLabel();

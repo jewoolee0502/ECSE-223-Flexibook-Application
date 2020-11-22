@@ -66,6 +66,13 @@ public class MakeAppointmentView extends JFrame {
   back.setText("back");
   back.setBounds(350, 350, 100, 25);
   panel.add(back);  
+ back.addActionListener(new java.awt.event.ActionListener() {
+    public void actionPerformed(java.awt.event.ActionEvent evt) {
+     
+     FlexiBookApplication.setaptocus();
+  }
+
+   });
   make.setText("Make");
   make.setBounds(200, 350, 100, 25);
   make.addActionListener(new java.awt.event.ActionListener() {
@@ -93,5 +100,9 @@ public class MakeAppointmentView extends JFrame {
       errorMessage.setText(error);
       errorMessage2.setText("Sorry the appointment is not made");
     }
+    } private static void backActionPerformed(ActionEvent evt) {
+     
+      FlexiBookApplication.setaptocus();
+      
     }
 }

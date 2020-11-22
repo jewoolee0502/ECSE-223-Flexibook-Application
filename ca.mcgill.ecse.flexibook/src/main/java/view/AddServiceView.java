@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
+import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 
 public class AddServiceView {
 	
@@ -160,6 +161,12 @@ public class AddServiceView {
 		if(s.equals(null) || d.equals(null) ) {
 			success.setText("Service name/duration can not be empty");
 		}else {
+		  try {
+		   FlexibookController.addService(FlexiBookApplication.getCurrentuser().getUsername(), service.getText(), duration.getText(), downstart.getSelectedItem().toString(), 
+		       downduration.getSelectedItem().toString()); 
+		  }catch (InvalidInputException e) {
+		    errorMessage.setText(e.getMessage());
+		  }
 			success.setText("Successfully add a new service!");
 		}
 	}

@@ -62,7 +62,7 @@ public class UpdateServiceView {
 		durationlabel = new JLabel("New duration");
 		durationlabel.setBounds(70,150,120,25);
 		panel.add(durationlabel);
-		
+		                          
 		timeduration = new JComboBox<String>();
 		timeduration.addItem("");
 		timeduration.addItem("5");

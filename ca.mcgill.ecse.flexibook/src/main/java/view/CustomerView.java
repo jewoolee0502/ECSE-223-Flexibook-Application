@@ -13,6 +13,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
+import ca.mcgill.ecse.flexibook.model.Appointment;
+import ca.mcgill.ecse.flexibook.model.BookableService;
 
 public class CustomerView extends JFrame {
 	
@@ -33,7 +36,7 @@ public class CustomerView extends JFrame {
 	private static JPanel panelCustomerMainPage = new JPanel();
 	private static JPanel panelLogOut = new JPanel();
 	private static String error;
-	
+	private static JComboBox comboBox = new JComboBox();
 	private static void init_component_customerMainPage() {
 		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
 //		Font font2 = new Font("Times New Romans", Font.PLAIN, 1);
@@ -74,7 +77,14 @@ public class CustomerView extends JFrame {
 //		comboBoxMessage.setBounds(170, 70, 100, 10);
 //		comboBoxMessage.setForeground(Color.red);
 		String number[] = { "#", "1", "2", "3", "4", "5" };        
-	    JComboBox comboBox = new JComboBox(number);    
+	    if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+	      int count = 0;
+	      for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
+	        count=count+1;
+	        comboBox.addItem(count);
+	        }
+	    }
+		comboBox = new JComboBox(number);    
 	    comboBox.setBounds(350, 80, 70, 30); 
 	    
 	    String[] columnName = {"#", "Appointment Type", "Date & Time"};
@@ -100,7 +110,10 @@ public class CustomerView extends JFrame {
 	}
 	
 	private static void updateAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
-		
+	 int k=Integer.parseInt(comboBox.getSelectedItem().toString());
+	if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+	 FlexiBookApplication.setcurap(FlexiBookApplication.getflexibook().getAppointment(k-1));
+	}
 	}
 	
 	private static void editAccountActionPerformed(java.awt.event.ActionEvent evt) {

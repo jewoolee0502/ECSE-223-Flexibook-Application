@@ -159,7 +159,7 @@ public class MainPage extends JFrame {
 		panelSignUp.add(confirmPass);
 		confirm_input.setBounds(300, 250, 165, 25);
 		panelSignUp.add(confirm_input);
-		errorMessageSignUp.setBounds(200, 350, 300, 15);
+		errorMessageSignUp.setBounds(100, 350, 500, 15);
 		errorMessageSignUp.setForeground(Color.red);
 		panelSignUp.add(errorMessageSignUp);
 		signUp.setText("Create Account");

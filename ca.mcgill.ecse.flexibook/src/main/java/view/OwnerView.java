@@ -148,10 +148,10 @@ public class OwnerView {
 	    editServiceComboBox = new JComboBox(editServiceChoice);    
 	    editServiceComboBox.setBounds(340, 600, 110, 30);
 	    
-	    String[] columnName = {"#", "Customer", "Appointment Type", "Date & Time"};
+	    String[] columnName = {"#", "Customer", "Appointment Type", "Date & Time", "Status"};
 	    String[][] data = {
-	    		{"1", "Customer 1", "Cut", "2020/12/20 - 10:30"},
-	    		{"2", "Customer 2", "Wash", "2020/12/28 - 14:20"}
+	    		{"1", "Customer 1", "Cut", "2020/12/20 - 10:30", "Started"},
+	    		{"2", "Customer 2", "Wash", "2020/12/28 - 14:20", "In Progress"}
 	    };
 	    table = new JTable(data, columnName);
 	    table.setBounds(50, 150, 600, 420);

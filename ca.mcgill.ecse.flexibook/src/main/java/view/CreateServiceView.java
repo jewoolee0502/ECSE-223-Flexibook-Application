@@ -96,7 +96,7 @@ public class CreateServiceView extends JFrame {
 
 
 		create.setText("Create New Service");
-		create.setBounds(180, 350, 150, 35);
+		create.setBounds(180, 350, 150, 25);
 		create.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				createActionPerformed(evt);
@@ -104,7 +104,7 @@ public class CreateServiceView extends JFrame {
 		panelCreateService.add(create);
 
 		cancel.setText("Cancel");
-		cancel.setBounds(390, 350, 80, 35);
+		cancel.setBounds(390, 350, 80, 25);
 		cancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				cancelActionPerformed(evt);

@@ -31,6 +31,7 @@ public class OwnerView {
 	private static JButton editAccount = new JButton();
 	private static JButton createService = new JButton();
 	private static JButton editService = new JButton();
+	private static JButton businessInfo = new JButton();
 	private static JButton logOut = new JButton("");
 	private static JTable table;
 	private static JPanel panelOwnerMainPage = new JPanel();
@@ -67,14 +68,17 @@ public class OwnerView {
 		noShow.setText("No-Show");
 		noShow.setBounds(420, 80, 90, 30);
 
-		editAccount.setText("Edit");
-		editAccount.setBounds(600, 80, 70, 30);
+		editAccount.setText("Edit Account");
+		editAccount.setBounds(580, 80, 120, 30);
 
 		createService.setText("Create Service");
-		createService.setBounds(10, 600, 150, 30);
+		createService.setBounds(10, 600, 120, 30);
 
 		editService.setText("Edit Service");
-		editService.setBounds(230, 600, 120, 30);
+		editService.setBounds(300, 600, 100, 30);
+		
+		businessInfo.setText("Business Info");
+		businessInfo.setBounds(150, 600, 110, 30);
 
 		logOut.setText("Log Out");
 		logOut.setBounds(550, 600, 100, 25);
@@ -150,7 +154,7 @@ public class OwnerView {
 			}
 		}
 		editServiceComboBox = new JComboBox(editServiceChoice);    
-		editServiceComboBox.setBounds(340, 600, 110, 30);
+		editServiceComboBox.setBounds(390, 600, 105, 30);
 
 		String[] columnName = {"#", "Customer", "Appointment Type", "Date & Time", "Status"};
 		String[][] data = {
@@ -166,6 +170,7 @@ public class OwnerView {
 		panelOwnerMainPage.add(editAccount);
 		panelOwnerMainPage.add(createService);
 		panelOwnerMainPage.add(editService);
+		panelOwnerMainPage.add(businessInfo);
 		panelOwnerMainPage.add(logOut);
 		panelOwnerMainPage.add(startComboBox);
 		panelOwnerMainPage.add(endComboBox);

@@ -18,7 +18,7 @@ import ca.mcgill.ecse.flexibook.model.Appointment;
 import ca.mcgill.ecse.flexibook.model.BookableService;
 
 public class CustomerView extends JFrame {
-	
+
 	private static int Width = 700;
 	private static int Length = 700;
 	private static JFrame frame = new JFrame();
@@ -26,8 +26,8 @@ public class CustomerView extends JFrame {
 	private static JLabel errorMessageMakeAppointment = new JLabel("");
 	private static JLabel errorMessageUpdateAppointment = new JLabel("");
 	private static JLabel errorMessageEditAccount = new JLabel("");
-//	private static JLabel comboBoxMessage = new JLabel("Select Appointment #: ");
-//	private static JLabel comboBoxMessage2 = new JLabel("# Selected");
+	//	private static JLabel comboBoxMessage = new JLabel("Select Appointment #: ");
+	//	private static JLabel comboBoxMessage2 = new JLabel("# Selected");
 	private static JButton makeAppointment = new JButton();
 	private static JButton updateAppointment = new JButton();
 	private static JButton editAccount = new JButton();
@@ -37,16 +37,16 @@ public class CustomerView extends JFrame {
 	private static JPanel panelLogOut = new JPanel();
 	private static String error;
 	private static JComboBox comboBox = new JComboBox();
-	
+
 	public CustomerView() {
-	  init_component_customerMainPage(); 
+		init_component_customerMainPage(); 
 	}
-	
-	
+
+
 	private static void init_component_customerMainPage() {
 		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
-//		Font font2 = new Font("Times New Romans", Font.PLAIN, 1);
-		
+		//		Font font2 = new Font("Times New Romans", Font.PLAIN, 1);
+
 		panelCustomerMainPage.setLayout(null);
 		frame.add(panelCustomerMainPage);
 		frame.setSize(Width, Length);
@@ -65,7 +65,7 @@ public class CustomerView extends JFrame {
 		logOut.setBounds(300, 630, 100, 25);
 		makeAppointment.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				makeAppointmentActionPerformed(evt);
+				FlexiBookApplication.gotomakeappointment();
 			}});
 		updateAppointment.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -79,59 +79,58 @@ public class CustomerView extends JFrame {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				logOutActionPerformed(evt);
 			}});
-		
-//		comboBoxMessage.setBounds(170, 70, 100, 10);
-//		comboBoxMessage.setForeground(Color.red);
+
+		//		comboBoxMessage.setBounds(170, 70, 100, 10);
+		//		comboBoxMessage.setForeground(Color.red);
 		String number[] = { "#", "1", "2", "3", "4", "5" };        
-	    if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
-	      int count = 0;
-	      for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
-	        count=count+1;
-	        comboBox.addItem(count);
-	        }
-	    }
+		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+			int count = 0;
+			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
+				count=count+1;
+				comboBox.addItem(count);
+			}
+		}
 		comboBox = new JComboBox(number);    
-	    comboBox.setBounds(350, 80, 70, 30); 
-	    
-	    String[] columnName = {"#", "Appointment Type", "Date & Time"};
-	    String[][] data = {
-	    		{"1", "Cut", "2020/12/20 - 10:30"},
-	    		{"2", "Wash", "2020/12/28 - 14:20"}
-	    };
-	    table = new JTable(data, columnName);
-	    table.setBounds(50, 180, 600, 420);
+		comboBox.setBounds(350, 80, 70, 30); 
+
+		String[] columnName = {"#", "Appointment Type", "Date & Time"};
+		String[][] data = {
+				{"1", "Cut", "2020/12/20 - 10:30"},
+				{"2", "Wash", "2020/12/28 - 14:20"}
+		};
+		table = new JTable(data, columnName);
+		table.setBounds(50, 180, 600, 420);
 
 		panelCustomerMainPage.add(makeAppointment);
 		panelCustomerMainPage.add(updateAppointment);
 		panelCustomerMainPage.add(editAccount);
 		panelCustomerMainPage.add(logOut);
-//		panelCustomerMainPage.add(comboBoxMessage);
+		//		panelCustomerMainPage.add(comboBoxMessage);
 		panelCustomerMainPage.add(comboBox);
 		panelCustomerMainPage.add(table);
 		frame.setVisible(true);
 	}
-	
-	private static void makeAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
-		
-	}
-	
+
+
+
 	private static void updateAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
-	 int k=Integer.parseInt(comboBox.getSelectedItem().toString());
-	if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
-	 FlexiBookApplication.setcurap(FlexiBookApplication.getflexibook().getAppointment(k-1));
+		int k=Integer.parseInt(comboBox.getSelectedItem().toString());
+		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+			FlexiBookApplication.setcurap(FlexiBookApplication.getflexibook().getAppointment(k-1));
+		}
+
 	}
-	}
-	
+
 	private static void editAccountActionPerformed(java.awt.event.ActionEvent evt) {
-		
+
 	}
-	
+
 	private static void logOutActionPerformed(java.awt.event.ActionEvent evt) {
 		//make transition back to the main page
 	}
-	
+
 	public static void main(String[] args) {
 		init_component_customerMainPage();
 	}
-	
+
 }

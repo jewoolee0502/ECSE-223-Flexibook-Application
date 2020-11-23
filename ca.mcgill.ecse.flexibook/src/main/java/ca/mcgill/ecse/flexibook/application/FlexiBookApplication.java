@@ -5,68 +5,87 @@ package ca.mcgill.ecse.flexibook.application;
 
 import ca.mcgill.ecse.flexibook.model.Appointment;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
+import ca.mcgill.ecse.flexibook.model.Owner;
 import ca.mcgill.ecse.flexibook.model.User;
 import view.*;;
 
 public class FlexiBookApplication {
-  private static FlexiBook flexibook;  
-  private static String message;
-  private static User currentuser;
-  private static Appointment currentappointment;
-  private static CreateServiceView addserviceview;
-  private static CustomerView customerview;
-  private static EditOwnerAndBusinessInfo editbusinessinfo;
-  private static EditCustomerInfo editcustomerinfo;
-  private static MainPage mainpage;
-  private static MakeAppointmentView makeappointmentview;
-  private static OwnerView ownerview;
-  private static SignUpPage signuppage;
-  private static UpdateAppointmentView updatappointmentview;
-  private static UpdateServiceView updateserviceview;
+	private static FlexiBook flexibook;  
+	private static String message;
+	private static User currentuser;
+	private static Appointment currentappointment;
+	private static CreateServiceView addserviceview;
+	private static CustomerView customerview;
+	private static EditBusinessInfo editbusinessinfo;
+	private static EditCustomerInfo editcustomerinfo;
+	private static MainPage mainpage;
+	private static MakeAppointmentView makeappointmentview;
+	private static OwnerView ownerview;
+	private static SignUpPage signuppage;
+	private static UpdateAppointmentView updatappointmentview;
+	private static UpdateServiceView updateserviceview;
 
-    public static void main(String[] args) {
-      start();
-    }
+	public static void main(String[] args) {
+		// start();
+		flexibook=new FlexiBook();
+		Owner o=new Owner("owner", "123456", flexibook);
+		currentuser=flexibook.getOwner();
+		init();
+	}
 
-    public static void start() {
-      mainpage=new MainPage();
-     
-    }
+	private static void init() {
+		editbusinessinfo=new EditBusinessInfo();
 
-    public static FlexiBook getflexibook() {
-      if (flexibook == null) {
-          flexibook = new FlexiBook();
-      }
-      return flexibook;
-  }
-    public static void setflexibook(FlexiBook fb) {
-      flexibook = fb;
-  }
-public static void setmessage(String a) {
-  message=a;
-  
-}
-public static String returnmessage() {
-  return message;
- 
-}
-public static void setCurrentuser(User a) {
-  currentuser=a;
-}
-public static User getCurrentuser() {
-  return currentuser;
-}
-public static void setcurap(Appointment a) {
-  currentappointment=a;
-}
-public static Appointment getCurrentap() {
-  return currentappointment;
-}
-public static void setaptocus() {
-if (makeappointmentview!=null) {
-  makeappointmentview.setVisible(false);
-}
-  customerview=new CustomerView();
+	}
 
-    }
+	public static void start() {
+		mainpage=new MainPage();
+
+	}
+
+	public static FlexiBook getflexibook() {
+		if (flexibook == null) {
+			flexibook = new FlexiBook();
+		}
+		return flexibook;
+	}
+	public static void setflexibook(FlexiBook fb) {
+		flexibook = fb;
+	}
+	public static void setmessage(String a) {
+		message=a;
+
+	}
+	public static String returnmessage() {
+		return message;
+
+	}
+	public static void setCurrentuser(User a) {
+		currentuser=a;
+	}
+	public static User getCurrentuser() {
+		return currentuser;
+	}
+	public static void setcurap(Appointment a) {
+		currentappointment=a;
+	}
+	public static Appointment getCurrentap() {
+		return currentappointment;
+	}
+	public static void setaptocus() {
+		if (customerview!=null) {
+
+			customerview.toFront();
+		}
+		customerview=new CustomerView();
+
+
+	}
+	public static void gotomakeappointment() {
+		if(makeappointmentview!=null) {
+			makeappointmentview.setVisible(true);
+		} else { makeappointmentview=new MakeAppointmentView();
+
+		}
+	}
 }

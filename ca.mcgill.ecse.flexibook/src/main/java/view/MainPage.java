@@ -59,11 +59,11 @@ public class MainPage extends JFrame {
 	private static FlexiBookApplication flex = new FlexiBookApplication();
 	private static String password = new String();
 
+
 	public MainPage() {
 		init_component_LogIn();
 	}
-
-	private static void init_component_LogIn() {                                                       
+	private static void init_component_LogIn() {
 		Font font1 = new Font("Times New Romans", Font.BOLD, 30);
 
 		panelLogIn.setLayout(null);
@@ -162,7 +162,7 @@ public class MainPage extends JFrame {
 		panelSignUp.add(confirmPass);
 		confirm_input.setBounds(300, 250, 165, 25);
 		panelSignUp.add(confirm_input);
-		errorMessageSignUp.setBounds(100, 350, 500, 15);
+		errorMessageSignUp.setBounds(100, 350, 550, 15);
 		errorMessageSignUp.setForeground(Color.red);
 		panelSignUp.add(errorMessageSignUp);
 		signUp.setText("Create Account");

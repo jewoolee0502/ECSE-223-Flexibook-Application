@@ -17,22 +17,26 @@ import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 
 public class UpdateServiceView {
-	private static JLabel Title;
-	private static JFrame frame;
-	private static JPanel panel;
-	private static String error;
+	private static int Width = 700;
+	private static int Length = 700;
+	private static JFrame frame = new JFrame();
+	private static JLabel Title = new JLabel();
+	private static JPanel panel = new JPanel();
+	private static JLabel service = new JLabel();
+	private static JLabel duration = new JLabel();
+	private static JLabel downtimeStart = new JLabel();
+	private static JComboBox<String> downstart = new JComboBox();
+	private static JLabel downtimeDuration = new JLabel();
+	private static JComboBox<String> downDuration = new JComboBox();
+	private static JTextField newService = new JTextField();
+	private static JButton create = new JButton();
+	private static JButton cancel = new JButton();
 	private static JLabel errorMessage = new JLabel("");
-	private static JLabel newlabel; 
-	private static JTextField serviceTest;
-	private static JLabel durationlabel;
-	private static JComboBox<String> timeduration;
-	private static JLabel downtimestart;
-	private static JComboBox<String> downstart;
-	private static JLabel downtimeduration;
-	private static JComboBox<String> downduration;
-	private static JButton delete;
-	private static JButton update;
-	private static JButton cancel;
+	private static JComboBox<String> timeDuration;
+	
+	
+	private static JButton delete = new JButton();
+	private static JButton update = new JButton();
 	
 	public UpdateServiceView() {
 		init_component_updateService();
@@ -43,135 +47,84 @@ public class UpdateServiceView {
 	}
 	
 	private static void init_component_updateService() {
-		JPanel panel = new JPanel();
-		JFrame frame = new JFrame();
-		JLabel Title = new JLabel();
 		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
-		frame.setSize(700, 700);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.add(panel);
 
 		panel.setLayout(null);
-		
-		Title.setText("Update Service");
-		Title.setBounds(280, 15, 400, 75);
+
+		frame.add(panel);
+		frame.setSize(Width, Length);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		Title.setText("Update Service:");
+		Title.setBounds(260, 15, 400, 75);
 		Title.setFont(font1);
 		panel.add(Title);
+
+		service.setText("New Service Name:");
+		service.setBounds(280, 100, 150, 25);
+		panel.add(service);
+
+		newService.setBounds(240, 120, 200, 35);
+		panel.add(newService);
+
+		duration.setText("New Service Duration:");
+		duration.setBounds(270, 180, 200, 25);
+		panel.add(duration);
+
+		String duration[] = {"", "5", "10", "15", "20", "25", "30", "35", "40",
+								"45", "50", "55", "60", "65", "70", "75", "80",
+								"85", "90", "95", "100"};
+		timeDuration = new JComboBox(duration);
+		timeDuration.setBounds(270, 200, 150, 25);
+		panel.add(timeDuration);
+
+		downtimeStart.setText("Downtime Start:");
+		downtimeStart.setBounds(180, 250, 120, 25);
+		panel.add(downtimeStart);
+
+		String downStartComboBox[] = {"", "5", "10", "15", "20", "25", "30", 
+										"35", "40", "45", "50"};
+		downstart = new JComboBox(downStartComboBox);
+		downstart.setBounds(180, 270, 120, 25);
+		panel.add(downstart);
 		
+		downtimeDuration.setText("Downtime Duration:");
+		downtimeDuration.setBounds(370, 250, 200, 25);
+		panel.add(downtimeDuration);
 		
-		newlabel = new JLabel("New Name");
-		newlabel.setBounds(70, 70, 80, 25);
-		panel.add(newlabel);
-		
-		serviceTest = new JTextField(70);
-		serviceTest.setBounds(70,110,165,25);
-		panel.add(serviceTest);
-		
-		durationlabel = new JLabel("New duration");
-		durationlabel.setBounds(70,150,120,25);
-		panel.add(durationlabel);
-		                          
-		timeduration = new JComboBox<String>();
-		timeduration.addItem("");
-		timeduration.addItem("5");
-		timeduration.addItem("10");
-		timeduration.addItem("15");
-		timeduration.addItem("20");
-		timeduration.addItem("25");
-		timeduration.addItem("30");
-		timeduration.addItem("35");
-		timeduration.addItem("40");
-		timeduration.addItem("45");
-		timeduration.addItem("50");
-		timeduration.addItem("55");
-		timeduration.addItem("60");
-		timeduration.addItem("65");
-		timeduration.addItem("70");
-		timeduration.addItem("75");
-		timeduration.addItem("80");
-		timeduration.addItem("85");
-		timeduration.addItem("90");
-		timeduration.addItem("95");
-		timeduration.addItem("100");
-		timeduration.setEditable(true);
-	    System.out.println("#items=" + timeduration.getItemCount());
-		
-		timeduration.setBounds(70,190,120,25);
-		panel.add(timeduration);
-		
-		downtimestart = new JLabel("DowntimeStart");
-		downtimestart.setBounds(70,230,120,25);
-		panel.add(downtimestart);
-		
-		downstart = new JComboBox<String>();
-		downstart.addItem("");
-		downstart.addItem("0");
-		downstart.addItem("5");
-		downstart.addItem("10");
-		downstart.addItem("15");
-		downstart.addItem("20");
-		downstart.addItem("25");
-		downstart.addItem("30");
-		downstart.addItem("35");
-		downstart.addItem("40");
-		downstart.addItem("45");
-		downstart.addItem("50");
-		downstart.setEditable(true);
-	    System.out.println("#items=" + downstart.getItemCount());
-	    downstart.setBounds(70, 270, 120, 25);
-	    panel.add(downstart);
-	    
-	    downtimeduration = new JLabel("Downtime Duration");
-	    downtimeduration.setBounds(300, 230, 120, 25);
-	    panel.add(downtimeduration);
-	    
-	    downduration = new JComboBox<String>();
-	    downduration.addItem("");
-	    downduration.addItem("0");
-	    downduration.addItem("5");
-	    downduration.addItem("10");
-	    downduration.addItem("15");
-	    downduration.addItem("20");
-	    downduration.addItem("25");
-	    downduration.addItem("30");
-	    downduration.addItem("35");
-	    downduration.addItem("40");
-	    downduration.addItem("45");
-	    downduration.addItem("50");
-	    downduration.setEditable(true);
-	    System.out.println("#items=" + downduration.getItemCount());
-	    downduration.setBounds(300,270,120,25);
-	    panel.add(downduration);
-	    
-		update = new JButton("Update Service");
-		update.setBounds(70, 350, 130, 25);
-		update.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				updateActionPerformed(evt);
-			}});
-		panel.add(update);
-		
-		delete = new JButton("Delete Service");
-		delete.setBounds(230, 350, 130, 25);
-		delete.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				deleteActionPerformed(evt);
-			}});
-		panel.add(delete);
-		
-	    cancel = new JButton("Cancel");
-		cancel.setBounds(390, 350, 80, 25);
+		String downDurationComboBox[] = {"", "5", "10", "15", "20", "25", "30", 
+											"35", "40", "45", "50"};
+		downDuration = new JComboBox(downDurationComboBox);
+		downDuration.setBounds(370,270,120,25);
+		panel.add(downDuration);
+
+		cancel.setText("Cancel");
+		cancel.setBounds(480, 350, 80, 25);
 		cancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				cancelActionPerformed(evt);
 			}});
 		panel.add(cancel);
 		
-		errorMessage = new JLabel();
-		errorMessage.setBounds(200, 350, 300, 25);
+		update.setText("Update Service");
+		update.setBounds(130, 350, 130, 25);
+		update.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				updateActionPerformed(evt);
+			}});
+		panel.add(update);
+		
+		delete.setText("Delete Service");
+		delete.setBounds(300, 350, 130, 25);
+		delete.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				deleteActionPerformed(evt);
+			}});
+		panel.add(delete);
+		
+		errorMessage.setBounds(330, 380, 300, 25);
 		errorMessage.setForeground(Color.red);
 		panel.add(errorMessage);
-		
 		
 		frame.setVisible(true);
 	}
@@ -179,8 +132,8 @@ public class UpdateServiceView {
 		private static void updateActionPerformed(java.awt.event.ActionEvent evt) {
 			error=null;
 			try {
-				
-				Boolean yes=FlexibookController.updateservice(string1, string2, string3, string4, string5, string6);
+				//we need to find a way to get old service name and the owner username/name.
+				Boolean yes=FlexibookController.updateservice(string1, string2, newService.toString(), duration.toString(), downtimeStart.toString(), downtimeDuration.toString());
 				if(yes) {
 				errorMessage.setText("Succesfully update the service");}
 			}

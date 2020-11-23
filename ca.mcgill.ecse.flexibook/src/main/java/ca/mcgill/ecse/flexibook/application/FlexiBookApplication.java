@@ -25,7 +25,12 @@ public class FlexiBookApplication {
   private static UpdateServiceView updateserviceview;
 
     public static void main(String[] args) {
-       
+      start();
+    }
+
+    public static void start() {
+      mainpage=new MainPage();
+     
     }
 
     public static FlexiBook getflexibook() {
@@ -58,11 +63,10 @@ public static Appointment getCurrentap() {
   return currentappointment;
 }
 public static void setaptocus() {
-  if(makeappointmentview!=null) {
-    makeappointmentview.setVisible(false);
-    makeappointmentview.removeAll();
-  }
+if (makeappointmentview!=null) {
+  makeappointmentview.setVisible(false);
+}
   customerview=new CustomerView();
- customerview.setVisible(true);
+
     }
 }

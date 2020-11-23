@@ -32,8 +32,14 @@ public class UpdateAppointmentView extends JFrame{
   private static JComboBox<String> BookableService = new JComboBox<String>();
   private static JButton make= new JButton();
   private static JButton back=new JButton();
-  
-  public static void main(String[] args) {JPanel panel = new JPanel();
+  public UpdateAppointmentView() {
+    init();
+  }
+  public static void main(String[] args) {
+   init();
+    }   
+    private static void init() {
+    JPanel panel = new JPanel();
   Font font1 = new Font("Times New Romans", Font.BOLD, 20);
   panel.setLayout(null);
   frame.add(panel);

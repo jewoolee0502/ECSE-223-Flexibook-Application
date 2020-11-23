@@ -14,12 +14,9 @@ import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 
-<<<<<<< HEAD:ca.mcgill.ecse.flexibook/src/main/java/view/AddServiceView.java
-public class AddServiceView extends JFrame{
-=======
-public class CreateServiceView {
->>>>>>> 0f7a20959959d2a52a2419fef718b659ef3858f2:ca.mcgill.ecse.flexibook/src/main/java/view/CreateServiceView.java
-	
+
+public class CreateServiceView extends JFrame {
+
 	private static JFrame frame = new JFrame();
 	private static JLabel Title = new JLabel();
 	private static JPanel panel;

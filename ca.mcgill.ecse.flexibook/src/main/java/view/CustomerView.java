@@ -37,6 +37,12 @@ public class CustomerView extends JFrame {
 	private static JPanel panelLogOut = new JPanel();
 	private static String error;
 	private static JComboBox comboBox = new JComboBox();
+	
+	public CustomerView() {
+	  init_component_customerMainPage(); 
+	}
+	
+	
 	private static void init_component_customerMainPage() {
 		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
 //		Font font2 = new Font("Times New Romans", Font.PLAIN, 1);

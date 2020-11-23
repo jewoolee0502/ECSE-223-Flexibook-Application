@@ -59,8 +59,10 @@ public class MainPage extends JFrame {
 	private static FlexiBookApplication flex = new FlexiBookApplication();
 	private static String password = new String();
    
-
-	private static void init_component_LogIn() {
+public MainPage() {
+  init_component_LogIn();
+}
+	private static void init_component_LogIn() {                                                       
 		Font font1 = new Font("Times New Romans", Font.BOLD, 30);
 		
 		panelLogIn.setLayout(null);

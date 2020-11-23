@@ -40,6 +40,7 @@ public class EditBusinessInfo extends JFrame {
 	private static JComboBox<String> newmin;
 	private static JButton update;
 	private static JButton cancel;
+	private static JButton add;
 	private static JLabel name;
 	private static JTextField newName;
 	private static JLabel address;
@@ -146,8 +147,8 @@ public class EditBusinessInfo extends JFrame {
 		day.setBounds(430, 140, 150, 25);
 		panel.add(day);
 
-		newStart = new JLabel("New Start Time:");
-		newStart.setBounds(360, 200, 150, 25);
+		newStart = new JLabel("New Start Time (hh:mm):");
+		newStart.setBounds(310, 200, 180, 25);
 		panel.add(newStart);
 
 		newStartHour = new JComboBox<String>();
@@ -186,8 +187,8 @@ public class EditBusinessInfo extends JFrame {
 		newStartMin.setBounds(540, 200, 70, 25);
 		panel.add(newStartMin);
 
-		newh = new JLabel("New End Time:");
-		newh.setBounds(360, 280, 150, 25);
+		newh = new JLabel("New End Time (hh:mm):");
+		newh.setBounds(320, 280, 160, 25);
 		panel.add(newh);
 
 		newhour = new JComboBox<String>();
@@ -226,17 +227,25 @@ public class EditBusinessInfo extends JFrame {
 		newmin.setBounds(540, 280, 70, 25);
 		panel.add(newmin);
 
-		update = new JButton("Confirm");
+		update = new JButton("Update");
 		update.setBounds(185, 450, 80, 25);
 		update.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				updateActionPerformed(evt);
 			}});
 		panel.add(update);
+		
+		add = new JButton("Add");
+		add.setBounds(420, 450, 70, 25);
+		add.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				addActionPerformed(evt);
+			}});
+		panel.add(add);
 
 
 		cancel = new JButton("Cancel");
-		cancel.setBounds(435, 450, 80, 25);
+		cancel.setBounds(580, 450, 80, 25);
 		cancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				cancelActionPerformed(evt);
@@ -260,6 +269,11 @@ public class EditBusinessInfo extends JFrame {
 		}
 
 	}
+	
+	private static void addActionPerformed(ActionEvent evt) {
+		
+	}
+	
 	private static void cancelActionPerformed(java.awt.event.ActionEvent evt) {
 		//add code to go back to the ownerview page
 	}

@@ -31,7 +31,8 @@ public class CustomerView extends JFrame {
 	private static JButton makeAppointment = new JButton();
 	private static JButton updateAppointment = new JButton();
 	private static JButton editAccount = new JButton();
-	private static JButton logOut = new JButton("");
+	private static JButton logOut = new JButton();
+	private static JButton businessInfo = new JButton();
 	private static JTable table;
 	private static JPanel panelCustomerMainPage = new JPanel();
 	private static JPanel panelLogOut = new JPanel();
@@ -63,6 +64,8 @@ public class CustomerView extends JFrame {
 		editAccount.setBounds(550, 80, 120, 30);
 		logOut.setText("Log Out");
 		logOut.setBounds(300, 630, 100, 25);
+		businessInfo.setText("View Business Info");
+		businessInfo.setBounds(520, 120, 150, 25);
 		makeAppointment.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				FlexiBookApplication.gotomakeappointment();
@@ -105,6 +108,7 @@ public class CustomerView extends JFrame {
 		panelCustomerMainPage.add(updateAppointment);
 		panelCustomerMainPage.add(editAccount);
 		panelCustomerMainPage.add(logOut);
+		panelCustomerMainPage.add(businessInfo);
 		//		panelCustomerMainPage.add(comboBoxMessage);
 		panelCustomerMainPage.add(comboBox);
 		panelCustomerMainPage.add(table);

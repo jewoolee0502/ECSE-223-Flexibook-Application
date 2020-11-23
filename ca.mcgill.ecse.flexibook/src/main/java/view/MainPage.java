@@ -58,13 +58,14 @@ public class MainPage extends JFrame {
 	private static FlexiBook flexi = new FlexiBook();
 	private static FlexiBookApplication flex = new FlexiBookApplication();
 	private static String password = new String();
-   
-public MainPage() {
-  init_component_LogIn();
-}
-	private static void init_component_LogIn() {                                           
+
+
+	public MainPage() {
+		init_component_LogIn();
+	}
+	private static void init_component_LogIn() {
 		Font font1 = new Font("Times New Romans", Font.BOLD, 30);
-		
+
 		panelLogIn.setLayout(null);
 		frame.add(panelLogIn);
 		frame.setSize(Width, Length);
@@ -112,7 +113,7 @@ public MainPage() {
 		panelLogIn.add(quit);
 		frame.setVisible(true);
 	}
-	
+
 	private static void logInActionPerformed(java.awt.event.ActionEvent evt) {
 		error=null;
 		try {
@@ -127,7 +128,7 @@ public MainPage() {
 			errorMessageLogIn.setText("**" + error);
 		}
 	}
-	
+
 	private static void logInSignUpActionPerformed(java.awt.event.ActionEvent evt) {	
 		frame.remove(panelLogIn);
 		errorMessageLogIn.setText(null);
@@ -161,7 +162,7 @@ public MainPage() {
 		panelSignUp.add(confirmPass);
 		confirm_input.setBounds(300, 250, 165, 25);
 		panelSignUp.add(confirm_input);
-		errorMessageSignUp.setBounds(200, 350, 300, 15);
+		errorMessageSignUp.setBounds(100, 350, 550, 15);
 		errorMessageSignUp.setForeground(Color.red);
 		panelSignUp.add(errorMessageSignUp);
 		signUp.setText("Create Account");
@@ -189,7 +190,7 @@ public MainPage() {
 		panelSignUp.add(quit);
 		frame.setVisible(true);
 	}
-	
+
 	private static void signUpActionPerformed(java.awt.event.ActionEvent evt) {
 		String first_pw = new String(String.valueOf(passwrd_inputSignUp.getPassword()));
 		String second_pw = new String(String.valueOf(confirm_input.getPassword()));
@@ -216,7 +217,7 @@ public MainPage() {
 		errorMessageSignUp.setText(null);
 		init_component_LogIn();
 	}
-	
+
 	private static void quitActionPerformed(java.awt.event.ActionEvent evt) {
 		System.exit(0);
 	}

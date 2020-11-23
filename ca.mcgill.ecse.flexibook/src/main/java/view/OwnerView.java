@@ -31,6 +31,7 @@ public class OwnerView {
 	private static JButton editAccount = new JButton();
 	private static JButton createService = new JButton();
 	private static JButton editService = new JButton();
+	private static JButton businessInfo = new JButton();
 	private static JButton logOut = new JButton("");
 	private static JTable table;
 	private static JPanel panelOwnerMainPage = new JPanel();
@@ -40,9 +41,11 @@ public class OwnerView {
 	private static JComboBox endComboBox = new JComboBox();
 	private static JComboBox noShowComboBox = new JComboBox();
 	private static JComboBox editServiceComboBox = new JComboBox();
-public OwnerView() {
-  init_component_ownerMainPage();
-}
+
+	public OwnerView() {
+		init_component_ownerMainPage();
+	}
+
 	private static void init_component_ownerMainPage() {
 		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
 
@@ -69,10 +72,13 @@ public OwnerView() {
 		editAccount.setBounds(580, 80, 120, 30);
 
 		createService.setText("Create Service");
-		createService.setBounds(10, 600, 150, 30);
+		createService.setBounds(10, 600, 120, 30);
 
 		editService.setText("Edit Service");
-		editService.setBounds(230, 600, 120, 30);
+		editService.setBounds(300, 600, 100, 30);
+		
+		businessInfo.setText("Business Info");
+		businessInfo.setBounds(150, 600, 110, 30);
 
 		logOut.setText("Log Out");
 		logOut.setBounds(550, 600, 100, 25);
@@ -105,70 +111,71 @@ public OwnerView() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				logOutActionPerformed(evt);
 			}});
-		
+
 		String startAppNum[] = { "#", "1", "2", "3", "4", "5" };        
-	    if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
-	      int count = 0;
-	      for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
-	        count=count+1;
-	        startComboBox.addItem(count);
-	        }
-	    }
+		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+			int count = 0;
+			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
+				count=count+1;
+				startComboBox.addItem(count);
+			}
+		}
 		startComboBox = new JComboBox(startAppNum);    
-	    startComboBox.setBounds(150, 80, 60, 30); 
-	    
-	    String endAppNum[] = { "#", "1", "2", "3", "4", "5" };        
-	    if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
-	      int count = 0;
-	      for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
-	        count=count+1;
-	        endComboBox.addItem(count);
-	        }
-	    }
-	    endComboBox = new JComboBox(endAppNum);    
-	    endComboBox.setBounds(350, 80, 60, 30);
-	    
-	    String noShowNum[] = { "#", "1", "2", "3", "4", "5" };        
-	    if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
-	      int count = 0;
-	      for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
-	        count=count+1;
-	        noShowComboBox.addItem(count);
-	        }
-	    }
-	    noShowComboBox = new JComboBox(noShowNum);    
-	    noShowComboBox.setBounds(500, 80, 60, 30);
-	    
-	    String editServiceChoice[] = { "Services", "Cut", "Wash", "Color", "Perm"};        
-	    if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
-	      int count = 0;
-	      for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
-	        count=count+1;
-	        editServiceComboBox.addItem(count);
-	        }
-	    }
-	    editServiceComboBox = new JComboBox(editServiceChoice);    
-	    editServiceComboBox.setBounds(340, 600, 110, 30);
-	    
-	    String[] columnName = {"#", "Customer", "Appointment Type", "Date & Time", "Status"};
-	    String[][] data = {
-	    		{"1", "Customer 1", "Cut", "2020/12/20 - 10:30", "Started"},
-	    		{"2", "Customer 2", "Wash", "2020/12/28 - 14:20", "In Progress"}
-	    };
-	    table = new JTable(data, columnName);
-	    table.setBounds(50, 150, 600, 420);
-	    
-	    panelOwnerMainPage.add(startAppointment);
-	    panelOwnerMainPage.add(endAppointment);
-	    panelOwnerMainPage.add(noShow);
-	    panelOwnerMainPage.add(editAccount);
-	    panelOwnerMainPage.add(createService);
-	    panelOwnerMainPage.add(editService);
-	    panelOwnerMainPage.add(logOut);
-	    panelOwnerMainPage.add(startComboBox);
-	    panelOwnerMainPage.add(endComboBox);
-	    panelOwnerMainPage.add(noShowComboBox);
-	    panelOwnerMainPage.add(editServiceComboBox);
+		startComboBox.setBounds(150, 80, 60, 30); 
+
+		String endAppNum[] = { "#", "1", "2", "3", "4", "5" };        
+		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+			int count = 0;
+			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
+				count=count+1;
+				endComboBox.addItem(count);
+			}
+		}
+		endComboBox = new JComboBox(endAppNum);    
+		endComboBox.setBounds(350, 80, 60, 30);
+
+		String noShowNum[] = { "#", "1", "2", "3", "4", "5" };        
+		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+			int count = 0;
+			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
+				count=count+1;
+				noShowComboBox.addItem(count);
+			}
+		}
+		noShowComboBox = new JComboBox(noShowNum);    
+		noShowComboBox.setBounds(500, 80, 60, 30);
+
+		String editServiceChoice[] = { "Services", "Cut", "Wash", "Color", "Perm"};        
+		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+			int count = 0;
+			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
+				count=count+1;
+				editServiceComboBox.addItem(count);
+			}
+		}
+		editServiceComboBox = new JComboBox(editServiceChoice);    
+		editServiceComboBox.setBounds(390, 600, 105, 30);
+
+		String[] columnName = {"#", "Customer", "Appointment Type", "Date & Time", "Status"};
+		String[][] data = {
+				{"1", "Customer 1", "Cut", "2020/12/20 - 10:30", "Started"},
+				{"2", "Customer 2", "Wash", "2020/12/28 - 14:20", "In Progress"}
+		};
+		table = new JTable(data, columnName);
+		table.setBounds(50, 150, 600, 420);
+
+		panelOwnerMainPage.add(startAppointment);
+		panelOwnerMainPage.add(endAppointment);
+		panelOwnerMainPage.add(noShow);
+		panelOwnerMainPage.add(editAccount);
+		panelOwnerMainPage.add(createService);
+		panelOwnerMainPage.add(editService);
+		panelOwnerMainPage.add(businessInfo);
+		panelOwnerMainPage.add(logOut);
+		panelOwnerMainPage.add(startComboBox);
+		panelOwnerMainPage.add(endComboBox);
+		panelOwnerMainPage.add(noShowComboBox);
+		panelOwnerMainPage.add(editServiceComboBox);
 		panelOwnerMainPage.add(table);
 		frame.setVisible(true);
 	}
@@ -200,7 +207,7 @@ public OwnerView() {
 	private static void logOutActionPerformed(java.awt.event.ActionEvent evt) {
 
 	}
-	
+
 	public static void main(String[] args) {
 		init_component_ownerMainPage();
 	}

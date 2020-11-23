@@ -10,21 +10,22 @@ import ca.mcgill.ecse.flexibook.model.User;
 import view.*;;
 
 public class FlexiBookApplication {
-  private static FlexiBook flexibook;  
-  private static String message;
-  private static User currentuser;
-  private static Appointment currentappointment;
-  private static CreateServiceView addserviceview;
-  private static CustomerView customerview;
-  private static EditBusinessInfo editbusinessinfo;
-  private static EditCustomerInfo editcustomerinfo;
-  private static MainPage mainpage;
-  private static MakeAppointmentView makeappointmentview;
-  private static OwnerView ownerview;
-  private static SignUpPage signuppage;
-  private static UpdateAppointmentView updatappointmentview;
-  private static UpdateServiceView updateserviceview;
+	private static FlexiBook flexibook;  
+	private static String message;
+	private static User currentuser;
+	private static Appointment currentappointment;
+	private static CreateServiceView addserviceview;
+	private static CustomerView customerview;
+	private static EditBusinessInfo editbusinessinfo;
+	private static EditCustomerInfo editcustomerinfo;
+	private static MainPage mainpage;
+	private static MakeAppointmentView makeappointmentview;
+	private static OwnerView ownerview;
+	private static SignUpPage signuppage;
+	private static UpdateAppointmentView updatappointmentview;
+	private static UpdateServiceView updateserviceview;
 
+<<<<<<< HEAD
     public static void main(String[] args) {
      // start();
       //delete after use
@@ -33,17 +34,22 @@ public class FlexiBookApplication {
      currentuser=flexibook.getOwner();
       init();
     }
+=======
+	public static void main(String[] args) {
+		// start();
+		flexibook=new FlexiBook();
+		Owner o=new Owner("owner", "123456", flexibook);
+		currentuser=flexibook.getOwner();
+		init();
+	}
+>>>>>>> 764d8c94a70f8daf653ddae9bb62d63f1bc84a6c
 
-    private static void init() {
-     editbusinessinfo=new EditBusinessInfo();
-      
-    }
+	private static void init() {
+		editbusinessinfo=new EditBusinessInfo();
 
-    public static void start() {
-      mainpage=new MainPage();
-     
-    }
+	}
 
+<<<<<<< HEAD
     public static FlexiBook getflexibook() {
       if (flexibook == null) {
           flexibook = new FlexiBook();
@@ -98,5 +104,57 @@ public static void gotomakeappointment() {
   makeappointmentview.frame.setVisible(true);
   }
 }
+=======
+	public static void start() {
+		mainpage=new MainPage();
+
+	}
+
+	public static FlexiBook getflexibook() {
+		if (flexibook == null) {
+			flexibook = new FlexiBook();
+		}
+		return flexibook;
+	}
+	public static void setflexibook(FlexiBook fb) {
+		flexibook = fb;
+	}
+	public static void setmessage(String a) {
+		message=a;
+
+	}
+	public static String returnmessage() {
+		return message;
+
+	}
+	public static void setCurrentuser(User a) {
+		currentuser=a;
+	}
+	public static User getCurrentuser() {
+		return currentuser;
+	}
+	public static void setcurap(Appointment a) {
+		currentappointment=a;
+	}
+	public static Appointment getCurrentap() {
+		return currentappointment;
+	}
+	public static void setaptocus() {
+		if (customerview!=null) {
+
+			customerview.toFront();
+		}
+		customerview=new CustomerView();
+
+
+	}
+	public static void gotomakeappointment() {
+		if(makeappointmentview!=null) {
+			makeappointmentview.setVisible(true);
+		} else { makeappointmentview=new MakeAppointmentView();
+
+		}
+	}
+>>>>>>> 764d8c94a70f8daf653ddae9bb62d63f1bc84a6c
 }
 }

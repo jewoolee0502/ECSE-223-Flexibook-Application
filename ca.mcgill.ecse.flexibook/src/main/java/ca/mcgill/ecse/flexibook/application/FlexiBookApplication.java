@@ -15,7 +15,7 @@ public class FlexiBookApplication {
   private static Appointment currentappointment;
   private static CreateServiceView addserviceview;
   private static CustomerView customerview;
-  private static EditBusinessInfo editbusinessinfo;
+  private static EditOwnerAndBusinessInfo editbusinessinfo;
   private static EditCustomerInfo editcustomerinfo;
   private static MainPage mainpage;
   private static MakeAppointmentView makeappointmentview;

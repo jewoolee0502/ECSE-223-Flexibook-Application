@@ -33,13 +33,16 @@ public class UpdateServiceView {
 	private static JButton delete;
 	private static JButton update;
 	private static JButton cancel;
+	
 	public UpdateServiceView() {
-	  init();
+		init_component_updateService();
 	}
+	
 	public static void main(String[] args) {
-	 init();
+		init_component_updateService();
 	}
-	private static void init() {
+	
+	private static void init_component_updateService() {
 		JPanel panel = new JPanel();
 		JFrame frame = new JFrame();
 		JLabel Title = new JLabel();

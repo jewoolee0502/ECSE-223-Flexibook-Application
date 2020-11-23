@@ -17,8 +17,8 @@ import javax.swing.JTextField;
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 
-public class EditBusinessInfo {
-	
+public class EditOwnerAndBusinessInfo {
+
 	private static JLabel Title;
 	private static JFrame frame;
 	private static JPanel panel;
@@ -40,12 +40,16 @@ public class EditBusinessInfo {
 	private static JComboBox<String> newmin;
 	private static JButton update;
 	private static JButton cancel;
-	public EditBusinessInfo() {
-	  init();
+
+	public EditOwnerAndBusinessInfo() {
+		init();
 	}
+
 	public static void main(String[] args) {
-	  init();
-	  }private static void init() {
+		init();
+	}
+
+	private static void init() {
 		JPanel panel = new JPanel();
 		JFrame frame = new JFrame();
 		JLabel Title = new JLabel();
@@ -53,42 +57,42 @@ public class EditBusinessInfo {
 		frame.setSize(700, 700);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
-		
+
 		panel.setLayout(null);
-		
-		Title.setText("Editing Business Information:");
-		Title.setBounds(170, 15, 400, 75);
+
+		Title.setText("Edit Owner Account and Business Information:");
+		Title.setBounds(100, 15, 500, 75);
 		Title.setFont(font1);
 		panel.add(Title);
-		
-		newusr = new JLabel("New Username:");
-		newusr.setBounds(100, 100, 150, 25);
-		panel.add(newusr);
-		
-		newuser = new JTextField(70);
-		newuser.setBounds(100,140,165,25);
-		panel.add(newuser);
-		
+
+//		newusr = new JLabel("New Username:"); //not allowed to change the username of the owner
+//		newusr.setBounds(100, 100, 150, 25);
+//		panel.add(newusr);
+//
+//		newuser = new JTextField(70);
+//		newuser.setBounds(100,140,165,25);
+//		panel.add(newuser);
+
 		newpwd = new JLabel("New Password:");
 		newpwd.setBounds(100, 180, 150, 25);
 		panel.add(newpwd);
-		
+
 		np = new JPasswordField(70);
 		np.setBounds(100,220,165,25);
 		panel.add(np);
-		
+
 		confirmpwd = new JLabel("Confirm New Password:");
 		confirmpwd.setBounds(100,260, 200, 25);
 		panel.add(confirmpwd);
-		
+
 		cpwd = new JPasswordField(70);
 		cpwd.setBounds(100,300,165,25);
 		panel.add(cpwd);
-		
+
 		change = new JLabel("Change Business Hour:");
 		change.setBounds(320, 100, 150, 25);
 		panel.add(change);
-		
+
 		day= new JComboBox<String>();
 		day.addItem("Day");
 		day.addItem("Monday");
@@ -101,11 +105,11 @@ public class EditBusinessInfo {
 		System.out.println("#items=" + day.getItemCount());
 		day.setBounds(320,140,150,25);
 		panel.add(day);
-		
+
 		oldh = new JLabel("Old-Time:");
 		oldh.setBounds(320,200, 150, 25);
 		panel.add(oldh);
-		
+
 		oldhour = new JComboBox<String>();
 		oldhour.addItem("");
 		oldhour.addItem("09");
@@ -126,7 +130,7 @@ public class EditBusinessInfo {
 		System.out.println("#items=" + oldhour.getItemCount());
 		oldhour.setBounds(400,200,70,25);
 		panel.add(oldhour);
-		
+
 		oldmin = new JComboBox<String>();
 		oldmin.addItem("");
 		oldmin.addItem("00");
@@ -135,16 +139,16 @@ public class EditBusinessInfo {
 		oldmin.addItem("30");
 		oldmin.addItem("40");
 		oldmin.addItem("50");
-	
+
 		oldmin.setEditable(true);
 		System.out.println("#items=" + oldmin.getItemCount());
 		oldmin.setBounds(470,200,70,25);
 		panel.add(oldmin);
-		
+
 		newh = new JLabel("New-Time:");
 		newh.setBounds(320, 280, 150, 25);
 		panel.add(newh);
-		
+
 		newhour = new JComboBox<String>();
 		newhour.addItem("");
 		newhour.addItem("09");
@@ -165,7 +169,7 @@ public class EditBusinessInfo {
 		System.out.println("#items=" + newhour.getItemCount());
 		newhour.setBounds(400, 280,70,25);
 		panel.add(newhour);
-		
+
 		newmin = new JComboBox<String>();
 		newmin.addItem("");
 		newmin.addItem("00");
@@ -174,34 +178,34 @@ public class EditBusinessInfo {
 		newmin.addItem("30");
 		newmin.addItem("40");
 		newmin.addItem("50");
-	
+
 		newmin.setEditable(true);
 		System.out.println("#items=" + newmin.getItemCount());
 		newmin.setBounds(470,280,70,25);
 		panel.add(newmin);
-		
+
 		update = new JButton("Confirm");
-		update.setBounds(185, 380, 80, 25);
+		update.setBounds(185, 380, 80, 35);
 		update.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				updateActionPerformed(evt);
 			}});
 		panel.add(update);
-		
-		
+
+
 		cancel = new JButton("Cancel");
-		cancel.setBounds(435, 380, 80, 25);
+		cancel.setBounds(435, 380, 80, 35);
 		cancel.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent evt) {
-					cancelActionPerformed(evt);
-				}});
-			panel.add(cancel);
-			
-			errorMessage = new JLabel();
-			errorMessage.setBounds(410, 380, 300, 25);
-			errorMessage.setForeground(Color.red);
-			panel.add(errorMessage);
-		
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				cancelActionPerformed(evt);
+			}});
+		panel.add(cancel);
+
+		errorMessage = new JLabel();
+		errorMessage.setBounds(410, 380, 300, 25);
+		errorMessage.setForeground(Color.red);
+		panel.add(errorMessage);
+
 		frame.setVisible(true);	
 	}
 

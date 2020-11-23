@@ -31,8 +31,13 @@ public class EditCustomerInfo {
 	private static JPasswordField np;
 	private static JButton confirm;
 	private static JButton cancel;
-	
+	public EditCustomerInfo() {
+	  init();
+	}
 	public static void main(String[] args) {
+	 init();
+	    
+	  }private static void init() {
 		JPanel panel = new JPanel();
 		JFrame frame = new JFrame();
 		JLabel Title = new JLabel();

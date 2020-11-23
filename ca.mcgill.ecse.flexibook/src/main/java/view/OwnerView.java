@@ -40,7 +40,9 @@ public class OwnerView {
 	private static JComboBox endComboBox = new JComboBox();
 	private static JComboBox noShowComboBox = new JComboBox();
 	private static JComboBox editServiceComboBox = new JComboBox();
-
+public OwnerView() {
+  init_component_ownerMainPage();
+}
 	private static void init_component_ownerMainPage() {
 		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
 

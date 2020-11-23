@@ -40,8 +40,12 @@ public class EditBusinessInfo {
 	private static JComboBox<String> newmin;
 	private static JButton update;
 	private static JButton cancel;
-	
+	public EditBusinessInfo() {
+	  init();
+	}
 	public static void main(String[] args) {
+	  init();
+	  }private static void init() {
 		JPanel panel = new JPanel();
 		JFrame frame = new JFrame();
 		JLabel Title = new JLabel();

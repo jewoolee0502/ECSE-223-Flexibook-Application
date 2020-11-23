@@ -13,7 +13,7 @@ import javax.swing.JTextField;
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 
-public class SignUpPage {
+public class SignUpPage extends JFrame {
 	private static int Width = 700;
 	private static int Length = 700;
 	private static JFrame frame = new JFrame();

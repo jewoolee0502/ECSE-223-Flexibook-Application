@@ -30,8 +30,14 @@ public class MakeAppointmentView extends JFrame {
   private static JComboBox<String> BookableService = new JComboBox<String>();
   private static JButton make= new JButton();
   private static JButton back=new JButton();
-  
-  public static void main(String[] args) {JPanel panel = new JPanel();
+  public MakeAppointmentView() {
+    init();
+  }
+  public static void main(String[] args) {
+  init();
+  }
+    private static void init() {
+    JPanel panel = new JPanel();
   Font font1 = new Font("Times New Romans", Font.BOLD, 20);
   panel.setLayout(null);
   frame.add(panel);
@@ -66,6 +72,13 @@ public class MakeAppointmentView extends JFrame {
   back.setText("back");
   back.setBounds(350, 350, 100, 25);
   panel.add(back);  
+ back.addActionListener(new java.awt.event.ActionListener() {
+    public void actionPerformed(java.awt.event.ActionEvent evt) {
+     
+     FlexiBookApplication.setaptocus();
+  }
+
+   });
   make.setText("Make");
   make.setBounds(200, 350, 100, 25);
   make.addActionListener(new java.awt.event.ActionListener() {
@@ -93,5 +106,9 @@ public class MakeAppointmentView extends JFrame {
       errorMessage.setText(error);
       errorMessage2.setText("Sorry the appointment is not made");
     }
+    } private static void backActionPerformed(ActionEvent evt) {
+     
+      FlexiBookApplication.setaptocus();
+      
     }
 }

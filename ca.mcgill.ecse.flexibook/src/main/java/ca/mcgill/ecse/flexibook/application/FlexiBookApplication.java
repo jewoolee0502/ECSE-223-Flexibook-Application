@@ -23,12 +23,14 @@ public class FlexiBookApplication {
   private static SignUpPage signuppage;
   private static UpdateAppointmentView updatappointmentview;
   private static UpdateServiceView updateserviceview;
-  public String getGreeting() {
-        return "Hello world.";
-    }
 
     public static void main(String[] args) {
-        System.out.println(new FlexiBookApplication().getGreeting());
+      start();
+    }
+
+    public static void start() {
+      mainpage=new MainPage();
+     
     }
 
     public static FlexiBook getflexibook() {
@@ -61,8 +63,10 @@ public static Appointment getCurrentap() {
   return currentappointment;
 }
 public static void setaptocus() {
-  if(makeappointmentview!=null) {
-    makeappointmentview.setVisible(false);
-  }
+if (makeappointmentview!=null) {
+  makeappointmentview.setVisible(false);
+}
+  customerview=new CustomerView();
+
     }
 }

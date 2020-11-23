@@ -13,12 +13,13 @@ import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.*;
-public class MakeAppointmentView extends JFrame {
+public class MakeAppointmentView {
  
-  private static JFrame frame = new JFrame();
+ public static JFrame frame = new JFrame();
   private static JLabel Title = new JLabel();
   private static JLabel User = new JLabel();
-  private static String error=null;
+  private static String error;
+  private static JPanel panel = new JPanel(); 
   private static JLabel errorMessage = new JLabel("");
   private static JLabel errorMessage2 = new JLabel("");
   private static JLabel date = new JLabel();
@@ -37,13 +38,14 @@ public class MakeAppointmentView extends JFrame {
   init();
   }
     private static void init() {
-    JPanel panel = new JPanel();
-  Font font1 = new Font("Times New Romans", Font.BOLD, 20);
-  panel.setLayout(null);
-  frame.add(panel);
-  frame.setSize(700, 700);
+    
+    panel.setLayout(null);  
+    frame.add(panel);
+    frame.setSize(700, 700);
   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-  
+  Font font1 = new Font("Times New Romans", Font.BOLD, 20);
+
+ 
   Title.setText("Making an Appointment: ");
   Title.setBounds(200, 50, 400, 75);
   Title.setFont(font1);

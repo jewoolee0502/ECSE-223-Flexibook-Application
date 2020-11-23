@@ -17,11 +17,11 @@ import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.Appointment;
 import ca.mcgill.ecse.flexibook.model.BookableService;
 
-public class CustomerView extends JFrame {
+public class CustomerView  {
 	
 	private static int Width = 700;
 	private static int Length = 700;
-	private static JFrame frame = new JFrame();
+	public static JFrame frame = new JFrame();
 	private static JLabel Title = new JLabel();
 	private static JLabel errorMessageMakeAppointment = new JLabel("");
 	private static JLabel errorMessageUpdateAppointment = new JLabel("");

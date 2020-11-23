@@ -51,7 +51,7 @@ public class UpdateAppointmentView extends JFrame{
   Title.setFont(font1);
   panel.add(Title);
   appdetail.setText("Current Service: "+cura.getBookableService().getName()+"Current Startdate: "+
-  cura.getTimeSlot().getStartDate().toString()+"Current Starttime"+ cura.getTimeSlot().getStartTime());
+ cura.getTimeSlot().getStartDate().toString()+"Current Starttime"+ cura.getTimeSlot().getStartTime());
   appdetail.setBounds(200, 150, 80, 25);
   panel.add(User);
   date.setText("New Startdate(yyyy-mm-dd): ");

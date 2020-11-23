@@ -27,6 +27,7 @@ public class FlexiBookApplication {
 
     public static void main(String[] args) {
      // start();
+      //delete after use
       flexibook=new FlexiBook();
       Owner o=new Owner("owner", "123456", flexibook);
      currentuser=flexibook.getOwner();
@@ -73,19 +74,29 @@ public static Appointment getCurrentap() {
   return currentappointment;
 }
 public static void setaptocus() {
-if (customerview!=null) {
-
-  customerview.toFront();
+if(customerview==null) {
+  customerview=new CustomerView();}else {
+if (makeappointmentview.frame.isVisible()==true) {
+   if(customerview.frame.isVisible()==false) { 
+     customerview.frame.setVisible(true);
+   }
+  makeappointmentview.frame.setVisible(false);
+  }else {
+    
+ makeappointmentview.frame.setVisible(false);
   }
-  customerview=new CustomerView();
-
-
+  }
     }
 public static void gotomakeappointment() {
-  if(makeappointmentview!=null) {
-  makeappointmentview.setVisible(true);
-  } else { makeappointmentview=new MakeAppointmentView();
-  
+ if(makeappointmentview==null) {
+    makeappointmentview=new MakeAppointmentView();} else {
+ if(customerview.frame.isVisible()==true) {
+  if(makeappointmentview.frame.isVisible()==false) {
+   makeappointmentview.frame.setVisible(true);}
+  customerview.frame.setVisible(false);
+  } else {
+  makeappointmentview.frame.setVisible(true);
   }
+}
 }
 }

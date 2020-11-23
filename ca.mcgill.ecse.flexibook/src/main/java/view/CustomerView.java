@@ -65,7 +65,7 @@ public class CustomerView extends JFrame {
 		logOut.setBounds(300, 630, 100, 25);
 		makeAppointment.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				makeAppointmentActionPerformed(evt);
+				FlexiBookApplication.gotomakeappointment();
 			}});
 		updateAppointment.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -111,15 +111,14 @@ public class CustomerView extends JFrame {
 		frame.setVisible(true);
 	}
 	
-	private static void makeAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
-		
-	}
+
 	
 	private static void updateAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
 	 int k=Integer.parseInt(comboBox.getSelectedItem().toString());
 	if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
 	 FlexiBookApplication.setcurap(FlexiBookApplication.getflexibook().getAppointment(k-1));
 	}
+	
 	}
 	
 	private static void editAccountActionPerformed(java.awt.event.ActionEvent evt) {

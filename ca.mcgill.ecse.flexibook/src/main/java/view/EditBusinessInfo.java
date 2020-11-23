@@ -206,11 +206,12 @@ public class EditBusinessInfo {
 	}
 
 	private static void updateActionPerformed(ActionEvent evt) {
-		// add code to save the change
-		//check the confirm pwd same as pwd enter before
-		//success update the new business info, otherwise throw error
-		//at least a input shouldn''t be empty
-		//the old time can be the same as the new one settting
+		try {
+		  FlexibookController.setBusinessInformation(name, address, phoneNumber, email);
+		}catch (InvalidInputException e) {
+		  errorMessage.setText(e.getMessage());
+		}
+		
 	}
 	private static void cancelActionPerformed(java.awt.event.ActionEvent evt) {
 		//add code to go back to the ownerview page

@@ -5,6 +5,7 @@ package ca.mcgill.ecse.flexibook.application;
 
 import ca.mcgill.ecse.flexibook.model.Appointment;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
+import ca.mcgill.ecse.flexibook.model.Owner;
 import ca.mcgill.ecse.flexibook.model.User;
 import view.*;;
 
@@ -25,7 +26,16 @@ public class FlexiBookApplication {
   private static UpdateServiceView updateserviceview;
 
     public static void main(String[] args) {
-      start();
+     // start();
+      flexibook=new FlexiBook();
+      Owner o=new Owner("owner", "123456", flexibook);
+     currentuser=flexibook.getOwner();
+      init();
+    }
+
+    private static void init() {
+     editbusinessinfo=new EditBusinessInfo();
+      
     }
 
     public static void start() {
@@ -63,10 +73,19 @@ public static Appointment getCurrentap() {
   return currentappointment;
 }
 public static void setaptocus() {
-if (makeappointmentview!=null) {
-  makeappointmentview.setVisible(false);
-}
+if (customerview!=null) {
+
+  customerview.toFront();
+  }
   customerview=new CustomerView();
 
+
     }
+public static void gotomakeappointment() {
+  if(makeappointmentview!=null) {
+  makeappointmentview.setVisible(true);
+  } else { makeappointmentview=new MakeAppointmentView();
+  
+  }
+}
 }

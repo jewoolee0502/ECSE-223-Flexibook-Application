@@ -16,7 +16,6 @@ public class ViewBusinessInfoCustomer  {
 	public static JFrame frame = new JFrame("FlexiBook Application");
 	private static JLabel Title = new JLabel();
 	private static JPanel panelViewBusiness = new JPanel();
-	private static JButton edit = new JButton();
 	private static JButton back = new JButton();
 	private static JLabel name = new JLabel();
 	private static JLabel address = new JLabel();
@@ -112,10 +111,6 @@ public class ViewBusinessInfoCustomer  {
 		
 		frame.setVisible(true);
 		
-	}
-	
-	private static void editActionPerformed(java.awt.event.ActionEvent evt) {
-
 	}
 	
 	private static void backActionPerformed(java.awt.event.ActionEvent evt) {

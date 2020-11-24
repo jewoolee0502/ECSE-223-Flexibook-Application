@@ -10,6 +10,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
+import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 
 public class EditOwnerAccount {
@@ -19,14 +22,15 @@ public class EditOwnerAccount {
 	private static JPanel panel = new JPanel();
 	private static String error;
 	private static JLabel errorMessage = new JLabel("");
-	private static JLabel newusr; 
-	private static JTextField newuser;
+//	private static JLabel newusr; 
+//	private static JTextField newuser;
 	private static JLabel confirmpwd;
 	private static JPasswordField cpwd;
 	private static JLabel newpwd;
 	private static JPasswordField np;
 	private static JButton confirm;
 	private static JButton cancel;
+	private static JLabel success = new JLabel();
 
 	private static void init_component_editOwnerAccount() {
 
@@ -86,6 +90,11 @@ public class EditOwnerAccount {
 		errorMessage.setBounds(410, 380, 300, 25);
 		errorMessage.setForeground(Color.red);
 		panel.add(errorMessage);
+		
+		success = new JLabel(""); 
+		success.setBounds(150, 400, 400, 25);
+		success.setForeground(Color.BLUE);
+		panel.add(success);
 
 		frame.setVisible(true);
 	}
@@ -95,6 +104,15 @@ public class EditOwnerAccount {
 		//check the confirm pwd same as pwd enter before
 		//success update the new account, otherwise throw error
 		// all input cannot be empty if it is throw error
+		
+		try {
+			if(!(FlexiBookApplication.getCurrentuser().getPassword().equals(np))) {
+				FlexibookController.UpdateAccount(FlexiBookApplication.getCurrentuser().getUsername().toString(), FlexiBookApplication.getCurrentuser().getUsername().toString(), np.getText().toString());
+				success.setText("Successfully updated the account!");
+			}
+		} catch(InvalidInputException e) {
+			errorMessage.setText("**" + e.getMessage());
+		}
 	}
 	private static void cancelActionPerformed(java.awt.event.ActionEvent evt) {
 		FlexiBookApplication.editownercancel();

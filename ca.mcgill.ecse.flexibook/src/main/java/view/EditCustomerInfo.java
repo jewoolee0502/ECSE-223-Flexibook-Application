@@ -136,7 +136,7 @@ public class EditCustomerInfo {
 		//		}
 
 		try {
-			if(!(FlexiBookApplication.getCurrentuser().getUsername().equals(newuser))) {
+			if(!(FlexiBookApplication.getCurrentuser().getUsername().equals(newuser)) && !(FlexiBookApplication.getCurrentuser().getPassword().equals(np))) {
 				FlexibookController.UpdateAccount(FlexiBookApplication.getCurrentuser().getUsername().toString(), newuser.getText().toString(), np.getText().toString());
 				success.setText("Successfully updated the account!");
 			}
@@ -151,11 +151,11 @@ public class EditCustomerInfo {
 	}
 
 	private static void deleteActionPerformed(ActionEvent evt) {
-		//		try {
-		//			FlexibookController.DeleteCustomerAccount(username, target);
-		//			FlexiBookApplication.clogout();
-		//		} catch(InvalidInputException e) {
-		//			
-		//		}
+		try {
+			FlexibookController.DeleteCustomerAccount(FlexiBookApplication.getCurrentuser().getUsername().toString(), FlexiBookApplication.getCurrentuser().getUsername().toString());
+			FlexiBookApplication.clogout();
+		} catch(InvalidInputException e) {
+
+		}
 	}
 }

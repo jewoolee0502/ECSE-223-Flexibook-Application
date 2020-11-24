@@ -139,7 +139,11 @@ public class UpdateAppointmentView{
 	}
 	
 	private static void cancelAppointmentActionPerformed(ActionEvent evt) {
-		
+//		try {
+//			FlexibookController.CancelAppointment(customer, customer2, serviceDate, startTime);
+//		} catch(InvalidInputException e) {
+//			
+//		}
 	}
 	
 	private static void backAppointmentActionPerformed(ActionEvent evt) {

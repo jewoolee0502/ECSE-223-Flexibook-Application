@@ -42,7 +42,7 @@ public class EditCustomerInfo {
 	public static void main(String[] args) {
 		init();   
 	}
-	
+
 	private static void init() {
 		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
 		frame.setSize(700, 700);
@@ -95,7 +95,7 @@ public class EditCustomerInfo {
 				cancelActionPerformed(evt);
 			}});
 		panel.add(cancel);
-		
+
 		delete = new JButton("Delete Account");
 		delete.setBounds(360, 360, 130, 25);
 		delete.addActionListener(new java.awt.event.ActionListener() {
@@ -108,9 +108,9 @@ public class EditCustomerInfo {
 		errorMessage.setBounds(410, 380, 300, 25);
 		errorMessage.setForeground(Color.red);
 		panel.add(errorMessage);
-		
+
 		success = new JLabel(""); 
-		success.setBounds(150, 400, 200, 25);
+		success.setBounds(150, 400, 400, 25);
 		success.setForeground(Color.BLUE);
 		panel.add(success);
 
@@ -124,29 +124,38 @@ public class EditCustomerInfo {
 		//check the confirm pwd same as pwd enter before
 		//success update the new account, otherwise throw error
 		// all input cannot be empty if it is throw error
-		if(!(FlexiBookApplication.getCurrentuser().getUsername().equals(newuser))) {
-			try {
+		//		if(!(FlexiBookApplication.getCurrentuser().getUsername().equals(newuser))) {
+		//			try {
+		//				FlexibookController.UpdateAccount(FlexiBookApplication.getCurrentuser().getUsername().toString(), newuser.getText().toString(), np.getText().toString());
+		//			} catch(InvalidInputException e) {
+		//				success.setText("Successfully updated the account!");
+		//			}
+		//		}
+		//		else {
+		//			//errorMessage.setText(e.getMessage());
+		//		}
+
+		try {
+			if(!(FlexiBookApplication.getCurrentuser().getUsername().equals(newuser))) {
 				FlexibookController.UpdateAccount(FlexiBookApplication.getCurrentuser().getUsername().toString(), newuser.getText().toString(), np.getText().toString());
-			} catch(InvalidInputException e) {
 				success.setText("Successfully updated the account!");
 			}
+		} catch(InvalidInputException e) {
+			errorMessage.setText(e.getMessage());
 		}
-		else {
-			//errorMessage.setText(e.getMessage());
-		}
-		
+
 	}
-	
+
 	private static void cancelActionPerformed(ActionEvent evt) {
 		FlexiBookApplication.editcustomercancel();
 	}
-	
+
 	private static void deleteActionPerformed(ActionEvent evt) {
-//		try {
-//			FlexibookController.DeleteCustomerAccount(username, target);
-//			FlexiBookApplication.clogout();
-//		} catch(InvalidInputException e) {
-//			
-//		}
+		//		try {
+		//			FlexibookController.DeleteCustomerAccount(username, target);
+		//			FlexiBookApplication.clogout();
+		//		} catch(InvalidInputException e) {
+		//			
+		//		}
 	}
 }

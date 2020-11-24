@@ -66,6 +66,10 @@ public class CustomerView  {
 		logOut.setBounds(300, 630, 100, 25);
 		businessInfo.setText("View Business Info");
 		businessInfo.setBounds(520, 120, 150, 25);
+		businessInfo.addActionListener(new java.awt.event.ActionListener() {
+          public void actionPerformed(java.awt.event.ActionEvent evt) {
+              FlexiBookApplication.customertobusiness();
+          }});
 		makeAppointment.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				FlexiBookApplication.gotomakeappointment();
@@ -122,15 +126,15 @@ public class CustomerView  {
 		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
 			FlexiBookApplication.setcurap(FlexiBookApplication.getflexibook().getAppointment(k-1));
 		}
-
+        
 	}
 
 	private static void editAccountActionPerformed(java.awt.event.ActionEvent evt) {
-
+    FlexiBookApplication.customertoedit();
 	}
 
 	private static void logOutActionPerformed(java.awt.event.ActionEvent evt) {
-		//make transition back to the main page
+		FlexiBookApplication.clogout();
 	}
 
 	public static void main(String[] args) {

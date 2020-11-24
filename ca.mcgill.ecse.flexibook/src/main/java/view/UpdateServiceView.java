@@ -99,7 +99,7 @@ public class UpdateServiceView {
 		downDuration.setBounds(370,270,120,25);
 		panel.add(downDuration);
 
-		cancel.setText("Cancel");
+		cancel.setText("Back");
 		cancel.setBounds(480, 350, 80, 25);
 		cancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -160,6 +160,6 @@ public class UpdateServiceView {
 		}
 	    
 		private static void cancelActionPerformed(java.awt.event.ActionEvent evt) {
-			//add code to go back to the ownerview page
+			FlexiBookApplication.updateservicecancel();
 		}
 }

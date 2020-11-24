@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 
 public class ViewBusinessInfoCustomer  {
 	
@@ -118,7 +119,7 @@ public class ViewBusinessInfoCustomer  {
 	}
 	
 	private static void backActionPerformed(java.awt.event.ActionEvent evt) {
-
+    FlexiBookApplication.businesstocustomer();
 	}
 	
 	public ViewBusinessInfoCustomer() {

@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
+import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 
 public class EditCustomerInfo {
 	private static JLabel Title=new JLabel();
@@ -110,6 +111,6 @@ public class EditCustomerInfo {
 		// all input cannot be empty if it is throw error
 	}
 	private static void cancelActionPerformed(java.awt.event.ActionEvent evt) {
-		//add code to go back to the customerview page
+		FlexiBookApplication.editcustomercancel();
 	}
 }

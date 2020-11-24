@@ -1,7 +1,7 @@
 package view;
 
 import java.awt.Font;
-
+import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -82,7 +82,12 @@ public class OwnerView {
 
 		logOut.setText("Log Out");
 		logOut.setBounds(550, 600, 100, 25);
+		businessInfo.addActionListener(new java.awt.event.ActionListener() {
+          public void actionPerformed(java.awt.event.ActionEvent evt) {
+            businessinfo(evt);
+        }
 
+          });
 		startAppointment.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				startAppointmentActionPerformed(evt);
@@ -193,19 +198,21 @@ public class OwnerView {
 	}
 
 	private static void editAccountActionPerformed(java.awt.event.ActionEvent evt) {
-    FlexiBookApplication.ownertedit();
+    FlexiBookApplication.ownertoedit();
 	}
 
 	private static void createServiceActionPerformed(java.awt.event.ActionEvent evt) {
-
+    FlexiBookApplication.ownertoaddservice();
 	}
 
 	private static void editServiceActionPerformed(java.awt.event.ActionEvent evt) {
-
+     FlexiBookApplication.updateservice();
 	}
-
+private static void businessinfo(ActionEvent evt) {
+  FlexiBookApplication.ownertobusiness();
+          }
 	private static void logOutActionPerformed(java.awt.event.ActionEvent evt) {
-
+FlexiBookApplication.logout();
 	}
 
 	public static void main(String[] args) {

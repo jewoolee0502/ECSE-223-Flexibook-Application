@@ -10,12 +10,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 
 public class EditOwnerAccount {
 	
-	private static JLabel Title;
-	private static JFrame frame;
-	private static JPanel panel;
+	private static JLabel Title = new JLabel();
+    public static JFrame frame = new JFrame();
+	private static JPanel panel = new JPanel();
 	private static String error;
 	private static JLabel errorMessage = new JLabel("");
 	private static JLabel newusr; 
@@ -28,9 +29,7 @@ public class EditOwnerAccount {
 	private static JButton cancel;
 
 	private static void init_component_editOwnerAccount() {
-		JPanel panel = new JPanel();
-		JFrame frame = new JFrame();
-		JLabel Title = new JLabel();
+
 		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
 		frame.setSize(700, 700);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -75,7 +74,7 @@ public class EditOwnerAccount {
 			}});
 		panel.add(confirm);
 
-		cancel = new JButton("Cancel");
+		cancel = new JButton("Back");
 		cancel.setBounds(390, 360, 80, 25);
 		cancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -98,7 +97,7 @@ public class EditOwnerAccount {
 		// all input cannot be empty if it is throw error
 	}
 	private static void cancelActionPerformed(java.awt.event.ActionEvent evt) {
-		//add code to go back to the customerview page
+		FlexiBookApplication.editownercancel();
 	}
 	
 	public static void main(String[] args) {

@@ -13,10 +13,10 @@ import javax.swing.JTextField;
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 
-public class SignUpPage extends JFrame {
+public class SignUpPage{
 	private static int Width = 700;
 	private static int Length = 700;
-	private static JFrame frame = new JFrame();
+	public static JFrame frame = new JFrame();
 	private static JLabel Title = new JLabel();
 	private static JLabel User = new JLabel();
 	private static JLabel Password = new JLabel();

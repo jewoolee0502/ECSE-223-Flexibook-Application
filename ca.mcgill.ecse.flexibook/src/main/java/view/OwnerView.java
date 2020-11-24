@@ -16,7 +16,7 @@ public class OwnerView {
 
 	private static int Width = 700;
 	private static int Length = 700;
-	private static JFrame frame = new JFrame();
+	public static JFrame frame = new JFrame();
 	private static JLabel Title = new JLabel();
 	private static JLabel errorMessageStartAppointment = new JLabel("");
 	private static JLabel errorMessageEndAppointment = new JLabel("");
@@ -193,7 +193,7 @@ public class OwnerView {
 	}
 
 	private static void editAccountActionPerformed(java.awt.event.ActionEvent evt) {
-
+    FlexiBookApplication.ownertedit();
 	}
 
 	private static void createServiceActionPerformed(java.awt.event.ActionEvent evt) {

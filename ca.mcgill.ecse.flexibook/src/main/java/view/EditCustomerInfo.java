@@ -18,9 +18,9 @@ import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 
 public class EditCustomerInfo {
-	private static JLabel Title;
-	private static JFrame frame;
-	private static JPanel panel;
+	private static JLabel Title=new JLabel();
+	public static JFrame frame=new JFrame();
+	private static JPanel panel = new JPanel();
 	private static String error;
 	private static JLabel errorMessage = new JLabel("");
 	private static JLabel newusr; 
@@ -41,9 +41,6 @@ public class EditCustomerInfo {
 	}
 	
 	private static void init() {
-		JPanel panel = new JPanel();
-		JFrame frame = new JFrame();
-		JLabel Title = new JLabel();
 		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
 		frame.setSize(700, 700);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

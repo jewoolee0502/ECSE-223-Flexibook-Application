@@ -14,11 +14,11 @@ import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 
-public class CreateServiceView extends JFrame {
+public class CreateServiceView {
 
 	private static int Width = 700;
 	private static int Length = 700;
-	private static JFrame frame = new JFrame();
+	public static JFrame frame = new JFrame();
 	private static JLabel Title = new JLabel();
 	private static JPanel panelCreateService = new JPanel();
 	private static JLabel service = new JLabel();

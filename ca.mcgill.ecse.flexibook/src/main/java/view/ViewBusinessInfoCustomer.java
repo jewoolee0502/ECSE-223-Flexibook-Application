@@ -8,11 +8,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-public class ViewBusinessInfoCustomer extends JFrame {
+public class ViewBusinessInfoCustomer  {
 	
 	private static int Width = 700;
 	private static int Length = 700;
-	private static JFrame frame = new JFrame("FlexiBook Application");
+	public static JFrame frame = new JFrame("FlexiBook Application");
 	private static JLabel Title = new JLabel();
 	private static JPanel panelViewBusiness = new JPanel();
 	private static JButton edit = new JButton();

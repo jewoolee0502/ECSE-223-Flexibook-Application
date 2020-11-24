@@ -15,11 +15,12 @@ import javax.swing.JTextField;
 
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
+import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 
 public class UpdateServiceView {
 	private static int Width = 700;
 	private static int Length = 700;
-	private static JFrame frame = new JFrame();
+	public static JFrame frame = new JFrame();
 	private static JLabel Title = new JLabel();
 	private static JPanel panel = new JPanel();
 	private static JLabel service = new JLabel();
@@ -34,7 +35,7 @@ public class UpdateServiceView {
 	private static JLabel errorMessage = new JLabel("");
 	private static JComboBox<String> timeDuration;
 	
-	
+	private static String error=null;
 	private static JButton delete = new JButton();
 	private static JButton update = new JButton();
 	
@@ -130,17 +131,18 @@ public class UpdateServiceView {
 	}
 
 		private static void updateActionPerformed(java.awt.event.ActionEvent evt) {
-			error=null;
-			try {
-				//we need to find a way to get old service name and the owner username/name.
-				Boolean yes=FlexibookController.updateservice(string1, string2, newService.toString(), duration.toString(), downtimeStart.toString(), downtimeDuration.toString());
-				if(yes) {
-				errorMessage.setText("Succesfully update the service");}
-			}
-			catch(InvalidInputException e){
-				error=e.getMessage();
-				errorMessage.setText(error);
-			}
+//			error=null;
+//			try {
+//				//we need to find a way to get old service name and the owner username/name.
+//			  String string1=FlexiBookApplication.getflexibook().getOwner().getUsername();
+//				Boolean yes=FlexibookController.updateservice(string1, string2, newService.toString(), duration.toString(), downtimeStart.toString(), downtimeDuration.toString());
+//				if(yes) {
+//				errorMessage.setText("Succesfully update the service");}
+//			}
+//			catch(InvalidInputException e){
+//				error=e.getMessage();
+//				errorMessage.setText(error);
+//			}
 		}
 		
 		private static void deleteActionPerformed(java.awt.event.ActionEvent evt) {

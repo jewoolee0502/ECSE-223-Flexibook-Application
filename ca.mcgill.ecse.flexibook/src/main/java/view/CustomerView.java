@@ -17,13 +17,8 @@ import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.Appointment;
 import ca.mcgill.ecse.flexibook.model.BookableService;
 
-<<<<<<< HEAD
-public class CustomerView  {
-	
-=======
-public class CustomerView extends JFrame {
 
->>>>>>> 764d8c94a70f8daf653ddae9bb62d63f1bc84a6c
+public class CustomerView  {
 	private static int Width = 700;
 	private static int Length = 700;
 	public static JFrame frame = new JFrame();

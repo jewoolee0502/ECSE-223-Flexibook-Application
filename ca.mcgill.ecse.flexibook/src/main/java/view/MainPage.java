@@ -31,11 +31,11 @@ import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
 
 
-public class MainPage extends JFrame {
+public class MainPage {
 
 	private static int Width = 700;
 	private static int Length = 700;
-	private static JFrame frame = new JFrame("FlexiBook Application");
+	public static JFrame frame = new JFrame("FlexiBook Application");
 	private static JLabel User = new JLabel();
 	private static JLabel Password = new JLabel();
 	private static JTextField usr_inputLogIn = new JTextField();

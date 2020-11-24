@@ -105,7 +105,7 @@ public class EditCustomerInfo {
 		panel.add(delete);
 
 		errorMessage = new JLabel();
-		errorMessage.setBounds(410, 380, 300, 25);
+		errorMessage.setBounds(150, 400, 300, 25);
 		errorMessage.setForeground(Color.red);
 		panel.add(errorMessage);
 
@@ -141,7 +141,7 @@ public class EditCustomerInfo {
 				success.setText("Successfully updated the account!");
 			}
 		} catch(InvalidInputException e) {
-			errorMessage.setText(e.getMessage());
+			errorMessage.setText("**" + e.getMessage());
 		}
 
 	}

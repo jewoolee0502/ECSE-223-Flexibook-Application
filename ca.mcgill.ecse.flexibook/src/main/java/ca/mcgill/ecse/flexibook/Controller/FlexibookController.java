@@ -258,7 +258,7 @@ public class FlexibookController {
 
 	public static boolean AttemptLogIn(String userID,String passcode) throws InvalidInputException {
 		FlexiBook flexi=FlexiBookApplication.getflexibook();
-		if(flexi.getOwner()==null) {
+		if(flexi.getOwner()==null && (userID.equals("owner")&&passcode.equals("owner"))) {
 			  Owner owner=new Owner("owner","owner",flexi);
 				flexi.setOwner(owner);}
 		try {
@@ -268,7 +268,7 @@ public class FlexibookController {
 					return true;
 
 				}}
-			if(userID.equals("owner")&&passcode.equals("owner")) {
+			if(userID.equals(flexi.getOwner().getUsername())&&passcode.equals(flexi.getOwner().getPassword())) {
 				
 				FlexiBookApplication.setCurrentuser(flexi.getOwner());
 				return true;

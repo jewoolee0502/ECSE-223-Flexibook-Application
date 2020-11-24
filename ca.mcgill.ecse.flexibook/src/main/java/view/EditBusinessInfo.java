@@ -372,7 +372,7 @@ public class EditBusinessInfo {
     panel.add(add);
 
 
-    cancel = new JButton("Cancel");
+    cancel = new JButton("Back");
     cancel.setBounds(580, 450, 80, 25);
     cancel.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -400,7 +400,7 @@ public class EditBusinessInfo {
   }
 
   private static void addActionPerformed(ActionEvent evt) {
-
+	  //this action adds more business hour for the same day
   }
 
   private static void cancelActionPerformed(java.awt.event.ActionEvent evt) {

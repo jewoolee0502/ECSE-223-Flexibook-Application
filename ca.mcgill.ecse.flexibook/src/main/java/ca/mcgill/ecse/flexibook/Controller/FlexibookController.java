@@ -259,8 +259,8 @@ public class FlexibookController {
 	public static boolean AttemptLogIn(String userID,String passcode) throws InvalidInputException {
 		FlexiBook flexi=FlexiBookApplication.getflexibook();
 		if(flexi.getOwner()==null && (userID.equals("owner")&&passcode.equals("owner"))) {
-			  Owner owner=new Owner("owner","owner",flexi);
-				flexi.setOwner(owner);}
+			Owner owner=new Owner("owner","owner",flexi);
+			flexi.setOwner(owner);}
 		try {
 			for(Customer c:flexi.getCustomers()) {
 				if(c.getUsername().equals(userID)&&c.getPassword().equals(passcode)) {
@@ -269,13 +269,15 @@ public class FlexibookController {
 
 				}}
 			if(userID.equals(flexi.getOwner().getUsername())&&passcode.equals(flexi.getOwner().getPassword())) {
-				
+
 				FlexiBookApplication.setCurrentuser(flexi.getOwner());
 				return true;
 			}
 
-			else FlexiBookApplication.setCurrentuser(null); 
-			throw new InvalidInputException("Username/password not found");
+			else {
+				FlexiBookApplication.setCurrentuser(null);
+				throw new InvalidInputException("Username/password not found");
+			}
 		}
 		catch(InvalidInputException e) {
 			throw new InvalidInputException(e.getMessage());
@@ -302,7 +304,9 @@ public class FlexibookController {
 			if(FlexiBookApplication.getCurrentuser()!=null) {
 				FlexiBookApplication.setCurrentuser(null);
 			}
-			throw new InvalidInputException("No user found with corresponding Username");
+			else {
+				throw new InvalidInputException("No user found with corresponding Username");
+			}
 		}
 		catch(InvalidInputException e) {
 			throw new InvalidInputException(e.getMessage());
@@ -757,7 +761,7 @@ public class FlexibookController {
 				}
 			}
 			if((!inBusinessHour)||overslapBoolean||currenDate.before(servicedate)==false||overLapExist||invorh) {
-             FlexiBookApplication.setmessage("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
+				FlexiBookApplication.setmessage("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
 			}
 			else {
 				TimeSlot timeslot = new TimeSlot(servicedate,starttime,servicedate,endtime, fb);
@@ -848,8 +852,8 @@ public class FlexibookController {
 	 */
 	public static void UpdateAppointment(String customer, String customer2, String action, String comboItem, String serviceName, 
 			String serviceDate, String newDate, String startTime, String newStartTime) throws InvalidInputException {
-	  fill_the_DayOfWeek();
-	  try {
+		fill_the_DayOfWeek();
+		try {
 			FlexiBook fb = FlexiBookApplication.getflexibook();
 			if(customer2!=null) {
 				if(customer.equals("owner")) {
@@ -1080,7 +1084,7 @@ public class FlexibookController {
 			FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 		} catch(InvalidInputException e) {
 
-		  throw e;
+			throw e;
 		}
 	}
 
@@ -1110,7 +1114,7 @@ public class FlexibookController {
 					throw new InvalidInputException("A customer can only cancel their own appointments");
 				}
 			}
-			
+
 			String sysTime = SystemTime.getSysTime();
 			String[] sys = sysTime.split("\\+");
 			Date localDate = Date.valueOf(sys[0]);
@@ -1693,7 +1697,7 @@ public class FlexibookController {
 
 	}
 
-	
+
 	/**
 	 * getClosingtTime: This method takes date as inputs and returns all the closing time.
 	 *  	  

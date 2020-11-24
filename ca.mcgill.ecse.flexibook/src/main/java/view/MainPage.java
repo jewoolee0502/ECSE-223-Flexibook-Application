@@ -118,16 +118,16 @@ public class MainPage {
 		error=null;
 		try {
 			String password = new String(passwrd_inputLogIn.getPassword());
-			Boolean yes=FlexibookController.AttemptLogIn(usr_inputLogIn.getText(), password);
+			Boolean yes = FlexibookController.AttemptLogIn(usr_inputLogIn.getText(), password);
 			if(yes) {
-				errorMessageLogIn.setText("Succesfully Logged In"); //should we show the error message, because it should just directly make a transition to the customer main page
-			if(FlexiBookApplication.getCurrentuser().getUsername().equals(FlexiBookApplication.getflexibook().getOwner().getUsername())&&
-			    FlexiBookApplication.getCurrentuser().getPassword().equals(FlexiBookApplication.getflexibook().getOwner().getPassword())) {
-			  FlexiBookApplication.toowner();
-			}else
-				FlexiBookApplication.tocustomer();
+				//errorMessageLogIn.setText("Succesfully Logged In"); //should we show the error message, because it should just directly make a transition to the customer main page
+				if(FlexiBookApplication.getCurrentuser().getUsername().equals(FlexiBookApplication.getflexibook().getOwner().getUsername())&&
+						FlexiBookApplication.getCurrentuser().getPassword().equals(FlexiBookApplication.getflexibook().getOwner().getPassword())) {
+					FlexiBookApplication.toowner();
+				}else
+					FlexiBookApplication.tocustomer();
 			}
-			
+
 		}
 		catch(InvalidInputException e){
 			error=e.getMessage();
@@ -179,7 +179,7 @@ public class MainPage {
 			}});
 		panelSignUp.add(signUp);
 		frame.setVisible(true);
-		cancel.setText("Cancel");
+		cancel.setText("Back");
 		cancel.setBounds(350, 300, 100, 25);
 		cancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {

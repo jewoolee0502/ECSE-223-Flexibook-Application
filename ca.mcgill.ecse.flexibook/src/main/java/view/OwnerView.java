@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
+import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
+import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.BookableService;
 
@@ -76,18 +78,18 @@ public class OwnerView {
 
 		editService.setText("Edit Service");
 		editService.setBounds(300, 600, 100, 30);
-		
+
 		businessInfo.setText("Business Info");
 		businessInfo.setBounds(150, 600, 110, 30);
 
 		logOut.setText("Log Out");
 		logOut.setBounds(550, 600, 100, 25);
 		businessInfo.addActionListener(new java.awt.event.ActionListener() {
-          public void actionPerformed(java.awt.event.ActionEvent evt) {
-            businessinfo(evt);
-        }
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				businessinfo(evt);
+			}
 
-          });
+		});
 		startAppointment.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				startAppointmentActionPerformed(evt);
@@ -186,33 +188,55 @@ public class OwnerView {
 	}
 
 	private static void startAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
-
+//		try {
+//			FlexibookController.startAppointment(owner, appointment);
+//		} catch(InvalidInputException e) {
+//			
+//		}
 	}
 
 	private static void endAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
-
+//		try {
+//			FlexibookController.endAppointment(owner, appointment);
+//		} catch(InvalidInputException e) {
+//			
+//		}
 	}
 
 	private static void noShowActionPerformed(java.awt.event.ActionEvent evt) {
-
+//		try {
+//			FlexibookController.noShowCheck(customer, owner, name, serviceDate, startTime);
+//		} catch(InvalidInputException e) {
+//			
+//		}
 	}
 
 	private static void editAccountActionPerformed(java.awt.event.ActionEvent evt) {
-    FlexiBookApplication.ownertoedit();
+			FlexiBookApplication.ownertoedit();
 	}
 
 	private static void createServiceActionPerformed(java.awt.event.ActionEvent evt) {
-    FlexiBookApplication.ownertoaddservice();
+		FlexiBookApplication.ownertoaddservice();
 	}
 
 	private static void editServiceActionPerformed(java.awt.event.ActionEvent evt) {
-     FlexiBookApplication.updateservice();
+//		try {
+//			FlexibookController.updateservice(string, string2, string3, string4, string5, string6);
+//			FlexiBookApplication.updateservice();
+//		} catch(InvalidInputException e) {
+//			
+//		}
 	}
-private static void businessinfo(ActionEvent evt) {
-  FlexiBookApplication.ownertobusiness();
-          }
+	private static void businessinfo(ActionEvent evt) {
+		FlexiBookApplication.ownertobusiness();
+	}
 	private static void logOutActionPerformed(java.awt.event.ActionEvent evt) {
-FlexiBookApplication.logout();
+		try {
+			FlexibookController.LogOut();
+			FlexiBookApplication.logout();
+		} catch (InvalidInputException e) {
+			
+		}
 	}
 
 	public static void main(String[] args) {

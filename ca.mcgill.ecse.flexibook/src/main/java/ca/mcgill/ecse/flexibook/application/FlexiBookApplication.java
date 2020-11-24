@@ -7,6 +7,7 @@ import ca.mcgill.ecse.flexibook.model.Appointment;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
 import ca.mcgill.ecse.flexibook.model.Owner;
 import ca.mcgill.ecse.flexibook.model.User;
+import ca.mcgill.ecse.flexibook.persistence.FlexibookPersistence;
 import view.*;;
 
 public class FlexiBookApplication {
@@ -49,8 +50,7 @@ public class FlexiBookApplication {
 
   public static FlexiBook getflexibook() {
     if (flexibook == null) {
-      flexibook = new FlexiBook();
-
+      flexibook = FlexibookPersistence.load();
     }
     return flexibook;
   }

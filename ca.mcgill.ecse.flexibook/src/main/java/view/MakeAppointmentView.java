@@ -70,7 +70,7 @@ public class MakeAppointmentView  {
       }
   }BookableService.addItem("cut");
   BookableService.addItem("wash");
-  back.setText("back");
+  back.setText("Back");
   back.setBounds(350, 350, 100, 25);
   panel.add(back);  
  back.addActionListener(new java.awt.event.ActionListener() {
@@ -105,7 +105,7 @@ public class MakeAppointmentView  {
     }catch (InvalidInputException e) {
       error = e.getMessage();
       errorMessage.setText(error);
-      errorMessage2.setText("Sorry the appointment is not made");
+      errorMessage2.setText("Sorry, the appointment is not made");
     }
     } private static void backActionPerformed(ActionEvent evt) {
      

@@ -13,6 +13,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+
+import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
+import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.Appointment;
 import ca.mcgill.ecse.flexibook.model.BookableService;
@@ -67,9 +70,9 @@ public class CustomerView  {
 		businessInfo.setText("View Business Info");
 		businessInfo.setBounds(520, 120, 150, 25);
 		businessInfo.addActionListener(new java.awt.event.ActionListener() {
-          public void actionPerformed(java.awt.event.ActionEvent evt) {
-              FlexiBookApplication.customertobusiness();
-          }});
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				FlexiBookApplication.customertobusiness();
+			}});
 		makeAppointment.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				FlexiBookApplication.gotomakeappointment();
@@ -122,19 +125,24 @@ public class CustomerView  {
 
 
 	private static void updateAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
-//		int k=Integer.parseInt(comboBox.getSelectedItem().toString());
-//		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
-//			FlexiBookApplication.setcurap(FlexiBookApplication.getflexibook().getAppointment(k-1));
-//		}
-        FlexiBookApplication.updateapp();
+		//		int k=Integer.parseInt(comboBox.getSelectedItem().toString());
+		//		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+		//			FlexiBookApplication.setcurap(FlexiBookApplication.getflexibook().getAppointment(k-1));
+		//		}
+		FlexiBookApplication.updateapp();
 	}
 
 	private static void editAccountActionPerformed(java.awt.event.ActionEvent evt) {
-    FlexiBookApplication.customertoedit();
+		FlexiBookApplication.customertoedit();
 	}
 
 	private static void logOutActionPerformed(java.awt.event.ActionEvent evt) {
-		FlexiBookApplication.clogout();
+		try {
+			FlexiBookApplication.clogout();
+			FlexibookController.LogOut();
+		} catch(InvalidInputException e) {
+			
+		}
 	}
 
 	public static void main(String[] args) {

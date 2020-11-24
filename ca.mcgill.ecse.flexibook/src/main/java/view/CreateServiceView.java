@@ -112,7 +112,7 @@ public class CreateServiceView {
 		panelCreateService.add(cancel);
 
 
-		success = new JLabel(""); //what is this?
+		success = new JLabel(""); 
 		success.setBounds(70, 380, 200, 25);
 		success.setForeground(Color.BLUE);
 		panelCreateService.add(success);
@@ -138,7 +138,7 @@ public class CreateServiceView {
 			}catch (InvalidInputException e) {
 				errorMessage.setText(e.getMessage());
 			}
-			success.setText("Successfully add a new service!");
+			success.setText("Successfully created a new service!");
 		}
 	}
 

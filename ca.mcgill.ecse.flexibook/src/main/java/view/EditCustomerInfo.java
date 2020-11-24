@@ -32,6 +32,8 @@ public class EditCustomerInfo {
 	private static JPasswordField np;
 	private static JButton confirm;
 	private static JButton cancel;
+	private static JButton delete;
+	private static JLabel success = new JLabel();
 
 	public EditCustomerInfo() {
 		init();
@@ -86,18 +88,31 @@ public class EditCustomerInfo {
 			}});
 		panel.add(confirm);
 
-		cancel = new JButton("Cancel");
-		cancel.setBounds(390, 360, 80, 25);
+		cancel = new JButton("Back");
+		cancel.setBounds(520, 360, 80, 25);
 		cancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				cancelActionPerformed(evt);
 			}});
 		panel.add(cancel);
+		
+		delete = new JButton("Delete Account");
+		delete.setBounds(360, 360, 130, 25);
+		delete.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				deleteActionPerformed(evt);
+			}});
+		panel.add(delete);
 
 		errorMessage = new JLabel();
 		errorMessage.setBounds(410, 380, 300, 25);
 		errorMessage.setForeground(Color.red);
 		panel.add(errorMessage);
+		
+		success = new JLabel(""); 
+		success.setBounds(150, 400, 200, 25);
+		success.setForeground(Color.BLUE);
+		panel.add(success);
 
 		frame.setVisible(true);
 
@@ -109,8 +124,29 @@ public class EditCustomerInfo {
 		//check the confirm pwd same as pwd enter before
 		//success update the new account, otherwise throw error
 		// all input cannot be empty if it is throw error
+		if(!(FlexiBookApplication.getCurrentuser().getUsername().equals(newuser))) {
+			try {
+				FlexibookController.UpdateAccount(FlexiBookApplication.getCurrentuser().getUsername().toString(), newuser.getText().toString(), np.getText().toString());
+			} catch(InvalidInputException e) {
+				success.setText("Successfully updated the account!");
+			}
+		}
+		else {
+			//errorMessage.setText(e.getMessage());
+		}
+		
 	}
-	private static void cancelActionPerformed(java.awt.event.ActionEvent evt) {
+	
+	private static void cancelActionPerformed(ActionEvent evt) {
 		FlexiBookApplication.editcustomercancel();
+	}
+	
+	private static void deleteActionPerformed(ActionEvent evt) {
+//		try {
+//			FlexibookController.DeleteCustomerAccount(username, target);
+//			FlexiBookApplication.clogout();
+//		} catch(InvalidInputException e) {
+//			
+//		}
 	}
 }

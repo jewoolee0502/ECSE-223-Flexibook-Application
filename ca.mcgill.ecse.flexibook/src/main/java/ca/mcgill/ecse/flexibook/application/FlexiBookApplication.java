@@ -27,14 +27,14 @@ public class FlexiBookApplication {
   private static EditOwnerAccount editowneraccount;
   private static ViewBusinessInfoCustomer viewbcustomer;
   private static ViewBusinessInfoOwner viewbowner;
-
+  
   public static void main(String[] args) {
-    // start();
-    // delete after use
-    flexibook = new FlexiBook();
-    Owner o = new Owner("owner", "123456", flexibook);
-    currentuser = flexibook.getOwner();
-    init();
+     start();
+   // flexibook = new FlexiBook();
+   
+    //currentuser = flexibook.getOwner();
+   // init();
+  
   }
 
   private static void init() {
@@ -44,12 +44,13 @@ public class FlexiBookApplication {
 
   public static void start() {
     mainpage = new MainPage();
-
+    
   }
 
   public static FlexiBook getflexibook() {
     if (flexibook == null) {
       flexibook = new FlexiBook();
+
     }
     return flexibook;
   }
@@ -375,6 +376,34 @@ public class FlexiBookApplication {
         updateappointmentview.frame.setVisible(false);
       } else {
         customerview.frame.setVisible(true);
+      }
+    }
+  }
+  public static void tocustomer() {
+    if (customerview == null) {
+      customerview = new CustomerView();
+    } else {
+      if (mainpage.frame.isVisible() == true) {
+        if (customerview.frame.isVisible() == false) {
+          customerview.frame.setVisible(true);
+        }
+        mainpage.frame.setVisible(false);
+      } else {
+        customerview.frame.setVisible(true);
+      }
+    }
+  }
+  public static void toowner() {
+    if (ownerview == null) {
+      ownerview = new OwnerView();
+    } else {
+      if (mainpage.frame.isVisible() == true) {
+        if (ownerview.frame.isVisible() == false) {
+          ownerview.frame.setVisible(true);
+        }
+        mainpage.frame.setVisible(false);
+      } else {
+        ownerview.frame.setVisible(true);
       }
     }
   }

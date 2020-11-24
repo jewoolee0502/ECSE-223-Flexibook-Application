@@ -121,7 +121,13 @@ public class MainPage {
 			Boolean yes=FlexibookController.AttemptLogIn(usr_inputLogIn.getText(), password);
 			if(yes) {
 				errorMessageLogIn.setText("Succesfully Logged In"); //should we show the error message, because it should just directly make a transition to the customer main page
+			if(FlexiBookApplication.getCurrentuser().getUsername().equals(FlexiBookApplication.getflexibook().getOwner().getUsername())&&
+			    FlexiBookApplication.getCurrentuser().getPassword().equals(FlexiBookApplication.getflexibook().getOwner().getPassword())) {
+			  FlexiBookApplication.toowner();
+			}else
+				FlexiBookApplication.tocustomer();
 			}
+			
 		}
 		catch(InvalidInputException e){
 			error=e.getMessage();

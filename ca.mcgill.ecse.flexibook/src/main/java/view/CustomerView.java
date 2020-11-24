@@ -122,11 +122,11 @@ public class CustomerView  {
 
 
 	private static void updateAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
-		int k=Integer.parseInt(comboBox.getSelectedItem().toString());
-		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
-			FlexiBookApplication.setcurap(FlexiBookApplication.getflexibook().getAppointment(k-1));
-		}
-        
+//		int k=Integer.parseInt(comboBox.getSelectedItem().toString());
+//		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+//			FlexiBookApplication.setcurap(FlexiBookApplication.getflexibook().getAppointment(k-1));
+//		}
+        FlexiBookApplication.updateapp();
 	}
 
 	private static void editAccountActionPerformed(java.awt.event.ActionEvent evt) {

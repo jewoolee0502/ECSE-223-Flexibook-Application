@@ -143,7 +143,7 @@ public class UpdateAppointmentView{
 	}
 	
 	private static void backAppointmentActionPerformed(ActionEvent evt) {
-		
+		FlexiBookApplication.updateappcancel();
 	}
 
 

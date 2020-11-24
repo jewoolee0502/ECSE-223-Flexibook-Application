@@ -22,7 +22,7 @@ public class FlexiBookApplication {
   private static MakeAppointmentView makeappointmentview;
   private static OwnerView ownerview;
   private static SignUpPage signuppage;
-  private static UpdateAppointmentView updatappointmentview;
+  private static UpdateAppointmentView updateappointmentview;
   private static UpdateServiceView updateserviceview;
   private static EditOwnerAccount editowneraccount;
   private static ViewBusinessInfoCustomer viewbcustomer;
@@ -344,6 +344,35 @@ public class FlexiBookApplication {
           customerview.frame.setVisible(true);
         }
         viewbcustomer.frame.setVisible(false);
+      } else {
+        customerview.frame.setVisible(true);
+      }
+    }
+  }
+  public static void updateapp() {
+    if (updateappointmentview== null) {
+      updateappointmentview = new UpdateAppointmentView();
+    } else {
+      if (customerview.frame.isVisible() == true) {
+        if (updateappointmentview.frame.isVisible() == false) {
+          updateappointmentview.frame.setVisible(true);
+        }
+        customerview.frame.setVisible(false);
+      } else {
+        updateappointmentview.frame.setVisible(true);
+      }
+    }
+  }
+
+  public static void updateappcancel() {
+    if (customerview == null) {
+      customerview = new CustomerView();
+    } else {
+      if (updateappointmentview.frame.isVisible() == true) {
+        if (customerview.frame.isVisible() == false) {
+          customerview.frame.setVisible(true);
+        }
+        updateappointmentview.frame.setVisible(false);
       } else {
         customerview.frame.setVisible(true);
       }

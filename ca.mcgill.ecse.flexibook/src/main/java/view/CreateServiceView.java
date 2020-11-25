@@ -107,7 +107,12 @@ public class CreateServiceView {
 		cancel.setBounds(390, 350, 80, 25);
 		cancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				cancelActionPerformed(evt);
+				try {
+					cancelActionPerformed(evt);
+				} catch (InvalidInputException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}});
 		panelCreateService.add(cancel);
 
@@ -142,7 +147,7 @@ public class CreateServiceView {
 		}
 	}
 
-	private static void cancelActionPerformed(java.awt.event.ActionEvent evt) {
+	private static void cancelActionPerformed(java.awt.event.ActionEvent evt) throws InvalidInputException {
 		FlexiBookApplication.addservicecancel();
 	}
 }

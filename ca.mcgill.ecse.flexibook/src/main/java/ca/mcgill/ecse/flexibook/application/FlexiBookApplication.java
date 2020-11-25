@@ -120,7 +120,7 @@ public class FlexiBookApplication {
 		}
 	}
 
-	public static void editownercancel() {
+	public static void editownercancel() throws InvalidInputException {
 		if (ownerview == null) {
 			ownerview = new OwnerView();
 		} else {
@@ -165,7 +165,7 @@ public class FlexiBookApplication {
 		}
 	}
 
-	public static void addservicecancel() {
+	public static void addservicecancel() throws InvalidInputException {
 		if (ownerview == null) {
 			ownerview = new OwnerView();
 		} else {
@@ -210,7 +210,7 @@ public class FlexiBookApplication {
 		}
 	}
 
-	public static void updateservicecancel() {
+	public static void updateservicecancel() throws InvalidInputException {
 		if (ownerview == null) {
 			ownerview = new OwnerView();
 		} else {
@@ -240,7 +240,7 @@ public class FlexiBookApplication {
 		}
 	}
 
-	public static void businesstoowner() {
+	public static void businesstoowner() throws InvalidInputException {
 		if (ownerview == null) {
 			ownerview = new OwnerView();
 		} else {
@@ -392,7 +392,7 @@ public class FlexiBookApplication {
 			}
 		}
 	}
-	public static void toowner() {
+	public static void toowner() throws InvalidInputException {
 		if (ownerview == null) {
 			ownerview = new OwnerView();
 		} else {

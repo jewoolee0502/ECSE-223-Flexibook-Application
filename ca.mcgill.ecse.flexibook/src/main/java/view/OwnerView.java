@@ -1,18 +1,32 @@
 package view;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.time.LocalDate;
+import java.util.Properties;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.table.DefaultTableModel;
+
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.SqlDateModel;
 
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
+import ca.mcgill.ecse.flexibook.Controller.TOTimeSlot;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
+import ca.mcgill.ecse.flexibook.model.Appointment;
 import ca.mcgill.ecse.flexibook.model.BookableService;
+import ca.mcgill.ecse.flexibook.model.Customer;
 
 public class OwnerView {
 
@@ -43,12 +57,24 @@ public class OwnerView {
 	private static JComboBox endComboBox = new JComboBox();
 	private static JComboBox noShowComboBox = new JComboBox();
 	private static JComboBox editServiceComboBox = new JComboBox();
+	private static JDatePickerImpl overviewDatePicker;
+	private static JLabel overviewDateLabel; 
+	private static JTable overviewTable;
+	private static JScrollPane overviewScrollPane;
+	private static DefaultTableModel overviewDtm;
+	private static String overviewColumnNames[] = {"Number","Customer", "Service","Start time"};
+	private static final int HEIGHT_OVERVIEW_TABLE = 200;
+	private static Customer currentUser = null;
+	private static JLabel NumberLbl = new JLabel();
+	private static JLabel ServiceLabel = new JLabel();
+	private static JLabel HourLbl = new JLabel();
+	private static JLabel CustomerLbl = new JLabel();
 
-	public OwnerView() {
+	public OwnerView() throws InvalidInputException {
 		init_component_ownerMainPage();
 	}
 
-	private static void init_component_ownerMainPage() {
+	private static void init_component_ownerMainPage() throws InvalidInputException {
 		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
 
 		panelOwnerMainPage.setLayout(null);
@@ -163,14 +189,44 @@ public class OwnerView {
 		editServiceComboBox = new JComboBox(editServiceChoice);    
 		editServiceComboBox.setBounds(390, 600, 105, 30);
 
-		String[] columnName = {"#", "Customer", "Appointment Type", "Date & Time", "Status"};
-		String[][] data = {
-				{"1", "Customer 1", "Cut", "2020/12/20 - 10:30", "Started"},
-				{"2", "Customer 2", "Wash", "2020/12/28 - 14:20", "In Progress"}
-		};
-		table = new JTable(data, columnName);
-		table.setBounds(50, 150, 600, 420);
 
+		SqlDateModel overviewModel = new SqlDateModel();
+		LocalDate now = LocalDate.now();
+		overviewModel.setDate(now.getYear(), now.getMonthValue() - 1, now.getDayOfMonth());
+		overviewModel.setSelected(true);
+		Properties pO = new Properties();
+		pO.put("text.today", "Today");
+		pO.put("text.month", "Month");
+		pO.put("text.year", "Year");
+		JDatePanelImpl overviewDatePanel = new JDatePanelImpl(overviewModel, pO);
+		overviewDatePicker = new JDatePickerImpl(overviewDatePanel, new DateLabelFormatter());
+		overviewDatePicker.setBounds(210, 150, 210, 30);
+		panelOwnerMainPage.add(overviewDatePicker);
+		overviewDateLabel = new JLabel();
+		overviewDateLabel.setText("Date for Overview:");
+		overviewDateLabel.setBounds(50, 150, 150, 20);
+		panelOwnerMainPage.add(overviewDateLabel);
+		
+		overviewTable = new JTable();
+		overviewScrollPane = new JScrollPane(overviewTable);
+		Dimension d = overviewTable.getPreferredSize();
+		overviewScrollPane.setPreferredSize(new Dimension(d.width, HEIGHT_OVERVIEW_TABLE));
+		overviewScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		overviewTable.setBounds(50, 250, 600, HEIGHT_OVERVIEW_TABLE);
+		panelOwnerMainPage.add(overviewTable);
+		NumberLbl.setBounds(50, 210, 150, 50);
+		NumberLbl.setText("#");
+		CustomerLbl.setText("Customer Name");
+		CustomerLbl.setBounds(200, 210, 150, 50);
+		ServiceLabel.setText("Service");
+		HourLbl.setText("Start Time");
+		ServiceLabel.setBounds(350, 210, 150, 50);
+		HourLbl.setBounds(500, 210, 150, 50);
+		panelOwnerMainPage.add(NumberLbl);
+		panelOwnerMainPage.add(CustomerLbl);
+		panelOwnerMainPage.add(ServiceLabel);
+		panelOwnerMainPage.add(HourLbl);
+		panelOwnerMainPage.add(overviewTable);
 		panelOwnerMainPage.add(startAppointment);
 		panelOwnerMainPage.add(endAppointment);
 		panelOwnerMainPage.add(noShow);
@@ -183,10 +239,39 @@ public class OwnerView {
 		panelOwnerMainPage.add(endComboBox);
 		panelOwnerMainPage.add(noShowComboBox);
 		panelOwnerMainPage.add(editServiceComboBox);
-		panelOwnerMainPage.add(table);
+		refreshDailyOverview();
 		frame.setVisible(true);
 	}
+	private static void refreshDailyOverview() throws InvalidInputException {
+		overviewDtm = new DefaultTableModel(0, 0);
+		overviewDtm.setColumnIdentifiers(overviewColumnNames);
+		overviewTable.setModel(overviewDtm);
+		if (overviewDatePicker.getModel().getValue() != null) {
+			for (Customer cust : FlexiBookApplication.getflexibook().getCustomers()) {
+			int index=0;
+			String customer = cust.getUsername();
+			for (TOTimeSlot item : FlexibookController.getUnavailableTimeSlots(cust.getUsername(),overviewDatePicker.getModel().getValue().toString())) {
+				index++;
+				String number = String.valueOf(index);
+				String service="---";
+				String StartTime = "---";
+						
+				for(Appointment appointment:currentUser.getAppointments()) {
+					if(appointment.getTimeSlot().getStartTime().equals(item.getStartTime())){
+						 StartTime=appointment.getTimeSlot().getStartTime().toString();
+						 service=appointment.getBookableService().getName();
+					}
+				}
 
+				
+				Object[] obj = {index,customer, service, StartTime};
+				overviewDtm.addRow(obj);
+			}
+		}
+		}
+		Dimension d = overviewTable.getPreferredSize();
+		overviewScrollPane.setPreferredSize(new Dimension(d.width, HEIGHT_OVERVIEW_TABLE));
+	}
 	private static void startAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
 //		try {
 //			FlexibookController.startAppointment(owner, appointment);
@@ -240,7 +325,7 @@ public class OwnerView {
 	}
 
 	public static void main(String[] args) {
-		init_component_ownerMainPage();
+//		init_component_ownerMainPage();
 	}
 
 }

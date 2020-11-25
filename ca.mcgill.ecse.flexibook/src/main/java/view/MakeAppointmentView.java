@@ -76,7 +76,12 @@ public class MakeAppointmentView  {
 		back.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 
-				FlexiBookApplication.setaptocus();
+				try {
+					FlexiBookApplication.setaptocus();
+				} catch (InvalidInputException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
 		});
@@ -110,7 +115,7 @@ public class MakeAppointmentView  {
 		}
 	} 
 	
-	private static void backActionPerformed(ActionEvent evt) {
+	private static void backActionPerformed(ActionEvent evt) throws InvalidInputException {
 
 		FlexiBookApplication.setaptocus();
 

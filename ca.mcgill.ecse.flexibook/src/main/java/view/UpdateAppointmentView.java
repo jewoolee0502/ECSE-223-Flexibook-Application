@@ -94,7 +94,12 @@ public class UpdateAppointmentView{
 		back.setBounds(550, 370, 100, 25);
 		back.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				backAppointmentActionPerformed(evt);
+				try {
+					backAppointmentActionPerformed(evt);
+				} catch (InvalidInputException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}});
 		panel.add(back);  
 		make.setText("Update");
@@ -146,7 +151,7 @@ public class UpdateAppointmentView{
 //		}
 	}
 	
-	private static void backAppointmentActionPerformed(ActionEvent evt) {
+	private static void backAppointmentActionPerformed(ActionEvent evt) throws InvalidInputException {
 		FlexiBookApplication.updateappcancel();
 	}
 

@@ -82,7 +82,12 @@ public class EditOwnerAccount {
 		cancel.setBounds(390, 360, 80, 25);
 		cancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				cancelActionPerformed(evt);
+				try {
+					cancelActionPerformed(evt);
+				} catch (InvalidInputException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}});
 		panel.add(cancel);
 
@@ -114,7 +119,7 @@ public class EditOwnerAccount {
 			errorMessage.setText("**" + e.getMessage());
 		}
 	}
-	private static void cancelActionPerformed(java.awt.event.ActionEvent evt) {
+	private static void cancelActionPerformed(java.awt.event.ActionEvent evt) throws InvalidInputException {
 		FlexiBookApplication.editownercancel();
 	}
 	

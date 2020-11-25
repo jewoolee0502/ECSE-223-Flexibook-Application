@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+
+import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 
 public class ViewBusinessInfoCustomer  {
@@ -45,7 +47,12 @@ public class ViewBusinessInfoCustomer  {
 		back.setBounds(550, 550, 80, 25);
 		back.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				backActionPerformed(evt);
+				try {
+					backActionPerformed(evt);
+				} catch (InvalidInputException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}});
 		panelViewBusiness.add(back);
 		
@@ -112,7 +119,7 @@ public class ViewBusinessInfoCustomer  {
 		
 	}
 	
-	private static void backActionPerformed(java.awt.event.ActionEvent evt) {
+	private static void backActionPerformed(java.awt.event.ActionEvent evt) throws InvalidInputException {
     FlexiBookApplication.businesstocustomer();
 	}
 	

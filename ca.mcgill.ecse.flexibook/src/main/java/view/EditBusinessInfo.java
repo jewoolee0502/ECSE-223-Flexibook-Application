@@ -382,7 +382,7 @@ public class EditBusinessInfo {
 		panel.add(cancel);
 
 		errorMessage = new JLabel();
-		errorMessage.setBounds(410, 380, 300, 25);
+		errorMessage.setBounds(100, 500, 600, 25);
 		errorMessage.setForeground(Color.red);
 		panel.add(errorMessage);
 
@@ -391,8 +391,10 @@ public class EditBusinessInfo {
 
 	private static void updateActionPerformed(ActionEvent evt) {
 		try {
-			FlexibookController.setBusinessInformation(newName.toString(), newAddress.toString(), newPhoneNumber.toString(),
-					newEmail.toString());
+			FlexibookController.setBusinessInformation(newName.getText(), newAddress.getText(), newPhoneNumber.getText(),
+					newEmail.getText());
+			errorMessage.setText("Successfully updated the business information!");
+		
 		} catch (InvalidInputException e) {
 			errorMessage.setText(e.getMessage());
 		}

@@ -107,7 +107,7 @@ public class EditOwnerAccount {
 		
 		try {
 			if(!(FlexiBookApplication.getCurrentuser().getPassword().equals(np))) {
-				FlexibookController.UpdateAccount(FlexiBookApplication.getCurrentuser().getUsername().toString(), FlexiBookApplication.getCurrentuser().getUsername().toString(), np.getText().toString());
+				FlexibookController.UpdateAccount(FlexiBookApplication.getCurrentuser().getUsername(), FlexiBookApplication.getCurrentuser().getUsername(), np.getText());
 				success.setText("Successfully updated the account!");
 			}
 		} catch(InvalidInputException e) {

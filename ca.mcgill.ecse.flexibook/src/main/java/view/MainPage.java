@@ -51,6 +51,7 @@ public class MainPage {
 	private static JLabel confirmPass = new JLabel();
 	private static JLabel errorMessageLogIn = new JLabel("");
 	private static JLabel errorMessageSignUp = new JLabel("");
+	private static JLabel message = new JLabel("");
 	private static JPasswordField confirm_input = new JPasswordField();
 	private static JButton cancel = new JButton();
 	private static JPanel panelLogIn = new JPanel();
@@ -168,9 +169,12 @@ public class MainPage {
 		panelSignUp.add(confirmPass);
 		confirm_input.setBounds(300, 250, 165, 25);
 		panelSignUp.add(confirm_input);
-		errorMessageSignUp.setBounds(100, 350, 550, 15);
+		errorMessageSignUp.setBounds(100, 350, 550, 25);
 		errorMessageSignUp.setForeground(Color.red);
+		message.setBounds(100, 400, 550, 25);
+		message.setForeground(Color.red);
 		panelSignUp.add(errorMessageSignUp);
+		panelSignUp.add(message);
 		signUp.setText("Create Account");
 		signUp.setBounds(200, 300, 120, 25);
 		signUp.addActionListener(new java.awt.event.ActionListener() {
@@ -206,7 +210,8 @@ public class MainPage {
 				password = String.valueOf(character);
 			}
 			FlexibookController.SignUpForCustomerAccount(usr_inputSignUp.getText(), password); //the confirm password is not checking if the password is equal to the confirm password.
-			errorMessageSignUp.setText("Successfully created an account");
+			errorMessageSignUp.setText("Successfully created an account!");
+			message.setText("Now Log In with the account you have just created!");
 			System.out.print(flexi.getCustomers());
 		}
 		catch(InvalidInputException e) {

@@ -258,9 +258,9 @@ public class FlexibookController {
 
 	public static boolean AttemptLogIn(String userID,String passcode) throws InvalidInputException {
 		FlexiBook flexi=FlexiBookApplication.getflexibook();
-		if(flexi.getOwner()==null && (userID.equals("owner")&&passcode.equals("owner"))) {
+		if(flexi.getOwner()==null) {
 			Owner owner=new Owner("owner","owner",flexi);
-			flexi.setOwner(owner);}
+		}
 		try {
 			for(Customer c:flexi.getCustomers()) {
 				if(c.getUsername().equals(userID)&&c.getPassword().equals(passcode)) {
@@ -1928,16 +1928,10 @@ public class FlexibookController {
 			if(user.equals(currentUserString)==false) {
 				throw new InvalidInputException("No permission to update business information");
 			}
-			String aString="@gmail.com" ;
-			int begin=email.length()-aString.length();
-			int end=email.length();
-			if(begin<=0) {
+			Boolean a = email.contains("@");
+			Boolean b = email.contains(".");
+			if(a == false || b == false) {
 				throw new InvalidInputException("Invalid email");
-			}else {
-				String subString =email.substring(begin,end);
-				if(subString.equals(aString)==false) {
-					throw new InvalidInputException("Invalid email");
-				}
 			}
 			fb.getBusiness().setEmail(email);
 			fb.getBusiness().setName(name);
@@ -2182,20 +2176,22 @@ public class FlexibookController {
 			if(user.equals(currentUserString)==false) {
 				throw new InvalidInputException("No permission to set up business information");
 			}
-			String aString="@gmail.com" ;
-			int begin=email.length()-aString.length();
-			int end=email.length();
-			if(begin<=0) {
+			Boolean a = email.contains("@");
+			Boolean b = email.contains(".");
+			if(a == false || b == false) {
 				throw new InvalidInputException("Invalid email");
-			}else {
-				String subString =email.substring(begin,end);
-				if(subString.equals(aString)==false) {
-					throw new InvalidInputException("Invalid email");
-				}
 			}
-
-			Business newBusiness=new Business(name, address, phoneNumber, email,fb );
-			fb.setBusiness(newBusiness);	
+			if(fb.getBusiness() != null) {
+				fb.getBusiness().setName(name);
+				fb.getBusiness().setAddress(address);
+				fb.getBusiness().setPhoneNumber(phoneNumber);
+				fb.getBusiness().setEmail(email);
+			}
+			else {
+				Business newBusiness=new Business(name, address, phoneNumber, email,fb );
+				fb.setBusiness(newBusiness);
+			}
+	
 			FlexiBookApplication.setmessage("");
 
 

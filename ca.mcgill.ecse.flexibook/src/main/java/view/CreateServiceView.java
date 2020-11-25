@@ -127,23 +127,27 @@ public class CreateServiceView {
 		panelCreateService.add(errorMessage);
 
 		frame.setVisible(true);
-
+		System.out.println(FlexiBookApplication.getflexibook().getBookableServices());
 
 	}
 
 	private static void createActionPerformed(java.awt.event.ActionEvent evt) {
 		String s = service.getText();
-		String d = duration.getText();
+		String d = timeDuration.getSelectedItem().toString();
 		if(s.equals(null) || d.equals(null) ) {
 			success.setText("Service name/duration can not be empty");
 		}else {
 			try {
-				FlexibookController.addService(FlexiBookApplication.getCurrentuser().getUsername(), service.getText(), duration.getText(), downstart.getSelectedItem().toString(), 
-						downDuration.getSelectedItem().toString()); 
+				String downtime = "0";
+				String downStart = "0";
+				
+				FlexibookController.addService(FlexiBookApplication.getCurrentuser().getUsername(), newService.getText(), timeDuration.getSelectedItem().toString(),downStart, 
+						downtime); 
 			}catch (InvalidInputException e) {
 				errorMessage.setText(e.getMessage());
 			}
 			success.setText("Successfully created a new service!");
+			System.out.println(FlexiBookApplication.getflexibook().getBookableServices());
 		}
 	}
 

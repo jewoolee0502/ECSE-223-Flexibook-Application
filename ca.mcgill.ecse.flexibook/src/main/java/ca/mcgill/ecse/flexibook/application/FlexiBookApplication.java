@@ -3,6 +3,7 @@
  */
 package ca.mcgill.ecse.flexibook.application;
 
+import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.model.Appointment;
 import ca.mcgill.ecse.flexibook.model.Business;
 import ca.mcgill.ecse.flexibook.model.FlexiBook;
@@ -88,7 +89,7 @@ public class FlexiBookApplication {
 		return currentappointment;
 	}
 
-	public static void setaptocus() {
+	public static void setaptocus() throws InvalidInputException {
 		if (customerview == null) {
 			customerview = new CustomerView();
 		} else {
@@ -290,7 +291,7 @@ public class FlexiBookApplication {
 				mainpage.frame.setVisible(true);
 			}
 		}
-	}  public static void editcustomercancel() {
+	}  public static void editcustomercancel() throws InvalidInputException {
 		if (customerview == null) {
 			customerview = new CustomerView();
 		} else {
@@ -334,7 +335,7 @@ public class FlexiBookApplication {
 		}
 	}
 
-	public static void businesstocustomer() {
+	public static void businesstocustomer() throws InvalidInputException {
 		if (customerview == null) {
 			customerview = new CustomerView();
 		} else {
@@ -363,7 +364,7 @@ public class FlexiBookApplication {
 		}
 	}
 
-	public static void updateappcancel() {
+	public static void updateappcancel() throws InvalidInputException {
 		if (customerview == null) {
 			customerview = new CustomerView();
 		} else {
@@ -377,7 +378,7 @@ public class FlexiBookApplication {
 			}
 		}
 	}
-	public static void tocustomer() {
+	public static void tocustomer() throws InvalidInputException {
 		if (customerview == null) {
 			customerview = new CustomerView();
 		} else {

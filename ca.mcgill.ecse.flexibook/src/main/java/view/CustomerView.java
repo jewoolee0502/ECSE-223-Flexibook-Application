@@ -25,6 +25,7 @@ import org.jdatepicker.impl.SqlDateModel;
 
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
+import ca.mcgill.ecse.flexibook.Controller.TOTimeSlot;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.Appointment;
 import ca.mcgill.ecse.flexibook.model.BookableService;
@@ -34,7 +35,7 @@ import ca.mcgill.ecse.flexibook.model.Customer;
 public class CustomerView  {
 	private static int Width = 700;
 	private static int Length = 700;
-	private static JFrame frame = new JFrame();
+	public static JFrame frame = new JFrame();
 	private static JLabel Title = new JLabel();
 	private static JLabel errorMessageMakeAppointment = new JLabel("");
 	private static JLabel errorMessageUpdateAppointment = new JLabel("");
@@ -64,12 +65,12 @@ public class CustomerView  {
 	private static JLabel HourLbl = new JLabel();
 
 
-	public CustomerView() {
+	public CustomerView() throws InvalidInputException {
 		init_component_customerMainPage(); 
 	}
 
 
-	private void init_component_customerMainPage() {
+	private void init_component_customerMainPage() throws InvalidInputException {
 		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
 		//		Font font2 = new Font("Times New Romans", Font.PLAIN, 1);
 		for(Customer user : FlexiBookApplication.getflexibook().getCustomers()) {
@@ -165,11 +166,38 @@ public class CustomerView  {
 		panelCustomerMainPage.add(businessInfo);
 		//		panelCustomerMainPage.add(comboBoxMessage);
 		panelCustomerMainPage.add(comboBox);
-	
+		refreshDailyOverview();
 		frame.setVisible(true);
 
 	}
 
+	private static void refreshDailyOverview() throws InvalidInputException {
+		overviewDtm = new DefaultTableModel(0, 0);
+		overviewDtm.setColumnIdentifiers(overviewColumnNames);
+		overviewTable.setModel(overviewDtm);
+		if (overviewDatePicker.getModel().getValue() != null) {
+			int index=0;
+			for (TOTimeSlot item : FlexibookController.getUnavailableTimeSlots(FlexiBookApplication.getCurrentuser().getUsername(),overviewDatePicker.getModel().getValue().toString())) {
+				index++;
+				String number = String.valueOf(index);
+				String service="---";
+				String StartTime = "---";
+						
+				for(Appointment appointment:currentUser.getAppointments()) {
+					if(appointment.getTimeSlot().getStartTime().equals(item.getStartTime())){
+						 StartTime=appointment.getTimeSlot().getStartTime().toString();
+						 service=appointment.getBookableService().getName();
+					}
+				}
+
+				
+				Object[] obj = {index, service, StartTime};
+				overviewDtm.addRow(obj);
+			}
+		}
+		Dimension d = overviewTable.getPreferredSize();
+		overviewScrollPane.setPreferredSize(new Dimension(d.width, HEIGHT_OVERVIEW_TABLE));
+	}
 
 
 

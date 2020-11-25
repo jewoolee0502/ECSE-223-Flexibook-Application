@@ -31,7 +31,20 @@ public class ViewBusinessInfoOwner {
   private static JLabel phoneNumberCur;
   private static JLabel emailCur;
 
-
+  public static void refresh() {
+	  //table = new JTable();
+	  nameCur.setText("");
+	  addressCur.setText("");
+	  phoneNumberCur.setText("");
+	  emailCur.setText("");
+	  
+	  nameCur.setText(FlexiBookApplication.getflexibook().getBusiness().getName());
+	  addressCur.setText(FlexiBookApplication.getflexibook().getBusiness().getAddress());
+	  phoneNumberCur.setText(FlexiBookApplication.getflexibook().getBusiness().getPhoneNumber());
+	  emailCur.setText(FlexiBookApplication.getflexibook().getBusiness().getEmail());
+  }
+  
+  
   private static void init_component_viewBusinessInfo() {
     panelViewBusiness.setLayout(null);
     frame.add(panelViewBusiness);

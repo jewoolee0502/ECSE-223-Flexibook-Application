@@ -42,6 +42,7 @@ public class EditBusinessInfo {
 	private static JButton update;
 	private static JButton cancel;
 	private static JButton add;
+	private static JButton set;
 	private static JLabel name;
 	private static JTextField newName;
 	private static JLabel address;
@@ -354,13 +355,22 @@ public class EditBusinessInfo {
 		panel.add(newmin);
 
 		update = new JButton("Update");
-		update.setBounds(185, 450, 80, 25);
+		update.setBounds(250, 450, 80, 25);
 		update.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				updateActionPerformed(evt);
 			}
 		});
 		panel.add(update);
+		
+		set = new JButton("Set");
+		set.setBounds(100, 450, 70, 25);
+		set.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				setActionPerformed(evt);
+			}
+		});
+		panel.add(set);
 
 		add = new JButton("Add");
 		add.setBounds(420, 450, 70, 25);
@@ -399,6 +409,10 @@ public class EditBusinessInfo {
 			errorMessage.setText(e.getMessage());
 		}
 
+	}
+	
+	private static void setActionPerformed(ActionEvent evt) {
+		
 	}
 
 	private static void addActionPerformed(ActionEvent evt) {

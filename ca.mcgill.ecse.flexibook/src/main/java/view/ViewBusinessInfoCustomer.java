@@ -55,7 +55,7 @@ public class ViewBusinessInfoCustomer  {
 		name.setFont(font2);
 		panelViewBusiness.add(name);
 		
-		nameCur = new JLabel("Current Business Name.");
+		nameCur = new JLabel(FlexiBookApplication.getflexibook().getBusiness().getName());
 		nameCur.setBounds(200, 150, 150, 25);
 		panelViewBusiness.add(nameCur);
 		
@@ -65,7 +65,7 @@ public class ViewBusinessInfoCustomer  {
 		address.setFont(font3);
 		panelViewBusiness.add(address);
 		
-		addressCur = new JLabel("Current Address.");
+		addressCur = new JLabel(FlexiBookApplication.getflexibook().getBusiness().getAddress());
 		addressCur.setBounds(200, 200, 150, 25);
 		panelViewBusiness.add(addressCur);
 		
@@ -75,7 +75,7 @@ public class ViewBusinessInfoCustomer  {
 		phoneNumber.setFont(font4);
 		panelViewBusiness.add(phoneNumber);
 		
-		phoneNumberCur = new JLabel("Phone Number:");
+		phoneNumberCur = new JLabel(FlexiBookApplication.getflexibook().getBusiness().getPhoneNumber());
 		phoneNumberCur.setBounds(200, 250, 150, 25);
 		panelViewBusiness.add(phoneNumberCur);
 		
@@ -85,7 +85,7 @@ public class ViewBusinessInfoCustomer  {
 		email.setFont(font5);
 		panelViewBusiness.add(email);
 		
-		emailCur = new JLabel("Current Email.");
+		emailCur = new JLabel(FlexiBookApplication.getflexibook().getBusiness().getEmail());
 		emailCur.setBounds(200, 300, 100, 25);
 		panelViewBusiness.add(emailCur);
 		
@@ -103,8 +103,7 @@ public class ViewBusinessInfoCustomer  {
 				{"Thursday", "09:00 - 13:00 & 14:00 - 18:00"},
 				{"Friday", "09:00 - 13:00 & 14:00 - 18:00"},
 				{"Saturday", "09:00 - 13:00 & 14:00 - 18:00"},
-				{"Sunday", "09:00 - 13:00 & 14:00 - 18:00"},
-		};
+				{"Sunday", "09:00 - 13:00 & 14:00 - 18:00"}};
 		table = new JTable(info, column);
 		table.setBounds(50, 380, 400, 150);
 		panelViewBusiness.add(table);

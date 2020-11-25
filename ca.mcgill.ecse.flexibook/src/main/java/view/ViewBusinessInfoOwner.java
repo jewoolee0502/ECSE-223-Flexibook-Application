@@ -110,7 +110,7 @@ public class ViewBusinessInfoOwner {
     String info[][] = {{"Monday", "09:00 - 13:00 & 14:00 - 18:00"}, {"Tuesday", "09:00 - 13:00 & 14:00 - 18:00"},
         {"Wednesday", "09:00 - 13:00 & 14:00 - 18:00"}, {"Thursday", "09:00 - 13:00 & 14:00 - 18:00"},
         {"Friday", "09:00 - 13:00 & 14:00 - 18:00"}, {"Saturday", "09:00 - 13:00 & 14:00 - 18:00"},
-        {"Sunday", "09:00 - 13:00 & 14:00 - 18:00"},};
+        {"Sunday", "09:00 - 13:00 & 14:00 - 18:00"}};
     table = new JTable(info, column);
     table.setBounds(50, 380, 400, 150);
     panelViewBusiness.add(table);

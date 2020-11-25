@@ -135,36 +135,36 @@ public class UpdateServiceView {
 		frame.setVisible(true);
 	}
 
-		private static void updateActionPerformed(java.awt.event.ActionEvent evt) {
-//			error=null;
-//			try {
-//				//we need to find a way to get old service name and the owner username/name.
-//			  String string1=FlexiBookApplication.getflexibook().getOwner().getUsername();
-//				Boolean yes=FlexibookController.updateservice(string1, string2, newService.toString(), duration.toString(), downtimeStart.toString(), downtimeDuration.toString());
-//				if(yes) {
-//				errorMessage.setText("Succesfully update the service");}
-//			}
-//			catch(InvalidInputException e){
-//				error=e.getMessage();
-//				errorMessage.setText(error);
-//			}
-		}
-		
-		private static void deleteActionPerformed(java.awt.event.ActionEvent evt) {
-			//try {
-				
-				//FlexibookController.deleteService(owner, servicename);
-				errorMessage.setText("Successfully deleted service");
-			//}
-			//catch(InvalidInputException e) {
-				//error = e.getMessage();
-				errorMessage.setText(error);
-				
-			//}
-		
-		}
-	    
-		private static void cancelActionPerformed(java.awt.event.ActionEvent evt) throws InvalidInputException {
-			FlexiBookApplication.updateservicecancel();
-		}
+	private static void updateActionPerformed(java.awt.event.ActionEvent evt) {
+//		error=null;
+//		try {
+//			//we need to find a way to get old service name and the owner username/name.
+//		  String string1=FlexiBookApplication.getflexibook().getOwner().getUsername();
+//			Boolean yes=FlexibookController.updateservice(string1, string2, newService.toString(), duration.toString(), downtimeStart.toString(), downtimeDuration.toString());
+//			if(yes) {
+//			errorMessage.setText("Succesfully update the service");}
+//		}
+//		catch(InvalidInputException e){
+//			error=e.getMessage();
+//			errorMessage.setText(error);
+//		}
+	}
+	
+	private static void deleteActionPerformed(java.awt.event.ActionEvent evt) {
+		//try {
+			
+			//FlexibookController.deleteService(owner, servicename);
+			errorMessage.setText("Successfully deleted service");
+		//}
+		//catch(InvalidInputException e) {
+			//error = e.getMessage();
+			errorMessage.setText(error);
+			
+		//}
+	
+	}
+    
+	private static void cancelActionPerformed(java.awt.event.ActionEvent evt) throws InvalidInputException {
+		FlexiBookApplication.updateservicecancel();
+	}
 }

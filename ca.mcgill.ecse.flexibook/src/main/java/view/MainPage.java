@@ -211,7 +211,7 @@ public class MainPage {
 			}
 			FlexibookController.SignUpForCustomerAccount(usr_inputSignUp.getText(), password); //the confirm password is not checking if the password is equal to the confirm password.
 			errorMessageSignUp.setText("Successfully created an account!");
-			message.setText("Now Log In with the account you have just created!");
+			//message.setText("Now Log In with the account you have just created!");
 			System.out.print(flexi.getCustomers());
 		}
 		catch(InvalidInputException e) {

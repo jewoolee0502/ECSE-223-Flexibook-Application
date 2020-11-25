@@ -70,7 +70,7 @@ public class CustomerView  {
 	}
 
 
-	private void init_component_customerMainPage() throws InvalidInputException {
+	private static void init_component_customerMainPage() throws InvalidInputException {
 		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
 		//		Font font2 = new Font("Times New Romans", Font.PLAIN, 1);
 		for(Customer user : FlexiBookApplication.getflexibook().getCustomers()) {
@@ -95,6 +95,10 @@ public class CustomerView  {
 		logOut.setBounds(300, 630, 100, 25);
 		businessInfo.setText("View Business Info");
 		businessInfo.setBounds(520, 120, 150, 25);
+		businessInfo.addActionListener(new java.awt.event.ActionListener() {
+          public void actionPerformed(java.awt.event.ActionEvent evt) {
+            FlexiBookApplication.customertobusiness();
+        }});
 		makeAppointment.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				FlexiBookApplication.gotomakeappointment();
@@ -222,8 +226,8 @@ public class CustomerView  {
 		}
 	}
 
-	public static void main(String[] args) {
-//		init_component_customerMainPage();
+	public static void main(String[] args) throws InvalidInputException {
+	init_component_customerMainPage();
 	}
 
 }

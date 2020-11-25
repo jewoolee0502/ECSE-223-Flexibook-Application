@@ -262,7 +262,7 @@ public class FlexibookController {
 			Owner owner=new Owner("owner","owner",flexi);
 		}
 		try {
-			for(Customer c:flexi.getCustomers()) {
+			for(Customer c: flexi.getCustomers()) {
 				if(c.getUsername().equals(userID)&&c.getPassword().equals(passcode)) {
 					FlexiBookApplication.setCurrentuser(c);
 					return true;
@@ -447,18 +447,19 @@ public class FlexibookController {
 				else if(password.equals("") || password == null) {
 					throw new InvalidInputException("The password cannot be empty");
 				}
-				else {
-					if(flexibook.getCustomers().size() == 0) {
-						Customer c = new Customer(username, password, flexibook);
-						flexibook.addCustomer(c);
-					}				
-					if(flexibook.getCustomer(0).getWithUsername(username) == null) {
+				else {if(flexibook.getCustomers().size()>0) {
+				  if(flexibook.getCustomer(0).getWithUsername(username) == null) {
 						Customer cstmr = new Customer(username, password, flexibook);
 						flexibook.addCustomer(cstmr);
 					}
 					else {
 						throw new InvalidInputException("The username already exists");
-					}
+					}}
+					if(flexibook.getCustomers().size() == 0) {
+						Customer c = new Customer(username, password, flexibook);
+						flexibook.addCustomer(c);
+					}				
+					
 				}
 			}
 

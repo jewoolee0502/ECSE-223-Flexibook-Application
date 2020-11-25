@@ -1,8 +1,11 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ItemListener;
+import java.time.LocalDate;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -13,18 +16,25 @@ import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.table.DefaultTableModel;
+
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.SqlDateModel;
 
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.Appointment;
 import ca.mcgill.ecse.flexibook.model.BookableService;
+import ca.mcgill.ecse.flexibook.model.Customer;
 
 
 public class CustomerView  {
 	private static int Width = 700;
 	private static int Length = 700;
-	public static JFrame frame = new JFrame();
+	private static JFrame frame = new JFrame();
 	private static JLabel Title = new JLabel();
 	private static JLabel errorMessageMakeAppointment = new JLabel("");
 	private static JLabel errorMessageUpdateAppointment = new JLabel("");
@@ -41,16 +51,31 @@ public class CustomerView  {
 	private static JPanel panelLogOut = new JPanel();
 	private static String error;
 	private static JComboBox comboBox = new JComboBox();
+	private static JDatePickerImpl overviewDatePicker;
+	private static JLabel overviewDateLabel; 
+	private static JTable overviewTable;
+	private static JScrollPane overviewScrollPane;
+	private static DefaultTableModel overviewDtm;
+	private static String overviewColumnNames[] = {"Number", "Service","Start time"};
+	private static final int HEIGHT_OVERVIEW_TABLE = 200;
+	private static Customer currentUser = null;
+	private static JLabel NumberLbl = new JLabel();
+	private static JLabel ServiceLabel = new JLabel();
+	private static JLabel HourLbl = new JLabel();
+
 
 	public CustomerView() {
 		init_component_customerMainPage(); 
 	}
 
 
-	private static void init_component_customerMainPage() {
+	private void init_component_customerMainPage() {
 		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
 		//		Font font2 = new Font("Times New Romans", Font.PLAIN, 1);
-
+		for(Customer user : FlexiBookApplication.getflexibook().getCustomers()) {
+			if(user.getUsername().equals(FlexiBookApplication.getCurrentuser().getUsername())) {
+				currentUser = user;
+			}}
 		panelCustomerMainPage.setLayout(null);
 		frame.add(panelCustomerMainPage);
 		frame.setSize(Width, Length);
@@ -69,10 +94,6 @@ public class CustomerView  {
 		logOut.setBounds(300, 630, 100, 25);
 		businessInfo.setText("View Business Info");
 		businessInfo.setBounds(520, 120, 150, 25);
-		businessInfo.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				FlexiBookApplication.customertobusiness();
-			}});
 		makeAppointment.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				FlexiBookApplication.gotomakeappointment();
@@ -103,14 +124,40 @@ public class CustomerView  {
 		comboBox = new JComboBox(number);    
 		comboBox.setBounds(350, 80, 70, 30); 
 
-		String[] columnName = {"#", "Appointment Type", "Date & Time"};
-		String[][] data = {
-				{"1", "Cut", "2020/12/20 - 10:30"},
-				{"2", "Wash", "2020/12/28 - 14:20"}
-		};
-		table = new JTable(data, columnName);
-		table.setBounds(50, 180, 600, 420);
-
+		SqlDateModel overviewModel = new SqlDateModel();
+		LocalDate now = LocalDate.now();
+		overviewModel.setDate(now.getYear(), now.getMonthValue() - 1, now.getDayOfMonth());
+		overviewModel.setSelected(true);
+		Properties pO = new Properties();
+		pO.put("text.today", "Today");
+		pO.put("text.month", "Month");
+		pO.put("text.year", "Year");
+		JDatePanelImpl overviewDatePanel = new JDatePanelImpl(overviewModel, pO);
+		overviewDatePicker = new JDatePickerImpl(overviewDatePanel, new DateLabelFormatter());
+		overviewDatePicker.setBounds(210, 150, 210, 30);
+		panelCustomerMainPage.add(overviewDatePicker);
+		overviewDateLabel = new JLabel();
+		overviewDateLabel.setText("Date for Overview:");
+		overviewDateLabel.setBounds(50, 150, 150, 20);
+		panelCustomerMainPage.add(overviewDateLabel);
+		
+		overviewTable = new JTable();
+		overviewScrollPane = new JScrollPane(overviewTable);
+		Dimension d = overviewTable.getPreferredSize();
+		overviewScrollPane.setPreferredSize(new Dimension(d.width, HEIGHT_OVERVIEW_TABLE));
+		overviewScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		overviewTable.setBounds(50, 250, 600, HEIGHT_OVERVIEW_TABLE);
+		panelCustomerMainPage.add(overviewTable);
+		NumberLbl.setBounds(50, 210, 200, 50);
+		NumberLbl.setText("#");
+		ServiceLabel.setText("Service");
+		HourLbl.setText("Start Time");
+		ServiceLabel.setBounds(250, 210, 200, 50);
+		HourLbl.setBounds(450, 210, 200, 50);
+		panelCustomerMainPage.add(NumberLbl);
+		panelCustomerMainPage.add(ServiceLabel);
+		panelCustomerMainPage.add(HourLbl);
+		panelCustomerMainPage.add(overviewScrollPane);
 		panelCustomerMainPage.add(makeAppointment);
 		panelCustomerMainPage.add(updateAppointment);
 		panelCustomerMainPage.add(editAccount);
@@ -118,9 +165,11 @@ public class CustomerView  {
 		panelCustomerMainPage.add(businessInfo);
 		//		panelCustomerMainPage.add(comboBoxMessage);
 		panelCustomerMainPage.add(comboBox);
-		panelCustomerMainPage.add(table);
+	
 		frame.setVisible(true);
+
 	}
+
 
 
 
@@ -146,7 +195,7 @@ public class CustomerView  {
 	}
 
 	public static void main(String[] args) {
-		init_component_customerMainPage();
+//		init_component_customerMainPage();
 	}
 
 }

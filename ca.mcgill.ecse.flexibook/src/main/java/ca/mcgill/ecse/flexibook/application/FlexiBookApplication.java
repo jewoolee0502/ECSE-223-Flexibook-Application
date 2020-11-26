@@ -52,8 +52,8 @@ public class FlexiBookApplication {
 
 	public static FlexiBook getflexibook() {
 		if (flexibook == null) {
-			flexibook = FlexibookPersistence.load();
-			//flexibook = new FlexiBook();
+			//flexibook = FlexibookPersistence.load();
+			flexibook = new FlexiBook();
 			//Business b = new Business("123", "1234", "12345", "123456", flexibook);
 		}
 		return flexibook;
@@ -280,14 +280,17 @@ public class FlexiBookApplication {
 			if (editbusinessinfo.frame.isVisible() == true) {
 				if (viewbowner.frame.isVisible() == false) {
 					viewbowner.refresh();
+					editbusinessinfo.refresh();
 					viewbowner.frame.setVisible(true);
 				}
 				else {
 					viewbowner.refresh();
+					editbusinessinfo.refresh();
 					editbusinessinfo.frame.setVisible(false);
 				}
 			} else {
 				viewbowner.refresh();
+				editbusinessinfo.refresh();
 				viewbowner.frame.setVisible(true);
 			}
 		}

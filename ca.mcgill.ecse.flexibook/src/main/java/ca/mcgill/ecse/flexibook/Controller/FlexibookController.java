@@ -448,18 +448,18 @@ public class FlexibookController {
 					throw new InvalidInputException("The password cannot be empty");
 				}
 				else {if(flexibook.getCustomers().size()>0) {
-				  if(flexibook.getCustomer(0).getWithUsername(username) == null) {
+					if(flexibook.getCustomer(0).getWithUsername(username) == null) {
 						Customer cstmr = new Customer(username, password, flexibook);
 						flexibook.addCustomer(cstmr);
 					}
 					else {
 						throw new InvalidInputException("The username already exists");
 					}}
-					if(flexibook.getCustomers().size() == 0) {
-						Customer c = new Customer(username, password, flexibook);
-						flexibook.addCustomer(c);
-					}				
-					
+				if(flexibook.getCustomers().size() == 0) {
+					Customer c = new Customer(username, password, flexibook);
+					flexibook.addCustomer(c);
+				}				
+
 				}
 			}
 
@@ -2192,7 +2192,7 @@ public class FlexibookController {
 				Business newBusiness=new Business(name, address, phoneNumber, email,fb );
 				fb.setBusiness(newBusiness);
 			}
-	
+
 			FlexiBookApplication.setmessage("");
 
 
@@ -2230,15 +2230,18 @@ public class FlexibookController {
 				throw new InvalidInputException("Start time must be before end time");
 			}
 			Business business= fb.getBusiness();
-			BusinessHour aHour=business.getBusinessHour(0);
-			DayOfWeek dayOfWeek=aHour.getDayOfWeek();
-			Time startTime=aHour.getStartTime();
-			Time endTime=aHour.getEndTime();
-			if(dayOfWeek.equals(inputDayOfWeek)) {
-				if(inputEdTime.before(endTime)&&inputEdTime.after(startTime)) {
-					throw new InvalidInputException("The business hours cannot overlap");
+			if(fb.getBusiness().getBusinessHours().size() > 0) {
+				BusinessHour aHour=business.getBusinessHour(0);
+				DayOfWeek dayOfWeek=aHour.getDayOfWeek();
+				Time startTime=aHour.getStartTime();
+				Time endTime=aHour.getEndTime();
+				if(dayOfWeek.equals(inputDayOfWeek)) {
+					if(inputEdTime.before(endTime)&&inputEdTime.after(startTime)) {
+						throw new InvalidInputException("The business hours cannot overlap");
+					}
 				}
 			}
+
 			BusinessHour newHour=new BusinessHour(inputDayOfWeek, inputStTime, inputEdTime, fb);
 			business.addBusinessHour(newHour);
 			fb.addHour(newHour);

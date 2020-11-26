@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
+import ca.mcgill.ecse.flexibook.model.Business;
 
 public class EditBusinessInfo {
 
@@ -36,13 +37,18 @@ public class EditBusinessInfo {
 	private static JLabel newStart;
 	private static JComboBox<String> newStartHour;
 	private static JComboBox<String> newStartMin;
+	private static JComboBox<String> existingHour;
+	private static JComboBox<String> existingMin;
 	private static JLabel newh;
+	private static JLabel existingTime;
 	private static JComboBox<String> newhour;
 	private static JComboBox<String> newmin;
 	private static JButton update;
 	private static JButton cancel;
 	private static JButton add;
 	private static JButton set;
+	private static JButton updateHr;
+	private static JButton delete;
 	private static JLabel name;
 	private static JTextField newName;
 	private static JLabel address;
@@ -56,6 +62,23 @@ public class EditBusinessInfo {
 		init();
 	}
 
+	public static void refreshEditBusiness() {
+		newName.setText("");
+		newAddress.setText("");
+		newPhoneNumber.setText("");
+		newEmail.setText("");
+	}
+	
+	public static void refreshEditBusinessComboBox() {
+		day.setSelectedIndex(0);
+		existingHour.setSelectedIndex(0);
+		existingMin.setSelectedIndex(0);
+		newStartHour.setSelectedIndex(0);
+		newStartMin.setSelectedIndex(0);
+		newhour.setSelectedIndex(0);
+		newmin.setSelectedIndex(0);
+	}
+	
 	private static void init() {
 		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
 		frame.setSize(700, 700);
@@ -101,32 +124,6 @@ public class EditBusinessInfo {
 		newEmail.setBounds(120, 370, 150, 25);
 		panel.add(newEmail);
 
-
-
-		// newusr = new JLabel("New Username:"); //not allowed to change the username of the owner
-		// newusr.setBounds(100, 100, 150, 25);
-		// panel.add(newusr);
-		//
-		// newuser = new JTextField(70);
-		// newuser.setBounds(100,140,165,25);
-		// panel.add(newuser);
-		//
-		// newpwd = new JLabel("New Password:");
-		// newpwd.setBounds(100, 180, 150, 25);
-		// panel.add(newpwd);
-		//
-		// np = new JPasswordField(70);
-		// np.setBounds(100,220,165,25);
-		// panel.add(np);
-		//
-		// confirmpwd = new JLabel("Confirm New Password:");
-		// confirmpwd.setBounds(100,260, 200, 25);
-		// panel.add(confirmpwd);
-		//
-		// cpwd = new JPasswordField(70);
-		// cpwd.setBounds(100,300,165,25);
-		// panel.add(cpwd);
-
 		change = new JLabel("Change Business Hour:");
 		Font font2 = new Font("Times New Romans", Font.BOLD, 14);
 		change.setBounds(420, 100, 170, 25);
@@ -146,10 +143,114 @@ public class EditBusinessInfo {
 		day.setBounds(430, 140, 150, 25);
 		panel.add(day);
 
-		newStart = new JLabel("New Start Time (hh:mm):");
-		newStart.setBounds(310, 200, 180, 25);
-		panel.add(newStart);
+		existingTime = new JLabel("Existing Start Time (hh:mm):");
+		existingTime.setBounds(280, 180, 220, 25);
+		panel.add(existingTime);
+		
+		existingHour = new JComboBox<String>();
+		existingHour.addItem("");
+		existingHour.addItem("00");
+		existingHour.addItem("01");
+		existingHour.addItem("02");
+		existingHour.addItem("03");
+		existingHour.addItem("04");
+		existingHour.addItem("05");
+		existingHour.addItem("06");
+		existingHour.addItem("07");
+		existingHour.addItem("08");
+		existingHour.addItem("09");
+		existingHour.addItem("10");
+		existingHour.addItem("11");
+		existingHour.addItem("12");
+		existingHour.addItem("13");
+		existingHour.addItem("14");
+		existingHour.addItem("15");
+		existingHour.addItem("16");
+		existingHour.addItem("17");
+		existingHour.addItem("18");
+		existingHour.addItem("19");
+		existingHour.addItem("20");
+		existingHour.addItem("21");
+		existingHour.addItem("22");
+		existingHour.addItem("23");
 
+		existingHour.setEditable(true);
+		System.out.println("#items = " + existingHour.getItemCount());
+		existingHour.setBounds(470, 180, 70, 25);
+		panel.add(existingHour);
+		
+		existingMin = new JComboBox<String>();
+		existingMin.addItem("");
+		existingMin.addItem("00");
+		existingMin.addItem("01");
+		existingMin.addItem("02");
+		existingMin.addItem("03");
+		existingMin.addItem("04");
+		existingMin.addItem("05");
+		existingMin.addItem("06");
+		existingMin.addItem("07");
+		existingMin.addItem("08");
+		existingMin.addItem("09");
+		existingMin.addItem("10");
+		existingMin.addItem("11");
+		existingMin.addItem("12");
+		existingMin.addItem("13");
+		existingMin.addItem("14");
+		existingMin.addItem("15");
+		existingMin.addItem("16");
+		existingMin.addItem("17");
+		existingMin.addItem("18");
+		existingMin.addItem("19");
+		existingMin.addItem("20");
+		existingMin.addItem("21");
+		existingMin.addItem("22");
+		existingMin.addItem("23");
+		existingMin.addItem("24");
+		existingMin.addItem("25");
+		existingMin.addItem("26");
+		existingMin.addItem("27");
+		existingMin.addItem("28");
+		existingMin.addItem("29");
+		existingMin.addItem("30");
+		existingMin.addItem("31");
+		existingMin.addItem("32");
+		existingMin.addItem("33");
+		existingMin.addItem("34");
+		existingMin.addItem("35");
+		existingMin.addItem("36");
+		existingMin.addItem("37");
+		existingMin.addItem("38");
+		existingMin.addItem("39");
+		existingMin.addItem("40");
+		existingMin.addItem("41");
+		existingMin.addItem("42");
+		existingMin.addItem("43");
+		existingMin.addItem("44");
+		existingMin.addItem("45");
+		existingMin.addItem("46");
+		existingMin.addItem("47");
+		existingMin.addItem("48");
+		existingMin.addItem("49");
+		existingMin.addItem("50");
+		existingMin.addItem("51");
+		existingMin.addItem("52");
+		existingMin.addItem("53");
+		existingMin.addItem("54");
+		existingMin.addItem("55");
+		existingMin.addItem("56");
+		existingMin.addItem("57");
+		existingMin.addItem("58");
+		existingMin.addItem("59");
+
+		existingMin.setEditable(true);
+		System.out.println("#items = " + existingMin.getItemCount());
+		existingMin.setBounds(540, 180, 70, 25);
+		panel.add(existingMin);
+		
+		newStart = new JLabel("New Start Time (hh:mm):");
+		newStart.setBounds(310, 230, 180, 25);
+		panel.add(newStart);
+		
 		newStartHour = new JComboBox<String>();
 		newStartHour.addItem("");
 		newStartHour.addItem("00");
@@ -179,7 +280,7 @@ public class EditBusinessInfo {
 
 		newStartHour.setEditable(true);
 		System.out.println("#items = " + newStartHour.getItemCount());
-		newStartHour.setBounds(470, 200, 70, 25);
+		newStartHour.setBounds(470, 230, 70, 25);
 		panel.add(newStartHour);
 
 		newStartMin = new JComboBox<String>();
@@ -247,7 +348,7 @@ public class EditBusinessInfo {
 
 		newStartMin.setEditable(true);
 		System.out.println("#items = " + newStartMin.getItemCount());
-		newStartMin.setBounds(540, 200, 70, 25);
+		newStartMin.setBounds(540, 230, 70, 25);
 		panel.add(newStartMin);
 
 		newh = new JLabel("New End Time (hh:mm):");
@@ -354,8 +455,8 @@ public class EditBusinessInfo {
 		newmin.setBounds(540, 280, 70, 25);
 		panel.add(newmin);
 
-		update = new JButton("Update");
-		update.setBounds(250, 450, 80, 25);
+		update = new JButton("Update Business Info");
+		update.setBounds(300, 500, 180, 25);
 		update.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				updateActionPerformed(evt);
@@ -363,8 +464,17 @@ public class EditBusinessInfo {
 		});
 		panel.add(update);
 		
-		set = new JButton("Set");
-		set.setBounds(100, 450, 70, 25);
+		updateHr = new JButton("Update Business Hour");
+		updateHr.setBounds(300, 370, 180, 25);
+		updateHr.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				updateHourActionPerformed(evt);
+			}
+		});
+		panel.add(updateHr);
+		
+		set = new JButton("Set-Up Business Info");
+		set.setBounds(50, 500, 180, 25);
 		set.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				setActionPerformed(evt);
@@ -372,8 +482,8 @@ public class EditBusinessInfo {
 		});
 		panel.add(set);
 
-		add = new JButton("Add");
-		add.setBounds(420, 450, 70, 25);
+		add = new JButton("Add Business Hour");
+		add.setBounds(520, 370, 150, 25);
 		add.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				addActionPerformed(evt);
@@ -381,9 +491,17 @@ public class EditBusinessInfo {
 		});
 		panel.add(add);
 
+		delete = new JButton("Delete Business Hour");
+		delete.setBounds(400, 410, 180, 25);
+		delete.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				deleteActionPerformed(evt);
+			}
+		});
+		panel.add(delete);
 
 		cancel = new JButton("Back");
-		cancel.setBounds(580, 450, 80, 25);
+		cancel.setBounds(580, 500, 80, 25);
 		cancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				cancelActionPerformed(evt);
@@ -392,7 +510,7 @@ public class EditBusinessInfo {
 		panel.add(cancel);
 
 		errorMessage = new JLabel();
-		errorMessage.setBounds(100, 500, 600, 25);
+		errorMessage.setBounds(100, 550, 600, 25);
 		errorMessage.setForeground(Color.red);
 		panel.add(errorMessage);
 
@@ -404,19 +522,67 @@ public class EditBusinessInfo {
 			FlexibookController.setBusinessInformation(newName.getText(), newAddress.getText(), newPhoneNumber.getText(),
 					newEmail.getText());
 			errorMessage.setText("Successfully updated the business information!");
-		
+			refreshEditBusiness();
 		} catch (InvalidInputException e) {
 			errorMessage.setText(e.getMessage());
 		}
 
 	}
 	
+	private static void updateHourActionPerformed(ActionEvent evt) {
+		try {
+			if(FlexiBookApplication.getflexibook() != null) {
+				if(FlexiBookApplication.getflexibook().getBusiness() != null) {
+					String newstartTime = newStartHour.getSelectedItem().toString() + ":" + newStartMin.getSelectedItem().toString();
+					String newEndTime = newhour.getSelectedItem().toString() + ":" + newmin.getSelectedItem().toString();
+					String ExistingStartTime = existingHour.getSelectedItem().toString() + ":" + existingMin.getSelectedItem().toString();
+					String ExistingDay = day.getSelectedItem().toString();
+					String newDay = day.getSelectedItem().toString();
+					FlexibookController.UpdateExistingBusinessHour(ExistingDay, ExistingStartTime, newDay, newstartTime, newEndTime);
+					errorMessage.setText("Successfully updated the business hour!");
+					refreshEditBusiness();
+				}
+			}
+			
+		} catch(InvalidInputException e) {
+			errorMessage.setText(e.getMessage());
+		}
+	}
+	
 	private static void setActionPerformed(ActionEvent evt) {
-		
+		try {
+			FlexibookController.setBusinessInformation(newName.getText(), newAddress.getText(), newPhoneNumber.getText(), newEmail.getText());
+			errorMessage.setText("Successfully setted the business information!");
+			refreshEditBusiness();
+		} catch (InvalidInputException e) {
+			errorMessage.setText(e.getMessage());
+		}
 	}
 
 	private static void addActionPerformed(ActionEvent evt) {
 		//this action adds more business hour for the same day
+		try {
+			if(FlexiBookApplication.getflexibook() != null) {
+				if(FlexiBookApplication.getflexibook().getBusiness() != null) {
+					String string2 = newStartHour.getSelectedItem().toString() + ":" + newStartMin.getSelectedItem().toString();
+					String string3 = newhour.getSelectedItem().toString() + ":" + newmin.getSelectedItem().toString();
+					String string1 = day.getSelectedItem().toString();
+					FlexibookController.addNewBusinessHour(string1, string2, string3);
+					errorMessage.setText("Successfully added a business hour!");
+					refreshEditBusinessComboBox();
+				}
+			}
+		} catch(InvalidInputException e) {
+			errorMessage.setText(e.getMessage());
+		}
+	}
+	
+	private static void deleteActionPerformed(ActionEvent evt) {
+//		try {
+//			FlexibookController.removerBusinessHour(Day, starTime);
+//		} catch(InvalidInputException e) {
+//			
+//		}
 	}
 
 	private static void cancelActionPerformed(java.awt.event.ActionEvent evt) {
@@ -425,6 +591,10 @@ public class EditBusinessInfo {
 
 	public static void main(String[] args) {
 		init();
+	}
+
+	public static void refresh() {
+		errorMessage.setText(" ");
 	}
 
 }

@@ -231,6 +231,11 @@ public class MainPage {
 	private static void quitActionPerformed(java.awt.event.ActionEvent evt) {
 		System.exit(0);
 	}
+	
+	public static void refreshMainPage() {
+		errorMessageLogIn.setText(" ");
+		errorMessageSignUp.setText(" ");
+	}
 
 	public static void main(String[] args) {
 		flex.setflexibook(flexi);

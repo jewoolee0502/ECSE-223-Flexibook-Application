@@ -10,6 +10,7 @@ import javax.swing.JTable;
 
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
+import ca.mcgill.ecse.flexibook.model.Business;
 
 public class ViewBusinessInfoCustomer  {
 	
@@ -32,6 +33,14 @@ public class ViewBusinessInfoCustomer  {
 	
 	
 	private static void init_component_viewBusinessInfo() {
+		
+		if(FlexiBookApplication.getflexibook() != null) {
+			if(FlexiBookApplication.getflexibook().getBusiness() == null) {
+				Business b = new Business("The name of the business is not set-up yet.", "The address of the business is not set-up yet.", 
+						"The phone number of the business is not set-up yet.", "The email of the business is not set-up yet.", FlexiBookApplication.getflexibook());
+			}
+		}
+		
 		panelViewBusiness.setLayout(null);
 		frame.add(panelViewBusiness);
 		frame.setSize(Width, Length);
@@ -63,7 +72,7 @@ public class ViewBusinessInfoCustomer  {
 		panelViewBusiness.add(name);
 		
 		nameCur = new JLabel(FlexiBookApplication.getflexibook().getBusiness().getName());
-		nameCur.setBounds(200, 150, 150, 25);
+		nameCur.setBounds(200, 150, 400, 25);
 		panelViewBusiness.add(nameCur);
 		
 		address.setText("Address:");
@@ -73,7 +82,7 @@ public class ViewBusinessInfoCustomer  {
 		panelViewBusiness.add(address);
 		
 		addressCur = new JLabel(FlexiBookApplication.getflexibook().getBusiness().getAddress());
-		addressCur.setBounds(200, 200, 150, 25);
+		addressCur.setBounds(200, 200, 400, 25);
 		panelViewBusiness.add(addressCur);
 		
 		phoneNumber.setText("Phone Number:");
@@ -83,7 +92,7 @@ public class ViewBusinessInfoCustomer  {
 		panelViewBusiness.add(phoneNumber);
 		
 		phoneNumberCur = new JLabel(FlexiBookApplication.getflexibook().getBusiness().getPhoneNumber());
-		phoneNumberCur.setBounds(200, 250, 150, 25);
+		phoneNumberCur.setBounds(200, 250, 400, 25);
 		panelViewBusiness.add(phoneNumberCur);
 		
 		email.setText("Email:");
@@ -93,7 +102,7 @@ public class ViewBusinessInfoCustomer  {
 		panelViewBusiness.add(email);
 		
 		emailCur = new JLabel(FlexiBookApplication.getflexibook().getBusiness().getEmail());
-		emailCur.setBounds(200, 300, 100, 25);
+		emailCur.setBounds(200, 300, 400, 25);
 		panelViewBusiness.add(emailCur);
 		
 		businessHour.setText("Business Hour:");

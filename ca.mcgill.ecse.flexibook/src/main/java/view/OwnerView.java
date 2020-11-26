@@ -242,6 +242,7 @@ public class OwnerView {
 		refreshDailyOverview();
 		frame.setVisible(true);
 	}
+	
 	private static void refreshDailyOverview() throws InvalidInputException {
 		overviewDtm = new DefaultTableModel(0, 0);
 		overviewDtm.setColumnIdentifiers(overviewColumnNames);
@@ -312,9 +313,11 @@ public class OwnerView {
 //			
 //		}
 	}
+	
 	private static void businessinfo(ActionEvent evt) {
 		FlexiBookApplication.ownertobusiness();
 	}
+	
 	private static void logOutActionPerformed(java.awt.event.ActionEvent evt) {
 		try {
 			FlexibookController.LogOut();
@@ -325,7 +328,11 @@ public class OwnerView {
 	}
 
 	public static void main(String[] args) {
-//		init_component_ownerMainPage();
+		try {
+			init_component_ownerMainPage();
+		} catch(InvalidInputException e) {
+			
+		}
 	}
 
 }

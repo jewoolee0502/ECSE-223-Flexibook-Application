@@ -227,7 +227,7 @@ public class CustomerView  {
 	}
 
 	public static void main(String[] args) throws InvalidInputException {
-	init_component_customerMainPage();
+		init_component_customerMainPage();
 	}
 
 }

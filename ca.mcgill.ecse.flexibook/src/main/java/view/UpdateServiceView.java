@@ -26,6 +26,7 @@ public class UpdateServiceView {
 	private static JLabel service = new JLabel();
 	private static JLabel duration = new JLabel();
 	private static JLabel downtimeStart = new JLabel();
+	private static JLabel changeService = new JLabel();
 	private static JComboBox<String> downstart = new JComboBox();
 	private static JLabel downtimeDuration = new JLabel();
 	private static JComboBox<String> downDuration = new JComboBox();
@@ -34,7 +35,7 @@ public class UpdateServiceView {
 	private static JButton cancel = new JButton();
 	private static JLabel errorMessage = new JLabel("");
 	private static JComboBox<String> timeDuration;
-	
+	private static JComboBox<String> existingService;
 	private static String error=null;
 	private static JButton delete = new JButton();
 	private static JButton update = new JButton();
@@ -60,47 +61,60 @@ public class UpdateServiceView {
 		Title.setBounds(260, 15, 400, 75);
 		Title.setFont(font1);
 		panel.add(Title);
+		
+		changeService.setText("Existing Service Name:");
+		changeService.setBounds(270, 120, 200, 25);
+		panel.add(changeService);
+		
+		existingService = new JComboBox<String>();
+		existingService.addItem("Services");
+		existingService.addItem("example");
+		existingService.addItem("example");
+		existingService.addItem("example");
+		System.out.println("#items = " + existingService.getItemCount());
+		existingService.setBounds(270, 150, 150, 25);
+		panel.add(existingService);
 
 		service.setText("New Service Name:");
-		service.setBounds(280, 100, 150, 25);
+		service.setBounds(280, 200, 150, 25);
 		panel.add(service);
 
-		newService.setBounds(240, 120, 200, 35);
+		newService.setBounds(240, 220, 200, 35);
 		panel.add(newService);
 
 		duration.setText("New Service Duration:");
-		duration.setBounds(270, 180, 200, 25);
+		duration.setBounds(270, 280, 200, 25);
 		panel.add(duration);
 
 		String duration[] = {"", "5", "10", "15", "20", "25", "30", "35", "40",
 								"45", "50", "55", "60", "65", "70", "75", "80",
 								"85", "90", "95", "100"};
 		timeDuration = new JComboBox(duration);
-		timeDuration.setBounds(270, 200, 150, 25);
+		timeDuration.setBounds(270, 310, 150, 25);
 		panel.add(timeDuration);
 
 		downtimeStart.setText("Downtime Start:");
-		downtimeStart.setBounds(180, 250, 120, 25);
+		downtimeStart.setBounds(180, 360, 120, 25);
 		panel.add(downtimeStart);
 
 		String downStartComboBox[] = {"", "5", "10", "15", "20", "25", "30", 
 										"35", "40", "45", "50"};
 		downstart = new JComboBox(downStartComboBox);
-		downstart.setBounds(180, 270, 120, 25);
+		downstart.setBounds(180, 390, 120, 25);
 		panel.add(downstart);
 		
 		downtimeDuration.setText("Downtime Duration:");
-		downtimeDuration.setBounds(370, 250, 200, 25);
+		downtimeDuration.setBounds(370, 360, 200, 25);
 		panel.add(downtimeDuration);
 		
 		String downDurationComboBox[] = {"", "5", "10", "15", "20", "25", "30", 
 											"35", "40", "45", "50"};
 		downDuration = new JComboBox(downDurationComboBox);
-		downDuration.setBounds(370,270,120,25);
+		downDuration.setBounds(370, 390, 120, 25);
 		panel.add(downDuration);
 
 		cancel.setText("Back");
-		cancel.setBounds(480, 350, 80, 25);
+		cancel.setBounds(480, 460, 80, 25);
 		cancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				try {
@@ -113,7 +127,7 @@ public class UpdateServiceView {
 		panel.add(cancel);
 		
 		update.setText("Update Service");
-		update.setBounds(130, 350, 130, 25);
+		update.setBounds(130, 460, 130, 25);
 		update.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				updateActionPerformed(evt);
@@ -121,14 +135,14 @@ public class UpdateServiceView {
 		panel.add(update);
 		
 		delete.setText("Delete Service");
-		delete.setBounds(300, 350, 130, 25);
+		delete.setBounds(300, 460, 130, 25);
 		delete.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				deleteActionPerformed(evt);
 			}});
 		panel.add(delete);
 		
-		errorMessage.setBounds(330, 380, 300, 25);
+		errorMessage.setBounds(200, 500, 500, 25);
 		errorMessage.setForeground(Color.red);
 		panel.add(errorMessage);
 		

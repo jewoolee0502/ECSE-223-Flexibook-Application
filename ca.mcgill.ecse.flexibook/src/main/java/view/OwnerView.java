@@ -51,7 +51,6 @@ public class OwnerView {
 	private static JButton logOut = new JButton("");
 	private static JTable table;
 	private static JPanel panelOwnerMainPage = new JPanel();
-	private static JPanel panelLogOut = new JPanel();
 	private static String error;
 	private static JComboBox startComboBox = new JComboBox();
 	private static JComboBox endComboBox = new JComboBox();

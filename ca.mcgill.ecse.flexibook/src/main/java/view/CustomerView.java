@@ -47,6 +47,7 @@ public class CustomerView  {
 	private static JButton editAccount = new JButton();
 	private static JButton logOut = new JButton();
 	private static JButton businessInfo = new JButton();
+	private static JButton viewService = new JButton();
 	private static JTable table;
 	private static JPanel panelCustomerMainPage = new JPanel();
 	private static JPanel panelLogOut = new JPanel();
@@ -58,7 +59,7 @@ public class CustomerView  {
 	private static JScrollPane overviewScrollPane;
 	private static DefaultTableModel overviewDtm;
 	private static String overviewColumnNames[] = {"Number", "Service","Start time"};
-	private static final int HEIGHT_OVERVIEW_TABLE = 200;
+	private static final int HEIGHT_OVERVIEW_TABLE = 350;
 	private static Customer currentUser = null;
 	private static JLabel NumberLbl = new JLabel();
 	private static JLabel ServiceLabel = new JLabel();
@@ -95,6 +96,12 @@ public class CustomerView  {
 		logOut.setBounds(300, 630, 100, 25);
 		businessInfo.setText("View Business Info");
 		businessInfo.setBounds(520, 120, 150, 25);
+		viewService.setText("View Service");
+		viewService.setBounds(520, 160, 150, 25);
+		viewService.addActionListener(new java.awt.event.ActionListener() {
+	          public void actionPerformed(java.awt.event.ActionEvent evt) {
+					FlexiBookApplication.ctoservice();
+	        }});
 		businessInfo.addActionListener(new java.awt.event.ActionListener() {
           public void actionPerformed(java.awt.event.ActionEvent evt) {
             FlexiBookApplication.customertobusiness();
@@ -168,40 +175,41 @@ public class CustomerView  {
 		panelCustomerMainPage.add(editAccount);
 		panelCustomerMainPage.add(logOut);
 		panelCustomerMainPage.add(businessInfo);
+		panelCustomerMainPage.add(viewService);
 		//		panelCustomerMainPage.add(comboBoxMessage);
 		panelCustomerMainPage.add(comboBox);
-		refreshDailyOverview();
+		//refreshDailyOverview();
 		frame.setVisible(true);
 
 	}
 
-	private static void refreshDailyOverview() throws InvalidInputException {
-		overviewDtm = new DefaultTableModel(0, 0);
-		overviewDtm.setColumnIdentifiers(overviewColumnNames);
-		overviewTable.setModel(overviewDtm);
-		if (overviewDatePicker.getModel().getValue() != null) {
-			int index=0;
-			for (TOTimeSlot item : FlexibookController.getUnavailableTimeSlots(FlexiBookApplication.getCurrentuser().getUsername(),overviewDatePicker.getModel().getValue().toString())) {
-				index++;
-				String number = String.valueOf(index);
-				String service="---";
-				String StartTime = "---";
-						
-				for(Appointment appointment:currentUser.getAppointments()) {
-					if(appointment.getTimeSlot().getStartTime().equals(item.getStartTime())){
-						 StartTime=appointment.getTimeSlot().getStartTime().toString();
-						 service=appointment.getBookableService().getName();
-					}
-				}
-
-				
-				Object[] obj = {index, service, StartTime};
-				overviewDtm.addRow(obj);
-			}
-		}
-		Dimension d = overviewTable.getPreferredSize();
-		overviewScrollPane.setPreferredSize(new Dimension(d.width, HEIGHT_OVERVIEW_TABLE));
-	}
+//	private static void refreshDailyOverview() throws InvalidInputException {
+//		overviewDtm = new DefaultTableModel(0, 0);
+//		overviewDtm.setColumnIdentifiers(overviewColumnNames);
+//		overviewTable.setModel(overviewDtm);
+//		if (overviewDatePicker.getModel().getValue() != null) {
+//			int index=0;
+//			for (TOTimeSlot item : FlexibookController.getUnavailableTimeSlots(FlexiBookApplication.getCurrentuser().getUsername(),overviewDatePicker.getModel().getValue().toString())) {
+//				index++;
+//				String number = String.valueOf(index);
+//				String service="---";
+//				String StartTime = "---";
+//						
+//				for(Appointment appointment:currentUser.getAppointments()) {
+//					if(appointment.getTimeSlot().getStartTime().equals(item.getStartTime())){
+//						 StartTime=appointment.getTimeSlot().getStartTime().toString();
+//						 service=appointment.getBookableService().getName();
+//					}
+//				}
+//
+//				
+//				Object[] obj = {index, service, StartTime};
+//				overviewDtm.addRow(obj);
+//			}
+//		}
+//		Dimension d = overviewTable.getPreferredSize();
+//		overviewScrollPane.setPreferredSize(new Dimension(d.width, HEIGHT_OVERVIEW_TABLE));
+//	}
 
 
 

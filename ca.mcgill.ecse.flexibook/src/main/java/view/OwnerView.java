@@ -49,8 +49,7 @@ public class OwnerView {
 	private static JButton endAppointment = new JButton();
 	private static JButton noShow = new JButton();
 	private static JButton editAccount = new JButton();
-	private static JButton createService = new JButton();
-	private static JButton editService = new JButton();
+	private static JButton viewService = new JButton();
 	private static JButton businessInfo = new JButton();
 	private static JButton logOut = new JButton("");
 	private static JTable table;
@@ -59,14 +58,13 @@ public class OwnerView {
 	private static JComboBox startComboBox = new JComboBox();
 	private static JComboBox endComboBox = new JComboBox();
 	private static JComboBox noShowComboBox = new JComboBox();
-	private static JComboBox editServiceComboBox = new JComboBox();
 	private static JDatePickerImpl overviewDatePicker;
 	private static JLabel overviewDateLabel; 
 	private static JTable overviewTable;
 	private static JScrollPane overviewScrollPane;
 	private static DefaultTableModel overviewDtm;
 	private static String overviewColumnNames[] = {"Number","Customer", "Service","Start time"};
-	private static final int HEIGHT_OVERVIEW_TABLE = 200;
+	private static final int HEIGHT_OVERVIEW_TABLE = 300;
 	private static Customer currentUser = null;
 	private static JLabel NumberLbl = new JLabel();
 	private static JLabel ServiceLabel = new JLabel();
@@ -104,14 +102,11 @@ public class OwnerView {
 		editAccount.setText("Edit Account");
 		editAccount.setBounds(580, 80, 120, 30);
 
-		createService.setText("Create Service");
-		createService.setBounds(10, 600, 120, 30);
+		viewService.setText("View Service");
+		viewService.setBounds(300, 600, 150, 30);
 
-		editService.setText("Edit Service");
-		editService.setBounds(300, 600, 100, 30);
-
-		businessInfo.setText("Business Info");
-		businessInfo.setBounds(150, 600, 110, 30);
+		businessInfo.setText("View Business Info");
+		businessInfo.setBounds(50, 600, 150, 30);
 
 		logOut.setText("Log Out");
 		logOut.setBounds(550, 600, 100, 25);
@@ -137,13 +132,9 @@ public class OwnerView {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				editAccountActionPerformed(evt);
 			}});		//should I add an error message? What kind of error message though?
-		createService.addActionListener(new java.awt.event.ActionListener() {
+		viewService.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				createServiceActionPerformed(evt);
-			}});
-		editService.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				editServiceActionPerformed(evt);
+				viewServiceActionPerformed(evt);
 			}});
 		logOut.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -182,18 +173,6 @@ public class OwnerView {
 		}
 		noShowComboBox = new JComboBox(noShowNum);    
 		noShowComboBox.setBounds(500, 80, 60, 30);
-
-		String editServiceChoice[] = { "Services", "Cut", "Wash", "Color", "Perm"};        
-		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
-			int count = 0;
-			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
-				count=count+1;
-				editServiceComboBox.addItem(count);
-			}
-		}
-		editServiceComboBox = new JComboBox(editServiceChoice);    
-		editServiceComboBox.setBounds(390, 600, 105, 30);
-
 
 		SqlDateModel overviewModel = new SqlDateModel();
 		LocalDate now = LocalDate.now();
@@ -289,14 +268,12 @@ public class OwnerView {
 		panelOwnerMainPage.add(endAppointment);
 		panelOwnerMainPage.add(noShow);
 		panelOwnerMainPage.add(editAccount);
-		panelOwnerMainPage.add(createService);
-		panelOwnerMainPage.add(editService);
+		panelOwnerMainPage.add(viewService);
 		panelOwnerMainPage.add(businessInfo);
 		panelOwnerMainPage.add(logOut);
 		panelOwnerMainPage.add(startComboBox);
 		panelOwnerMainPage.add(endComboBox);
 		panelOwnerMainPage.add(noShowComboBox);
-		panelOwnerMainPage.add(editServiceComboBox);
 		refresh();
 		frame.setVisible(true);
 	}
@@ -368,17 +345,9 @@ public class OwnerView {
 			FlexiBookApplication.ownertoedit();
 	}
 
-	private static void createServiceActionPerformed(java.awt.event.ActionEvent evt) {
-		FlexiBookApplication.ownertoaddservice();
-	}
 
-	private static void editServiceActionPerformed(java.awt.event.ActionEvent evt) {
-//		try {
-//			FlexibookController.updateservice(string, string2, string3, string4, string5, string6);
-//			FlexiBookApplication.updateservice();
-//		} catch(InvalidInputException e) {
-//			
-//		}
+	private static void viewServiceActionPerformed(java.awt.event.ActionEvent evt) {
+		FlexiBookApplication.ownertoservice();
 	}
 	
 	private static void businessinfo(ActionEvent evt) {

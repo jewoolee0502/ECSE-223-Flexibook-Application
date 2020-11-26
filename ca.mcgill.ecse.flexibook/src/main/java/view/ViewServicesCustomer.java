@@ -8,6 +8,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
+import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
+import ca.mcgill.ecse.flexibook.model.BookableService;
+import ca.mcgill.ecse.flexibook.model.Service;
 
 public class ViewServicesCustomer extends JFrame {
 
@@ -17,8 +23,14 @@ public class ViewServicesCustomer extends JFrame {
 	private static JLabel Title = new JLabel();
 	private static JPanel panelViewServices = new JPanel();
 	private static JLabel services = new JLabel();
-	private static JTable table = new JTable();
+	private static JTable overviewTable = new JTable();
 	private static JButton back = new JButton();
+	private static DefaultTableModel overviewDtm;
+	private static final int HEIGHT_OVERVIEW_TABLE = 400;
+	private static JLabel name = new JLabel();
+	private static JLabel duration = new JLabel();
+	private static JLabel dstart = new JLabel();
+	private static JLabel downdur = new JLabel();
 
 	private static void init_component_ViewServicesCustomer() {
 		panelViewServices.setLayout(null);
@@ -38,29 +50,78 @@ public class ViewServicesCustomer extends JFrame {
 		services.setFont(font2);
 		panelViewServices.add(services);
 
-		String column[] = {"Service Name:", "Duration:", "Downtime Start:", "Downtime Duration:"};
-		String data[][] = {
-				{"         Service Name:", "             Duration:", "       Downtime Start:", "    Downtime Duration:"},
-				{"cut", "20", "10", "50"},
-				{"wash", "10", "5", "10"}
-		};
-		table = new JTable(data, column);
-		table.setBounds(50, 110, 600, 500);
-		panelViewServices.add(table);
-
 		back.setText("Back");
 		back.setBounds(550, 620, 80, 25);
 		back.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				backActionPerformed(evt);
+				try {
+					backActionPerformed(evt);
+				} catch (InvalidInputException e) {
+					
+				}
 			}});
 		panelViewServices.add(back);
+		
+		name.setText("Service Name:");
+		name.setBounds(50, 150, 150, 25);
+		panelViewServices.add(name);
+		
+		duration.setText("Duration:");
+		duration.setBounds(200, 150, 150, 25);
+		panelViewServices.add(duration);
+		
+		dstart.setText("Downtime Start:");
+		dstart.setBounds(350, 150, 150, 25);
+		panelViewServices.add(dstart);
+		
+		downdur.setText("Downtime Duration:");
+		downdur.setBounds(500, 150, 150, 25);
+		panelViewServices.add(downdur);
+
+		//Service k = new Service("cut", FlexiBookApplication.getflexibook(), 10, 0, 0);
+		
+		if(FlexiBookApplication.getflexibook().getBookableServices().size()>0) {
+			overviewTable = new JTable();
+			overviewDtm = new DefaultTableModel(0,0);
+			overviewTable.setModel(overviewDtm);
+			overviewDtm.addColumn("Service Name");
+			overviewDtm.addColumn("Duration");
+			overviewDtm.addColumn("Downtime Start");
+			overviewDtm.addColumn("Downtime Duration");
+			for(BookableService s: FlexiBookApplication.getflexibook().getBookableServices()) {
+				if(s instanceof Service) {
+					Service thiss = (Service) s;
+					String[] obj = {thiss.getName(), String.valueOf(thiss.getDuration()), String.valueOf(thiss.getDowntimeStart()), String.valueOf(thiss.getDowntimeDuration())};
+					overviewDtm.addRow(obj);
+				}
+			}
+			overviewTable.setBounds(50, 180, 600, HEIGHT_OVERVIEW_TABLE);
+			panelViewServices.add(overviewTable);
+		}
+		else {
+			overviewTable = new JTable();
+			overviewDtm = new DefaultTableModel(0,0);
+			overviewTable.setModel(overviewDtm);
+			overviewDtm.addColumn("Service Name");
+			overviewDtm.addColumn("Duration");
+			overviewDtm.addColumn("Downtime Start");
+			overviewDtm.addColumn("Downtime Duration");
+			String[] info2 = {"none","none","none","none"};
+			//			overviewTable = new JTable(info2, column);
+			overviewDtm.addRow(info2);
+			overviewTable.setBounds(50, 180, 600, HEIGHT_OVERVIEW_TABLE);
+			panelViewServices.add(overviewTable);
+		}
 
 		frame.setVisible(true);
 	}
 
-	private static void backActionPerformed(ActionEvent evt) {
-
+	private static void backActionPerformed(ActionEvent evt) throws InvalidInputException {
+		FlexiBookApplication.servicetoc();
+	}
+	
+	public ViewServicesCustomer() {
+		init_component_ViewServicesCustomer();
 	}
 
 	public static void main(String[] args) {

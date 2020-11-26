@@ -3,6 +3,8 @@ package view;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.sql.Date;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.util.Properties;
 
@@ -27,6 +29,8 @@ import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.Appointment;
 import ca.mcgill.ecse.flexibook.model.BookableService;
 import ca.mcgill.ecse.flexibook.model.Customer;
+import ca.mcgill.ecse.flexibook.model.Service;
+import ca.mcgill.ecse.flexibook.model.TimeSlot;
 
 public class OwnerView {
 
@@ -68,6 +72,8 @@ public class OwnerView {
 	private static JLabel ServiceLabel = new JLabel();
 	private static JLabel HourLbl = new JLabel();
 	private static JLabel CustomerLbl = new JLabel();
+	private static JLabel StatusLbl = new JLabel();
+	private static JLabel NoShowLbl = new JLabel();
 
 	public OwnerView() throws InvalidInputException {
 		init_component_ownerMainPage();
@@ -201,31 +207,84 @@ public class OwnerView {
 		overviewDatePicker = new JDatePickerImpl(overviewDatePanel, new DateLabelFormatter());
 		overviewDatePicker.setBounds(210, 150, 210, 30);
 		panelOwnerMainPage.add(overviewDatePicker);
+		overviewDatePicker.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				try {
+					refresh();
+				} catch (InvalidInputException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 		overviewDateLabel = new JLabel();
 		overviewDateLabel.setText("Date for Overview:");
 		overviewDateLabel.setBounds(50, 150, 150, 20);
 		panelOwnerMainPage.add(overviewDateLabel);
-		
-		overviewTable = new JTable();
-		overviewScrollPane = new JScrollPane(overviewTable);
-		Dimension d = overviewTable.getPreferredSize();
-		overviewScrollPane.setPreferredSize(new Dimension(d.width, HEIGHT_OVERVIEW_TABLE));
-		overviewScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		overviewTable.setBounds(50, 250, 600, HEIGHT_OVERVIEW_TABLE);
-		panelOwnerMainPage.add(overviewTable);
-		NumberLbl.setBounds(50, 210, 150, 50);
+//		Appointment b = new Appointment(new Customer("Jame","James",FlexiBookApplication.getflexibook()), 
+//				new Service("a",FlexiBookApplication.getflexibook(),10,0,0),
+//				new TimeSlot(new Date(120, 10, 27), new Time(10, 30, 00), new Date(120, 10, 27), new Time(10, 40, 00),FlexiBookApplication.getflexibook()), 
+//				FlexiBookApplication.getflexibook());
+		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+			overviewTable = new JTable();
+			overviewDtm = new DefaultTableModel(0,0);
+			overviewTable.setModel(overviewDtm);
+			overviewDtm.addColumn("#");
+			overviewDtm.addColumn("Customer");
+			overviewDtm.addColumn("Service");
+			overviewDtm.addColumn("Start Time");
+			overviewDtm.addColumn("Status");
+			overviewDtm.addColumn("No show");
+			int index =0;
+			
+			for(Appointment a : FlexiBookApplication.getflexibook().getAppointments()) {
+				if(a.getTimeSlot().getStartDate().toString().equals(overviewDatePicker.getModel().getValue().toString())) {
+					index++;
+					String[] obj = {String.valueOf(index),a.getCustomer().getUsername(), a.getBookableService().getName(), a.getTimeSlot().getStartTime().toString(),String.valueOf(a.getAppointmentInProgress()),String.valueOf(a.getNoShowCheck())};
+					overviewDtm.addRow(obj); 
+				}
+			}
+			overviewTable.setBounds(50, 250, 600, HEIGHT_OVERVIEW_TABLE);
+			panelOwnerMainPage.add(overviewTable);
+		}
+		else {
+			overviewTable = new JTable();
+			overviewDtm = new DefaultTableModel(0,0);
+			overviewTable.setModel(overviewDtm);
+			overviewDtm.addColumn("#");
+			overviewDtm.addColumn("Customer");
+			overviewDtm.addColumn("Service");
+			overviewDtm.addColumn("Start Time");
+			overviewDtm.addColumn("Status");
+			overviewDtm.addColumn("No show");
+			String[] info2 = {"none","none","none","none","none","none"};
+//			overviewTable = new JTable(info2, column);
+			overviewDtm.addRow(info2);
+			overviewTable.setBounds(50, 250, 600, HEIGHT_OVERVIEW_TABLE);
+			panelOwnerMainPage.add(overviewTable);
+		}
+//		overviewScrollPane = new JScrollPane(overviewTable);
+//		Dimension d = overviewTable.getPreferredSize();
+//		overviewScrollPane.setPreferredSize(new Dimension(d.width, HEIGHT_OVERVIEW_TABLE));
+//		overviewScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		NumberLbl.setBounds(50, 210, 100, 50);
 		NumberLbl.setText("#");
 		CustomerLbl.setText("Customer Name");
-		CustomerLbl.setBounds(200, 210, 150, 50);
+		CustomerLbl.setBounds(150, 210, 100, 50);
 		ServiceLabel.setText("Service");
 		HourLbl.setText("Start Time");
-		ServiceLabel.setBounds(350, 210, 150, 50);
-		HourLbl.setBounds(500, 210, 150, 50);
+		ServiceLabel.setBounds(250, 210, 100, 50);
+		HourLbl.setBounds(350, 210, 100, 50);
+		StatusLbl.setText("Status");
+		StatusLbl.setBounds(450, 210, 100, 50);
+		NoShowLbl.setText("No show");
+		NoShowLbl.setBounds(550,210,100,50);
+		panelOwnerMainPage.add(StatusLbl);
+		panelOwnerMainPage.add(NoShowLbl);
 		panelOwnerMainPage.add(NumberLbl);
 		panelOwnerMainPage.add(CustomerLbl);
 		panelOwnerMainPage.add(ServiceLabel);
 		panelOwnerMainPage.add(HourLbl);
-		panelOwnerMainPage.add(overviewTable);
 		panelOwnerMainPage.add(startAppointment);
 		panelOwnerMainPage.add(endAppointment);
 		panelOwnerMainPage.add(noShow);
@@ -238,39 +297,48 @@ public class OwnerView {
 		panelOwnerMainPage.add(endComboBox);
 		panelOwnerMainPage.add(noShowComboBox);
 		panelOwnerMainPage.add(editServiceComboBox);
-		refreshDailyOverview();
+		refresh();
 		frame.setVisible(true);
 	}
 	
-	private static void refreshDailyOverview() throws InvalidInputException {
-		overviewDtm = new DefaultTableModel(0, 0);
-		overviewDtm.setColumnIdentifiers(overviewColumnNames);
-		overviewTable.setModel(overviewDtm);
-		if (overviewDatePicker.getModel().getValue() != null) {
-			for (Customer cust : FlexiBookApplication.getflexibook().getCustomers()) {
-			int index=0;
-			String customer = cust.getUsername();
-			for (TOTimeSlot item : FlexibookController.getUnavailableTimeSlots(cust.getUsername(),overviewDatePicker.getModel().getValue().toString())) {
-				index++;
-				String number = String.valueOf(index);
-				String service="---";
-				String StartTime = "---";
-						
-				for(Appointment appointment:currentUser.getAppointments()) {
-					if(appointment.getTimeSlot().getStartTime().equals(item.getStartTime())){
-						 StartTime=appointment.getTimeSlot().getStartTime().toString();
-						 service=appointment.getBookableService().getName();
-					}
+	public static void refresh() throws InvalidInputException {
+		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+			String b = overviewDatePicker.getModel().getValue().toString();
+			overviewDtm = new DefaultTableModel(0,0);
+			overviewTable.setModel(overviewDtm);
+			overviewDtm.addColumn("#");
+			overviewDtm.addColumn("Customer");
+			overviewDtm.addColumn("Service");
+			overviewDtm.addColumn("Start Time");
+			overviewDtm.addColumn("Status");
+			overviewDtm.addColumn("No show");
+			int index =0;
+			
+			for(Appointment a : FlexiBookApplication.getflexibook().getAppointments()) {
+				if(a.getTimeSlot().getStartDate().toString().equals(overviewDatePicker.getModel().getValue().toString())) {
+					index++;
+					String[] obj = {String.valueOf(index),a.getCustomer().getUsername(), a.getBookableService().getName(), a.getTimeSlot().getStartTime().toString(),String.valueOf(a.getAppointmentInProgress()),String.valueOf(a.getNoShowCheck())};
+					overviewDtm.addRow(obj); 
 				}
-
-				
-				Object[] obj = {index,customer, service, StartTime};
-				overviewDtm.addRow(obj);
 			}
+			overviewTable.setBounds(50, 250, 600, HEIGHT_OVERVIEW_TABLE);
+			panelOwnerMainPage.add(overviewTable);
 		}
+		else {
+			overviewDtm = new DefaultTableModel(0,0);
+			overviewTable.setModel(overviewDtm);
+			overviewDtm.addColumn("#");
+			overviewDtm.addColumn("Customer");
+			overviewDtm.addColumn("Service");
+			overviewDtm.addColumn("Start Time");
+			overviewDtm.addColumn("Status");
+			overviewDtm.addColumn("No show");
+			String[] info2 = {"none","none","none","none","none","none"};
+//			overviewTable = new JTable(info2, column);
+			overviewDtm.addRow(info2);
+			overviewTable.setBounds(50, 250, 600, HEIGHT_OVERVIEW_TABLE);
+			panelOwnerMainPage.add(overviewTable);
 		}
-		Dimension d = overviewTable.getPreferredSize();
-		overviewScrollPane.setPreferredSize(new Dimension(d.width, HEIGHT_OVERVIEW_TABLE));
 	}
 	private static void startAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
 //		try {

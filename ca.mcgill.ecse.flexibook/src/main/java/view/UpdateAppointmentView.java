@@ -57,7 +57,7 @@ public class UpdateAppointmentView{
 	public static void refreshC() {
 		BookableService.removeAllItems();
 		if(FlexiBookApplication.getflexibook().getBookableServices().size()>0) {
-			BookableService.addItem("null");
+			//BookableService.addItem("null");
 			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
 				BookableService.addItem(a.getName());
 			}
@@ -97,12 +97,12 @@ public class UpdateAppointmentView{
 		BookableService.setBounds(330,300,165,25);
 		panel.add(BookableService);
 		if(FlexiBookApplication.getflexibook().getBookableServices().size()>0) {
-			BookableService.addItem("null");
+			//BookableService.addItem("null");
 			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
 				BookableService.addItem(a.getName());
 			}
 		}
-		cancel.setText("Cancel Appointment");
+		cancel.setText("Delete Appointment");
 		cancel.setBounds(300, 370, 180, 25);
 		cancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -141,6 +141,7 @@ public class UpdateAppointmentView{
 	
 	private static void makeAppointmentActionPerformed(ActionEvent evt) {
 		try {
+		  
 			Appointment a = FlexiBookApplication.getCurrentap();
 			String oldstarttime=a.getTimeSlot().getStartTime().toString().substring(0,a.getTimeSlot().getStartTime().toString().length()-3);
 			if(BookableService.getSelectedItem().toString()=="null") {
@@ -171,12 +172,18 @@ public class UpdateAppointmentView{
 		try {
 			Appointment a = FlexiBookApplication.getCurrentap();
 			String oldstarttime=a.getTimeSlot().getStartTime().toString().substring(0,a.getTimeSlot().getStartTime().toString().length()-3);
-			FlexibookController.CancelAppointment(FlexiBookApplication.getCurrentuser().getUsername(), null, 
+			Boolean check=false;
+			check=FlexibookController.CancelAppointment(FlexiBookApplication.getCurrentuser().getUsername(), null, 
 					FlexiBookApplication.getCurrentap().getTimeSlot().getStartDate().toString(), oldstarttime.toString());
 			refreshText();
 			errorMessage.setText(" ");
 			errorMessage2.setText(" ");
-			errorMessage.setText("Deleted the appointment!");
+			if(check==true) {
+			errorMessage.setText("Deleted the appointment!");}
+			else {
+			  
+			  errorMessage.setText("Cancelation failed");
+			}
 		} catch(InvalidInputException e) {
 			errorMessage.setText(" ");
 			errorMessage2.setText(" ");

@@ -94,6 +94,7 @@ public class FlexiBookApplication {
 	public static void setaptocus() throws InvalidInputException {
 		if (customerview == null) {
 			customerview = new CustomerView();
+			makeappointmentview.frame.setVisible(false);
 		} else {
 			if (makeappointmentview.frame.isVisible() == true) {
 				if (customerview.frame.isVisible() == false) {
@@ -115,6 +116,8 @@ public class FlexiBookApplication {
 	public static void gotomakeappointment() {
 		if (makeappointmentview == null) {
 			makeappointmentview = new MakeAppointmentView();
+			customerview.frame.setVisible(false);
+			
 		} else {
 			if (customerview.frame.isVisible() == true) {
 				if (makeappointmentview.frame.isVisible() == false) {
@@ -136,6 +139,7 @@ public class FlexiBookApplication {
 	public static void editownercancel() throws InvalidInputException {
 		if (ownerview == null) {
 			ownerview = new OwnerView();
+			editowneraccount.frame.setVisible(false);
 		} else {
 			if (editowneraccount.frame.isVisible() == true) {
 				if (ownerview.frame.isVisible() == false) {
@@ -151,6 +155,7 @@ public class FlexiBookApplication {
 	public static void ownertoedit() {
 		if (editowneraccount == null) {
 			editowneraccount = new EditOwnerAccount();
+			ownerview.frame.setVisible(false);
 		} else {
 			if (ownerview.frame.isVisible() == true) {
 				if (editowneraccount.frame.isVisible() == false) {
@@ -166,6 +171,7 @@ public class FlexiBookApplication {
 	public static void viewtocreateservice() {
 		if (addserviceview == null) {
 			addserviceview = new CreateServiceView();
+			viewAsOwner.frame.setVisible(false);
 		} else {
 			if (viewAsOwner.frame.isVisible() == true) {
 				if (addserviceview.frame.isVisible() == false) {
@@ -183,6 +189,7 @@ public class FlexiBookApplication {
 	public static void addservicecancel() throws InvalidInputException {
 		if (viewAsOwner == null) {
 			viewAsOwner = new ViewServicesOwner();
+			addserviceview.frame.setVisible(false);
 		} else {
 			if (addserviceview.frame.isVisible() == true) {
 				if (viewAsOwner.frame.isVisible() == false) {
@@ -204,6 +211,7 @@ public class FlexiBookApplication {
 	public static void logout() {
 		if (mainpage == null) {
 			mainpage = new MainPage();
+			ownerview.frame.setVisible(false);
 		} else {
 			if (ownerview.frame.isVisible() == true) {
 				if (mainpage.frame.isVisible() == false) {
@@ -222,6 +230,7 @@ public class FlexiBookApplication {
 	public static void updateservice() {
 		if (updateserviceview == null) {
 			updateserviceview = new UpdateServiceView();
+			viewAsOwner.frame.setVisible(false);
 		} else {
 			if (viewAsOwner.frame.isVisible() == true) {
 				if (updateserviceview.frame.isVisible() == false) {
@@ -241,6 +250,7 @@ public class FlexiBookApplication {
 	public static void updateservicecancel() throws InvalidInputException {
 		if (viewAsOwner == null) {
 			viewAsOwner = new ViewServicesOwner();
+			updateserviceview.frame.setVisible(false);
 		} else {
 			if (updateserviceview.frame.isVisible() == true) {
 				if (viewAsOwner.frame.isVisible() == false) {
@@ -259,6 +269,7 @@ public class FlexiBookApplication {
 	public static void ownertoservice() {
 		if (viewAsOwner == null) {
 			viewAsOwner = new ViewServicesOwner();
+			 ownerview.frame.setVisible(false);
 		} else {
 			if (ownerview.frame.isVisible() == true) {
 				if (viewAsOwner.frame.isVisible() == false) {
@@ -274,6 +285,8 @@ public class FlexiBookApplication {
 	public static void servicetoowner() throws InvalidInputException {
 		if (ownerview == null) {
 			ownerview = new OwnerView();
+			viewAsOwner.frame.setVisible(false);
+			
 		} else {
 			if (viewAsOwner.frame.isVisible() == true) {
 				if (ownerview.frame.isVisible() == false) {
@@ -289,6 +302,7 @@ public class FlexiBookApplication {
 
 	public static void ownertobusiness() {
 		if (viewbowner == null) {
+		  ownerview.frame.setVisible(false);
 			viewbowner = new ViewBusinessInfoOwner();
 		} else {
 			if (ownerview.frame.isVisible() == true) {
@@ -305,15 +319,16 @@ public class FlexiBookApplication {
 	public static void businesstoowner() throws InvalidInputException {
 		if (ownerview == null) {
 			ownerview = new OwnerView();
+			viewbowner.frame.setVisible(false);
 		} else {
 			if (viewbowner.frame.isVisible() == true) {
 				if (ownerview.frame.isVisible() == false) {
 
 					ownerview.frame.setVisible(true);
 				}
-				else {
+				
 					viewbowner.frame.setVisible(false);
-				}
+				
 			} else {
 				ownerview.frame.setVisible(true);
 			}
@@ -323,6 +338,7 @@ public class FlexiBookApplication {
 	public static void editbusiness() {
 		if (editbusinessinfo == null) {
 			editbusinessinfo = new EditBusinessInfo();
+			viewbowner.frame.setVisible(false);
 		} else {
 			if (viewbowner.frame.isVisible() == true) {
 				if (editbusinessinfo.frame.isVisible() == false) {
@@ -338,6 +354,7 @@ public class FlexiBookApplication {
 	public static void editbusinessinfocancel() {
 		if (viewbowner == null) {
 			viewbowner = new ViewBusinessInfoOwner();
+			editbusinessinfo.frame.setVisible(false);
 		} 
 
 		else {
@@ -347,11 +364,11 @@ public class FlexiBookApplication {
 					editbusinessinfo.refresh();
 					viewbowner.frame.setVisible(true);
 				}
-				else {
+				
 					viewbowner.refresh();
 					editbusinessinfo.refresh();
 					editbusinessinfo.frame.setVisible(false);
-				}
+				
 			} else {
 				viewbowner.refresh();
 				editbusinessinfo.refresh();
@@ -363,6 +380,7 @@ public class FlexiBookApplication {
 	public static void clogout() {
 		if (mainpage == null) {
 			mainpage = new MainPage();
+			customerview.frame.setVisible(false);
 		} else {
 			if (customerview.frame.isVisible() == true) {
 				if (mainpage.frame.isVisible() == false) {
@@ -379,6 +397,7 @@ public class FlexiBookApplication {
 	}  public static void editcustomercancel() throws InvalidInputException {
 		if (customerview == null) {
 			customerview = new CustomerView();
+			editcustomerinfo.frame.setVisible(false);
 		} else {
 			if (editcustomerinfo.frame.isVisible() == true) {
 				if (customerview.frame.isVisible() == false) {
@@ -394,6 +413,7 @@ public class FlexiBookApplication {
 	public static void customertoedit() {
 		if (editcustomerinfo == null) {
 			editcustomerinfo = new EditCustomerInfo();
+			customerview.frame.setVisible(false);
 		} else {
 			if (customerview.frame.isVisible() == true) {
 				if (editcustomerinfo.frame.isVisible() == false) {
@@ -408,6 +428,7 @@ public class FlexiBookApplication {
 	public static void customertobusiness() {
 		if (viewbcustomer== null) {
 			viewbcustomer = new ViewBusinessInfoCustomer();
+			customerview.frame.setVisible(false);
 		} else {
 			if (customerview.frame.isVisible() == true) {
 				if (viewbcustomer.frame.isVisible() == false) {
@@ -426,6 +447,7 @@ public class FlexiBookApplication {
 	public static void businesstocustomer() throws InvalidInputException {
 		if (customerview == null) {
 			customerview = new CustomerView();
+			viewbcustomer.frame.setVisible(false);
 		} else {
 			if (viewbcustomer.frame.isVisible() == true) {
 				if (customerview.frame.isVisible() == false) {
@@ -440,6 +462,7 @@ public class FlexiBookApplication {
 	public static void updateapp() {
 		if (updateappointmentview== null) {
 			updateappointmentview = new UpdateAppointmentView();
+			customerview.frame.setVisible(false);
 		} else {
 			if (customerview.frame.isVisible() == true) {
 				if (updateappointmentview.frame.isVisible() == false) {
@@ -458,10 +481,13 @@ public class FlexiBookApplication {
 	public static void updateappcancel() throws InvalidInputException {
 		if (customerview == null) {
 			customerview = new CustomerView();
+			updateappointmentview.frame.setVisible(false);
+			customerview.refresh();
 		} else {
 			if (updateappointmentview.frame.isVisible() == true) {
 				if (customerview.frame.isVisible() == false) {
 					customerview.refresh();
+					
 					customerview.frame.setVisible(true);
 				}
 				customerview.refresh();
@@ -475,6 +501,7 @@ public class FlexiBookApplication {
 	public static void tocustomer() throws InvalidInputException {
 		if (customerview == null) {
 			customerview = new CustomerView();
+			mainpage.frame.setVisible(false);
 		} else {
 			if (mainpage.frame.isVisible() == true) {
 				if (customerview.frame.isVisible() == false) {
@@ -494,16 +521,22 @@ public class FlexiBookApplication {
 	public static void toowner() throws InvalidInputException {
 		if (ownerview == null) {
 			ownerview = new OwnerView();
+			mainpage.frame.setVisible(false);
 		} else {
 			if (mainpage.frame.isVisible() == true) {
 				if (ownerview.frame.isVisible() == false) {
 					mainpage.refreshE();
+					ownerview.refresh();
+					
 					ownerview.frame.setVisible(true);
 				}
 				mainpage.refreshE();
+				ownerview.refresh();
+              
 				mainpage.frame.setVisible(false);
 			} else {
 				mainpage.refreshE();
+				ownerview.refresh();
 				ownerview.frame.setVisible(true);
 			}
 		}
@@ -512,6 +545,7 @@ public class FlexiBookApplication {
 	public static void ctoservice() {
 		if (viewAsCus== null) {
 			viewAsCus = new ViewServicesCustomer();
+			customerview.frame.setVisible(false);
 		} else {
 			if (customerview.frame.isVisible() == true) {
 				if (viewAsCus.frame.isVisible() == false) {
@@ -527,6 +561,7 @@ public class FlexiBookApplication {
 	public static void servicetoc() throws InvalidInputException {
 		if (customerview == null) {
 			customerview = new CustomerView();
+			viewAsCus.frame.setVisible(false);
 		} else {
 			if (viewAsCus.frame.isVisible() == true) {
 				if (customerview.frame.isVisible() == false) {
@@ -542,6 +577,7 @@ public class FlexiBookApplication {
 	public static void toMainpage() {
 		if(mainpage == null) {
 			mainpage = new MainPage();
+			signuppage.frame.setVisible(false);
 		}
 		else {
 			if(signuppage.frame.isVisible() == true) {
@@ -563,6 +599,7 @@ public class FlexiBookApplication {
 	public static void toSignUp() {
 		if(signuppage == null) {
 			signuppage = new SignUpPage();
+			mainpage.frame.setVisible(false);
 		}
 		else {
 			if(mainpage.frame.isVisible() == true) {

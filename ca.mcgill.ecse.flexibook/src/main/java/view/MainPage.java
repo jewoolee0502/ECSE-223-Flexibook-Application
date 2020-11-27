@@ -34,7 +34,7 @@ import ca.mcgill.ecse.flexibook.model.FlexiBook;
 public class MainPage {
 
 	private static int Width = 700;
-	private static int Length = 700;
+	private static int Length = 800;
 	public static JFrame frame = new JFrame("FlexiBook Application");
 	private static JLabel User = new JLabel();
 	private static JLabel Password = new JLabel();

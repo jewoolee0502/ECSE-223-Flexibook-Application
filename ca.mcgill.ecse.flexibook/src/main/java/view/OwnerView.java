@@ -365,9 +365,14 @@ public class OwnerView {
 	private static void startAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
 		SystemTime.SystemTime(null, false);
 		try {
+		  Appointment a =FlexiBookApplication.getflexibook().getAppointment(Integer.valueOf(startComboBox.getSelectedItem().toString()) - 1);
 			FlexibookController.startAppointment(FlexiBookApplication.getflexibook().getOwner().getUsername(), 
 					FlexiBookApplication.getflexibook().getAppointment(Integer.valueOf(startComboBox.getSelectedItem().toString()) - 1));
-			errorMessage.setText("Started the appointment!");
+			if(a.getAppointmentInProgress()==true) {
+			  errorMessage.setText("Started the appointment!");
+			}else {
+			  errorMessage.setText("The appointmetn is not started");
+			}
 			refresh();
 		} catch(InvalidInputException e) {
 			errorMessage.setText(" ");
@@ -378,9 +383,17 @@ public class OwnerView {
 	private static void endAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
 		SystemTime.SystemTime(null, false);
 		try {
+		  Appointment a =FlexiBookApplication.getflexibook().getAppointment(Integer.valueOf(startComboBox.getSelectedItem().toString()) - 1);
 			FlexibookController.endAppointment(FlexiBookApplication.getflexibook().getOwner().getUsername(), 
 					FlexiBookApplication.getflexibook().getAppointment(Integer.valueOf(endComboBox.getSelectedItem().toString()) - 1));
-			errorMessage.setText("Ended the appointment!");
+			Appointment b =FlexiBookApplication.getflexibook().getAppointment(Integer.valueOf(startComboBox.getSelectedItem().toString()) - 1);
+			if(b==null) {
+			  errorMessage.setText("Ended the appointment!");
+             
+            }else {
+              errorMessage.setText("The appointmetn is not ended");
+            }
+			
 			refresh();
 		} catch(InvalidInputException e) {
 			errorMessage.setText(" ");
@@ -395,7 +408,13 @@ public class OwnerView {
 			String startTime = a.getTimeSlot().getStartTime().toString().substring(0,a.getTimeSlot().getStartTime().toString().length()-3);
 			FlexibookController.noShowCheck(a.getCustomer().getUsername(), FlexiBookApplication.getflexibook().getOwner().getUsername(), 
 					a.getBookableService().getName(), a.getTimeSlot().getStartDate().toString(), startTime);
-			errorMessage.setText("The customer did not show up!");
+	         Appointment b =FlexiBookApplication.getflexibook().getAppointment(Integer.valueOf(startComboBox.getSelectedItem().toString()) - 1);
+	            if(b==null) {
+	             errorMessage.setText("The customer did not show up!");
+	            }else {
+	              errorMessage.setText("No show register failed");
+	            }
+			  
 			refresh();
 		} catch(InvalidInputException e) {
 			errorMessage.setText(" ");

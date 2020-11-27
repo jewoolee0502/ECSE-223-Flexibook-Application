@@ -124,16 +124,18 @@ public class MakeAppointmentView  {
 	
 	private static void makeappointmentActionPerformed(ActionEvent evt) {
 		SystemTime.SystemTime(null, false);
-		try {
+		try {FlexiBookApplication.setmessage(" ");
 			FlexibookController.MakeAppointment(FlexiBookApplication.getCurrentuser().getUsername(),
 					dateinput.getText(), BookableService.getSelectedItem().toString(), null, starttimeinput.getText());
-			errorMessage.setText("");
-			errorMessage2.setText(" ");
+			errorMessage.setText(" ");
 			if(FlexiBookApplication.returnmessage()!=null) {
-				errorMessage.setText(FlexiBookApplication.returnmessage());
+			  errorMessage.setText(" ");
+			  errorMessage.setText(FlexiBookApplication.returnmessage());
 				panel.add(errorMessage);
+				
 			}
 			else {
+		    errorMessage.setText(" ");
 			errorMessage.setText("Successfully booked an appointment!");
 			panel.add(errorMessage);
 			}

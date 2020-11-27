@@ -590,7 +590,7 @@ public class FlexibookController {
 			fill_the_DayOfWeek();
 
 			if(fb.getBusiness()==null) {
-				throw new InvalidInputException("The business should exist for making an appointment.");
+				throw new InvalidInputException("The business should exist for making an apvpointment.");
 			}
 			//a owner tries to make an appointment
 			if(customer.equals("owner")) {
@@ -1106,7 +1106,8 @@ public class FlexibookController {
 	 * @throws InvalidInputException
 	 */
 
-	public static void CancelAppointment(String customer, String customer2, String serviceDate, String startTime) throws InvalidInputException {
+	public static Boolean CancelAppointment(String customer, String customer2, String serviceDate, String startTime) throws InvalidInputException {
+		Boolean check=false;
 		try {
 			FlexiBook fb = FlexiBookApplication.getflexibook();
 			if(!(customer2==null)) {
@@ -1147,11 +1148,13 @@ public class FlexibookController {
 					}
 				}
 				fb.getCustomer(cindex).getAppointment(aindex).cancelAppointment();
+				check=true;
 			}
 			FlexibookPersistence.save(FlexiBookApplication.getflexibook());
 		} catch(InvalidInputException e) {
 			throw e;
 		}
+		return check;
 	}
 
 

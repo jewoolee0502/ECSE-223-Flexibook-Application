@@ -38,7 +38,10 @@ public class MakeAppointmentView  {
 	public static void main(String[] args) {
 		init();
 	}
-	
+	public static void refreshE() {
+		errorMessage.setText(" ");
+		errorMessage2.setText(" ");
+	}
 	public static void refreshText() {
 		dateinput.setText("");
 		starttimeinput.setText("");
@@ -124,18 +127,28 @@ public class MakeAppointmentView  {
 		try {
 			FlexibookController.MakeAppointment(FlexiBookApplication.getCurrentuser().getUsername(),
 					dateinput.getText(), BookableService.getSelectedItem().toString(), null, starttimeinput.getText());
+			errorMessage.setText("");
 			errorMessage2.setText(" ");
+			if(FlexiBookApplication.returnmessage()!=null) {
+				errorMessage.setText(FlexiBookApplication.returnmessage());
+				panel.add(errorMessage);
+			}
+			else {
 			errorMessage.setText("Successfully booked an appointment!");
+			panel.add(errorMessage);
+			}
 			refreshText();
 		}catch (InvalidInputException e) {
 			errorMessage.setText(" ");
 			error = e.getMessage();
 			errorMessage.setText(error);
 			errorMessage2.setText("Sorry, the appointment is not made!");
+			panel.add(errorMessage);
 		}
 	} 
 	
 	private static void backActionPerformed(ActionEvent evt) throws InvalidInputException {
+
 		refreshText();
 		FlexiBookApplication.setaptocus();
 

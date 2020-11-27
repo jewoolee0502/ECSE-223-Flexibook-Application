@@ -64,12 +64,13 @@ public class FlexibookController {
 		Map<BookableService, Boolean>DowntimeMap=new HashMap<>();
 		for(BookableService service2:fb.getBookableServices()) {
 			if(service2 instanceof Service) {
-				if(service2.getName().equals("color")) {
+				if(((Service) service2).getDowntimeDuration()>0) {
 					hasDowntime=true;
 				}
-			}else if (service2 instanceof ServiceCombo) {
+			}
+			else if (service2 instanceof ServiceCombo) {
 				for(ComboItem item:((ServiceCombo) service2).getServices()) {
-					if(item.getService().getName().equals("color")) {
+					if(item.getService().getDowntimeDuration()>0) {
 						hasDowntime=true;
 						break;
 					}
@@ -761,7 +762,7 @@ public class FlexibookController {
 					}
 				}
 			}
-			if((!inBusinessHour)||overslapBoolean||currenDate.before(servicedate)==false||overLapExist||invorh) {
+			if((!inBusinessHour)||overslapBoolean||(currenDate.after(servicedate)==true)||overLapExist||invorh) {
 				FlexiBookApplication.setmessage("There are no available slots for "+serviceName+" on "+date+" at "+startTime);
 			}
 			else {

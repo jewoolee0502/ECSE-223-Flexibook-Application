@@ -98,11 +98,14 @@ public class FlexiBookApplication {
 			if (makeappointmentview.frame.isVisible() == true) {
 				if (customerview.frame.isVisible() == false) {
 					customerview.refresh();
+					makeappointmentview.refreshE();
 					customerview.frame.setVisible(true);
 				}
 				customerview.refresh();
+				makeappointmentview.refreshE();
 				makeappointmentview.frame.setVisible(false);
 			} else {
+				makeappointmentview.refreshE();
 				customerview.refresh();
 				customerview.frame.setVisible(true);
 			}
@@ -116,12 +119,15 @@ public class FlexiBookApplication {
 			if (customerview.frame.isVisible() == true) {
 				if (makeappointmentview.frame.isVisible() == false) {
 					makeappointmentview.refresh();
+					makeappointmentview.refreshE();
 					makeappointmentview.frame.setVisible(true);
 				}
 				makeappointmentview.refresh();
+				makeappointmentview.refreshE();
 				customerview.frame.setVisible(false);
 			} else {
 				makeappointmentview.refresh();
+				makeappointmentview.refreshE();
 				makeappointmentview.frame.setVisible(true);
 			}
 		}
@@ -473,12 +479,14 @@ public class FlexiBookApplication {
 			if (mainpage.frame.isVisible() == true) {
 				if (customerview.frame.isVisible() == false) {
 					mainpage.refreshE();
+					CustomerView.refresh();
 					customerview.frame.setVisible(true);
 				}
 				mainpage.refreshE();
 				mainpage.frame.setVisible(false);
 			} else {
 				mainpage.refreshE();
+				CustomerView.refresh();
 				customerview.frame.setVisible(true);
 			}
 		}

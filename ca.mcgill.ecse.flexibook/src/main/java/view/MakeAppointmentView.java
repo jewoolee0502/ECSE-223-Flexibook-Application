@@ -46,7 +46,7 @@ public class MakeAppointmentView  {
 		dateinput.setText("");
 		starttimeinput.setText("");
 	}
-	
+
 	public static void refresh() {
 		BookableService.removeAllItems();
 		if(FlexiBookApplication.getflexibook().getBookableServices().size()>0) {
@@ -57,7 +57,7 @@ public class MakeAppointmentView  {
 		BookableService.setBounds(300,300,165,25);
 		panel.add(BookableService);
 	}
-	
+
 	private static void init() {
 
 		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
@@ -121,25 +121,24 @@ public class MakeAppointmentView  {
 		frame.setVisible(true);  
 
 	}
-	
+
 	private static void makeappointmentActionPerformed(ActionEvent evt) {
 		SystemTime.SystemTime(null, false);
+		int a = FlexiBookApplication.getflexibook().getAppointments().size();
 		try {FlexiBookApplication.setmessage(" ");
-			FlexibookController.MakeAppointment(FlexiBookApplication.getCurrentuser().getUsername(),
-					dateinput.getText(), BookableService.getSelectedItem().toString(), null, starttimeinput.getText());
+		FlexibookController.MakeAppointment(FlexiBookApplication.getCurrentuser().getUsername(),
+				dateinput.getText(), BookableService.getSelectedItem().toString(), null, starttimeinput.getText());
+		errorMessage.setText(" ");
+		if(FlexiBookApplication.returnmessage()!=null) {
+			int b = FlexiBookApplication.getflexibook().getAppointments().size();
+			if(b > a) {
+				FlexiBookApplication.setmessage("Successfully booked an appointment!");
+			}
 			errorMessage.setText(" ");
-			if(FlexiBookApplication.returnmessage()!=null) {
-			  errorMessage.setText(" ");
-			  errorMessage.setText(FlexiBookApplication.returnmessage());
-				panel.add(errorMessage);
-				
-			}
-			else {
-		    errorMessage.setText(" ");
-			errorMessage.setText("Successfully booked an appointment!");
+			errorMessage.setText(FlexiBookApplication.returnmessage());
 			panel.add(errorMessage);
-			}
-			refreshText();
+		}
+		refreshText();
 		}catch (InvalidInputException e) {
 			errorMessage.setText(" ");
 			error = e.getMessage();
@@ -148,7 +147,7 @@ public class MakeAppointmentView  {
 			panel.add(errorMessage);
 		}
 	} 
-	
+
 	private static void backActionPerformed(ActionEvent evt) throws InvalidInputException {
 
 		refreshText();

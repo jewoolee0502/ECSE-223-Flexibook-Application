@@ -382,18 +382,18 @@ public class OwnerView {
 
 	private static void endAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
 		SystemTime.SystemTime(null, false);
+		int b = FlexiBookApplication.getflexibook().getAppointments().size();
 		try {
 		  Appointment a =FlexiBookApplication.getflexibook().getAppointment(Integer.valueOf(startComboBox.getSelectedItem().toString()) - 1);
 			FlexibookController.endAppointment(FlexiBookApplication.getflexibook().getOwner().getUsername(), 
 					FlexiBookApplication.getflexibook().getAppointment(Integer.valueOf(endComboBox.getSelectedItem().toString()) - 1));
-			Appointment b =FlexiBookApplication.getflexibook().getAppointment(Integer.valueOf(startComboBox.getSelectedItem().toString()) - 1);
-			if(b==null) {
+			int c = FlexiBookApplication.getflexibook().getAppointments().size();
+			if(c < b) {
 			  errorMessage.setText("Ended the appointment!");
              
             }else {
-              errorMessage.setText("The appointmetn is not ended");
+              errorMessage.setText("The appointmet is not ended!");
             }
-			
 			refresh();
 		} catch(InvalidInputException e) {
 			errorMessage.setText(" ");

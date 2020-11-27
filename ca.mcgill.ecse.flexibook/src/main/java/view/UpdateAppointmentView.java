@@ -14,6 +14,7 @@ import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.Appointment;
 import ca.mcgill.ecse.flexibook.model.BookableService;
+import ca.mcgill.ecse.flexibook.util.SystemTime;
 
 public class UpdateAppointmentView{
 
@@ -35,25 +36,25 @@ public class UpdateAppointmentView{
 	private static JButton back = new JButton();
 	private static JButton cancel = new JButton();
 	private static JPanel panel = new JPanel();
-	
+
 	public UpdateAppointmentView() {
 		init();
 	}
-	
+
 	public static void main(String[] args) {
 		init();
 	}
-	
+
 	public static void refreshText() {
 		dateinput.setText("");
 		starttimeinput.setText("");
 	}
-	
+
 	public static void refreshE() {
 		errorMessage.setText("");
 		errorMessage2.setText("");
 	}
-	
+
 	public static void refreshC() {
 		BookableService.removeAllItems();
 		if(FlexiBookApplication.getflexibook().getBookableServices().size()>0) {
@@ -65,7 +66,7 @@ public class UpdateAppointmentView{
 		BookableService.setBounds(330,300,165,25);
 		panel.add(BookableService);
 	}
-	
+
 	private static void init() {
 		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
 		panel.setLayout(null);
@@ -78,7 +79,7 @@ public class UpdateAppointmentView{
 		Title.setFont(font1);
 		panel.add(Title);
 		//appdetail.setText("Current Service: "+cura.getBookableService().getName()+"Current Startdate: "+
-				//cura.getTimeSlot().getStartDate().toString()+"Current Starttime"+ cura.getTimeSlot().getStartTime());
+		//cura.getTimeSlot().getStartDate().toString()+"Current Starttime"+ cura.getTimeSlot().getStartTime());
 		appdetail.setBounds(200, 150, 80, 25);
 		panel.add(User);
 		date.setText("New Start Date(yyyy-mm-dd): ");
@@ -138,10 +139,10 @@ public class UpdateAppointmentView{
 		frame.setVisible(true);  
 
 	}
-	
+
 	private static void makeAppointmentActionPerformed(ActionEvent evt) {
 		try {
-		  
+
 			Appointment a = FlexiBookApplication.getCurrentap();
 			String oldstarttime=a.getTimeSlot().getStartTime().toString().substring(0,a.getTimeSlot().getStartTime().toString().length()-3);
 			if(BookableService.getSelectedItem().toString()=="null") {
@@ -149,16 +150,25 @@ public class UpdateAppointmentView{
 						FlexiBookApplication.getCurrentap().getBookableService().getName(),a.getTimeSlot().getStartDate().toString(),dateinput.getText(),
 						oldstarttime, starttimeinput.getText());
 			}else {
-				FlexibookController.CancelAppointment(FlexiBookApplication.getCurrentuser().getUsername(),null,
-						a.getTimeSlot().getStartDate().toString(), oldstarttime);
+				if(OneDayDiff() == true) {
 
-				FlexibookController.MakeAppointment(FlexiBookApplication.getCurrentuser().getUsername(),
-						dateinput.getText(), BookableService.getSelectedItem().toString(), null, starttimeinput.getText());
+					FlexibookController.CancelAppointment(FlexiBookApplication.getCurrentuser().getUsername(),null,
+							a.getTimeSlot().getStartDate().toString(), oldstarttime);
+
+					FlexibookController.MakeAppointment(FlexiBookApplication.getCurrentuser().getUsername(),
+							dateinput.getText(), BookableService.getSelectedItem().toString(), null, starttimeinput.getText());
+				refreshText();
+				errorMessage.setText(" ");
+				errorMessage2.setText(" ");
+				errorMessage.setText("Successfully updated an appointment!");
+				}
+				else {
+					refreshText();
+					errorMessage.setText(" ");
+					errorMessage2.setText(" ");
+					errorMessage2.setText("Sorry, your appointment is not updated!");
+				}
 			}
-			refreshText();
-			errorMessage.setText(" ");
-			errorMessage2.setText(" ");
-			errorMessage.setText("Successfully updated an appointment!");
 		}catch (InvalidInputException e) {
 			errorMessage.setText(" ");
 			errorMessage2.setText(" ");
@@ -167,7 +177,20 @@ public class UpdateAppointmentView{
 			errorMessage2.setText("Sorry, the appointment is not updated!");
 		}
 	}
-	
+
+	private static Boolean OneDayDiff() {
+
+		String sDate = SystemTime.getdate(SystemTime.getSysTime());
+		String date = FlexiBookApplication.getCurrentap().getTimeSlot().getStartDate().toString();
+
+		if(date.equals(sDate)) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
 	private static void cancelAppointmentActionPerformed(ActionEvent evt) {
 		try {
 			Appointment a = FlexiBookApplication.getCurrentap();
@@ -179,10 +202,10 @@ public class UpdateAppointmentView{
 			errorMessage.setText(" ");
 			errorMessage2.setText(" ");
 			if(check==true) {
-			errorMessage.setText("Deleted the appointment!");}
+				errorMessage.setText("Deleted the appointment!");}
 			else {
-			  
-			  errorMessage.setText("Cancelation failed");
+
+				errorMessage.setText("Cancelation failed");
 			}
 		} catch(InvalidInputException e) {
 			errorMessage.setText(" ");
@@ -191,7 +214,7 @@ public class UpdateAppointmentView{
 			errorMessage2.setText("Sorry, you have not deleted the appointment!");
 		}
 	}
-	
+
 	private static void backAppointmentActionPerformed(ActionEvent evt) throws InvalidInputException {
 		refreshText();
 		refreshE();

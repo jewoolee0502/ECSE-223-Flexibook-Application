@@ -694,7 +694,8 @@ public class FlexibookController {
 					if(slot.getStartDate().after(servicedate)==false&&slot.getStartDate().before(servicedate)==false) {
 						if(((starttime.before(slot.getEndTime()))&&(starttime.before(slot.getStartTime())==false))
 								||(endtime.after(slot.getStartTime())&&(endtime.after(slot.getEndTime())==false)) 
-								|| !isNoOverlap(newslot, slot)) {
+								//|| isNoOverlap(newslot, slot)
+								) {
 
 							occupied=true;			
 						}

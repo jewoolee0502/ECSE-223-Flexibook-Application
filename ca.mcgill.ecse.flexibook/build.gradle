@@ -20,10 +20,6 @@ repositories {
     jcenter()
     mavenCentral()
 }
-configurations {
-    // declare a "configuration" named "someConfiguration"
-    someConfiguration
-}
 dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:29.0-jre'

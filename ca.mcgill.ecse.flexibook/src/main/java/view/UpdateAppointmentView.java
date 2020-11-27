@@ -144,6 +144,9 @@ public class UpdateAppointmentView{
 		try {
 
 			Appointment a = FlexiBookApplication.getCurrentap();
+			String d = a.getCustomer().getUsername();
+			String e = a.getTimeSlot().getStartDate().toString();
+			String f = a.getBookableService().getName().toString();
 			String oldstarttime=a.getTimeSlot().getStartTime().toString().substring(0,a.getTimeSlot().getStartTime().toString().length()-3);
 			if(BookableService.getSelectedItem().toString()=="null") {
 				FlexibookController.UpdateAppointment(FlexiBookApplication.getCurrentuser().getUsername(),null,null, null,
@@ -151,22 +154,33 @@ public class UpdateAppointmentView{
 						oldstarttime, starttimeinput.getText());
 			}else {
 				if(OneDayDiff() == true) {
-
+					int c = FlexiBookApplication.getflexibook().getAppointments().size();
 					FlexibookController.CancelAppointment(FlexiBookApplication.getCurrentuser().getUsername(),null,
 							a.getTimeSlot().getStartDate().toString(), oldstarttime);
 
 					FlexibookController.MakeAppointment(FlexiBookApplication.getCurrentuser().getUsername(),
 							dateinput.getText(), BookableService.getSelectedItem().toString(), null, starttimeinput.getText());
-				refreshText();
-				errorMessage.setText(" ");
-				errorMessage2.setText(" ");
-				errorMessage.setText("Successfully updated an appointment!");
+					int b = FlexiBookApplication.getflexibook().getAppointments().size();
+					if(c != b) {
+						FlexibookController.MakeAppointment(d, e, f, null, oldstarttime);
+						refreshText();
+						errorMessage.setText(" ");
+						errorMessage2.setText(" ");
+						errorMessage2.setText("Sorry, the appointment is not updated!");
+					}
+					else {
+						refreshText();
+						errorMessage.setText(" ");
+						errorMessage2.setText(" ");
+						errorMessage.setText("Successfully updated an appointment!");
+					}
+
 				}
 				else {
 					refreshText();
 					errorMessage.setText(" ");
 					errorMessage2.setText(" ");
-					errorMessage2.setText("Sorry, your appointment is not updated!");
+					errorMessage2.setText("Sorry, the appointment is not updated!");
 				}
 			}
 		}catch (InvalidInputException e) {

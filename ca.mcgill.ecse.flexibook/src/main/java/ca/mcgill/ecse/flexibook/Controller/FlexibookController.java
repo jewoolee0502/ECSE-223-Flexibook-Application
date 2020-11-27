@@ -689,9 +689,12 @@ public class FlexibookController {
 			Map<BookableService, Boolean>DowntimeMap=gettheMap(fb);	
 			for(Appointment appointment : fb.getAppointments()) {
 				TimeSlot slot = appointment.getTimeSlot();
+				TimeSlot newslot= new TimeSlot(servicedate,starttime,servicedate,endtime, fb);
 				if(slot!=null) {
 					if(slot.getStartDate().after(servicedate)==false&&slot.getStartDate().before(servicedate)==false) {
-						if(((starttime.before(slot.getEndTime()))&&(starttime.before(slot.getStartTime())==false))||(endtime.after(slot.getStartTime())&&(endtime.after(slot.getEndTime())==false))) {
+						if(((starttime.before(slot.getEndTime()))&&(starttime.before(slot.getStartTime())==false))
+								||(endtime.after(slot.getStartTime())&&(endtime.after(slot.getEndTime())==false)) 
+								|| !isNoOverlap(newslot, slot)) {
 
 							occupied=true;			
 						}
@@ -704,7 +707,7 @@ public class FlexibookController {
 					}else {
 						if(appointment.getBookableService() instanceof Service) {
 							Service s = (Service) appointment.getBookableService();
-							TimeSlot newslot= new TimeSlot(servicedate,starttime,servicedate,endtime, fb);
+							newslot= new TimeSlot(servicedate,starttime,servicedate,endtime, fb);
 							if(s.getDowntimeStart() == 0) {
 								if(!isNoOverlap(newslot,slot)) {
 									throw new RuntimeException("unsuccessful");
@@ -728,7 +731,7 @@ public class FlexibookController {
 							}
 						}else         if(appointment.getBookableService() instanceof ServiceCombo) {
 							boolean successful = false;
-							TimeSlot newslot= new TimeSlot(servicedate,starttime,servicedate,endtime, fb);
+							newslot= new TimeSlot(servicedate,starttime,servicedate,endtime, fb);
 							List<TimeSlot> dtTS = new ArrayList<TimeSlot>();
 							ServiceCombo combo = (ServiceCombo) appointment.getBookableService();
 							int min = 0;

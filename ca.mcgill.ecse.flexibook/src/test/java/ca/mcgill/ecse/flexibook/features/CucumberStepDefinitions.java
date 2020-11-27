@@ -1933,8 +1933,9 @@ public class CucumberStepDefinitions {
 	@When("the owner attempts to register a no-show for the appointment at {string}")
 	public void the_owner_attempts_to_register_a_no_show_for_the_appointment_at(String string) throws InvalidInputException {
 		SystemTime.setSysTime(string);
+		String a=appointment.getTimeSlot().getStartTime().toString().substring(0,appointment.getTimeSlot().getStartTime().toString().length()-3);
 		FlexibookController.noShowCheck(appointment.getCustomer().getUsername(), appointment.getFlexiBook().getOwner().getUsername(), 
-				null, appointment.getTimeSlot().getStartDate().toString(), appointment.getTimeSlot().getStartTime().toString());
+				null, appointment.getTimeSlot().getStartDate().toString(), a);
 	}
 
 	@Then("the appointment shall be in progress")

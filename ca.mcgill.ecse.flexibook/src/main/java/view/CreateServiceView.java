@@ -33,6 +33,18 @@ public class CreateServiceView {
 	private static JLabel errorMessage = new JLabel("");
 	private static JLabel success = new JLabel();
 	private static JComboBox<String> timeDuration;
+	
+	public static void refreshCreateS() {
+		newService.setText(" ");
+		downstart.setSelectedIndex(0);
+		downDuration.setSelectedIndex(0);
+		timeDuration.setSelectedIndex(0);
+	}
+	
+	public static void refreshError() {
+		success.setText(" ");
+		errorMessage.setText(" ");
+	}
 
 	public static void main(String[] args) {
 		init_component_createService();
@@ -78,8 +90,9 @@ public class CreateServiceView {
 		downtimeStart.setBounds(180, 250, 120, 25);
 		panelCreateService.add(downtimeStart);
 
-		String downStartComboBox[] = {"", "5", "10", "15", "20", "25", "30", 
-										"35", "40", "45", "50"};
+		String downStartComboBox[] = {"", "0", "5", "10", "15", "20", "25", "30", "35", "40",
+				"45", "50", "55", "60", "65", "70", "75", "80",
+				"85", "90", "95", "100"};
 		downstart = new JComboBox(downStartComboBox);
 		downstart.setBounds(180, 270, 120, 25);
 		panelCreateService.add(downstart);
@@ -88,8 +101,9 @@ public class CreateServiceView {
 		downtimeDuration.setBounds(370, 250, 200, 25);
 		panelCreateService.add(downtimeDuration);
 		
-		String downDurationComboBox[] = {"", "5", "10", "15", "20", "25", "30", 
-											"35", "40", "45", "50"};
+		String downDurationComboBox[] = {"", "0", "5", "10", "15", "20", "25", "30", "35", "40",
+				"45", "50", "55", "60", "65", "70", "75", "80",
+				"85", "90", "95", "100"};
 		downDuration = new JComboBox(downDurationComboBox);
 		downDuration.setBounds(370,270,120,25);
 		panelCreateService.add(downDuration);
@@ -118,11 +132,11 @@ public class CreateServiceView {
 
 
 		success = new JLabel(""); 
-		success.setBounds(70, 380, 200, 25);
-		success.setForeground(Color.BLUE);
+		success.setBounds(100, 380, 500, 25);
+		success.setForeground(Color.red);
 		panelCreateService.add(success);
 
-		errorMessage.setBounds(330, 380, 300, 25);
+		errorMessage.setBounds(100, 380, 500, 25);
 		errorMessage.setForeground(Color.red);
 		panelCreateService.add(errorMessage);
 
@@ -138,20 +152,23 @@ public class CreateServiceView {
 			success.setText("Service name/duration can not be empty");
 		}else {
 			try {
-				String downtime = "0";
-				String downStart = "0";
+				String downtime = downDuration.getSelectedItem().toString();
+				String downStart = downstart.getSelectedItem().toString();
 				
 				FlexibookController.addService(FlexiBookApplication.getCurrentuser().getUsername(), newService.getText(), timeDuration.getSelectedItem().toString(),downStart, 
 						downtime); 
+				refreshCreateS();
+				errorMessage.setText(" ");
+				success.setText("Successfully created a new service!");
 			}catch (InvalidInputException e) {
+				success.setText(" ");
 				errorMessage.setText(e.getMessage());
 			}
-			success.setText("Successfully created a new service!");
-			System.out.println(FlexiBookApplication.getflexibook().getBookableServices());
 		}
 	}
 
 	private static void cancelActionPerformed(java.awt.event.ActionEvent evt) throws InvalidInputException {
 		FlexiBookApplication.addservicecancel();
+		refreshCreateS();
 	}
 }

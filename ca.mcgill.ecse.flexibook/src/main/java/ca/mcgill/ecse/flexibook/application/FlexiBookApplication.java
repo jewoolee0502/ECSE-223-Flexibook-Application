@@ -97,12 +97,14 @@ public class FlexiBookApplication {
 		} else {
 			if (makeappointmentview.frame.isVisible() == true) {
 				if (customerview.frame.isVisible() == false) {
+					customerview.refresh();
 					customerview.frame.setVisible(true);
 				}
+				customerview.refresh();
 				makeappointmentview.frame.setVisible(false);
 			} else {
-
-				makeappointmentview.frame.setVisible(false);
+				customerview.refresh();
+				customerview.frame.setVisible(true);
 			}
 		}
 	}
@@ -113,10 +115,13 @@ public class FlexiBookApplication {
 		} else {
 			if (customerview.frame.isVisible() == true) {
 				if (makeappointmentview.frame.isVisible() == false) {
+					makeappointmentview.refresh();
 					makeappointmentview.frame.setVisible(true);
 				}
+				makeappointmentview.refresh();
 				customerview.frame.setVisible(false);
 			} else {
+				makeappointmentview.refresh();
 				makeappointmentview.frame.setVisible(true);
 			}
 		}
@@ -161,6 +166,8 @@ public class FlexiBookApplication {
 					addserviceview.frame.setVisible(true);
 				}
 				viewAsOwner.frame.setVisible(false);
+				viewAsOwner.refreshService();
+				addserviceview.refreshError();
 			} else {
 				addserviceview.frame.setVisible(true);
 			}
@@ -173,10 +180,16 @@ public class FlexiBookApplication {
 		} else {
 			if (addserviceview.frame.isVisible() == true) {
 				if (viewAsOwner.frame.isVisible() == false) {
+					viewAsOwner.refreshService();
+					addserviceview.refreshError();
 					viewAsOwner.frame.setVisible(true);
 				}
+				viewAsOwner.refreshService();
+				addserviceview.refreshError();
 				addserviceview.frame.setVisible(false);
 			} else {
+				viewAsOwner.refreshService();
+				addserviceview.refreshError();
 				viewAsOwner.frame.setVisible(true);
 			}
 		}
@@ -188,10 +201,13 @@ public class FlexiBookApplication {
 		} else {
 			if (ownerview.frame.isVisible() == true) {
 				if (mainpage.frame.isVisible() == false) {
+					mainpage.refreshE();
 					mainpage.frame.setVisible(true);
 				}
+				mainpage.refreshE();
 				ownerview.frame.setVisible(false);
 			} else {
+				mainpage.refreshE();
 				mainpage.frame.setVisible(true);
 			}
 		}
@@ -203,10 +219,14 @@ public class FlexiBookApplication {
 		} else {
 			if (viewAsOwner.frame.isVisible() == true) {
 				if (updateserviceview.frame.isVisible() == false) {
+					updateserviceview.refreshCombo();
 					updateserviceview.frame.setVisible(true);
 				}
+				viewAsOwner.refreshService();
+				updateserviceview.refreshCombo();
 				viewAsOwner.frame.setVisible(false);
 			} else {
+				updateserviceview.refreshCombo();
 				updateserviceview.frame.setVisible(true);
 			}
 		}
@@ -218,10 +238,13 @@ public class FlexiBookApplication {
 		} else {
 			if (updateserviceview.frame.isVisible() == true) {
 				if (viewAsOwner.frame.isVisible() == false) {
+					viewAsOwner.refreshService();
 					viewAsOwner.frame.setVisible(true);
 				}
+				viewAsOwner.refreshService();
 				updateserviceview.frame.setVisible(false);
 			} else {
+				viewAsOwner.refreshService();
 				viewAsOwner.frame.setVisible(true);
 			}
 		}
@@ -282,7 +305,9 @@ public class FlexiBookApplication {
 
 					ownerview.frame.setVisible(true);
 				}
-				viewbowner.frame.setVisible(false);
+				else {
+					viewbowner.frame.setVisible(false);
+				}
 			} else {
 				ownerview.frame.setVisible(true);
 			}
@@ -335,10 +360,13 @@ public class FlexiBookApplication {
 		} else {
 			if (customerview.frame.isVisible() == true) {
 				if (mainpage.frame.isVisible() == false) {
+					mainpage.refreshE();
 					mainpage.frame.setVisible(true);
 				}
+				mainpage.refreshE();
 				customerview.frame.setVisible(false);
 			} else {
+				mainpage.refreshE();
 				mainpage.frame.setVisible(true);
 			}
 		}
@@ -377,10 +405,13 @@ public class FlexiBookApplication {
 		} else {
 			if (customerview.frame.isVisible() == true) {
 				if (viewbcustomer.frame.isVisible() == false) {
+					viewbcustomer.refresh();
 					viewbcustomer.frame.setVisible(true);
 				}
+				viewbcustomer.refresh();
 				customerview.frame.setVisible(false);
 			} else {
+				viewbcustomer.refresh();
 				viewbcustomer.frame.setVisible(true);
 			}
 		}
@@ -406,10 +437,13 @@ public class FlexiBookApplication {
 		} else {
 			if (customerview.frame.isVisible() == true) {
 				if (updateappointmentview.frame.isVisible() == false) {
+					updateappointmentview.refreshC();
 					updateappointmentview.frame.setVisible(true);
 				}
+				updateappointmentview.refreshC();
 				customerview.frame.setVisible(false);
 			} else {
+				updateappointmentview.refreshC();
 				updateappointmentview.frame.setVisible(true);
 			}
 		}
@@ -421,10 +455,13 @@ public class FlexiBookApplication {
 		} else {
 			if (updateappointmentview.frame.isVisible() == true) {
 				if (customerview.frame.isVisible() == false) {
+					customerview.refresh();
 					customerview.frame.setVisible(true);
 				}
+				customerview.refresh();
 				updateappointmentview.frame.setVisible(false);
 			} else {
+				customerview.refresh();
 				customerview.frame.setVisible(true);
 			}
 		}
@@ -435,10 +472,13 @@ public class FlexiBookApplication {
 		} else {
 			if (mainpage.frame.isVisible() == true) {
 				if (customerview.frame.isVisible() == false) {
+					mainpage.refreshE();
 					customerview.frame.setVisible(true);
 				}
+				mainpage.refreshE();
 				mainpage.frame.setVisible(false);
 			} else {
+				mainpage.refreshE();
 				customerview.frame.setVisible(true);
 			}
 		}
@@ -449,10 +489,13 @@ public class FlexiBookApplication {
 		} else {
 			if (mainpage.frame.isVisible() == true) {
 				if (ownerview.frame.isVisible() == false) {
+					mainpage.refreshE();
 					ownerview.frame.setVisible(true);
 				}
+				mainpage.refreshE();
 				mainpage.frame.setVisible(false);
 			} else {
+				mainpage.refreshE();
 				ownerview.frame.setVisible(true);
 			}
 		}
@@ -484,6 +527,47 @@ public class FlexiBookApplication {
 				viewAsCus.frame.setVisible(false);
 			} else {
 				customerview.frame.setVisible(true);
+			}
+		}
+	}
+	
+	public static void toMainpage() {
+		if(mainpage == null) {
+			mainpage = new MainPage();
+		}
+		else {
+			if(signuppage.frame.isVisible() == true) {
+				if(mainpage.frame.isVisible() == false) {
+					signuppage.refreshE();
+					mainpage.frame.setVisible(true);
+				}
+				signuppage.refreshE();
+				signuppage.frame.setVisible(false);
+			}
+			else {
+				signuppage.refreshE();
+				mainpage.frame.setVisible(true);
+			}
+		}
+
+	}
+	
+	public static void toSignUp() {
+		if(signuppage == null) {
+			signuppage = new SignUpPage();
+		}
+		else {
+			if(mainpage.frame.isVisible() == true) {
+				if(signuppage.frame.isVisible() == false) {
+					signuppage.refreshE();
+					signuppage.frame.setVisible(true);
+				}
+				signuppage.refreshE();
+				mainpage.frame.setVisible(false);
+			}
+			else {
+				signuppage.refreshE();
+				signuppage.frame.setVisible(true);
 			}
 		}
 	}

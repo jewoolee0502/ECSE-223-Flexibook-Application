@@ -1180,7 +1180,7 @@ public class FlexibookController {
 				Time localTime = Time.valueOf(sys[1]+":00");
 				int noShow;
 				Date servicedate = Date.valueOf(serviceDate);
-				Time starttime = Time.valueOf(startTime);
+				Time starttime = Time.valueOf(startTime+":00");
 
 				int cindex = -1;
 				for(Customer c : fb.getCustomers()) {

@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -31,6 +32,7 @@ import ca.mcgill.ecse.flexibook.model.BookableService;
 import ca.mcgill.ecse.flexibook.model.Customer;
 import ca.mcgill.ecse.flexibook.model.Service;
 import ca.mcgill.ecse.flexibook.model.TimeSlot;
+import ca.mcgill.ecse.flexibook.util.SystemTime;
 
 public class OwnerView {
 
@@ -72,9 +74,20 @@ public class OwnerView {
 	private static JLabel CustomerLbl = new JLabel();
 	private static JLabel StatusLbl = new JLabel();
 	private static JLabel NoShowLbl = new JLabel();
+	private static JLabel errorMessage = new JLabel();
 
 	public OwnerView() throws InvalidInputException {
 		init_component_ownerMainPage();
+	}
+
+	public static void refreshCombo() {
+		startComboBox.setSelectedIndex(0);
+		endComboBox.setSelectedIndex(0);
+		noShowComboBox.setSelectedIndex(0);
+	}
+
+	public static void refreshError() {
+		errorMessage.setText(" ");
 	}
 
 	private static void init_component_ownerMainPage() throws InvalidInputException {
@@ -110,6 +123,11 @@ public class OwnerView {
 
 		logOut.setText("Log Out");
 		logOut.setBounds(550, 600, 100, 25);
+
+		errorMessage.setBounds(20, 120, 500, 25);
+		errorMessage.setForeground(Color.red);
+		panelOwnerMainPage.add(errorMessage);
+
 		businessInfo.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				businessinfo(evt);
@@ -140,8 +158,7 @@ public class OwnerView {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				logOutActionPerformed(evt);
 			}});
-
-		String startAppNum[] = { "#", "1", "2", "3", "4", "5" };        
+		startComboBox = new JComboBox();
 		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
 			int count = 0;
 			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
@@ -149,21 +166,20 @@ public class OwnerView {
 				startComboBox.addItem(count);
 			}
 		}
-		startComboBox = new JComboBox(startAppNum);    
+
 		startComboBox.setBounds(150, 80, 60, 30); 
 
-		String endAppNum[] = { "#", "1", "2", "3", "4", "5" };        
+		endComboBox = new JComboBox();       
 		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
 			int count = 0;
 			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
 				count=count+1;
 				endComboBox.addItem(count);
 			}
-		}
-		endComboBox = new JComboBox(endAppNum);    
+		}    
 		endComboBox.setBounds(350, 80, 60, 30);
 
-		String noShowNum[] = { "#", "1", "2", "3", "4", "5" };        
+		noShowComboBox = new JComboBox();      
 		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
 			int count = 0;
 			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
@@ -171,7 +187,7 @@ public class OwnerView {
 				noShowComboBox.addItem(count);
 			}
 		}
-		noShowComboBox = new JComboBox(noShowNum);    
+
 		noShowComboBox.setBounds(500, 80, 60, 30);
 
 		SqlDateModel overviewModel = new SqlDateModel();
@@ -200,10 +216,7 @@ public class OwnerView {
 		overviewDateLabel.setText("Date for Overview:");
 		overviewDateLabel.setBounds(50, 150, 150, 20);
 		panelOwnerMainPage.add(overviewDateLabel);
-//		Appointment b = new Appointment(new Customer("Jame","James",FlexiBookApplication.getflexibook()), 
-//				new Service("a",FlexiBookApplication.getflexibook(),10,0,0),
-//				new TimeSlot(new Date(120, 10, 27), new Time(10, 30, 00), new Date(120, 10, 27), new Time(10, 40, 00),FlexiBookApplication.getflexibook()), 
-//				FlexiBookApplication.getflexibook());
+
 		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
 			overviewTable = new JTable();
 			overviewDtm = new DefaultTableModel(0,0);
@@ -215,7 +228,7 @@ public class OwnerView {
 			overviewDtm.addColumn("Status");
 			overviewDtm.addColumn("No show");
 			int index =0;
-			
+
 			for(Appointment a : FlexiBookApplication.getflexibook().getAppointments()) {
 				if(a.getTimeSlot().getStartDate().toString().equals(overviewDatePicker.getModel().getValue().toString())) {
 					index++;
@@ -237,15 +250,11 @@ public class OwnerView {
 			overviewDtm.addColumn("Status");
 			overviewDtm.addColumn("No show");
 			String[] info2 = {"none","none","none","none","none","none"};
-//			overviewTable = new JTable(info2, column);
 			overviewDtm.addRow(info2);
 			overviewTable.setBounds(50, 250, 600, HEIGHT_OVERVIEW_TABLE);
 			panelOwnerMainPage.add(overviewTable);
 		}
-//		overviewScrollPane = new JScrollPane(overviewTable);
-//		Dimension d = overviewTable.getPreferredSize();
-//		overviewScrollPane.setPreferredSize(new Dimension(d.width, HEIGHT_OVERVIEW_TABLE));
-//		overviewScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
 		NumberLbl.setBounds(50, 210, 100, 50);
 		NumberLbl.setText("#");
 		CustomerLbl.setText("Customer Name");
@@ -277,7 +286,7 @@ public class OwnerView {
 		refresh();
 		frame.setVisible(true);
 	}
-	
+
 	public static void refresh() throws InvalidInputException {
 		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
 			String b = overviewDatePicker.getModel().getValue().toString();
@@ -290,7 +299,7 @@ public class OwnerView {
 			overviewDtm.addColumn("Status");
 			overviewDtm.addColumn("No show");
 			int index =0;
-			
+
 			for(Appointment a : FlexiBookApplication.getflexibook().getAppointments()) {
 				if(a.getTimeSlot().getStartDate().toString().equals(overviewDatePicker.getModel().getValue().toString())) {
 					index++;
@@ -311,55 +320,112 @@ public class OwnerView {
 			overviewDtm.addColumn("Status");
 			overviewDtm.addColumn("No show");
 			String[] info2 = {"none","none","none","none","none","none"};
-//			overviewTable = new JTable(info2, column);
+			//			overviewTable = new JTable(info2, column);
 			overviewDtm.addRow(info2);
 			overviewTable.setBounds(50, 250, 600, HEIGHT_OVERVIEW_TABLE);
 			panelOwnerMainPage.add(overviewTable);
 		}
+
+		startComboBox.removeAllItems();
+		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+			int count = 0;
+			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
+				count=count+1;
+				startComboBox.addItem(count);
+			}
+		}
+
+		startComboBox.setBounds(150, 80, 60, 30); 
+
+		endComboBox.removeAllItems();
+		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+			int count = 0;
+			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
+				count=count+1;
+				endComboBox.addItem(count);
+			}
+		}    
+		endComboBox.setBounds(350, 80, 60, 30);
+
+		noShowComboBox.removeAllItems();
+		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+			int count = 0;
+			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
+				count=count+1;
+				noShowComboBox.addItem(count);
+			}
+		} 
+		noShowComboBox.setBounds(500, 80, 60, 30);
+
+		panelOwnerMainPage.add(startComboBox);
+		panelOwnerMainPage.add(endComboBox);
+		panelOwnerMainPage.add(noShowComboBox);
 	}
+
 	private static void startAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
-//		try {
-//			FlexibookController.startAppointment(owner, appointment);
-//		} catch(InvalidInputException e) {
-//			
-//		}
+		SystemTime.SystemTime(null, false);
+		try {
+			FlexibookController.startAppointment(FlexiBookApplication.getflexibook().getOwner().getUsername(), 
+					FlexiBookApplication.getflexibook().getAppointment(Integer.valueOf(startComboBox.getSelectedItem().toString()) - 1));
+			errorMessage.setText("Started the appointment!");
+			refresh();
+		} catch(InvalidInputException e) {
+			errorMessage.setText(" ");
+			errorMessage.setText(e.getMessage());
+		}
 	}
 
 	private static void endAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
-//		try {
-//			FlexibookController.endAppointment(owner, appointment);
-//		} catch(InvalidInputException e) {
-//			
-//		}
+		SystemTime.SystemTime(null, false);
+		try {
+			FlexibookController.endAppointment(FlexiBookApplication.getflexibook().getOwner().getUsername(), 
+					FlexiBookApplication.getflexibook().getAppointment(Integer.valueOf(endComboBox.getSelectedItem().toString()) - 1));
+			errorMessage.setText("Ended the appointment!");
+			refresh();
+		} catch(InvalidInputException e) {
+			errorMessage.setText(" ");
+			errorMessage.setText(e.getMessage());
+		}
 	}
 
 	private static void noShowActionPerformed(java.awt.event.ActionEvent evt) {
-//		try {
-//			FlexibookController.noShowCheck(customer, owner, name, serviceDate, startTime);
-//		} catch(InvalidInputException e) {
-//			
-//		}
+		SystemTime.SystemTime(null, false);
+		try {
+			Appointment a = FlexiBookApplication.getflexibook().getAppointment(Integer.valueOf(noShowComboBox.getSelectedItem().toString()) - 1);
+			String startTime = a.getTimeSlot().getStartTime().toString().substring(0,a.getTimeSlot().getStartTime().toString().length()-3);
+			FlexibookController.noShowCheck(a.getCustomer().getUsername(), FlexiBookApplication.getflexibook().getOwner().getUsername(), 
+					a.getBookableService().getName(), a.getTimeSlot().getStartDate().toString(), startTime);
+			errorMessage.setText("The customer did not show up!");
+			refresh();
+		} catch(InvalidInputException e) {
+			errorMessage.setText(" ");
+			errorMessage.setText(e.getMessage());
+		}
 	}
 
 	private static void editAccountActionPerformed(java.awt.event.ActionEvent evt) {
-			FlexiBookApplication.ownertoedit();
+		refreshError();
+		FlexiBookApplication.ownertoedit();
 	}
 
 
 	private static void viewServiceActionPerformed(java.awt.event.ActionEvent evt) {
+		refreshError();
 		FlexiBookApplication.ownertoservice();
 	}
-	
+
 	private static void businessinfo(ActionEvent evt) {
+		refreshError();
 		FlexiBookApplication.ownertobusiness();
 	}
-	
+
 	private static void logOutActionPerformed(java.awt.event.ActionEvent evt) {
 		try {
 			FlexibookController.LogOut();
 			FlexiBookApplication.logout();
+			refreshError();
 		} catch (InvalidInputException e) {
-			
+
 		}
 	}
 
@@ -367,7 +433,7 @@ public class OwnerView {
 		try {
 			init_component_ownerMainPage();
 		} catch(InvalidInputException e) {
-			
+
 		}
 	}
 

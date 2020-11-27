@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ItemListener;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -40,8 +41,6 @@ public class CustomerView  {
 	private static JLabel errorMessageMakeAppointment = new JLabel("");
 	private static JLabel errorMessageUpdateAppointment = new JLabel("");
 	private static JLabel errorMessageEditAccount = new JLabel("");
-	//	private static JLabel comboBoxMessage = new JLabel("Select Appointment #: ");
-	//	private static JLabel comboBoxMessage2 = new JLabel("# Selected");
 	private static JButton makeAppointment = new JButton();
 	private static JButton updateAppointment = new JButton();
 	private static JButton editAccount = new JButton();
@@ -56,7 +55,6 @@ public class CustomerView  {
 	private static JDatePickerImpl overviewDatePicker;
 	private static JLabel overviewDateLabel; 
 	private static JTable overviewTable;
-	private static JScrollPane overviewScrollPane;
 	private static DefaultTableModel overviewDtm;
 	private static String overviewColumnNames[] = {"Number", "Service","Start time"};
 	private static final int HEIGHT_OVERVIEW_TABLE = 350;
@@ -64,6 +62,7 @@ public class CustomerView  {
 	private static JLabel NumberLbl = new JLabel();
 	private static JLabel ServiceLabel = new JLabel();
 	private static JLabel HourLbl = new JLabel();
+	private static JLabel endTime = new JLabel();
 
 
 	public CustomerView() throws InvalidInputException {
@@ -73,7 +72,6 @@ public class CustomerView  {
 
 	private static void init_component_customerMainPage() throws InvalidInputException {
 		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
-		//		Font font2 = new Font("Times New Romans", Font.PLAIN, 1);
 		for(Customer user : FlexiBookApplication.getflexibook().getCustomers()) {
 			if(user.getUsername().equals(FlexiBookApplication.getCurrentuser().getUsername())) {
 				currentUser = user;
@@ -99,13 +97,13 @@ public class CustomerView  {
 		viewService.setText("View Service");
 		viewService.setBounds(520, 160, 150, 25);
 		viewService.addActionListener(new java.awt.event.ActionListener() {
-	          public void actionPerformed(java.awt.event.ActionEvent evt) {
-					FlexiBookApplication.ctoservice();
-	        }});
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				FlexiBookApplication.ctoservice();
+			}});
 		businessInfo.addActionListener(new java.awt.event.ActionListener() {
-          public void actionPerformed(java.awt.event.ActionEvent evt) {
-            FlexiBookApplication.customertobusiness();
-        }});
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				FlexiBookApplication.customertobusiness();
+			}});
 		makeAppointment.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				FlexiBookApplication.gotomakeappointment();
@@ -117,23 +115,23 @@ public class CustomerView  {
 		editAccount.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				editAccountActionPerformed(evt);
-			}});		//should I add an error message? What kind of error message though?
+			}});
 		logOut.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				logOutActionPerformed(evt);
 			}});
-
-		//		comboBoxMessage.setBounds(170, 70, 100, 10);
-		//		comboBoxMessage.setForeground(Color.red);
-		String number[] = { "#", "1", "2", "3", "4", "5" };        
-		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+		comboBox = new JComboBox();  
+		if(FlexiBookApplication.getflexibook().getAppointments().size() > 0) {
 			int count = 0;
-			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
-				count=count+1;
-				comboBox.addItem(count);
+			for(Appointment a : FlexiBookApplication.getflexibook().getAppointments()) {
+				if(a.getCustomer().getUsername().equals(FlexiBookApplication.getCurrentuser().getUsername())) {
+					if(a.getTimeSlot().getStartDate().toString().equals(overviewDatePicker.getModel().getValue().toString())) {
+						count=count+1;
+						comboBox.addItem(count);
+					}
+				}
 			}
 		}
-		comboBox = new JComboBox(number);    
 		comboBox.setBounds(350, 80, 70, 30); 
 
 		SqlDateModel overviewModel = new SqlDateModel();
@@ -152,72 +150,142 @@ public class CustomerView  {
 		overviewDateLabel.setText("Date for Overview:");
 		overviewDateLabel.setBounds(50, 150, 150, 20);
 		panelCustomerMainPage.add(overviewDateLabel);
-		
+
+		overviewDatePicker.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				refresh();
+			}
+		});
+
 		overviewTable = new JTable();
-		overviewScrollPane = new JScrollPane(overviewTable);
-		Dimension d = overviewTable.getPreferredSize();
-		overviewScrollPane.setPreferredSize(new Dimension(d.width, HEIGHT_OVERVIEW_TABLE));
-		overviewScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+			overviewTable = new JTable();
+			overviewDtm = new DefaultTableModel(0,0);
+			overviewTable.setModel(overviewDtm);
+			overviewDtm.addColumn("#:");
+			overviewDtm.addColumn("Service:");
+			overviewDtm.addColumn("Start Time:");
+			overviewDtm.addColumn("End Time:");
+			int index =0;
+
+			for(Appointment a : FlexiBookApplication.getflexibook().getAppointments()) {
+				if(a.getCustomer().getUsername().equals(FlexiBookApplication.getCurrentuser().getUsername())) {
+					if(a.getTimeSlot().getStartDate().toString().equals(overviewDatePicker.getModel().getValue().toString())) {
+						index++;
+						String[] obj = {String.valueOf(index), a.getBookableService().getName(), a.getTimeSlot().getStartTime().toString(), a.getTimeSlot().getEndTime().toString()};
+						overviewDtm.addRow(obj); 
+					}
+				}
+			}
+
+			overviewTable.setBounds(50, 250, 600, HEIGHT_OVERVIEW_TABLE);
+			panelCustomerMainPage.add(overviewTable);
+		}
+		else {
+			overviewTable = new JTable();
+			overviewDtm = new DefaultTableModel(0,0);
+			overviewTable.setModel(overviewDtm);
+			overviewDtm.addColumn("#:");
+			overviewDtm.addColumn("Service:");
+			overviewDtm.addColumn("Start Time:");
+			overviewDtm.addColumn("End Time:");
+			String[] info2 = {"none","none","none", "none"};
+			overviewDtm.addRow(info2);
+			overviewTable.setBounds(50, 250, 600, HEIGHT_OVERVIEW_TABLE);
+			panelCustomerMainPage.add(overviewTable);
+		}
+
 		overviewTable.setBounds(50, 250, 600, HEIGHT_OVERVIEW_TABLE);
 		panelCustomerMainPage.add(overviewTable);
-		NumberLbl.setBounds(50, 210, 200, 50);
-		NumberLbl.setText("#");
-		ServiceLabel.setText("Service");
-		HourLbl.setText("Start Time");
-		ServiceLabel.setBounds(250, 210, 200, 50);
-		HourLbl.setBounds(450, 210, 200, 50);
+		NumberLbl.setBounds(50, 210, 150, 50);
+		NumberLbl.setText("#:");
+		ServiceLabel.setText("Service:");
+		HourLbl.setText("Start Time:");
+		endTime.setText("End Time:");
+		endTime.setBounds(500, 210, 150, 50);
+		ServiceLabel.setBounds(200, 210, 150, 50);
+		HourLbl.setBounds(350, 210, 150, 50);
 		panelCustomerMainPage.add(NumberLbl);
 		panelCustomerMainPage.add(ServiceLabel);
 		panelCustomerMainPage.add(HourLbl);
-		panelCustomerMainPage.add(overviewScrollPane);
 		panelCustomerMainPage.add(makeAppointment);
 		panelCustomerMainPage.add(updateAppointment);
 		panelCustomerMainPage.add(editAccount);
 		panelCustomerMainPage.add(logOut);
 		panelCustomerMainPage.add(businessInfo);
 		panelCustomerMainPage.add(viewService);
-		//		panelCustomerMainPage.add(comboBoxMessage);
 		panelCustomerMainPage.add(comboBox);
-		//refreshDailyOverview();
+		panelCustomerMainPage.add(endTime);
 		frame.setVisible(true);
 
 	}
 
-//	private static void refreshDailyOverview() throws InvalidInputException {
-//		overviewDtm = new DefaultTableModel(0, 0);
-//		overviewDtm.setColumnIdentifiers(overviewColumnNames);
-//		overviewTable.setModel(overviewDtm);
-//		if (overviewDatePicker.getModel().getValue() != null) {
-//			int index=0;
-//			for (TOTimeSlot item : FlexibookController.getUnavailableTimeSlots(FlexiBookApplication.getCurrentuser().getUsername(),overviewDatePicker.getModel().getValue().toString())) {
-//				index++;
-//				String number = String.valueOf(index);
-//				String service="---";
-//				String StartTime = "---";
-//						
-//				for(Appointment appointment:currentUser.getAppointments()) {
-//					if(appointment.getTimeSlot().getStartTime().equals(item.getStartTime())){
-//						 StartTime=appointment.getTimeSlot().getStartTime().toString();
-//						 service=appointment.getBookableService().getName();
-//					}
-//				}
-//
-//				
-//				Object[] obj = {index, service, StartTime};
-//				overviewDtm.addRow(obj);
-//			}
-//		}
-//		Dimension d = overviewTable.getPreferredSize();
-//		overviewScrollPane.setPreferredSize(new Dimension(d.width, HEIGHT_OVERVIEW_TABLE));
-//	}
+	public static void refresh() {
+		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+			overviewDtm = new DefaultTableModel(0,0);
+			overviewTable.setModel(overviewDtm);
+			overviewDtm.addColumn("#:");
+			overviewDtm.addColumn("Service:");
+			overviewDtm.addColumn("Start Time:");
+			overviewDtm.addColumn("End Time:");
+			int index =0;
 
+			for(Appointment a : FlexiBookApplication.getflexibook().getAppointments()) {
+				if(a.getCustomer().getUsername().equals(FlexiBookApplication.getCurrentuser().getUsername())) {
+					if(a.getTimeSlot().getStartDate().toString().equals(overviewDatePicker.getModel().getValue().toString())) {
+						index++;
+						String[] obj = {String.valueOf(index), a.getBookableService().getName(), a.getTimeSlot().getStartTime().toString(), a.getTimeSlot().getEndTime().toString()};
+						overviewDtm.addRow(obj); 
+					}
+				}
+			}
 
+			overviewTable.setBounds(50, 250, 600, HEIGHT_OVERVIEW_TABLE);
+			panelCustomerMainPage.add(overviewTable);
+		}
+		else {
+			overviewDtm = new DefaultTableModel(0,0);
+			overviewTable.setModel(overviewDtm);
+			overviewDtm.addColumn("#:");
+			overviewDtm.addColumn("Service:");
+			overviewDtm.addColumn("Start Time:");
+			overviewDtm.addColumn("End Time:");
+			String[] info2 = {"none","none","none", "none"};
+			overviewDtm.addRow(info2);
+			overviewTable.setBounds(50, 250, 600, HEIGHT_OVERVIEW_TABLE);
+			panelCustomerMainPage.add(overviewTable);
+		}
+		comboBox.removeAllItems();
+		
+		if(FlexiBookApplication.getflexibook().getAppointments().size() > 0) {
+			int count = 0;
+			for(Appointment a : FlexiBookApplication.getflexibook().getAppointments()) {
+				if(a.getCustomer().getUsername().equals(FlexiBookApplication.getCurrentuser().getUsername())) {
+					if(a.getTimeSlot().getStartDate().toString().equals(overviewDatePicker.getModel().getValue().toString())) {
+						count=count+1;
+						comboBox.addItem(count);
+					}
+				}
+			}
+		}
+		comboBox.setBounds(350, 80, 70, 30); 
+	}
 
 	private static void updateAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
-		//		int k=Integer.parseInt(comboBox.getSelectedItem().toString());
-		//		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
-		//			FlexiBookApplication.setcurap(FlexiBookApplication.getflexibook().getAppointment(k-1));
-		//		}
+		int a = Integer.valueOf(comboBox.getSelectedItem().toString());
+		ArrayList<Appointment> b = new ArrayList();
+		if(FlexiBookApplication.getflexibook().getAppointments().size() > 0) {
+			for(Appointment app: FlexiBookApplication.getflexibook().getAppointments()) {
+				if(app.getCustomer().getUsername().equals(FlexiBookApplication.getCurrentuser().getUsername())) {
+					String date = overviewDatePicker.getModel().getValue().toString();
+					if(app.getTimeSlot().getStartDate().toString().equals(date)) {
+						b.add(app);
+					}
+				}
+			}
+		}
+		FlexiBookApplication.setcurap(b.get(a - 1));
 		FlexiBookApplication.updateapp();
 	}
 
@@ -230,7 +298,7 @@ public class CustomerView  {
 			FlexiBookApplication.clogout();
 			FlexibookController.LogOut();
 		} catch(InvalidInputException e) {
-			
+
 		}
 	}
 

@@ -13,6 +13,7 @@ import ca.mcgill.ecse.flexibook.Controller.FlexibookController;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.*;
+import ca.mcgill.ecse.flexibook.util.SystemTime;
 public class MakeAppointmentView  {
 
 	public static JFrame frame = new JFrame();
@@ -37,6 +38,23 @@ public class MakeAppointmentView  {
 	public static void main(String[] args) {
 		init();
 	}
+	
+	public static void refreshText() {
+		dateinput.setText("");
+		starttimeinput.setText("");
+	}
+	
+	public static void refresh() {
+		BookableService.removeAllItems();
+		if(FlexiBookApplication.getflexibook().getBookableServices().size()>0) {
+			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
+				BookableService.addItem(a.getName());
+			}
+		}
+		BookableService.setBounds(300,300,165,25);
+		panel.add(BookableService);
+	}
+	
 	private static void init() {
 
 		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
@@ -68,8 +86,7 @@ public class MakeAppointmentView  {
 			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
 				BookableService.addItem(a.getName());
 			}
-		}BookableService.addItem("cut");
-		BookableService.addItem("wash");
+		}
 		back.setText("Back");
 		back.setBounds(350, 350, 100, 25);
 		panel.add(back);  
@@ -79,8 +96,7 @@ public class MakeAppointmentView  {
 				try {
 					FlexiBookApplication.setaptocus();
 				} catch (InvalidInputException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+
 				}
 			}
 
@@ -104,19 +120,23 @@ public class MakeAppointmentView  {
 	}
 	
 	private static void makeappointmentActionPerformed(ActionEvent evt) {
+		SystemTime.SystemTime(null, false);
 		try {
 			FlexibookController.MakeAppointment(FlexiBookApplication.getCurrentuser().getUsername(),
-					date.getText(), BookableService.getSelectedItem().toString(), null, starttime.getText());
-			errorMessage.setText("Successfully made an appointment");
+					dateinput.getText(), BookableService.getSelectedItem().toString(), null, starttimeinput.getText());
+			errorMessage2.setText(" ");
+			errorMessage.setText("Successfully booked an appointment!");
+			refreshText();
 		}catch (InvalidInputException e) {
+			errorMessage.setText(" ");
 			error = e.getMessage();
 			errorMessage.setText(error);
-			errorMessage2.setText("Sorry, the appointment is not made");
+			errorMessage2.setText("Sorry, the appointment is not made!");
 		}
 	} 
 	
 	private static void backActionPerformed(ActionEvent evt) throws InvalidInputException {
-
+		refreshText();
 		FlexiBookApplication.setaptocus();
 
 	}

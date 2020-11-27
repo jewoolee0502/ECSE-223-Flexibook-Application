@@ -139,8 +139,7 @@ public class ViewBusinessInfoOwner {
 				try {
 					backActionPerformed(evt);
 				} catch (InvalidInputException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+
 				}
 			}
 		});

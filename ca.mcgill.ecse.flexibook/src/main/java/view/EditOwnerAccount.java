@@ -98,7 +98,7 @@ public class EditOwnerAccount {
 		
 		success = new JLabel(""); 
 		success.setBounds(150, 400, 400, 25);
-		success.setForeground(Color.BLUE);
+		success.setForeground(Color.red);
 		panel.add(success);
 
 		frame.setVisible(true);

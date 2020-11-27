@@ -34,6 +34,7 @@ public class UpdateAppointmentView{
 	private static JButton make = new JButton();
 	private static JButton back = new JButton();
 	private static JButton cancel = new JButton();
+	private static JPanel panel = new JPanel();
 	
 	public UpdateAppointmentView() {
 		init();
@@ -43,8 +44,29 @@ public class UpdateAppointmentView{
 		init();
 	}
 	
+	public static void refreshText() {
+		dateinput.setText("");
+		starttimeinput.setText("");
+	}
+	
+	public static void refreshE() {
+		errorMessage.setText("");
+		errorMessage2.setText("");
+	}
+	
+	public static void refreshC() {
+		BookableService.removeAllItems();
+		if(FlexiBookApplication.getflexibook().getBookableServices().size()>0) {
+			BookableService.addItem("null");
+			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
+				BookableService.addItem(a.getName());
+			}
+		}
+		BookableService.setBounds(330,300,165,25);
+		panel.add(BookableService);
+	}
+	
 	private static void init() {
-		JPanel panel = new JPanel();
 		Font font1 = new Font("Times New Romans", Font.BOLD, 20);
 		panel.setLayout(null);
 		frame.add(panel);
@@ -80,9 +102,6 @@ public class UpdateAppointmentView{
 				BookableService.addItem(a.getName());
 			}
 		}
-		BookableService.addItem("null");
-		BookableService.addItem("cut");
-		BookableService.addItem("wash");
 		cancel.setText("Cancel Appointment");
 		cancel.setBounds(300, 370, 180, 25);
 		cancel.addActionListener(new java.awt.event.ActionListener() {
@@ -123,7 +142,7 @@ public class UpdateAppointmentView{
 	private static void makeAppointmentActionPerformed(ActionEvent evt) {
 		try {
 			Appointment a = FlexiBookApplication.getCurrentap();
-			String oldstarttime=a.getTimeSlot().getStartTime().toString().substring(0,a.getTimeSlot().getStartTime().toString().length()-3);;
+			String oldstarttime=a.getTimeSlot().getStartTime().toString().substring(0,a.getTimeSlot().getStartTime().toString().length()-3);
 			if(BookableService.getSelectedItem().toString()=="null") {
 				FlexibookController.UpdateAppointment(FlexiBookApplication.getCurrentuser().getUsername(),null,null, null,
 						FlexiBookApplication.getCurrentap().getBookableService().getName(),a.getTimeSlot().getStartDate().toString(),dateinput.getText(),
@@ -133,25 +152,42 @@ public class UpdateAppointmentView{
 						a.getTimeSlot().getStartDate().toString(), oldstarttime);
 
 				FlexibookController.MakeAppointment(FlexiBookApplication.getCurrentuser().getUsername(),
-						date.getText(), BookableService.getSelectedItem().toString(), null, starttime.getText());
+						dateinput.getText(), BookableService.getSelectedItem().toString(), null, starttimeinput.getText());
 			}
-			errorMessage.setText("Successfully update an appointment");
+			refreshText();
+			errorMessage.setText(" ");
+			errorMessage2.setText(" ");
+			errorMessage.setText("Successfully updated an appointment!");
 		}catch (InvalidInputException e) {
+			errorMessage.setText(" ");
+			errorMessage2.setText(" ");
 			error = e.getMessage();
 			errorMessage.setText(error);
-			errorMessage2.setText("Sorry the appointment is not updated");
+			errorMessage2.setText("Sorry, the appointment is not updated!");
 		}
 	}
 	
 	private static void cancelAppointmentActionPerformed(ActionEvent evt) {
-//		try {
-//			FlexibookController.CancelAppointment(customer, customer2, serviceDate, startTime);
-//		} catch(InvalidInputException e) {
-//			
-//		}
+		try {
+			Appointment a = FlexiBookApplication.getCurrentap();
+			String oldstarttime=a.getTimeSlot().getStartTime().toString().substring(0,a.getTimeSlot().getStartTime().toString().length()-3);
+			FlexibookController.CancelAppointment(FlexiBookApplication.getCurrentuser().getUsername(), null, 
+					FlexiBookApplication.getCurrentap().getTimeSlot().getStartDate().toString(), oldstarttime.toString());
+			refreshText();
+			errorMessage.setText(" ");
+			errorMessage2.setText(" ");
+			errorMessage.setText("Deleted the appointment!");
+		} catch(InvalidInputException e) {
+			errorMessage.setText(" ");
+			errorMessage2.setText(" ");
+			errorMessage.setText(e.getMessage());
+			errorMessage2.setText("Sorry, you have not deleted the appointment!");
+		}
 	}
 	
 	private static void backAppointmentActionPerformed(ActionEvent evt) throws InvalidInputException {
+		refreshText();
+		refreshE();
 		FlexiBookApplication.updateappcancel();
 	}
 

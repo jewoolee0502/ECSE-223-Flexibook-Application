@@ -11,6 +11,7 @@ import javax.swing.JTable;
 import ca.mcgill.ecse.flexibook.Controller.InvalidInputException;
 import ca.mcgill.ecse.flexibook.application.FlexiBookApplication;
 import ca.mcgill.ecse.flexibook.model.Business;
+import ca.mcgill.ecse.flexibook.model.BusinessHour;
 
 public class ViewBusinessInfoCustomer  {
 	
@@ -31,6 +32,63 @@ public class ViewBusinessInfoCustomer  {
 	private static JLabel phoneNumberCur;
 	private static JLabel emailCur;
 	
+	public static void refresh() {
+		panelViewBusiness.remove(table);
+		String column[] = {"Days:", "Business Hour:"};
+		if(FlexiBookApplication.getflexibook().getBusiness().getBusinessHours().size() > 0) {
+			String Monday = "|";
+			String Tuesday = "|";
+			String Wednesday = "|";
+			String Thursday = "|";
+			String Friday = "|";
+			String Saturday = "|";
+			String Sunday = "|";
+			for(BusinessHour b: FlexiBookApplication.getflexibook().getBusiness().getBusinessHours()) {
+				switch(b.getDayOfWeek().toString()) {
+				case "Monday":
+					Monday = Monday + b.getStartTime().toString() + " - " + b.getEndTime().toString() + "|";
+					break;
+				case "Tuesday":
+					Tuesday = Tuesday + b.getStartTime().toString() + " - " + b.getEndTime().toString() + "|";
+					break;
+				case "Wednesday":
+					Wednesday = Wednesday + b.getStartTime().toString() + " - " + b.getEndTime().toString() + "|";
+					break;
+				case "Thursday":
+					Thursday = Thursday + b.getStartTime().toString() + " - " + b.getEndTime().toString() + "|";
+					break;
+				case "Friday":
+					Friday = Friday + b.getStartTime().toString() + " - " + b.getEndTime().toString() + "|";
+					break;
+				case "Saturday":
+					Saturday = Saturday + b.getStartTime().toString() + " - " + b.getEndTime().toString() + "|";
+					break;
+				case "Sunday":
+					Sunday = Sunday + b.getStartTime().toString() + " - " + b.getEndTime().toString() + "|";
+					break;
+				}
+			}
+
+			String info1[][] = {{"                    Days:", "              Business Hour:"},
+					{"Monday", Monday}, {"Tuesday", Tuesday},
+					{"Wednesday", Wednesday}, {"Thursday", Thursday},
+					{"Friday", Friday}, {"Saturday", Saturday},
+					{"Sunday", Sunday}};
+			table = new JTable(info1, column);
+			table.setBounds(50, 380, 600, 150);
+			panelViewBusiness.add(table);
+		}
+		else {
+			String info2[][] = {{"                    Days:", "              Business Hour:"},
+					{"Monday", " "}, {"Tuesday", " "},
+					{"Wednesday", " "}, {"Thursday", " "},
+					{"Friday", " "}, {"Saturday", " "},
+					{"Sunday", " "}};
+			table = new JTable(info2, column);
+			table.setBounds(50, 380, 600, 150);
+			panelViewBusiness.add(table);
+		}
+	}
 	
 	private static void init_component_viewBusinessInfo() {
 		
@@ -59,8 +117,7 @@ public class ViewBusinessInfoCustomer  {
 				try {
 					backActionPerformed(evt);
 				} catch (InvalidInputException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+
 				}
 			}});
 		panelViewBusiness.add(back);
@@ -111,18 +168,60 @@ public class ViewBusinessInfoCustomer  {
 		businessHour.setFont(font6);
 		panelViewBusiness.add(businessHour);
 		
-		String column[] = {"Days", "Business Hour"};
-		String info[][] = {
-				{"Monday", "09:00 - 13:00 & 14:00 - 18:00"},
-				{"Tuesday", "09:00 - 13:00 & 14:00 - 18:00"},
-				{"Wednesday", "09:00 - 13:00 & 14:00 - 18:00"},
-				{"Thursday", "09:00 - 13:00 & 14:00 - 18:00"},
-				{"Friday", "09:00 - 13:00 & 14:00 - 18:00"},
-				{"Saturday", "09:00 - 13:00 & 14:00 - 18:00"},
-				{"Sunday", "09:00 - 13:00 & 14:00 - 18:00"}};
-		table = new JTable(info, column);
-		table.setBounds(50, 380, 400, 150);
-		panelViewBusiness.add(table);
+		String column[] = {"Days:", "Business Hour:"};
+		if(FlexiBookApplication.getflexibook().getBusiness().getBusinessHours().size() > 0) {
+			String Monday = "|";
+			String Tuesday = "|";
+			String Wednesday = "|";
+			String Thursday = "|";
+			String Friday = "|";
+			String Saturday = "|";
+			String Sunday = "|";
+			for(BusinessHour b: FlexiBookApplication.getflexibook().getBusiness().getBusinessHours()) {
+				switch(b.getDayOfWeek().toString()) {
+				case "Monday":
+					Monday = Monday + b.getStartTime().toString() + " - " + b.getEndTime().toString() + "|";
+					break;
+				case "Tuesday":
+					Tuesday = Tuesday + b.getStartTime().toString() + " - " + b.getEndTime().toString() + "|";
+					break;
+				case "Wednesday":
+					Wednesday = Wednesday + b.getStartTime().toString() + " - " + b.getEndTime().toString() + "|";
+					break;
+				case "Thursday":
+					Thursday = Thursday + b.getStartTime().toString() + " - " + b.getEndTime().toString() + "|";
+					break;
+				case "Friday":
+					Friday = Friday + b.getStartTime().toString() + " - " + b.getEndTime().toString() + "|";
+					break;
+				case "Saturday":
+					Saturday = Saturday + b.getStartTime().toString() + " - " + b.getEndTime().toString() + "|";
+					break;
+				case "Sunday":
+					Sunday = Sunday + b.getStartTime().toString() + " - " + b.getEndTime().toString() + "|";
+					break;
+				}
+			}
+
+			String info1[][] = {{"                    Days:", "              Business Hour:"},
+					{"Monday", Monday}, {"Tuesday", Tuesday},
+					{"Wednesday", Wednesday}, {"Thursday", Thursday},
+					{"Friday", Friday}, {"Saturday", Saturday},
+					{"Sunday", Sunday}};
+			table = new JTable(info1, column);
+			table.setBounds(50, 380, 600, 150);
+			panelViewBusiness.add(table);
+		}
+		else {
+			String info2[][] = {{"                    Days:", "              Business Hour:"},
+					{"Monday", " "}, {"Tuesday", " "},
+					{"Wednesday", " "}, {"Thursday", " "},
+					{"Friday", " "}, {"Saturday", " "},
+					{"Sunday", " "}};
+			table = new JTable(info2, column);
+			table.setBounds(50, 380, 600, 150);
+			panelViewBusiness.add(table);
+		}
 		
 		frame.setVisible(true);
 		

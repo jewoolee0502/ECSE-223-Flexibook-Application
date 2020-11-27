@@ -123,7 +123,7 @@ public class Appointment implements Serializable
     switch (aAppointmentStatus)
     {
       case Booked:
-        if (OneDayDifvf())
+        if (OneDayDiff())
         {
         // line 13 "../../../../../FlexiBookStates.ump"
           doUpdateAppointment(timeslot, newBookableService, optionalService);

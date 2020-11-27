@@ -57,7 +57,7 @@ public class UpdateAppointmentView{
 	public static void refreshC() {
 		BookableService.removeAllItems();
 		if(FlexiBookApplication.getflexibook().getBookableServices().size()>0) {
-			//BookableService.addItem("null");
+			BookableService.addItem("null");
 			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
 				BookableService.addItem(a.getName());
 			}
@@ -97,7 +97,7 @@ public class UpdateAppointmentView{
 		BookableService.setBounds(330,300,165,25);
 		panel.add(BookableService);
 		if(FlexiBookApplication.getflexibook().getBookableServices().size()>0) {
-			//BookableService.addItem("null");
+			BookableService.addItem("null");
 			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
 				BookableService.addItem(a.getName());
 			}

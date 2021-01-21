@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -158,37 +159,7 @@ public class OwnerView {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				logOutActionPerformed(evt);
 			}});
-		startComboBox = new JComboBox();
-		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
-			int count = 0;
-			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
-				count=count+1;
-				startComboBox.addItem(count);
-			}
-		}
 
-		startComboBox.setBounds(150, 80, 60, 30); 
-
-		endComboBox = new JComboBox();       
-		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
-			int count = 0;
-			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
-				count=count+1;
-				endComboBox.addItem(count);
-			}
-		}    
-		endComboBox.setBounds(350, 80, 60, 30);
-
-		noShowComboBox = new JComboBox();      
-		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
-			int count = 0;
-			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
-				count=count+1;
-				noShowComboBox.addItem(count);
-			}
-		}
-
-		noShowComboBox.setBounds(500, 80, 60, 30);
 
 		SqlDateModel overviewModel = new SqlDateModel();
 		LocalDate now = LocalDate.now();
@@ -212,6 +183,47 @@ public class OwnerView {
 				}
 			}
 		});
+
+	      startComboBox = new JComboBox();
+	        if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+	          String b = overviewDatePicker.getModel().getValue().toString();
+	         int count=0; 
+	            for (Appointment c: FlexiBookApplication.getflexibook().getAppointments()) {
+	              if(c.getTimeSlot().getStartDate().toString().equals(b)) {
+	                count+=1;
+	                startComboBox.addItem(count);
+	              }
+	            }
+	        }
+
+	        startComboBox.setBounds(150, 80, 60, 30); 
+
+	        endComboBox = new JComboBox();       
+	        if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+	          String b = overviewDatePicker.getModel().getValue().toString();
+	             int count=0; 
+	                for (Appointment c: FlexiBookApplication.getflexibook().getAppointments()) {
+	                  if(c.getTimeSlot().getStartDate().toString().equals(b)) {
+	                    count+=1;
+	                    endComboBox.addItem(count);
+	                  }
+	                }
+	        }    
+	        endComboBox.setBounds(350, 80, 60, 30);
+
+	        noShowComboBox = new JComboBox();      
+	        if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+	          String b = overviewDatePicker.getModel().getValue().toString();
+	             int count=0; 
+	                for (Appointment c: FlexiBookApplication.getflexibook().getAppointments()) {
+	                  if(c.getTimeSlot().getStartDate().toString().equals(b)) {
+	                    count+=1;
+	                    noShowComboBox.addItem(count);
+	                  }
+	                }
+	        }
+
+	        noShowComboBox.setBounds(500, 80, 60, 30);
 		overviewDateLabel = new JLabel();
 		overviewDateLabel.setText("Date for Overview:");
 		overviewDateLabel.setBounds(50, 150, 150, 20);
@@ -326,36 +338,46 @@ public class OwnerView {
 			panelOwnerMainPage.add(overviewTable);
 		}
 
-		startComboBox.removeAllItems();
-		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
-			int count = 0;
-			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
-				count=count+1;
-				startComboBox.addItem(count);
-			}
-		}
+        startComboBox.removeAllItems();
+        if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+          String b = overviewDatePicker.getModel().getValue().toString();
+         int count=0; 
+            for (Appointment c: FlexiBookApplication.getflexibook().getAppointments()) {
+              if(c.getTimeSlot().getStartDate().toString().equals(b)) {
+                count+=1;
+                startComboBox.addItem(count);
+              }
+            }
+        }
 
-		startComboBox.setBounds(150, 80, 60, 30); 
+        startComboBox.setBounds(150, 80, 60, 30); 
 
-		endComboBox.removeAllItems();
-		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
-			int count = 0;
-			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
-				count=count+1;
-				endComboBox.addItem(count);
-			}
-		}    
-		endComboBox.setBounds(350, 80, 60, 30);
+        endComboBox .removeAllItems();    
+        if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+          String b = overviewDatePicker.getModel().getValue().toString();
+             int count=0; 
+                for (Appointment c: FlexiBookApplication.getflexibook().getAppointments()) {
+                  if(c.getTimeSlot().getStartDate().toString().equals(b)) {
+                    count+=1;
+                    endComboBox.addItem(count);
+                  }
+                }
+        }    
+        endComboBox.setBounds(350, 80, 60, 30);
 
-		noShowComboBox.removeAllItems();
-		if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
-			int count = 0;
-			for(BookableService a: FlexiBookApplication.getflexibook().getBookableServices()) {
-				count=count+1;
-				noShowComboBox.addItem(count);
-			}
-		} 
-		noShowComboBox.setBounds(500, 80, 60, 30);
+        noShowComboBox.removeAllItems();      
+        if(FlexiBookApplication.getflexibook().getAppointments().size()>0) {
+          String b = overviewDatePicker.getModel().getValue().toString();
+             int count=0; 
+                for (Appointment c: FlexiBookApplication.getflexibook().getAppointments()) {
+                  if(c.getTimeSlot().getStartDate().toString().equals(b)) {
+                    count+=1;
+                    noShowComboBox.addItem(count);
+                  }
+                }
+        }
+
+        noShowComboBox.setBounds(500, 80, 60, 30);
 
 		panelOwnerMainPage.add(startComboBox);
 		panelOwnerMainPage.add(endComboBox);
@@ -364,10 +386,17 @@ public class OwnerView {
 
 	private static void startAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
 		SystemTime.SystemTime(null, false);
+		String b = overviewDatePicker.getModel().getValue().toString();
+		ArrayList<Appointment> k=new ArrayList();
+		for (Appointment c: FlexiBookApplication.getflexibook().getAppointments()) {
+		  if(c.getTimeSlot().getStartDate().toString().equals(b)) {
+		    k.add(c);
+		  }
+		}
 		try {
-		  Appointment a =FlexiBookApplication.getflexibook().getAppointment(Integer.valueOf(startComboBox.getSelectedItem().toString()) - 1);
+		  Appointment a =k.get(Integer.valueOf(startComboBox.getSelectedItem().toString()) - 1);
 			FlexibookController.startAppointment(FlexiBookApplication.getflexibook().getOwner().getUsername(), 
-					FlexiBookApplication.getflexibook().getAppointment(Integer.valueOf(startComboBox.getSelectedItem().toString()) - 1));
+					a);
 			if(a.getAppointmentInProgress()==true) {
 			  errorMessage.setText("Started the appointment!");
 			}else {
@@ -382,13 +411,20 @@ public class OwnerView {
 
 	private static void endAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
 		SystemTime.SystemTime(null, false);
-		int b = FlexiBookApplication.getflexibook().getAppointments().size();
+		int j = FlexiBookApplication.getflexibook().getAppointments().size();
+		String b = overviewDatePicker.getModel().getValue().toString();
+        ArrayList<Appointment> k=new ArrayList();
+        for (Appointment c: FlexiBookApplication.getflexibook().getAppointments()) {
+          if(c.getTimeSlot().getStartDate().toString().equals(b)) {
+            k.add(c);
+          }
+        }
 		try {
-		  Appointment a =FlexiBookApplication.getflexibook().getAppointment(Integer.valueOf(startComboBox.getSelectedItem().toString()) - 1);
+		  Appointment a =k.get(Integer.valueOf(endComboBox.getSelectedItem().toString()) - 1);
 			FlexibookController.endAppointment(FlexiBookApplication.getflexibook().getOwner().getUsername(), 
-					FlexiBookApplication.getflexibook().getAppointment(Integer.valueOf(endComboBox.getSelectedItem().toString()) - 1));
+					a);
 			int c = FlexiBookApplication.getflexibook().getAppointments().size();
-			if(c < b) {
+			if(c < j) {
 			  errorMessage.setText("Ended the appointment!");
              
             }else {
@@ -403,18 +439,19 @@ public class OwnerView {
 
 	private static void noShowActionPerformed(java.awt.event.ActionEvent evt) {
 		SystemTime.SystemTime(null, false);
+		String b = overviewDatePicker.getModel().getValue().toString();
+        ArrayList<Appointment> k=new ArrayList();
+        for (Appointment c: FlexiBookApplication.getflexibook().getAppointments()) {
+          if(c.getTimeSlot().getStartDate().toString().equals(b)) {
+            k.add(c);
+          }
+        }
 		try {
-			Appointment a = FlexiBookApplication.getflexibook().getAppointment(Integer.valueOf(noShowComboBox.getSelectedItem().toString()) - 1);
+			Appointment a = k.get(Integer.valueOf(noShowComboBox.getSelectedItem().toString()) - 1);
+            int j=k.size();
 			String startTime = a.getTimeSlot().getStartTime().toString().substring(0,a.getTimeSlot().getStartTime().toString().length()-3);
 			FlexibookController.noShowCheck(a.getCustomer().getUsername(), FlexiBookApplication.getflexibook().getOwner().getUsername(), 
 					a.getBookableService().getName(), a.getTimeSlot().getStartDate().toString(), startTime);
-	         Appointment b =FlexiBookApplication.getflexibook().getAppointment(Integer.valueOf(startComboBox.getSelectedItem().toString()) - 1);
-	            if(b==null) {
-	             errorMessage.setText("The customer did not show up!");
-	            }else {
-	              errorMessage.setText("No show register failed");
-	            }
-			  
 			refresh();
 		} catch(InvalidInputException e) {
 			errorMessage.setText(" ");

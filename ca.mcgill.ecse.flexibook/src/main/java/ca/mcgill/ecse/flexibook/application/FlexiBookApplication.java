@@ -578,8 +578,22 @@ public class FlexiBookApplication {
 		if(mainpage == null) {
 			mainpage = new MainPage();
 			signuppage.frame.setVisible(false);
+			if(editcustomerinfo.frame.isVisible()) {
+			editcustomerinfo.frame.setVisible(false);
+			}
 		}
 		else {
+          if(editcustomerinfo.frame.isVisible() == true) {
+            if(mainpage.frame.isVisible() == false) {
+                mainpage.frame.setVisible(true);
+            }
+            editcustomerinfo.frame.setVisible(false);
+        }
+        else {
+            mainpage.frame.setVisible(true);
+        }
+
+		  
 			if(signuppage.frame.isVisible() == true) {
 				if(mainpage.frame.isVisible() == false) {
 					signuppage.refreshE();

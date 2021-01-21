@@ -551,10 +551,10 @@ public class FlexibookController {
 			}
 			else {
 
-				for(Appointment appointment : user.getAppointments()) {
-					appointment.delete();
-
-				}
+//				for(Appointment appointment : user.getAppointments()) {
+//					appointment.delete();
+//
+//				}
 				user.delete();
 				FlexiBookApplication.setCurrentuser(null);
 			}
@@ -894,31 +894,43 @@ public class FlexibookController {
 					int d = service.getDuration();
 					Time endtime = Time.valueOf(localstart.plusMinutes(d));
 					int day = Date.valueOf(newDate).getDay();
-					if(day == 0 || day == 6) {
-						throw new InvalidInputException("unsuccessful");
-					}else if(day == 5) {
-						if(endtime.after(new Time(15,00,00))) {
-							throw new InvalidInputException("unsuccessful");
-						}
-					}else {
-						if(endtime.after(new Time(16,50,00))) {
-							throw new InvalidInputException("unsuccessful");
-						}
-					}
-					if(fb.getBusiness().getBusinessHour(0).getEndTime().before(endtime)) {
-					}
 					FlexiBook fb2 = new FlexiBook();
 					TimeSlot newslot = new TimeSlot(Date.valueOf(newDate), newstarttime, Date.valueOf(newDate), endtime, fb);
-					try {
-						fb.getCustomer(cindex).getAppointment(aindex).updateAppointment(newslot, 
-								fb.getCustomer(cindex).getAppointment(aindex).getBookableService(), null);
-					}
-					catch (RuntimeException e) {
-						if(e != null) {
-							throw new InvalidInputException(e.getMessage());
+					DayOfWeek inputDayOfWeek=mapforDayofWeekMap.get(day);
+
+					Business business= fb.getBusiness();
+
+					List<BusinessHour> aHour=fb.getBusiness().getBusinessHours();
+					List<TimeSlot> allTimeSlots=fb.getTimeSlots();
+					List<DayOfWeek> aDayOfWeeks=new ArrayList<>();
+					boolean inBusinessHour=false;
+					for(BusinessHour ahour:aHour) {
+						DayOfWeek dayOfWeek=ahour.getDayOfWeek();
+						if(dayOfWeek.equals(inputDayOfWeek)) {
+							if(endtime.after(ahour.getEndTime())==false&&newstarttime.before(ahour.getStartTime())==false) {
+								inBusinessHour=true;
+							}
+						}}
+					
+					FlexiBookApplication.setmessage("unsuccessful");
+					for(Appointment a: fb.getAppointments()) {
+						if(isNoOverlap(newslot, a.getTimeSlot()) && inBusinessHour == true) {
+							try {
+								fb.getCustomer(cindex).getAppointment(aindex).updateAppointment(newslot, 
+										fb.getCustomer(cindex).getAppointment(aindex).getBookableService(), null);
+							}
+							catch (RuntimeException e) {
+								if(e != null) {
+									throw new InvalidInputException(e.getMessage());
+								}
+							}
+							FlexiBookApplication.setmessage("successful");
 						}
 					}
-					FlexiBookApplication.setmessage("successful");
+					if(FlexiBookApplication.returnmessage().equals("successful") == false) {
+						newslot.delete();
+						FlexiBookApplication.setmessage("unsuccessful");
+					}
 
 				}
 				else	if(fb.getCustomer(cindex).getAppointment(aindex).getBookableService()instanceof ServiceCombo) {	

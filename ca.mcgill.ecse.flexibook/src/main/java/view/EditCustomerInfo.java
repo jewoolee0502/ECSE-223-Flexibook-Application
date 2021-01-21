@@ -125,20 +125,7 @@ public class EditCustomerInfo {
 	}
 
 	private static void confirmActionPerformed(ActionEvent evt) {
-		// add code to save the change
-		//check the confirm pwd same as pwd enter before
-		//success update the new account, otherwise throw error
-		// all input cannot be empty if it is throw error
-		//		if(!(FlexiBookApplication.getCurrentuser().getUsername().equals(newuser))) {
-		//			try {
-		//				FlexibookController.UpdateAccount(FlexiBookApplication.getCurrentuser().getUsername().toString(), newuser.getText().toString(), np.getText().toString());
-		//			} catch(InvalidInputException e) {
-		//				success.setText("Successfully updated the account!");
-		//			}
-		//		}
-		//		else {
-		//			//errorMessage.setText(e.getMessage());
-		//		}
+
 
 		try {
 			if(!(FlexiBookApplication.getCurrentuser().getUsername().equals(newuser)) && !(FlexiBookApplication.getCurrentuser().getPassword().equals(np))) {
@@ -158,7 +145,7 @@ public class EditCustomerInfo {
 	private static void deleteActionPerformed(ActionEvent evt) {
 		try {
 			FlexibookController.DeleteCustomerAccount(FlexiBookApplication.getCurrentuser().getUsername(), FlexiBookApplication.getCurrentuser().getUsername());
-			FlexiBookApplication.clogout();
+			FlexiBookApplication.toMainpage();
 		} catch(InvalidInputException e) {
 
 		}

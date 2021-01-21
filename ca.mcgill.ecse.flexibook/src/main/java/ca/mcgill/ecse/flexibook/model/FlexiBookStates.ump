@@ -175,8 +175,8 @@ depend java.sql.Time;
   
   //Author: Jewoo Lee
   private Boolean isWithinAppTimeSlot() {
-  	
-  	String st = this.getTimeSlot().getStartTime().toLocalTime().toString();
+     if(this.getTimeSlot().getStartDate().toString().equals(SystemTime.getdate(SystemTime.getSysTime()))) {
+     String st = this.getTimeSlot().getStartTime().toLocalTime().toString();
 	String systemTimeRN = SystemTime.gettime(SystemTime.getSysTime());
 	String endTime = this.getTimeSlot().getEndTime().toLocalTime().toString();
 	   
@@ -195,10 +195,14 @@ depend java.sql.Time;
 	else {
 		return false;
 	}
+	}else {
+	  return false;
+	}
   } 
   
   //Author: James Willems
   private Boolean isAfterAppTimeSlot(){
+  if(this.getTimeSlot().getStartDate().toString().equals(SystemTime.getdate(SystemTime.getSysTime()))) {
 	String systemTimeRN = SystemTime.gettime(SystemTime.getSysTime());
 	String endTime = this.getTimeSlot().getEndTime().toLocalTime().toString();
 	int b = SystemTime.comparetime(endTime, systemTimeRN);
@@ -207,6 +211,9 @@ depend java.sql.Time;
 	}
 	else{ 
 	return false;
+	}
+	}else {
+	  return false;
 	}
   }
   

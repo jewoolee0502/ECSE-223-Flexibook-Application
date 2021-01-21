@@ -152,6 +152,18 @@ public class UpdateAppointmentView{
 				FlexibookController.UpdateAppointment(FlexiBookApplication.getCurrentuser().getUsername(),null,null, null,
 						FlexiBookApplication.getCurrentap().getBookableService().getName(),a.getTimeSlot().getStartDate().toString(),dateinput.getText(),
 						oldstarttime, starttimeinput.getText());
+				if(a.getTimeSlot().getStartTime().toString().substring(0,a.getTimeSlot().getStartTime().toString().length()-3).equals(oldstarttime)) {
+					refreshText();
+					errorMessage.setText(" ");
+					errorMessage2.setText(" ");
+					errorMessage2.setText("Sorry, the appointment is not updated!");
+				}
+				else {
+					refreshText();
+					errorMessage.setText(" ");
+					errorMessage2.setText(" ");
+					errorMessage.setText("Successfully updated an appointment!");
+				}
 			}else {
 				if(OneDayDiff() == true) {
 					int c = FlexiBookApplication.getflexibook().getAppointments().size();
